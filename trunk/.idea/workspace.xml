@@ -1,7 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="0c7c6ee5-5026-4f55-a208-4865952da418" name="Default" comment="" />
+    <list default="true" readonly="true" id="0c7c6ee5-5026-4f55-a208-4865952da418" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ApplicationAdaptationAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ConsolidationAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterServerImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITFacilityResourceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/Goal.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ComplexHeterogeneousResourcesImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ITFacilityActiveResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITComputingResourceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ExternalStorage.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/FacilityImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SimpleResourceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ITFacilityPassiveResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/MEMIntensiveActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SensorImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/SLAPolicy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ActuatorImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/ApplicationActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/CPUImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ITFacilityResourcesAdaptationAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITComputingResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ITFacilityPassiveResourceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ExternalStorageImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/MEM.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/DPMAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/CPU.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ITFacilityActiveResourceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/ITComputingContextPolicy.java" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\ContextResource.java" afterPath="$PROJECT_DIR$/src/model/interfaces/ContextResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITFacilityResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/CPUIntensiveActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/Facility.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/HDDIntensiveActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ApplicationRedesign.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/QoSPolicy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/BusinessPolicy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/MigrateActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/Event.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/ontologyImpl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/HDD.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/HDDImpl.java" />
+      <change type="DELETED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\ServiceCenterITFacilityResource.java" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/EnvironmentPolicy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/ContextPolicy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/MEMImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ITComputingResourcesAdaptationAction.java" />
+      <change type="DELETED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\ITFacilityPassiveResource.java" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/ContextResourceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/Sensor.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/Application.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/GPI_KPI_Policy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterServer.java" />
+    </list>
     <ignored path="contextmodel.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -60,28 +127,93 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ContextResource.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/model/ContextResource.java">
+      <file leaf-file-name="CPUImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/CPUImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="274" selection-end="274" vertical-scroll-proportion="0.5681234">
+            <state line="13" column="0" selection-start="318" selection-end="318" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServiceCenterITFacilityResource.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/ServiceCenterITFacilityResource.java">
+      <file leaf-file-name="ComplexHeterogeneousResources.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="8" selection-start="299" selection-end="299" vertical-scroll-proportion="0.0">
+            <state line="11" column="17" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ITFacilityPassiveResource.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/ITFacilityPassiveResource.java">
+      <file leaf-file-name="Actuator.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="9" selection-start="306" selection-end="306" vertical-scroll-proportion="0.0">
+            <state line="9" column="58" selection-start="238" selection-end="262" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ActuatorImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ActuatorImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="0" selection-start="343" selection-end="343" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContextAction.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="17" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DeployActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="17" selection-start="369" selection-end="369" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ITFacilityActiveResource.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ITFacilityActiveResource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="17" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Application.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/Application.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="17" selection-start="248" selection-end="248" vertical-scroll-proportion="0.3631068">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ApplicationActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/ApplicationActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="17" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CPUIntensiveActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/CPUIntensiveActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="17" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -97,9 +229,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/model/ITFacilityPassiveResource.java" />
-        <option value="$PROJECT_DIR$/src/model/ServiceCenterITFacilityResource.java" />
-        <option value="$PROJECT_DIR$/src/model/ContextResource.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ComplexHeterogeneousResourcesImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SimpleResource.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SimpleResourceImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterServer.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterServerImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/resources/Sensor.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SensorImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/MEM.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/MEMImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/HDDImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/FacilityImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ExternalStorageImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/CPUImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ActuatorImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/applications/Application.java" />
       </list>
     </option>
   </component>
@@ -138,6 +283,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -146,16 +292,204 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="applications" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="actions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="databaseImpl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="databaseImpl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.last.edited" value="SDKs" />
+    <property name="OverrideImplement.combined" value="true" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="MemberChooser.sorted" value="false" />
@@ -166,8 +500,13 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="model.impl" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -243,6 +582,28 @@
     <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
     <supportedVersion>125</supportedVersion>
   </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="C:\Users\Administrator\Desktop\contextmodel" />
+          <option name="myCopyRoot" value="C:\Users\Administrator\Desktop\contextmodel" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="C:\Users\Administrator\Desktop\contextmodel\.idea" />
+          <option name="myCopyRoot" value="C:\Users\Administrator\Desktop\contextmodel\.idea" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="C:\Users\Administrator\Desktop\contextmodel" />
+          <option name="myCopyRoot" value="C:\Users\Administrator\Desktop\contextmodel" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="0c7c6ee5-5026-4f55-a208-4865952da418" name="Default" comment="" />
@@ -252,25 +613,26 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="189" y="357" width="889" height="558" extended-state="0" />
-    <editor active="false" />
+    <frame x="-4" y="-4" width="1288" height="988" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2386091" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23522459" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32978722" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23495935" sideWeight="0.66193855" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -278,7 +640,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
     <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
@@ -289,11 +651,11 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
-    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
-    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
     <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
     <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
@@ -307,23 +669,116 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/model/ITFacilityPassiveResource.java">
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/HDDImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="9" selection-start="306" selection-end="306" vertical-scroll-proportion="0.0">
+        <state line="3" column="0" selection-start="83" selection-end="83" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/ServiceCenterITFacilityResource.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Facility.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="8" selection-start="299" selection-end="299" vertical-scroll-proportion="0.0">
+        <state line="9" column="58" selection-start="238" selection-end="262" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/ContextResource.java">
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/FacilityImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="274" selection-end="274" vertical-scroll-proportion="0.5681234">
+        <state line="13" column="0" selection-start="339" selection-end="339" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ExternalStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="70" selection-start="245" selection-end="274" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ExternalStorageImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="0" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/CPU.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/CPUImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="318" selection-end="318" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="17" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="58" selection-start="238" selection-end="262" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ActuatorImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="343" selection-end="343" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="17" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="17" selection-start="369" selection-end="369" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ITFacilityActiveResource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="17" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/CPUIntensiveActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="17" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/ApplicationActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="17" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="17" selection-start="248" selection-end="248" vertical-scroll-proportion="0.3631068">
           <folding />
         </state>
       </provider>
