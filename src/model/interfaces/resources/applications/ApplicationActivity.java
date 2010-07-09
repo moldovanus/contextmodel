@@ -1,4 +1,6 @@
-package model.interfaces.applications;
+package model.interfaces.resources.applications;
+
+import model.interfaces.resources.BusinessContextResource;
 
 /**
  * Created by IntelliJ IDEA.
@@ -7,7 +9,7 @@ package model.interfaces.applications;
  * Time: 11:09:12 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ApplicationActivity {
+public interface ApplicationActivity extends BusinessContextResource {
     Double getCPURequiredValue();
 
     void setCPURequiredValue(Double value);

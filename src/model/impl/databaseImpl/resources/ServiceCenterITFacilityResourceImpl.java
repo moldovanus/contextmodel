@@ -1,6 +1,5 @@
 package model.impl.databaseImpl.resources;
 
-import model.impl.databaseImpl.ContextResourceImpl;
 import model.interfaces.resources.ServiceCenterITFacilityResource;
 
 /**

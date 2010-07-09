@@ -2,72 +2,54 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="0c7c6ee5-5026-4f55-a208-4865952da418" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ApplicationAdaptationAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ConsolidationAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterServerImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITFacilityResourceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/Goal.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ComplexHeterogeneousResourcesImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ITFacilityActiveResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITComputingResourceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ExternalStorage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/FacilityImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SimpleResourceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ITFacilityPassiveResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/MEMIntensiveActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SensorImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/SLAPolicy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ActuatorImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/ApplicationActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/CPUImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ITFacilityResourcesAdaptationAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITComputingResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ITFacilityPassiveResourceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ExternalStorageImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/MEM.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/DPMAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/CPU.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ITFacilityActiveResourceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/ITComputingContextPolicy.java" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\ContextResource.java" afterPath="$PROJECT_DIR$/src/model/interfaces/ContextResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITFacilityResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/CPUIntensiveActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/Facility.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/HDDIntensiveActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/ApplicationAdaptationAction.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ApplicationAdaptationAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/QoSPolicyImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/BusinessContextResourceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITFacilityResource.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITFacilityResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/CPUIntensiveActivityImpl.java" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\CPUIntensiveActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/CPUIntensiveActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITComputingResource.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITComputingResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ITComputingContextPolicyImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITComputingResourceImpl.java" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITComputingResourceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ContextActionImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\Application.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/DPMAction.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/DPMAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/BusinessContextResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationActivityImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/GPI_KPI_PolicyImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/policies/GPI_KPI_Policy.java" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/GPI_KPI_Policy.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\ApplicationActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/ApplicationActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DeployActivityImpl.java" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\impl\databaseImpl\ContextResourceImpl.java" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ContextResourceImpl.java" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\ContextResource.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ITFacilityResourcesAdaptationActionImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/HDDIntensiveActivityImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ContextPolicyImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ITComputingResourcesAdaptationActionImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/MEMIntensiveActivityImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITFacilityResourceImpl.java" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITFacilityResourceImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/BusinessPolicyImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ApplicationRedesignImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ApplicationRedesign.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/QoSPolicy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/BusinessPolicy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/MigrateActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/Event.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/ontologyImpl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/HDD.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/HDDImpl.java" />
-      <change type="DELETED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\ServiceCenterITFacilityResource.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/EnvironmentPolicy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/ContextPolicy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/MEMImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ITComputingResourcesAdaptationAction.java" />
-      <change type="DELETED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\ITFacilityPassiveResource.java" afterPath="" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/ContextResourceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/Sensor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/applications/Application.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/GPI_KPI_Policy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/MigrateActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/MigrateActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/EnvironmentPolicyImpl.java" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\MEMIntensiveActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/MEMIntensiveActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/EventImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ConsolidationActionImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ApplicationAdaptationActionImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/MigrateActivityImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DPMActionImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/policies/ContextPolicy.java" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/ContextPolicy.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java" />
+      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\HDDIntensiveActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/HDDIntensiveActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/GoalImpl.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/SLAPolicyImpl.java" />
     </list>
     <ignored path="contextmodel.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -126,100 +108,207 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="CPUImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/CPUImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="318" selection-end="318" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComplexHeterogeneousResources.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="17" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Actuator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="58" selection-start="238" selection-end="262" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ActuatorImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ActuatorImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="343" selection-end="343" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ContextAction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="17" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeployActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="17" selection-start="369" selection-end="369" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ITFacilityActiveResource.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ITFacilityActiveResource.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="17" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Application.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/Application.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="17" selection-start="248" selection-end="248" vertical-scroll-proportion="0.3631068">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ApplicationActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/ApplicationActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="17" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CPUIntensiveActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/CPUIntensiveActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="17" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.49497992">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="Goal.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/Goal.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="9" column="17" selection-start="211" selection-end="211" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="GoalImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/GoalImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="11" column="50" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Application.java" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="2" column="58" selection-start="108" selection-end="108" vertical-scroll-proportion="0.04644809">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ApplicationActivity.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/ApplicationActivity.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="11" column="68" selection-start="322" selection-end="345" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ComplexHeterogeneousResources.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="11" column="17" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SimpleResource.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ContextResource.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BusinessContextResource.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/BusinessContextResource.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="9" column="40" selection-start="220" selection-end="243" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Facility.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Facility.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="11" column="0" selection-start="267" selection-end="267" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Actuator.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="MigrateActivityImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/actions/MigrateActivityImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="14" column="0" selection-start="473" selection-end="473" vertical-scroll-proportion="0.0">
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ContextPolicyImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ContextPolicyImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="26" column="5" selection-start="694" selection-end="694" vertical-scroll-proportion="0.0">
+                  <folding>
+                    <marker date="1278695454693" expanded="true" signature="50:196" placeholder="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="GPI_KPI_PolicyImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/GPI_KPI_PolicyImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="15" column="33" selection-start="438" selection-end="438" vertical-scroll-proportion="0.0">
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <marker date="1278695454689" expanded="true" signature="123:288" placeholder="/**...*/" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BusinessContextResourceImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/BusinessContextResourceImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="11" column="40" selection-start="283" selection-end="310" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ApplicationActivityImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationActivityImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="32" column="29" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0">
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ApplicationImpl.java" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="15" column="1" selection-start="447" selection-end="447" vertical-scroll-proportion="0.34836066">
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ITComputingContextPolicyImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ITComputingContextPolicyImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="13" column="0" selection-start="378" selection-end="378" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="QoSPolicyImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/QoSPolicyImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="11" column="76" selection-start="330" selection-end="330" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SLAPolicy.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/interfaces/policies/SLAPolicy.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="9" column="26" selection-start="220" selection-end="229" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SLAPolicyImpl.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/SLAPolicyImpl.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="11" column="74" selection-start="328" selection-end="328" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -229,22 +318,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ComplexHeterogeneousResourcesImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SimpleResource.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SimpleResourceImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java" />
-        <option value="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterServer.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterServerImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/interfaces/resources/Sensor.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/SensorImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/MEM.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/MEMImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/HDDImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/FacilityImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ExternalStorageImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/CPUImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ActuatorImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/GPI_KPI_PolicyImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/EnvironmentPolicyImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ITComputingContextPolicyImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/QoSPolicyImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/SLAPolicyImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/EventImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/GoalImpl.java" />
         <option value="$PROJECT_DIR$/src/model/interfaces/applications/Application.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/resources/BussinessContextResource.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/resources/BusinessContextResource.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/resources/applications/ApplicationActivity.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/BusinessContextResourceImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationActivityImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java" />
       </list>
     </option>
   </component>
@@ -283,6 +372,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -372,33 +462,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="applications" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="interfaces" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="actions" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -480,9 +548,72 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="databaseImpl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="applications" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="databaseImpl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="policies" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Favorites" />
     </panes>
   </component>
@@ -493,15 +624,15 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="preferences.externalResources" />
+    <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -619,20 +750,20 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23522459" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32978722" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19739953" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23495935" sideWeight="0.66193855" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18455285" sideWeight="0.79432625" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23522459" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -651,7 +782,7 @@
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <option name="LAST_COMMIT_MESSAGE" value="&#10;" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -664,56 +795,50 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/HDDImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/MigrateActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="83" selection-end="83" vertical-scroll-proportion="0.0">
+        <state line="16" column="0" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/EventImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="39" selection-start="271" selection-end="271" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/Goal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="17" selection-start="211" selection-end="211" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/GoalImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="50" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Facility.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="58" selection-start="238" selection-end="262" vertical-scroll-proportion="0.0">
+        <state line="11" column="0" selection-start="267" selection-end="267" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/FacilityImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="339" selection-end="339" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ExternalStorage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="70" selection-start="245" selection-end="274" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ExternalStorageImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/CPU.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/CPUImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="318" selection-end="318" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -725,60 +850,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="58" selection-start="238" selection-end="262" vertical-scroll-proportion="0.0">
+        <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ActuatorImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="343" selection-end="343" vertical-scroll-proportion="0.0">
+        <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/BusinessContextResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="17" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0">
+        <state line="9" column="40" selection-start="220" selection-end="243" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/ApplicationActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="17" selection-start="369" selection-end="369" vertical-scroll-proportion="0.0">
+        <state line="11" column="68" selection-start="322" selection-end="345" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ITFacilityActiveResource.java">
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/GPI_KPI_PolicyImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="17" selection-start="315" selection-end="315" vertical-scroll-proportion="0.0">
+        <state line="15" column="33" selection-start="438" selection-end="438" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1278695454689" expanded="true" signature="123:288" placeholder="/**...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/BusinessContextResourceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="40" selection-start="283" selection-end="310" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationActivityImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="29" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/CPUIntensiveActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="17" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="15" column="1" selection-start="447" selection-end="447" vertical-scroll-proportion="0.34836066">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/ApplicationActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="17" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/applications/Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="17" selection-start="248" selection-end="248" vertical-scroll-proportion="0.3631068">
+        <state line="2" column="58" selection-start="108" selection-end="108" vertical-scroll-proportion="0.04644809">
           <folding />
         </state>
       </provider>

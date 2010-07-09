@@ -17,15 +17,15 @@ public interface DPMAction extends ITComputingResourcesAdaptationAction {
 
     int getStateBeforeAction();
 
-    void setStateBeforeAction();
+    void setStateBeforeAction(int value);
 
     int getStateAfterAction();
 
-    void setStateAfterAction();
+    void setStateAfterAction(int value);
 
     int getNoStatesJump();
 
-    void setNoStatesJump();
+    void setNoStatesJump(int value);
 
     boolean getToLowOrHighState();
 
