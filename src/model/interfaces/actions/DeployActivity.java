@@ -12,7 +12,7 @@ import java.util.List;
  * Time: 10:42:54 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface DeployActivity extends ContextAction {
+public interface DeployActivity extends ConsolidationAction {
     List<ApplicationActivity> getActivities();
 
     void setActivities(List<ApplicationActivity> activity);

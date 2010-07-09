@@ -2,54 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="0c7c6ee5-5026-4f55-a208-4865952da418" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/ApplicationAdaptationAction.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ApplicationAdaptationAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/QoSPolicyImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/BusinessContextResourceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITFacilityResource.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITFacilityResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/CPUIntensiveActivityImpl.java" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\CPUIntensiveActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/CPUIntensiveActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITComputingResource.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ServiceCenterITComputingResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ITComputingContextPolicyImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITComputingResourceImpl.java" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITComputingResourceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ContextActionImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/ContextAction.java" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\Application.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/DPMAction.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/DPMAction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/BusinessContextResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationActivityImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/GPI_KPI_PolicyImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/policies/GPI_KPI_Policy.java" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/GPI_KPI_Policy.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\ApplicationActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/ApplicationActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DeployActivityImpl.java" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\impl\databaseImpl\ContextResourceImpl.java" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ContextResourceImpl.java" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\ContextResource.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ITFacilityResourcesAdaptationActionImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/HDDIntensiveActivityImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ContextPolicyImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ITComputingResourcesAdaptationActionImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/MEMIntensiveActivityImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITFacilityResourceImpl.java" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/ServiceCenterITFacilityResourceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/BusinessPolicyImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ApplicationRedesignImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DeployActivityImpl.java" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DeployActivityImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/MigrateActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/MigrateActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/EnvironmentPolicyImpl.java" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\MEMIntensiveActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/MEMIntensiveActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/EventImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ConsolidationActionImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/ApplicationAdaptationActionImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/MigrateActivityImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DPMActionImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/policies/ContextPolicy.java" afterPath="$PROJECT_DIR$/src/model/interfaces/policies/ContextPolicy.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java" />
-      <change type="MOVED" beforePath="C:\Users\Administrator\Desktop\contextmodel\src\model\interfaces\applications\HDDIntensiveActivity.java" afterPath="$PROJECT_DIR$/src/model/interfaces/resources/applications/HDDIntensiveActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/GoalImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/SLAPolicyImpl.java" />
     </list>
     <ignored path="contextmodel.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -108,207 +63,333 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.49497992">
-      <split-first>
-        <leaf>
-          <file leaf-file-name="Goal.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/Goal.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="17" selection-start="211" selection-end="211" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="GoalImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/GoalImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="50" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Application.java" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="2" column="58" selection-start="108" selection-end="108" vertical-scroll-proportion="0.04644809">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ApplicationActivity.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/ApplicationActivity.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="68" selection-start="322" selection-end="345" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ComplexHeterogeneousResources.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="17" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="SimpleResource.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ContextResource.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="BusinessContextResource.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/BusinessContextResource.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="40" selection-start="220" selection-end="243" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Facility.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Facility.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="0" selection-start="267" selection-end="267" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Actuator.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="MigrateActivityImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/actions/MigrateActivityImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="14" column="0" selection-start="473" selection-end="473" vertical-scroll-proportion="0.0">
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ContextPolicyImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ContextPolicyImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="26" column="5" selection-start="694" selection-end="694" vertical-scroll-proportion="0.0">
-                  <folding>
-                    <marker date="1278695454693" expanded="true" signature="50:196" placeholder="..." />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="GPI_KPI_PolicyImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/GPI_KPI_PolicyImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="15" column="33" selection-start="438" selection-end="438" vertical-scroll-proportion="0.0">
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <marker date="1278695454689" expanded="true" signature="123:288" placeholder="/**...*/" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="BusinessContextResourceImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/BusinessContextResourceImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="40" selection-start="283" selection-end="310" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ApplicationActivityImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationActivityImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="32" column="29" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0">
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ApplicationImpl.java" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="15" column="1" selection-start="447" selection-end="447" vertical-scroll-proportion="0.34836066">
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ITComputingContextPolicyImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ITComputingContextPolicyImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="13" column="0" selection-start="378" selection-end="378" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="QoSPolicyImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/QoSPolicyImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="76" selection-start="330" selection-end="330" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="SLAPolicy.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/interfaces/policies/SLAPolicy.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="26" selection-start="220" selection-end="229" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="SLAPolicyImpl.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/SLAPolicyImpl.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="11" column="74" selection-start="328" selection-end="328" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="Application.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="0" selection-start="466" selection-end="466" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComplexHeterogeneousResources.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="17" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SimpleResource.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContextResource.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="0" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="model.interfaces" pinned="false" current="false" current-in-tab="false">
+        <entry file="uml://model.interfaces">
+          <provider selected="true" editor-type-id="UmlClassDiagramEditorProvider">
+            <state>
+              <classes>
+                <class fqn="model.interfaces.actions.ConsolidationAction" x="411.75" y="451.0" />
+                <class fqn="model.interfaces.actions.ApplicationRedesign" x="596.625" y="451.0" />
+                <class fqn="model.interfaces.actions.ITFacilityResourcesAdaptationAction" x="0.0" y="375.0" />
+                <class fqn="model.interfaces.resources.applications.CPUIntensiveActivity" x="0.0" y="228.0" />
+                <class fqn="model.interfaces.resources.ContextResource" x="700.75" y="0.0" />
+                <class fqn="model.interfaces.resources.ITFacilityPassiveResource" x="781.0" y="152.0" />
+                <class fqn="model.interfaces.policies.SLAPolicy" x="120.99999999999999" y="826.0" />
+                <class fqn="model.interfaces.policies.ContextPolicy" x="208.25" y="598.0" />
+                <class fqn="model.interfaces.actions.ITComputingResourcesAdaptationAction" x="276.0" y="375.0" />
+                <class fqn="model.interfaces.policies.EnvironmentPolicy" x="194.75" y="750.0" />
+                <class fqn="model.interfaces.actions.DeployActivity" x="801.125" y="375.0" />
+                <class fqn="model.interfaces.resources.ComplexHeterogeneousResources" x="997.375" y="152.0" />
+                <class fqn="model.interfaces.resources.ExternalStorage" x="963.375" y="228.0" />
+                <class fqn="model.interfaces.Goal" x="730.75" y="598.0" />
+                <class fqn="model.interfaces.resources.Actuator" x="564.0" y="228.0" />
+                <class fqn="model.interfaces.resources.ServiceCenterITComputingResource" x="1158.7460317460318" y="76.0" />
+                <class fqn="model.interfaces.resources.SimpleResource" x="1360.875" y="152.0" />
+                <class fqn="model.interfaces.resources.Facility" x="680.0" y="228.0" />
+                <class fqn="model.interfaces.resources.BusinessContextResource" x="98.0" y="76.0" />
+                <class fqn="model.interfaces.resources.ITFacilityActiveResource" x="574.0" y="152.0" />
+                <class fqn="model.interfaces.Event" x="607.75" y="598.0" />
+                <class fqn="model.interfaces.policies.QoSPolicy" x="0.0" y="826.0" />
+                <class fqn="model.interfaces.actions.DPMAction" x="284.75" y="451.0" />
+                <class fqn="model.interfaces.actions.MigrateActivity" x="423.75" y="527.0" />
+                <class fqn="model.interfaces.resources.applications.MEMIntensiveActivity" x="374.0" y="228.0" />
+                <class fqn="model.interfaces.resources.MEM" x="1483.375" y="228.0" />
+                <class fqn="model.interfaces.resources.CPU" x="1395.375" y="228.0" />
+                <class fqn="model.interfaces.resources.applications.HDDIntensiveActivity" x="186.0" y="228.0" />
+                <class fqn="model.interfaces.resources.ServiceCenterServer" x="1121.375" y="228.0" />
+                <class fqn="model.interfaces.actions.ContextAction" x="482.25" y="299.0" />
+                <class fqn="model.interfaces.policies.ITComputingContextPolicy" x="365.75" y="750.0" />
+                <class fqn="model.interfaces.actions.ApplicationAdaptationAction" x="573.125" y="375.0" />
+                <class fqn="model.interfaces.resources.Sensor" x="835.5" y="228.0" />
+                <class fqn="model.interfaces.resources.HDD" x="1305.375" y="228.0" />
+                <class fqn="model.interfaces.policies.GPI_KPI_Policy" x="204.25" y="674.0" />
+                <class fqn="model.interfaces.resources.applications.Application" x="64.5" y="152.0" />
+                <class fqn="model.interfaces.resources.applications.ApplicationActivity" x="193.5" y="152.0" />
+                <class fqn="model.interfaces.resources.ServiceCenterITFacilityResource" x="658.8293650793652" y="76.0" />
+                <class fqn="model.interfaces.policies.BusinessPolicy" x="46.75" y="750.0" />
+              </classes>
+              <packages />
+              <edges>
+                <edge source="model.interfaces.actions.ITFacilityResourcesAdaptationAction" target="model.interfaces.actions.ContextAction" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="128.0" y="345.0" />
+                  <point x="498.125" y="345.0" />
+                  <point x="-47.625" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.actions.DPMAction" target="model.interfaces.actions.ITComputingResourcesAdaptationAction" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="338.25" y="426.0" />
+                  <point x="345.25" y="426.0" />
+                  <point x="-69.25" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.actions.ITComputingResourcesAdaptationAction" target="model.interfaces.actions.ContextAction" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="414.5" y="355.0" />
+                  <point x="529.875" y="355.0" />
+                  <point x="-15.875" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.ExternalStorage" target="model.interfaces.resources.ComplexHeterogeneousResources" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="1032.375" y="203.0" />
+                  <point x="1057.625" y="203.0" />
+                  <point x="-60.25" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.ITFacilityPassiveResource" target="model.interfaces.resources.ServiceCenterITFacilityResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="878.0" y="127.0" />
+                  <point x="832.0793650793652" y="127.0" />
+                  <point x="57.75" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.BusinessContextResource" target="model.interfaces.resources.ContextResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="194.5" y="51.0" />
+                  <point x="724.75" y="51.0" />
+                  <point x="-48.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.actions.ApplicationRedesign" target="model.interfaces.actions.ApplicationAdaptationAction" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="0.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.Sensor" target="model.interfaces.resources.ITFacilityPassiveResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="0.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.policies.SLAPolicy" target="model.interfaces.policies.BusinessPolicy" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="171.0" y="801.0" />
+                  <point x="142.75" y="801.0" />
+                  <point x="32.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.ServiceCenterITComputingResource" target="model.interfaces.resources.ContextResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="1284.7460317460318" y="51.0" />
+                  <point x="820.75" y="51.0" />
+                  <point x="48.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.policies.GPI_KPI_Policy" target="model.interfaces.policies.ContextPolicy" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="0.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.Facility" target="model.interfaces.resources.ITFacilityActiveResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="723.0" y="203.0" />
+                  <point x="714.25" y="203.0" />
+                  <point x="46.75" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.policies.BusinessPolicy" target="model.interfaces.policies.GPI_KPI_Policy" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="110.75" y="725.0" />
+                  <point x="226.25" y="725.0" />
+                  <point x="-44.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.MEM" target="model.interfaces.resources.SimpleResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="1519.375" y="203.0" />
+                  <point x="1475.0416666666665" y="203.0" />
+                  <point x="45.66666666666663" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.applications.ApplicationActivity" target="model.interfaces.resources.BusinessContextResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="270.0" y="127.0" />
+                  <point x="242.75" y="127.0" />
+                  <point x="48.25" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.ITFacilityActiveResource" target="model.interfaces.resources.ServiceCenterITFacilityResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="667.5" y="127.0" />
+                  <point x="716.5793650793652" y="127.0" />
+                  <point x="-57.75" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.policies.QoSPolicy" target="model.interfaces.policies.BusinessPolicy" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="50.5" y="801.0" />
+                  <point x="78.75" y="801.0" />
+                  <point x="-32.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.CPU" target="model.interfaces.resources.SimpleResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="0.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.applications.HDDIntensiveActivity" target="model.interfaces.resources.applications.ApplicationActivity" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="0.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.SimpleResource" target="model.interfaces.resources.ServiceCenterITComputingResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="1429.375" y="127.0" />
+                  <point x="1347.7460317460318" y="127.0" />
+                  <point x="63.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.applications.MEMIntensiveActivity" target="model.interfaces.resources.applications.ApplicationActivity" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="459.0" y="203.0" />
+                  <point x="321.0" y="203.0" />
+                  <point x="51.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.actions.ApplicationAdaptationAction" target="model.interfaces.actions.ContextAction" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="677.125" y="355.0" />
+                  <point x="561.625" y="355.0" />
+                  <point x="15.875" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.Actuator" target="model.interfaces.resources.ITFacilityActiveResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="612.0" y="203.0" />
+                  <point x="620.75" y="203.0" />
+                  <point x="-46.75" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.HDD" target="model.interfaces.resources.SimpleResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="1340.375" y="203.0" />
+                  <point x="1383.7083333333335" y="203.0" />
+                  <point x="-45.66666666666663" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.applications.CPUIntensiveActivity" target="model.interfaces.resources.applications.ApplicationActivity" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="83.0" y="203.0" />
+                  <point x="219.0" y="203.0" />
+                  <point x="-51.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.actions.MigrateActivity" target="model.interfaces.actions.ConsolidationAction" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="0.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.applications.Application" target="model.interfaces.resources.BusinessContextResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="119.0" y="127.0" />
+                  <point x="146.25" y="127.0" />
+                  <point x="-48.25" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.actions.DeployActivity" target="model.interfaces.actions.ContextAction" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="865.625" y="345.0" />
+                  <point x="593.375" y="345.0" />
+                  <point x="47.625" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.actions.ConsolidationAction" target="model.interfaces.actions.ITComputingResourcesAdaptationAction" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="490.75" y="426.0" />
+                  <point x="483.75" y="426.0" />
+                  <point x="69.25" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.policies.ITComputingContextPolicy" target="model.interfaces.policies.GPI_KPI_Policy" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="464.25" y="725.0" />
+                  <point x="314.25" y="725.0" />
+                  <point x="44.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.policies.EnvironmentPolicy" target="model.interfaces.policies.GPI_KPI_Policy" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="0.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.ServiceCenterITFacilityResource" target="model.interfaces.resources.ContextResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="774.3293650793652" y="51.0" />
+                  <point x="772.75" y="51.0" />
+                  <point x="0.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.ComplexHeterogeneousResources" target="model.interfaces.resources.ServiceCenterITComputingResource" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="1117.875" y="127.0" />
+                  <point x="1221.7460317460318" y="127.0" />
+                  <point x="-63.0" y="13.0" />
+                </edge>
+                <edge source="model.interfaces.resources.ServiceCenterServer" target="model.interfaces.resources.ComplexHeterogeneousResources" relationship="INTERFACE_GENERALIZATION">
+                  <point x="0.0" y="-13.0" />
+                  <point x="1203.375" y="203.0" />
+                  <point x="1178.125" y="203.0" />
+                  <point x="60.25" y="13.0" />
+                </edge>
+              </edges>
+              <settings isCamel="false" isColorManagerEnabled="true" isFieldsVisible="false" isConstructorsVisible="false" isMethodsVisible="false" isShowDependencies="false" isShowInnerClasses="false" isVcsFilterEnabled="false" defaultVisibility="all" layout="Hierarchic Group" isPropertiesVisible="false" zoom="0.7000000000000001" x="317.85714285714283" y="243.85714285714283" />
+              <SelectedNodes />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DeployActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="59" selection-start="421" selection-end="421" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DeployActivityImpl.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DeployActivityImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="63" selection-start="507" selection-end="507" vertical-scroll-proportion="0.2982456">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BusinessContextResource.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/BusinessContextResource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="40" selection-start="220" selection-end="243" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Facility.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Facility.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="0" selection-start="267" selection-end="267" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Actuator.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Actuator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -318,8 +399,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/GPI_KPI_PolicyImpl.java" />
-        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/EnvironmentPolicyImpl.java" />
         <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ITComputingContextPolicyImpl.java" />
         <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/QoSPolicyImpl.java" />
         <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/policies/SLAPolicyImpl.java" />
@@ -334,6 +413,8 @@
         <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationActivityImpl.java" />
         <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java" />
         <option value="$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java" />
+        <option value="$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java" />
+        <option value="$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DeployActivityImpl.java" />
       </list>
     </option>
   </component>
@@ -488,127 +569,33 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="databaseImpl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="databaseImpl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="databaseImpl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="applications" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="contextmodel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="databaseImpl" />
+              <option name="myItemId" value="interfaces" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="policies" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="contextmodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -626,6 +613,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -745,7 +733,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1288" height="988" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -754,10 +742,10 @@
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19739953" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19739953" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18455285" sideWeight="0.79432625" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18211383" sideWeight="0.79432625" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -801,37 +789,78 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/MigrateActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="451" selection-end="451" vertical-scroll-proportion="0.0">
+        <state line="16" column="0" selection-start="448" selection-end="448" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/actions/MigrateActivityImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="0" selection-start="473" selection-end="473" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/policies/ContextPolicy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="17" selection-start="327" selection-end="327" vertical-scroll-proportion="0.24348958">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/EventImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="39" selection-start="271" selection-end="271" vertical-scroll-proportion="0.0">
+        <state line="16" column="0" selection-start="466" selection-end="466" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/Goal.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="17" selection-start="211" selection-end="211" vertical-scroll-proportion="0.0">
+        <state line="14" column="0" selection-start="313" selection-end="313" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/GoalImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ContextPolicyImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="50" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
+        <state line="26" column="5" selection-start="694" selection-end="694" vertical-scroll-proportion="0.0">
+          <folding>
+            <marker date="1278695454693" expanded="true" signature="50:196" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/ITComputingContextPolicyImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="378" selection-end="378" vertical-scroll-proportion="0.2811705">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/Facility.java">
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/QoSPolicyImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="267" selection-end="267" vertical-scroll-proportion="0.0">
+        <state line="11" column="76" selection-start="330" selection-end="330" vertical-scroll-proportion="0.23791349">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/policies/SLAPolicy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="26" selection-start="220" selection-end="229" vertical-scroll-proportion="0.19029851">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/SLAPolicyImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="74" selection-start="328" selection-end="328" vertical-scroll-proportion="0.23258707">
           <folding />
         </state>
       </provider>
@@ -843,30 +872,258 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ComplexHeterogeneousResources.java">
+    <entry file="uml://model.interfaces">
+      <provider selected="true" editor-type-id="UmlClassDiagramEditorProvider">
+        <state>
+          <classes>
+            <class fqn="model.interfaces.actions.ConsolidationAction" x="411.75" y="451.0" />
+            <class fqn="model.interfaces.actions.ApplicationRedesign" x="596.625" y="451.0" />
+            <class fqn="model.interfaces.actions.ITFacilityResourcesAdaptationAction" x="0.0" y="375.0" />
+            <class fqn="model.interfaces.resources.applications.CPUIntensiveActivity" x="0.0" y="228.0" />
+            <class fqn="model.interfaces.resources.ContextResource" x="700.75" y="0.0" />
+            <class fqn="model.interfaces.resources.ITFacilityPassiveResource" x="781.0" y="152.0" />
+            <class fqn="model.interfaces.policies.SLAPolicy" x="120.99999999999999" y="826.0" />
+            <class fqn="model.interfaces.policies.ContextPolicy" x="208.25" y="598.0" />
+            <class fqn="model.interfaces.actions.ITComputingResourcesAdaptationAction" x="276.0" y="375.0" />
+            <class fqn="model.interfaces.policies.EnvironmentPolicy" x="194.75" y="750.0" />
+            <class fqn="model.interfaces.actions.DeployActivity" x="801.125" y="375.0" />
+            <class fqn="model.interfaces.resources.ComplexHeterogeneousResources" x="997.375" y="152.0" />
+            <class fqn="model.interfaces.resources.ExternalStorage" x="963.375" y="228.0" />
+            <class fqn="model.interfaces.Goal" x="730.75" y="598.0" />
+            <class fqn="model.interfaces.resources.Actuator" x="564.0" y="228.0" />
+            <class fqn="model.interfaces.resources.ServiceCenterITComputingResource" x="1158.7460317460318" y="76.0" />
+            <class fqn="model.interfaces.resources.SimpleResource" x="1360.875" y="152.0" />
+            <class fqn="model.interfaces.resources.Facility" x="680.0" y="228.0" />
+            <class fqn="model.interfaces.resources.BusinessContextResource" x="98.0" y="76.0" />
+            <class fqn="model.interfaces.resources.ITFacilityActiveResource" x="574.0" y="152.0" />
+            <class fqn="model.interfaces.Event" x="607.75" y="598.0" />
+            <class fqn="model.interfaces.policies.QoSPolicy" x="0.0" y="826.0" />
+            <class fqn="model.interfaces.actions.DPMAction" x="284.75" y="451.0" />
+            <class fqn="model.interfaces.actions.MigrateActivity" x="423.75" y="527.0" />
+            <class fqn="model.interfaces.resources.applications.MEMIntensiveActivity" x="374.0" y="228.0" />
+            <class fqn="model.interfaces.resources.MEM" x="1483.375" y="228.0" />
+            <class fqn="model.interfaces.resources.CPU" x="1395.375" y="228.0" />
+            <class fqn="model.interfaces.resources.applications.HDDIntensiveActivity" x="186.0" y="228.0" />
+            <class fqn="model.interfaces.resources.ServiceCenterServer" x="1121.375" y="228.0" />
+            <class fqn="model.interfaces.actions.ContextAction" x="482.25" y="299.0" />
+            <class fqn="model.interfaces.policies.ITComputingContextPolicy" x="365.75" y="750.0" />
+            <class fqn="model.interfaces.actions.ApplicationAdaptationAction" x="573.125" y="375.0" />
+            <class fqn="model.interfaces.resources.Sensor" x="835.5" y="228.0" />
+            <class fqn="model.interfaces.resources.HDD" x="1305.375" y="228.0" />
+            <class fqn="model.interfaces.policies.GPI_KPI_Policy" x="204.25" y="674.0" />
+            <class fqn="model.interfaces.resources.applications.Application" x="64.5" y="152.0" />
+            <class fqn="model.interfaces.resources.applications.ApplicationActivity" x="193.5" y="152.0" />
+            <class fqn="model.interfaces.resources.ServiceCenterITFacilityResource" x="658.8293650793652" y="76.0" />
+            <class fqn="model.interfaces.policies.BusinessPolicy" x="46.75" y="750.0" />
+          </classes>
+          <packages />
+          <edges>
+            <edge source="model.interfaces.actions.ITFacilityResourcesAdaptationAction" target="model.interfaces.actions.ContextAction" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="128.0" y="345.0" />
+              <point x="498.125" y="345.0" />
+              <point x="-47.625" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.actions.DPMAction" target="model.interfaces.actions.ITComputingResourcesAdaptationAction" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="338.25" y="426.0" />
+              <point x="345.25" y="426.0" />
+              <point x="-69.25" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.actions.ITComputingResourcesAdaptationAction" target="model.interfaces.actions.ContextAction" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="414.5" y="355.0" />
+              <point x="529.875" y="355.0" />
+              <point x="-15.875" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.ExternalStorage" target="model.interfaces.resources.ComplexHeterogeneousResources" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="1032.375" y="203.0" />
+              <point x="1057.625" y="203.0" />
+              <point x="-60.25" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.ITFacilityPassiveResource" target="model.interfaces.resources.ServiceCenterITFacilityResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="878.0" y="127.0" />
+              <point x="832.0793650793652" y="127.0" />
+              <point x="57.75" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.BusinessContextResource" target="model.interfaces.resources.ContextResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="194.5" y="51.0" />
+              <point x="724.75" y="51.0" />
+              <point x="-48.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.actions.ApplicationRedesign" target="model.interfaces.actions.ApplicationAdaptationAction" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="0.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.Sensor" target="model.interfaces.resources.ITFacilityPassiveResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="0.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.policies.SLAPolicy" target="model.interfaces.policies.BusinessPolicy" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="171.0" y="801.0" />
+              <point x="142.75" y="801.0" />
+              <point x="32.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.ServiceCenterITComputingResource" target="model.interfaces.resources.ContextResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="1284.7460317460318" y="51.0" />
+              <point x="820.75" y="51.0" />
+              <point x="48.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.policies.GPI_KPI_Policy" target="model.interfaces.policies.ContextPolicy" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="0.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.Facility" target="model.interfaces.resources.ITFacilityActiveResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="723.0" y="203.0" />
+              <point x="714.25" y="203.0" />
+              <point x="46.75" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.policies.BusinessPolicy" target="model.interfaces.policies.GPI_KPI_Policy" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="110.75" y="725.0" />
+              <point x="226.25" y="725.0" />
+              <point x="-44.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.MEM" target="model.interfaces.resources.SimpleResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="1519.375" y="203.0" />
+              <point x="1475.0416666666665" y="203.0" />
+              <point x="45.66666666666663" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.applications.ApplicationActivity" target="model.interfaces.resources.BusinessContextResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="270.0" y="127.0" />
+              <point x="242.75" y="127.0" />
+              <point x="48.25" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.ITFacilityActiveResource" target="model.interfaces.resources.ServiceCenterITFacilityResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="667.5" y="127.0" />
+              <point x="716.5793650793652" y="127.0" />
+              <point x="-57.75" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.policies.QoSPolicy" target="model.interfaces.policies.BusinessPolicy" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="50.5" y="801.0" />
+              <point x="78.75" y="801.0" />
+              <point x="-32.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.CPU" target="model.interfaces.resources.SimpleResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="0.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.applications.HDDIntensiveActivity" target="model.interfaces.resources.applications.ApplicationActivity" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="0.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.SimpleResource" target="model.interfaces.resources.ServiceCenterITComputingResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="1429.375" y="127.0" />
+              <point x="1347.7460317460318" y="127.0" />
+              <point x="63.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.applications.MEMIntensiveActivity" target="model.interfaces.resources.applications.ApplicationActivity" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="459.0" y="203.0" />
+              <point x="321.0" y="203.0" />
+              <point x="51.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.actions.ApplicationAdaptationAction" target="model.interfaces.actions.ContextAction" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="677.125" y="355.0" />
+              <point x="561.625" y="355.0" />
+              <point x="15.875" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.Actuator" target="model.interfaces.resources.ITFacilityActiveResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="612.0" y="203.0" />
+              <point x="620.75" y="203.0" />
+              <point x="-46.75" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.HDD" target="model.interfaces.resources.SimpleResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="1340.375" y="203.0" />
+              <point x="1383.7083333333335" y="203.0" />
+              <point x="-45.66666666666663" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.applications.CPUIntensiveActivity" target="model.interfaces.resources.applications.ApplicationActivity" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="83.0" y="203.0" />
+              <point x="219.0" y="203.0" />
+              <point x="-51.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.actions.MigrateActivity" target="model.interfaces.actions.ConsolidationAction" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="0.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.applications.Application" target="model.interfaces.resources.BusinessContextResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="119.0" y="127.0" />
+              <point x="146.25" y="127.0" />
+              <point x="-48.25" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.actions.DeployActivity" target="model.interfaces.actions.ContextAction" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="865.625" y="345.0" />
+              <point x="593.375" y="345.0" />
+              <point x="47.625" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.actions.ConsolidationAction" target="model.interfaces.actions.ITComputingResourcesAdaptationAction" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="490.75" y="426.0" />
+              <point x="483.75" y="426.0" />
+              <point x="69.25" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.policies.ITComputingContextPolicy" target="model.interfaces.policies.GPI_KPI_Policy" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="464.25" y="725.0" />
+              <point x="314.25" y="725.0" />
+              <point x="44.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.policies.EnvironmentPolicy" target="model.interfaces.policies.GPI_KPI_Policy" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="0.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.ServiceCenterITFacilityResource" target="model.interfaces.resources.ContextResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="774.3293650793652" y="51.0" />
+              <point x="772.75" y="51.0" />
+              <point x="0.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.ComplexHeterogeneousResources" target="model.interfaces.resources.ServiceCenterITComputingResource" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="1117.875" y="127.0" />
+              <point x="1221.7460317460318" y="127.0" />
+              <point x="-63.0" y="13.0" />
+            </edge>
+            <edge source="model.interfaces.resources.ServiceCenterServer" target="model.interfaces.resources.ComplexHeterogeneousResources" relationship="INTERFACE_GENERALIZATION">
+              <point x="0.0" y="-13.0" />
+              <point x="1203.375" y="203.0" />
+              <point x="1178.125" y="203.0" />
+              <point x="60.25" y="13.0" />
+            </edge>
+          </edges>
+          <settings isCamel="false" isColorManagerEnabled="true" isFieldsVisible="false" isConstructorsVisible="false" isMethodsVisible="false" isShowDependencies="false" isShowInnerClasses="false" isVcsFilterEnabled="false" defaultVisibility="all" layout="Hierarchic Group" isPropertiesVisible="false" zoom="0.7000000000000001" x="317.85714285714283" y="243.85714285714283" />
+          <SelectedNodes />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/GoalImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="17" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
+        <state line="11" column="50" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/SimpleResource.java">
+    <entry file="file://$PROJECT_DIR$/src/model/interfaces/actions/DeployActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/ContextResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="17" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/BusinessContextResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="40" selection-start="220" selection-end="243" vertical-scroll-proportion="0.0">
+        <state line="14" column="59" selection-start="421" selection-end="421" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -878,44 +1135,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/policies/GPI_KPI_PolicyImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/actions/DeployActivityImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="33" selection-start="438" selection-end="438" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1278695454689" expanded="true" signature="123:288" placeholder="/**...*/" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/BusinessContextResourceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="40" selection-start="283" selection-end="310" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationActivityImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="29" selection-start="1061" selection-end="1061" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/impl/databaseImpl/resources/applications/ApplicationImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="1" selection-start="447" selection-end="447" vertical-scroll-proportion="0.34836066">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/interfaces/resources/applications/Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="58" selection-start="108" selection-end="108" vertical-scroll-proportion="0.04644809">
+        <state line="16" column="63" selection-start="507" selection-end="507" vertical-scroll-proportion="0.2982456">
           <folding />
         </state>
       </provider>
