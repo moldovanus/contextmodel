@@ -14,7 +14,7 @@ import java.util.List;
  * Time: 9:19:46 AM
  * To change this template use File | Settings | File Templates.
  */
-public class DeployActivityImpl extends ContextActionImpl implements DeployActivity {
+public class DeployActivityImpl extends ConsolidationActionImpl implements DeployActivity {
     private List<ApplicationActivity> activities;
     private ServiceCenterITFacilityResource resourceTo;
 
