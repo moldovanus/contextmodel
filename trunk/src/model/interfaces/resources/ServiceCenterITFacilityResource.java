@@ -1,7 +1,5 @@
 package model.interfaces.resources;
 
-import model.interfaces.ContextResource;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator

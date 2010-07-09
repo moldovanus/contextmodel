@@ -1,7 +1,7 @@
 package model.interfaces.policies;
 
-import model.interfaces.ContextResource;
 import model.interfaces.Event;
+import model.interfaces.resources.ContextResource;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 public interface ContextPolicy {
     String getPolicyName();
 
-    void setPolicyName();
+    void setPolicyName(String policyName);
 
     List<ContextResource> getPolicySubject();
 
@@ -23,7 +23,7 @@ public interface ContextPolicy {
 
     List<ContextResource> getPolicyTarget();
 
-    void getPolicyTarget(List<ContextResource> policyTarget);
+    void setPolicyTarget(List<ContextResource> policyTarget);
 
     Event getTriggerEvent();
 

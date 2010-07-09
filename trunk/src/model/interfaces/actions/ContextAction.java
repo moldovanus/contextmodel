@@ -1,6 +1,6 @@
 package model.interfaces.actions;
 
-import model.interfaces.ContextResource;
+import model.interfaces.resources.ContextResource;
 
 import java.util.List;
 

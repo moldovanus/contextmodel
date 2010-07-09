@@ -1,4 +1,4 @@
-package model.interfaces;
+package model.interfaces.resources;
 
 /**
  * Created by IntelliJ IDEA.

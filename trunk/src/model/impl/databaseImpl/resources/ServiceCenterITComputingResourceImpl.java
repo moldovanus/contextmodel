@@ -1,8 +1,7 @@
 package model.impl.databaseImpl.resources;
 
-import model.impl.databaseImpl.ContextResourceImpl;
-import model.interfaces.applications.ApplicationActivity;
 import model.interfaces.resources.ServiceCenterITComputingResource;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.ArrayList;
 import java.util.List;

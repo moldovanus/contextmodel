@@ -1,7 +1,6 @@
 package model.interfaces.resources;
 
-import model.interfaces.ContextResource;
-import model.interfaces.applications.ApplicationActivity;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package model.impl.databaseImpl;
+package model.impl.databaseImpl.resources;
 
-import model.interfaces.ContextResource;
+import model.interfaces.resources.ContextResource;
 
 /**
  * Created by IntelliJ IDEA.

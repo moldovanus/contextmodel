@@ -1,7 +1,7 @@
 package model.interfaces.actions;
 
-import model.interfaces.applications.ApplicationActivity;
 import model.interfaces.resources.ServiceCenterITFacilityResource;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 public interface ApplicationAdaptationAction extends ContextAction {
     List<ApplicationActivity> getActivities();
 
-    void setActivities(ApplicationActivity activity);
+    void setActivities(List<ApplicationActivity> activity);
 
     ServiceCenterITFacilityResource getResourceFrom();
 

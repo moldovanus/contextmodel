@@ -1,6 +1,6 @@
 package model.interfaces.actions;
 
-import model.interfaces.applications.ApplicationActivity;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,5 +12,5 @@ import model.interfaces.applications.ApplicationActivity;
 public interface MigrateActivity extends ConsolidationAction {
     ApplicationActivity getApplicationActivity();
 
-    void setApplicationActivity(ApplicationActivity aplicationActivity);
+    void setApplicationActivity(ApplicationActivity applicationActivity);
 }

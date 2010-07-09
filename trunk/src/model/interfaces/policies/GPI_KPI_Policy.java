@@ -12,7 +12,7 @@ import model.interfaces.Goal;
 public interface GPI_KPI_Policy extends ContextPolicy {
     Goal getPolicyGoal();
 
-    void setPolicyGoal();
+    void setPolicyGoal(Goal goal);
 
     //ContextAction getPolicyAction();
     //void setPolicyAction(ContextAction contextAction);
