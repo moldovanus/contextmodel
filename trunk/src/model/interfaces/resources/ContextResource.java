@@ -1,5 +1,7 @@
 package model.interfaces.resources;
 
+import model.interfaces.ContextElement;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -7,7 +9,7 @@ package model.interfaces.resources;
  * Time: 10:17:03 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ContextResource {
+public interface ContextResource extends ContextElement {
     String getResourceID();
 
     void setResourceID(String resourceID);

@@ -1,5 +1,6 @@
 package model.interfaces.policies;
 
+import model.interfaces.ContextElement;
 import model.interfaces.Event;
 import model.interfaces.resources.ContextResource;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * Time: 11:16:03 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ContextPolicy {
+public interface ContextPolicy extends ContextElement {
     String getPolicyName();
 
     void setPolicyName(String policyName);

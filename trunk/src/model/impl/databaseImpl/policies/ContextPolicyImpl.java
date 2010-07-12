@@ -1,5 +1,6 @@
 package model.impl.databaseImpl.policies;
 
+import model.impl.databaseImpl.ContextElementImpl;
 import model.interfaces.Event;
 import model.interfaces.policies.ContextPolicy;
 import model.interfaces.resources.ContextResource;
@@ -13,7 +14,7 @@ import java.util.List;
  * Time: 9:32:57 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ContextPolicyImpl implements ContextPolicy {
+public class ContextPolicyImpl extends ContextElementImpl implements ContextPolicy {
     private String policyName;
     private String evaluationCondition;
 
