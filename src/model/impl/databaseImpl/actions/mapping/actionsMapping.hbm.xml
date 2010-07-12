@@ -1,17 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="model.impl.databaseImpl.actions">
 
-    <class name="model.impl.databaseImpl.resources.ContextResourceImpl" table="ContextResource">
-        <id name="id" column="UID">
-            <generator class="increment"/>
-        </id>
-    </class>
-
+    <!--ContextActionImpl-->
     <class name="model.impl.databaseImpl.actions.ContextActionImpl" table="ContextAction">
         <id name="id" column="UID">
             <generator class="increment"/>
         </id>
-        <many-to-one name="resources" column="resourceID" not-null="true"/>
+        <list name="resources">
+            <key column="resources"/>
+            <list-index column="resources"/>
+            <one-to-many class="model.impl.databaseImpl.resources.ContextResourceImpl"/>
+        </list>
     </class>
+
+    <!--ApplicationAdaptationActionImpl-->
+    <joined-subclass name="ApplicationAdaptationActionImpl" extends="ContextActionImpl"
+                     table="ApplicationAdaptationAction">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--ITComputingResourcesAdaptationActionImpl-->
+    <joined-subclass name="ITComputingResourcesAdaptationActionImpl" extends="ContextActionImpl"
+                     table="ITComputingResourcesAdaptationAction">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--ApplicationRedesignImpl-->
+    <joined-subclass name="ApplicationRedesignImpl" extends="ApplicationAdaptationActionImpl"
+                     table="ApplicationRedesign">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--ConsolidationActionImpl-->
+    <joined-subclass name="ConsolidationActionImpl" extends="ITComputingResourcesAdaptationActionImpl"
+                     table="ConsolidationAction">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--DeployActivityImpl-->
+    <joined-subclass name="DeployActivityImpl" extends="ConsolidationActionImpl"
+                     table="DeployActivityImpl">
+        <key column="UID"/>
+        <many-to-one name="activity" column="activity"
+                     class="model.impl.databaseImpl.resources.applications.ApplicationActivityImpl"
+                     not-null="true" update="true" cascade="create"/>
+        <many-to-one name="resourceTo" column="resourceTo"
+                     class="model.impl.databaseImpl.resources.ServiceCenterITFacilityResourceImpl"
+                     not-null="true" update="true" cascade="create"/>
+
+    </joined-subclass>
+
+    <!--DPMActionImpl-->
+    <joined-subclass name="DPMActionImpl" extends="ITComputingResourcesAdaptationActionImpl"
+                     table="DPMAction">
+        <key column="UID"/>
+        <property name="stateAfterAction" column="stateAfterAction" type="int"/>
+        <property name="stateBeforeAction" column="stateBeforeAction" type="int"/>
+        <property name="noStatesJump" column="noStatesJump" type="int"/>
+        <property name="toLowOrHighState" column="toLowOrHighState" type="boolean"/>
+        <many-to-one name="resourceOn" column="resourceOn"
+                     class="model.impl.databaseImpl.resources.ServiceCenterITFacilityResourceImpl"
+                     not-null="true" update="true" cascade="create"/>
+
+    </joined-subclass>
+
+    <!--ITFacilityResourcesAdaptationActionImpl-->
+    <joined-subclass name="ITFacilityResourcesAdaptationActionImpl" extends="ContextActionImpl"
+                     table="ITFacilityResourcesAdaptationAction">
+        <key column="UID"/>
+        <many-to-one name="action" class="ContextActionImpl" column="action"
+                     not-null="true" update="true" cascade="create"/>
+    </joined-subclass>
+
+    <!--MigrateActivityImpl-->
+    <joined-subclass name="MigrateActivityImpl" extends="ContextActionImpl"
+                     table="MigrateActivity">
+        <key column="UID"/>
+        <many-to-one name="applicationActivity"
+                     class="model.impl.databaseImpl.resources.applications.ApplicationActivityImpl"
+                     column="applicationActivity" not-null="true" update="true" cascade="create"/>
+    </joined-subclass>
 
 
 </hibernate-mapping>

@@ -20,7 +20,8 @@ public class Main {
         // SessionFactory sessionFactory = config.buildSessionFactory();
 
         SchemaExport export = new SchemaExport(config);
-        export.create(true, true);
+        export.drop(false, true);
+        export.create(false, true);
         List exceptions = export.getExceptions();
         for (Object o : exceptions) {
             System.out.println(o.toString());

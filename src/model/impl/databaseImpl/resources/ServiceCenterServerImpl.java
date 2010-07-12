@@ -9,5 +9,5 @@ import model.interfaces.resources.ServiceCenterServer;
  * Time: 12:30:21 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ServiceCenterServerImpl extends ComplexHeterogeneousResourcesImpl implements ServiceCenterServer {
+public class ServiceCenterServerImpl extends ComplexResourceImpl implements ServiceCenterServer {
 }

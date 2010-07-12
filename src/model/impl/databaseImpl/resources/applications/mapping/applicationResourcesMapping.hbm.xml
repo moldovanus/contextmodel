@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="model.impl.databaseImpl.resources.applications">
+
+    <joined-subclass name="model.impl.databaseImpl.resources.applications.ApplicationImpl"
+                     extends="model.impl.databaseImpl.resources.BusinessContextResourceImpl"
+                     table="Application">
+        <key column="UID"/>
+        <property name="resourceID" column="resourceID" not-null="true"/>
+    </joined-subclass>
+
+    <joined-subclass name="model.impl.databaseImpl.resources.applications.ApplicationActivityImpl"
+                     extends="model.impl.databaseImpl.resources.BusinessContextResourceImpl"
+                     table="ApplicationActivity">
+        <key column="UID"/>
+        <property name="CPURequiredValue" column="CPURequiredValue" type="java.lang.Double"/>
+        <property name="CPUAllocatedValue" column="CPUAllocatedValue" type="java.lang.Double"/>
+        <property name="HDDRequiredValue" column="HDDRequiredValue" type="java.lang.Double"/>
+        <property name="HDDAllocatedValue" column="HDDAllocatedValue" type="java.lang.Double"/>
+        <property name="MEMAllocatedValue" column="MEMAllocatedValue" type="java.lang.Double"/>
+        <property name="MEMRequiredValue" column="MEMRequiredValue" type="java.lang.Double"/>
+        <property name="performanceEstimation" column="performanceEstimation" type="java.lang.Double"/>
+        <property name="performanceDegradation" column="performanceDegradation" type="java.lang.Double"/>
+    </joined-subclass>
+
+    <joined-subclass name="model.impl.databaseImpl.resources.applications.CPUIntensiveActivityImpl"
+                     extends="model.impl.databaseImpl.resources.BusinessContextResourceImpl"
+                     table="CPUIntensiveActivity">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <joined-subclass name="model.impl.databaseImpl.resources.applications.HDDIntensiveActivityImpl"
+                     extends="model.impl.databaseImpl.resources.BusinessContextResourceImpl"
+                     table="HDDIntensiveActivity">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <joined-subclass name="model.impl.databaseImpl.resources.applications.MEMIntensiveActivityImpl"
+                     extends="model.impl.databaseImpl.resources.BusinessContextResourceImpl"
+                     table="MEMIntensiveActivity">
+        <key column="UID"/>
+    </joined-subclass>
+
+
+</hibernate-mapping>
