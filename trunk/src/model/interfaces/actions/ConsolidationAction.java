@@ -7,5 +7,5 @@ package model.interfaces.actions;
  * Time: 10:39:36 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ConsolidationAction extends ITComputingResourcesAdaptationAction {
+public interface ConsolidationAction extends ITComputingResourceAdaptationAction {
 }

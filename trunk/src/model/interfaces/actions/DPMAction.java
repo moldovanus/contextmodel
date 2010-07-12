@@ -1,7 +1,6 @@
 package model.interfaces.actions;
 
 import model.interfaces.resources.ServiceCenterITComputingResource;
-import model.interfaces.resources.ServiceCenterITFacilityResource;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +9,7 @@ import model.interfaces.resources.ServiceCenterITFacilityResource;
  * Time: 10:44:41 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface DPMAction extends ITComputingResourcesAdaptationAction {
+public interface DPMAction extends ITComputingResourceAdaptationAction {
 
     ServiceCenterITComputingResource getResourceOn();
 
