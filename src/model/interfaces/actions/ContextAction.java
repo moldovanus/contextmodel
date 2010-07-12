@@ -1,5 +1,6 @@
 package model.interfaces.actions;
 
+import model.interfaces.ContextElement;
 import model.interfaces.resources.ContextResource;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * Time: 10:31:14 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ContextAction {
+public interface ContextAction extends ContextElement {
     List<ContextResource> getResources();
 
     void setResources(List<ContextResource> resources);

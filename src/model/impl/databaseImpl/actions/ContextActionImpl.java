@@ -1,5 +1,6 @@
 package model.impl.databaseImpl.actions;
 
+import model.impl.databaseImpl.ContextElementImpl;
 import model.interfaces.actions.ContextAction;
 import model.interfaces.resources.ContextResource;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * Time: 9:13:29 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ContextActionImpl implements ContextAction {
+public class ContextActionImpl extends ContextElementImpl implements ContextAction {
     private List<ContextResource> resources;
 
     public ContextActionImpl() {

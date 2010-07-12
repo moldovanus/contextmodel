@@ -9,5 +9,5 @@ import model.interfaces.Goal;
  * Time: 9:40:31 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GoalImpl implements Goal {
+public class GoalImpl extends ContextElementImpl implements Goal {
 }

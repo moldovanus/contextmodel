@@ -9,5 +9,5 @@ import model.interfaces.Event;
  * Time: 9:40:14 AM
  * To change this template use File | Settings | File Templates.
  */
-public class EventImpl implements Event {
+public class EventImpl extends ContextElementImpl implements Event {
 }
