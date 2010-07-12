@@ -7,5 +7,5 @@ package model.interfaces.resources;
  * Time: 11:06:11 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ExternalStorage extends ComplexHeterogeneousResources {
+public interface ExternalStorage extends ComplexResource {
 }

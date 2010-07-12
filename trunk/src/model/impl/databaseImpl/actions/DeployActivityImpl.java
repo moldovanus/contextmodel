@@ -1,6 +1,7 @@
 package model.impl.databaseImpl.actions;
 
 import model.interfaces.actions.DeployActivity;
+import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.ServiceCenterITFacilityResource;
 import model.interfaces.resources.applications.ApplicationActivity;
 
@@ -33,11 +34,11 @@ public class DeployActivityImpl extends ConsolidationActionImpl implements Deplo
         this.activity = activity;
     }
 
-    public ServiceCenterITFacilityResource getResourceTo() {
-        return resourceTo;
+    public ServiceCenterITComputingResource getResourceTo() {
+        return (ServiceCenterITComputingResource)resourceTo;
     }
 
-    public void setResourceTo(ServiceCenterITFacilityResource resourceTo) {
-        this.resourceTo = resourceTo;
+    public void setResourceTo(ServiceCenterITComputingResource resourceTo) {
+        this.resourceTo = (ServiceCenterITFacilityResource)resourceTo;
     }
 }

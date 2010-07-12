@@ -7,5 +7,5 @@ package model.interfaces.resources;
  * Time: 11:06:27 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ServiceCenterServer extends ComplexHeterogeneousResources {
+public interface ServiceCenterServer extends ComplexResource {
 }

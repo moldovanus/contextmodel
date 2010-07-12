@@ -1,5 +1,6 @@
 package model.interfaces.actions;
 
+import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.ServiceCenterITFacilityResource;
 
 /**
@@ -11,9 +12,9 @@ import model.interfaces.resources.ServiceCenterITFacilityResource;
  */
 public interface DPMAction extends ITComputingResourcesAdaptationAction {
 
-    ServiceCenterITFacilityResource getResourceOn();
+    ServiceCenterITComputingResource getResourceOn();
 
-    void setResourceOn(ServiceCenterITFacilityResource resource);
+    void setResourceOn(ServiceCenterITComputingResource resource);
 
     int getStateBeforeAction();
 
