@@ -9,5 +9,5 @@ import model.interfaces.resources.ExternalStorage;
  * Time: 12:36:41 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ExternalStorageImpl extends ComplexHeterogeneousResourcesImpl implements ExternalStorage {
+public class ExternalStorageImpl extends ComplexResourceImpl implements ExternalStorage {
 }

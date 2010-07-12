@@ -1,5 +1,8 @@
 package model.impl.databaseImpl;
 
+import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
+import model.interfaces.ContextElement;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -7,7 +10,7 @@ package model.impl.databaseImpl;
  * Time: 10:56:26 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ContextElementImpl {
+public class ContextElementImpl extends DefaultOWLIndividual implements ContextElement {
     protected String id;
 
     public String getId() {

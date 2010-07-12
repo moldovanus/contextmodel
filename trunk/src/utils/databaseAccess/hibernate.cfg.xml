@@ -9,7 +9,7 @@
         <property name="connection.username">root</property>
         <property name="connection.password">123456</property>
         <!-- DB schema will be updated if needed -->
-        <!-- <property name="hbm2ddl.auto">update</property> -->
+        <property name="hbm2ddl.auto">update</property>
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 
@@ -17,7 +17,11 @@
         <property name="show_sql">true</property>
 
         <!-- Mapping files -->
-        <!--<mapping resource="Author.hbm.xml"/>-->
+
+        <mapping resource="model/impl/databaseImpl/resources/mapping/resourcesMapping.hbm.xml"/>
+        <mapping resource="model/impl/databaseImpl/resources/applications/mapping/applicationResourcesMapping.hbm.xml"/>
+        <mapping resource="model/impl/databaseImpl/actions/mapping/actionsMapping.hbm.xml"/>
+        <mapping resource="model/impl/databaseImpl/policies/mapping/policies.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>
