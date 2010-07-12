@@ -9,7 +9,7 @@ import java.util.List;
  * Time: 10:55:34 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ComplexHeterogeneousResources extends ServiceCenterITComputingResource {
+public interface ComplexResource extends ServiceCenterITComputingResource {
 
     List<String> getResourceWorkloadProperty();
 
