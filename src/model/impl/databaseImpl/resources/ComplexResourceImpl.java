@@ -13,11 +13,11 @@ import java.util.List;
  * Time: 12:21:51 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ComplexHeterogeneousResourcesImpl extends ServiceCenterITComputingResourceImpl implements ComplexResource {
+public class ComplexResourceImpl extends ServiceCenterITComputingResourceImpl implements ComplexResource {
     List<String> resourceWorkloadProperty;
     List<ServiceCenterITComputingResource> resources;
 
-    public ComplexHeterogeneousResourcesImpl() {
+    public ComplexResourceImpl() {
         resourceWorkloadProperty = new ArrayList<String>();
         resources = new ArrayList<ServiceCenterITComputingResource>();
     }
