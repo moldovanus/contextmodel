@@ -1,5 +1,6 @@
 package model.interfaces.actions;
 
+import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.ServiceCenterITFacilityResource;
 import model.interfaces.resources.applications.ApplicationActivity;
 
@@ -15,7 +16,7 @@ public interface DeployActivity extends ConsolidationAction {
 
     void setActivity(ApplicationActivity activity);
 
-    ServiceCenterITFacilityResource getResourceTo();
+    ServiceCenterITComputingResource getResourceTo();
 
-    void setResourceTo(ServiceCenterITFacilityResource resource);
+    void setResourceTo(ServiceCenterITComputingResource resource);
 }

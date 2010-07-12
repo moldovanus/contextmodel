@@ -1,6 +1,6 @@
 package model.interfaces.resources;
 
-import model.interfaces.actions.ITFacilityResourcesAdaptationAction;
+import model.interfaces.actions.ITFacilityResourceAdaptationAction;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
  */
 public interface ITFacilityActiveResource extends ServiceCenterITFacilityResource {
 
-    List<ITFacilityResourcesAdaptationAction> getActions();
+    List<ITFacilityResourceAdaptationAction> getActions();
 
-    void setActions(List<ITFacilityResourcesAdaptationAction> actions);
+    void setActions(List<ITFacilityResourceAdaptationAction> actions);
 
 }

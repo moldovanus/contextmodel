@@ -1,6 +1,6 @@
 package model.impl.databaseImpl.resources;
 
-import model.interfaces.actions.ITFacilityResourcesAdaptationAction;
+import model.interfaces.actions.ITFacilityResourceAdaptationAction;
 import model.interfaces.resources.ITFacilityActiveResource;
 
 import java.util.ArrayList;
@@ -14,17 +14,17 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ITFacilityActiveResourceImpl extends ServiceCenterITFacilityResourceImpl implements ITFacilityActiveResource {
-    private List<ITFacilityResourcesAdaptationAction> actions;
+    private List<ITFacilityResourceAdaptationAction> actions;
 
     public ITFacilityActiveResourceImpl() {
-        actions = new ArrayList<ITFacilityResourcesAdaptationAction>();
+        actions = new ArrayList<ITFacilityResourceAdaptationAction>();
     }
 
-    public List<ITFacilityResourcesAdaptationAction> getActions() {
+    public List<ITFacilityResourceAdaptationAction> getActions() {
         return actions;
     }
 
-    public void setActions(List<ITFacilityResourcesAdaptationAction> actions) {
+    public void setActions(List<ITFacilityResourceAdaptationAction> actions) {
         this.actions = actions;
     }
 }

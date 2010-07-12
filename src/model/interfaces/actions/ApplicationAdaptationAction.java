@@ -13,15 +13,5 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface ApplicationAdaptationAction extends ContextAction {
-    List<ApplicationActivity> getActivities();
-
-    void setActivities(List<ApplicationActivity> activity);
-
-    ServiceCenterITFacilityResource getResourceFrom();
-
-    void setResourceFrom(ServiceCenterITFacilityResource resource);
-
-    ServiceCenterITFacilityResource getResourceTo();
-
-    void setResourceTo(ServiceCenterITFacilityResource resource);
+    
 }

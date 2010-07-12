@@ -1,6 +1,6 @@
 package model.impl.databaseImpl.resources;
 
-import model.interfaces.resources.ComplexHeterogeneousResources;
+import model.interfaces.resources.ComplexResource;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 12:21:51 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ComplexHeterogeneousResourcesImpl extends ServiceCenterITComputingResourceImpl implements ComplexHeterogeneousResources {
+public class ComplexHeterogeneousResourcesImpl extends ServiceCenterITComputingResourceImpl implements ComplexResource {
     List<String> resourceWorkloadProperty;
     List<ServiceCenterITComputingResource> resources;
 
