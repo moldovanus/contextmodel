@@ -4,9 +4,6 @@ import model.interfaces.actions.DeployActivity;
 import model.interfaces.resources.ServiceCenterITFacilityResource;
 import model.interfaces.resources.applications.ApplicationActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -15,25 +12,25 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DeployActivityImpl extends ConsolidationActionImpl implements DeployActivity {
-    private List<ApplicationActivity> activities;
+    private ApplicationActivity activity;
     private ServiceCenterITFacilityResource resourceTo;
 
     public DeployActivityImpl() {
-        activities = new ArrayList<ApplicationActivity>();
+
     }
 
-    public DeployActivityImpl(ServiceCenterITFacilityResource resourceTo) {
+    public DeployActivityImpl(ApplicationActivity activity, ServiceCenterITFacilityResource resourceTo) {
+        this.activity = activity;
         this.resourceTo = resourceTo;
-        activities = new ArrayList<ApplicationActivity>();
+
     }
 
-
-    public List<ApplicationActivity> getActivities() {
-        return activities;
+    public ApplicationActivity getActivity() {
+        return activity;
     }
 
-    public void setActivities(List<ApplicationActivity> activities) {
-        this.activities = activities;
+    public void setActivity(ApplicationActivity activity) {
+        this.activity = activity;
     }
 
     public ServiceCenterITFacilityResource getResourceTo() {
