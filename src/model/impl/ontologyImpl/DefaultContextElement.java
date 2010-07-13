@@ -22,4 +22,8 @@ public class DefaultContextElement extends AbstractCodeGeneratorIndividual
 
     public DefaultContextElement() {
     }
+
+    public void setName(String s) {
+
+    }
 }

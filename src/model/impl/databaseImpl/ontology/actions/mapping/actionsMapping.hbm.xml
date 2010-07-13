@@ -46,10 +46,10 @@
         <key column="UID"/>
         <many-to-one name="activity" column="activity"
                      class="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
-                     not-null="true" update="true"/>
+                     update="true"/>
         <many-to-one name="resourceTo" column="resourceTo"
                      class="model.impl.databaseImpl.ontology.resources.ServiceCenterITFacilityResourceImpl"
-                     not-null="true" update="true"/>
+                     update="true"/>
 
     </joined-subclass>
 
@@ -63,7 +63,7 @@
         <property name="toLowOrHighState" column="toLowOrHighState" type="boolean"/>
         <many-to-one name="resourceOn" column="resourceOn"
                      class="model.impl.databaseImpl.ontology.resources.ServiceCenterITFacilityResourceImpl"
-                     not-null="true" update="true"/>
+                     update="true"/>
 
     </joined-subclass>
 
@@ -72,7 +72,7 @@
                      table="ITFacilityResourcesAdaptationAction">
         <key column="UID"/>
         <many-to-one name="action" class="ContextActionImpl" column="action"
-                     not-null="true" update="true" cascade="save-update"/>
+                     update="true" cascade="save-update"/>
     </joined-subclass>
 
     <!--MigrateActivityImpl-->
@@ -81,7 +81,7 @@
         <key column="UID"/>
         <many-to-one name="applicationActivity"
                      class="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
-                     column="applicationActivity" not-null="true" update="true" cascade="save-update"/>
+                     column="applicationActivity" update="true" cascade="save-update"/>
     </joined-subclass>
 
 

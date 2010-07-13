@@ -8,7 +8,7 @@
                      extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
                      table="Application">
         <key column="UID"/>
-        <property name="resourceID" type="string" column="resourceID" not-null="true"/>
+        <property name="resourceID" type="string" column="resourceID"/>
     </joined-subclass>
 
     <joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
