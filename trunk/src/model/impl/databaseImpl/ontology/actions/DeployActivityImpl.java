@@ -1,4 +1,4 @@
-package model.impl.databaseImpl.actions;
+package model.impl.databaseImpl.ontology.actions;
 
 import model.interfaces.actions.DeployActivity;
 import model.interfaces.resources.ServiceCenterITComputingResource;
@@ -35,10 +35,10 @@ public class DeployActivityImpl extends ConsolidationActionImpl implements Deplo
     }
 
     public ServiceCenterITComputingResource getResourceTo() {
-        return (ServiceCenterITComputingResource)resourceTo;
+        return (ServiceCenterITComputingResource) resourceTo;
     }
 
     public void setResourceTo(ServiceCenterITComputingResource resourceTo) {
-        this.resourceTo = (ServiceCenterITFacilityResource)resourceTo;
+        this.resourceTo = (ServiceCenterITFacilityResource) resourceTo;
     }
 }
