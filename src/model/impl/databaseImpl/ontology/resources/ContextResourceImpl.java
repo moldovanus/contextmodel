@@ -10,7 +10,7 @@ import model.interfaces.resources.ContextResource;
  * Time: 12:08:02 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ContextResourceImpl extends ContextElementImpl implements ContextResource {
+public abstract class ContextResourceImpl extends ContextElementImpl implements ContextResource {
     private String resourceID;
 
     public String getResourceID() {
