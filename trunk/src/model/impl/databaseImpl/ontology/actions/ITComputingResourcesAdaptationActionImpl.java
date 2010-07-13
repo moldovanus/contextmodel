@@ -1,4 +1,4 @@
-package model.impl.databaseImpl.actions;
+package model.impl.databaseImpl.ontology.actions;
 
 /**
  * Created by IntelliJ IDEA.
