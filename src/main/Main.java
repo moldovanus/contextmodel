@@ -1,5 +1,18 @@
 package main;
 
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import edu.stanford.smi.protege.exception.OntologyLoadException;
+import edu.stanford.smi.protegex.owl.ProtegeOWL;
+import edu.stanford.smi.protegex.owl.jena.JenaOWLModel;
+import model.impl.ontologyImpl.ContextModelFactory;
+import model.interfaces.resources.Actuator;
+import org.mindswap.pellet.jena.PelletReasonerFactory;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -9,6 +22,46 @@ package main;
  */
 public class Main {
     public static void main(String args[]) {
+
+        File ontologyDataCenterFile = new File("ontology/context.owl");
+        JenaOWLModel owlModel = null;
+        try {
+            owlModel = ProtegeOWL.createJenaOWLModelFromURI(ontologyDataCenterFile.toURI().toString());
+            ContextModelFactory protegeFactory = new ContextModelFactory(owlModel);
+            Collection<Actuator> actuators = protegeFactory.getAllActuatorInstances();
+            Iterator<Actuator> currentActuator = actuators.iterator();
+            boolean over = false;
+            Actuator ac = null;
+            while (!over) {
+                if (currentActuator.hasNext()) {
+                    ac = currentActuator.next();
+                    System.out.println("Actuator " + ac.getResourceID());
+                } else over = true;
+
+            }
+
+        } catch (OntologyLoadException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        OntModel policyConversionModel = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+
+        policyConversionModel.add(owlModel.getJenaModel());
+        /*
+        Configuration config =
+                new Configuration();
+        config.configure("/utils/databaseAccess/hibernate.cfg.xml");
+        // SessionFactory sessionFactory = config.buildSessionFactory();
+
+        SchemaExport export = new SchemaExport(config);
+        export.drop(false, true);
+        export.create(false, true);
+        List exceptions = export.getExceptions();
+        for (Object o : exceptions) {
+            System.out.println(o.toString());
+        }
+                        */
+
+
 //        HibernateUtil.recreateDatabase();
 //
 ////         private String policyName;
@@ -51,6 +104,7 @@ public class Main {
 //        session.flush();
 //        transaction.commit();
 //
+
 
     }
 }
