@@ -18,10 +18,11 @@
 
         <!-- Mapping files -->
 
-        <mapping resource="model/impl/databaseImpl/resources/mapping/resourcesMapping.hbm.xml"/>
-        <mapping resource="model/impl/databaseImpl/resources/applications/mapping/applicationResourcesMapping.hbm.xml"/>
-        <mapping resource="model/impl/databaseImpl/actions/mapping/actionsMapping.hbm.xml"/>
-        <mapping resource="model/impl/databaseImpl/policies/mapping/policies.hbm.xml"/>
+        <mapping resource="model/impl/databaseImpl/ontology/resources/mapping/resourcesMapping.hbm.xml"/>
+        <mapping
+                resource="model/impl/databaseImpl/ontology/resources/applications/mapping/applicationResourcesMapping.hbm.xml"/>
+        <mapping resource="model/impl/databaseImpl/ontology/actions/mapping/actionsMapping.hbm.xml"/>
+        <mapping resource="model/impl/databaseImpl/ontology/policies/mapping/policies.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

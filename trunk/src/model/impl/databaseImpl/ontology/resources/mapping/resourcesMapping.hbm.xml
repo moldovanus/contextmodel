@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="model.impl.databaseImpl.ontology.resources">
+
+    <!--ContextElement-->
+    <class name="model.impl.databaseImpl.ontology.ContextElementImpl" table="ContextElement">
+        <id name="id" column="UID">
+            <generator class="org.hibernate.id.GUIDGenerator"/>
+        </id>
+    </class>
+
+    <!--ContextResourceImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
+                     extends="model.impl.databaseImpl.ontology.ContextElementImpl"
+                     table="ContextResource">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--ServiceCenterITComputingResourceImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.ServiceCenterITComputingResourceImpl"
+                     extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
+                     table="ServiceCenterITComputingResource">
+        <key column="UID"/>
+        <set name="energyStates" cascade="save-update">
+            <key column="state"/>
+            <element column="stateValue" type="java.lang.Integer"/>
+        </set>
+        <list name="runningActivities" cascade="save-update">
+            <key column="runningActivities"/>
+            <list-index column="runningActivitiesIndex"/>
+            <one-to-many class="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"/>
+        </list>
+        <property name="currentEnergyState" column="currentEnergyState" type="java.lang.Integer"/>
+        <property name="optimalWorkLoad" column="optimalWorkLoad" type="java.lang.Double"/>
+        <property name="maximumWorkLoad" column="maximumWorkLoad" type="java.lang.Double"/>
+        <property name="currentWorkLoad" column="currentWorkLoad" type="java.lang.Double"/>
+    </joined-subclass>
+
+    <!--ComplexResourceImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.ComplexResourceImpl"
+                     extends="ServiceCenterITComputingResourceImpl"
+                     table="ComplexResource">
+        <key column="UID"/>
+        <set name="resourceWorkloadProperty" cascade="save-update">
+            <key column="resourceWorkloadProperty"/>
+            <element column="resourceWorkloadPropertyValue" type="java.lang.String"/>
+        </set>
+        <list name="resources" cascade="save-update">
+            <key column="resources"/>
+            <list-index column="resourcesIndex"/>
+            <one-to-many class="ServiceCenterITComputingResourceImpl"/>
+        </list>
+    </joined-subclass>
+
+    <!--SimpleResourceImpl-->
+    <joined-subclass name="SimpleResourceImpl" extends="ServiceCenterITComputingResourceImpl"
+                     table="SimpleResource">
+        <key column="UID"/>
+        <property name="resourceWorkLoadProperty" column="resourceWorkLoadProperty" type="string"/>
+    </joined-subclass>
+
+    <!--EventImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.EventImpl"
+                     extends="model.impl.databaseImpl.ontology.ContextElementImpl"
+                     table="Event">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--GoalImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.GoalImpl"
+                     extends="model.impl.databaseImpl.ontology.ContextElementImpl"
+                     table="Goal">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--BusinessContextResourceImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
+                     extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
+                     table="BusinessContextResource">
+        <key column="UID"/>
+        <property name="resourceID" column="resourceID" type="string" not-null="true"/>
+    </joined-subclass>
+
+    <!--CPUImpl-->
+    <joined-subclass name="CPUImpl"
+                     extends="SimpleResourceImpl"
+                     table="CPU">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--ExternalStorageImpl-->
+    <joined-subclass name="ExternalStorageImpl"
+                     extends="ContextResourceImpl"
+                     table="ExternalStorage">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--HDDImpl-->
+    <joined-subclass name="HDDImpl"
+                     extends="SimpleResourceImpl"
+                     table="HDD">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--ServiceCenterITFacilityResourceImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.ServiceCenterITFacilityResourceImpl"
+                     extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
+                     table="ServiceCenterITFacilityResource">
+        <key column="UID"/>
+        <property name="resourceProperty" column="resourceProperty" type="string" not-null="true"/>
+    </joined-subclass>
+
+    <!--ITFacilityActiveResourceImpl-->
+    <joined-subclass name="ITFacilityActiveResourceImpl"
+                     extends="ServiceCenterITFacilityResourceImpl"
+                     table="ITFacilityActiveResource">
+        <key column="UID"/>
+        <list name="actions" cascade="save-update">
+            <key column="actions"/>
+            <list-index column="actionsIndex"/>
+            <one-to-many class="model.impl.databaseImpl.ontology.actions.ITFacilityResourcesAdaptationActionImpl"/>
+        </list>
+    </joined-subclass>
+
+    <!--FacilityImpl-->
+    <joined-subclass name="FacilityImpl"
+                     extends="ITFacilityActiveResourceImpl"
+                     table="Facility">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--ITFacilityPassiveResourceImpl-->
+    <joined-subclass name="ITFacilityPassiveResourceImpl"
+                     extends="ServiceCenterITFacilityResourceImpl"
+                     table="ITFacilityPassiveResource">
+        <key column="UID"/>
+        <property name="recordedValue" column="recordedValue" type="java.lang.Double"/>
+    </joined-subclass>
+
+    <!--MEMImpl-->
+    <joined-subclass name="MEMImpl"
+                     extends="SimpleResourceImpl"
+                     table="MEM">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--SensorImpl-->
+    <joined-subclass name="SensorImpl"
+                     extends="ITFacilityPassiveResourceImpl"
+                     table="Sensor">
+        <key column="UID"/>
+
+    </joined-subclass>
+
+    <!--ServiceCenterServerImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.ServiceCenterServerImpl"
+                     extends="model.impl.databaseImpl.ontology.ContextElementImpl"
+                     table="ServiceCenterServer">
+        <key column="UID"/>
+    </joined-subclass>
+
+    <!--ActuatorImpl-->
+    <joined-subclass name="ActuatorImpl"
+                     extends="ITFacilityActiveResourceImpl"
+                     table="Actuator">
+        <key column="UID"/>
+    </joined-subclass>
+
+</hibernate-mapping>
