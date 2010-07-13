@@ -1,4 +1,4 @@
-package model.impl.databaseImpl.actions;
+package model.impl.databaseImpl.ontology.actions;
 
 import model.interfaces.actions.DPMAction;
 import model.interfaces.resources.ServiceCenterITComputingResource;
@@ -26,11 +26,11 @@ public class DPMActionImpl extends ITComputingResourcesAdaptationActionImpl impl
     }
 
     public ServiceCenterITComputingResource getResourceOn() {
-        return (ServiceCenterITComputingResource)resourceOn;
+        return (ServiceCenterITComputingResource) resourceOn;
     }
 
     public void setResourceOn(ServiceCenterITComputingResource resourceOn) {
-        this.resourceOn =(ServiceCenterITFacilityResource) resourceOn;
+        this.resourceOn = (ServiceCenterITFacilityResource) resourceOn;
     }
 
     public int getStateBeforeAction() {
