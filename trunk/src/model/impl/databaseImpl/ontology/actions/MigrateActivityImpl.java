@@ -1,4 +1,4 @@
-package model.impl.databaseImpl.actions;
+package model.impl.databaseImpl.ontology.actions;
 
 import model.interfaces.actions.MigrateActivity;
 import model.interfaces.resources.applications.ApplicationActivity;
