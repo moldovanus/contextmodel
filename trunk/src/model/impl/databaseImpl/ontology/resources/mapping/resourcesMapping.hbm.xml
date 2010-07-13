@@ -9,6 +9,7 @@
         <id name="id" column="UID">
             <generator class="org.hibernate.id.GUIDGenerator"/>
         </id>
+        <property name="name" column="name" type="string" unique="true"/>
     </class>
 
     <!--ContextResourceImpl-->
@@ -84,7 +85,7 @@
                      extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
                      table="BusinessContextResource">
         <key column="UID"/>
-        <property name="resourceID" column="resourceID" type="string" not-null="true"/>
+        <property name="resourceID" column="resourceID" type="string"/>
     </joined-subclass>
 
     <!--CPUImpl-->
@@ -113,7 +114,7 @@
                      extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
                      table="ServiceCenterITFacilityResource">
         <key column="UID"/>
-        <property name="resourceProperty" column="resourceProperty" type="string" not-null="true"/>
+        <property name="resourceProperty" column="resourceProperty" type="string"/>
     </joined-subclass>
 
     <!--ITFacilityActiveResourceImpl-->
