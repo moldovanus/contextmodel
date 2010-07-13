@@ -5,7 +5,7 @@
 <hibernate-mapping package="model.impl.databaseImpl.ontology.resources">
 
     <!--ContextElement-->
-    <class name="model.impl.databaseImpl.ontology.ContextElementImpl" table="ContextElement">
+    <class name="model.impl.databaseImpl.ontology.ContextElementImpl" abstract="true" table="ContextElement">
         <id name="id" column="UID">
             <generator class="org.hibernate.id.GUIDGenerator"/>
         </id>
@@ -14,8 +14,10 @@
     <!--ContextResourceImpl-->
     <joined-subclass name="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
                      extends="model.impl.databaseImpl.ontology.ContextElementImpl"
-                     table="ContextResource">
+                     table="ContextResource" abstract="true">
         <key column="UID"/>
+        <property name="resourceID" type="string" column="resourceID" generated="insert"
+                  formula="UID"/>
     </joined-subclass>
 
     <!--ServiceCenterITComputingResourceImpl-->
@@ -23,10 +25,11 @@
                      extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
                      table="ServiceCenterITComputingResource">
         <key column="UID"/>
-        <set name="energyStates" cascade="save-update">
+        <list name="energyStates" cascade="save-update">
             <key column="state"/>
+            <list-index column="stateindex"/>
             <element column="stateValue" type="java.lang.Integer"/>
-        </set>
+        </list>
         <list name="runningActivities" cascade="save-update">
             <key column="runningActivities"/>
             <list-index column="runningActivitiesIndex"/>
@@ -43,10 +46,11 @@
                      extends="ServiceCenterITComputingResourceImpl"
                      table="ComplexResource">
         <key column="UID"/>
-        <set name="resourceWorkloadProperty" cascade="save-update">
+        <list name="resourceWorkloadProperty" cascade="save-update">
             <key column="resourceWorkloadProperty"/>
+            <list-index column="resourceWorkloadPropertyIndex"/>
             <element column="resourceWorkloadPropertyValue" type="java.lang.String"/>
-        </set>
+        </list>
         <list name="resources" cascade="save-update">
             <key column="resources"/>
             <list-index column="resourcesIndex"/>

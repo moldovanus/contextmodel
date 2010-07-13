@@ -28,8 +28,7 @@ public class HibernateUtil {
     }
 
     public static Session getSession() {
-        Session hibernateSession = factory.getCurrentSession();
-        return hibernateSession;
+        return factory.getCurrentSession();
     }
 
     public static void closeSession() {

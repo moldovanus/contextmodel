@@ -10,7 +10,7 @@ import model.interfaces.ContextElement;
  * Time: 10:56:26 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ContextElementImpl extends DefaultOWLIndividual implements ContextElement {
+public abstract class ContextElementImpl extends DefaultOWLIndividual implements ContextElement {
     protected String id;
 
     public String getId() {
@@ -20,4 +20,17 @@ public class ContextElementImpl extends DefaultOWLIndividual implements ContextE
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ContextElementImpl that = (ContextElementImpl) o;
+
+        return id.equals(that.id);
+
+    }
+
 }
