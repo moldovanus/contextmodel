@@ -1,0 +1,17 @@
+<hibernate-mapping package="model.impl.databaseImpl.actions">
+
+    <class name="model.impl.databaseImpl.resources.ContextResourceImpl" table="ContextResource">
+        <id name="id" column="UID">
+            <generator class="increment"/>
+        </id>
+    </class>
+
+    <class name="model.impl.databaseImpl.actions.ContextActionImpl" table="ContextAction">
+        <id name="id" column="UID">
+            <generator class="increment"/>
+        </id>
+        <many-to-one name="resources" column="resourceID" not-null="true"/>
+    </class>
+
+
+</hibernate-mapping>
