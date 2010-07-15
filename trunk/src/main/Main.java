@@ -38,7 +38,7 @@ public class Main {
             while (!over) {
                 if (currentActuator.hasNext()) {
                     ac = currentActuator.next();
-                    System.out.println("Actuator " + ac.getResourceID());
+                    System.out.println("Actuator 1" + ac.getResourceID());
                 } else over = true;
 
             }
@@ -55,7 +55,7 @@ public class Main {
 Configuration config =
 new Configuration();
 config.configure("/utils/databaseAccess/hibernate.cfg.xml");
-// SessionFactory sessionFactory = config.buildSessionFactory();
+//  SessionFactory sessionFactory = config.buildSessionFactory();   //aaaaaaaa
 
 SchemaExport export = new SchemaExport(config);
 export.drop(false, true);
