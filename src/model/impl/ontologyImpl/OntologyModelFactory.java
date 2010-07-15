@@ -22,7 +22,7 @@ import java.util.Iterator;
  *
  * @version generated on Fri Jul 09 18:31:36 GMT 2010
  */
-public class OntologytModelFactory implements ModelFactory {
+public class OntologyModelFactory implements ModelFactory {
     public void persistEntity(ContextElement entity) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -69,11 +69,11 @@ public class OntologytModelFactory implements ModelFactory {
 //        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#EnvironmentPolicy", EnvironmentPolicy.class, DefaultEnvironmentPolicy.class);
 //        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction", ITFacilityResourceAdaptationAction.class, DefaultITFacilityResourceAdaptationAction.class);
 //    }
-//
-//    public OntologytModelFactory(OWLModel owlModel) {
-//        this.owlModel = owlModel;
-//    }
-//
+
+    public OntologyModelFactory(OWLModel owlModel) {
+        this.owlModel = owlModel;
+    }
+
 //    public <X> X create(Class<? extends X> javaInterface, String name) {
 //        return ProtegeJavaMapping.create(owlModel, javaInterface, name);
 //    }
