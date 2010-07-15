@@ -164,6 +164,45 @@ public class DefaultServiceCenterITComputingResource extends DefaultContextResou
     }
 
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceWorkloadProperty
+
+    public List<String> getResourceWorkloadProperty() {
+        return new ArrayList<String>(getPropertyValues(getResourceWorkloadPropertyProperty()));
+    }
+
+
+    public RDFProperty getResourceWorkloadPropertyProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceWorkloadProperty";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasResourceWorkloadProperty() {
+        return getPropertyValueCount(getResourceWorkloadPropertyProperty()) > 0;
+    }
+
+
+    public Iterator listResourceWorkloadProperty() {
+        return listPropertyValues(getResourceWorkloadPropertyProperty());
+    }
+
+
+    public void addResourceWorkloadProperty(String newResourceWorkloadProperty) {
+        addPropertyValue(getResourceWorkloadPropertyProperty(), newResourceWorkloadProperty);
+    }
+
+
+    public void removeResourceWorkloadProperty(String oldResourceWorkloadProperty) {
+        removePropertyValue(getResourceWorkloadPropertyProperty(), oldResourceWorkloadProperty);
+    }
+
+
+    public void setResourceWorkloadProperty(List<String> newResourceWorkloadProperty) {
+        setPropertyValues(getResourceWorkloadPropertyProperty(), newResourceWorkloadProperty);
+    }
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#runningActivities
 
     public List<ApplicationActivity> getRunningActivities() {
