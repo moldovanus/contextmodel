@@ -40,6 +40,17 @@ public class DatabaseModelFactory implements ModelFactory {
         return object;
     }
 
+    private Collection getAllEntityInstances(Class entityType) {
+        Session session = HibernateUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Criteria criteria = session.createCriteria(entityType);
+        Collection object = criteria.list();
+        session.flush();
+        transaction.commit();
+        return object;
+    }
+
+
     public void persistEntity(ContextElement entity) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
@@ -89,7 +100,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ITComputingResourceAdaptationAction> getAllITComputingResourceAdaptationActionInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ITComputingResourceAdaptationAction.class);
     }
 
     public ContextAction createContextAction(String name) {
@@ -108,7 +119,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ContextAction> getAllContextActionInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ContextAction.class);
     }
 
     public HDDIntensiveActivity createHDDIntensiveActivity(String name) {
@@ -127,7 +138,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<HDDIntensiveActivity> getAllHDDIntensiveActivityInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(HDDIntensiveActivity.class);
     }
 
     public ApplicationActivity createApplicationActivity(String name) {
@@ -146,7 +157,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ApplicationActivity> getAllApplicationActivityInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ApplicationActivity.class);
     }
 
     public GPI_KPI_Policy createGPI_KPI_Policy(String name) {
@@ -165,7 +176,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<GPI_KPI_Policy> getAllGPI_KPI_PolicyInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(GPI_KPI_Policy.class);
     }
 
     public ContextPolicy createContextPolicy(String name) {
@@ -184,7 +195,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ContextPolicy> getAllContextPolicyInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ContextPolicy.class);
     }
 
     public ServiceCenterITComputingResource createServiceCenterITComputingResource(String name) {
@@ -203,7 +214,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ServiceCenterITComputingResource> getAllServiceCenterITComputingResourceInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ServiceCenterITComputingResource.class);
     }
 
     public ContextResource getContextResource(String name) {
@@ -211,7 +222,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ContextResource> getAllContextResourceInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ContextResource.class);
     }
 
     public ServiceCenterServer createServiceCenterServer(String name) {
@@ -230,7 +241,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ServiceCenterServer> getAllServiceCenterServerInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ServiceCenterServer.class);
     }
 
     public ComplexResource createComplexResource(String name) {
@@ -249,7 +260,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ComplexResource> getAllComplexResourceInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ComplexResource.class);
     }
 
 
@@ -258,7 +269,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ContextElement> getAllContextElementInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ContextElement.class);
     }
 
     public ServiceCenterITFacilityResource createServiceCenterITFacilityResource(String name) {
@@ -277,7 +288,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ServiceCenterITFacilityResource> getAllServiceCenterITFacilityResourceInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ServiceCenterITFacilityResource.class);
     }
 
     public BusinessContextResource createBusinessContextResource(String name) {
@@ -296,7 +307,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<BusinessContextResource> getAllBusinessContextResourceInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(BusinessContextResource.class);
     }
 
     public Application createApplication(String name) {
@@ -315,7 +326,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<Application> getAllApplicationInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(Application.class);
     }
 
     public CPUIntensiveActivity createCPUIntensiveActivity(String name) {
@@ -334,7 +345,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<CPUIntensiveActivity> getAllCPUIntensiveActivityInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(CPUIntensiveActivity.class);
     }
 
     public ApplicationAdaptationAction createApplicationAdaptationAction(String name) {
@@ -353,7 +364,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ApplicationAdaptationAction> getAllApplicationAdaptationActionInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ApplicationAdaptationAction.class);
     }
 
     public ApplicationRedesign createApplicationRedesign(String name) {
@@ -372,7 +383,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ApplicationRedesign> getAllApplicationRedesignInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ApplicationRedesign.class);
     }
 
     public ITFacilityActiveResource createITFacilityActiveResource(String name) {
@@ -391,7 +402,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ITFacilityActiveResource> getAllITFacilityActiveResourceInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ITFacilityActiveResource.class);
     }
 
     public HDD createHDD(String name) {
@@ -410,7 +421,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<HDD> getAllHDDInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(HDD.class);
     }
 
     public SimpleResource createSimpleResource(String name) {
@@ -429,7 +440,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<SimpleResource> getAllSimpleResourceInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(SimpleResource.class);
     }
 
     public ITComputingContextPolicy createITComputingContextPolicy(String name) {
@@ -448,7 +459,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ITComputingContextPolicy> getAllITComputingContextPolicyInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ITComputingContextPolicy.class);
     }
 
     public ITFacilityPassiveResource createITFacilityPassiveResource(String name) {
@@ -467,7 +478,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ITFacilityPassiveResource> getAllITFacilityPassiveResourceInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ITFacilityPassiveResource.class);
     }
 
     public MigrateActivity createMigrateActivity(String name) {
@@ -486,7 +497,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<MigrateActivity> getAllMigrateActivityInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(MigrateActivity.class);
     }
 
     public ConsolidationAction createConsolidationAction(String name) {
@@ -505,7 +516,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ConsolidationAction> getAllConsolidationActionInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ConsolidationAction.class);
     }
 
     public Sensor createSensor(String name) {
@@ -524,7 +535,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<Sensor> getAllSensorInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(Sensor.class);
     }
 
     public Actuator createActuator(String name) {
@@ -543,7 +554,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<Actuator> getAllActuatorInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(Actuator.class);
     }
 
     public BusinessPolicy createBusinessPolicy(String name) {
@@ -562,7 +573,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<BusinessPolicy> getAllBusinessPolicyInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(BusinessPolicy.class);
     }
 
     public MEM createMEM(String name) {
@@ -581,7 +592,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<MEM> getAllMEMInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(MEM.class);
     }
 
     public ExternalStorage createExternalStorage(String name) {
@@ -600,7 +611,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ExternalStorage> getAllExternalStorageInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ExternalStorage.class);
     }
 
     public CPU createCPU(String name) {
@@ -619,7 +630,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<CPU> getAllCPUInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(CPU.class);
     }
 
     public SLAPolicy createSLAPolicy(String name) {
@@ -638,7 +649,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<SLAPolicy> getAllSLAPolicyInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(SLAPolicy.class);
     }
 
     public MEMIntensiveActivity createMEMIntensiveActivity(String name) {
@@ -657,7 +668,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<MEMIntensiveActivity> getAllMEMIntensiveActivityInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(MEMIntensiveActivity.class);
     }
 
     public Facility createFacility(String name) {
@@ -676,7 +687,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<Facility> getAllFacilityInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(Facility.class);
     }
 
     public QoSPolicy createQoSPolicy(String name) {
@@ -695,7 +706,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<QoSPolicy> getAllQoSPolicyInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(QoSPolicy.class);
     }
 
     public DeployActivity createDeployActivity(String name) {
@@ -714,7 +725,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<DeployActivity> getAllDeployActivityInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(DeployActivity.class);
     }
 
     public EnvironmentPolicy createEnvironmentPolicy(String name) {
@@ -733,7 +744,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<EnvironmentPolicy> getAllEnvironmentPolicyInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(EnvironmentPolicy.class);
     }
 
     public ITFacilityResourceAdaptationAction createITFacilityResourceAdaptationAction(String name) {
@@ -752,6 +763,6 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ITFacilityResourceAdaptationAction> getAllITFacilityResourceAdaptationActionInstances() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return getAllEntityInstances(ITFacilityResourceAdaptationAction.class);
     }
 }
