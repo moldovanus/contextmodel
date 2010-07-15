@@ -13,7 +13,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
  * To change this template use File | Settings | File Templates.
  */
 public class HibernateUtil {
-    public static final String HIBERNATE_CONFIG_FILE = "model/impl/databaseImpl/databaseAccess/hibernate.cfg.xml";
+    public static final String HIBERNATE_CONFIG_FILE = "model/impl/databaseImpl/dao/hibernate.cfg.xml";
     private static SessionFactory factory;
     private static Configuration configuration;
 
