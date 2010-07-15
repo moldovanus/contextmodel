@@ -1,11 +1,14 @@
 package main;
 
+
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.reasoner.Reasoner;
 import edu.stanford.smi.protege.exception.OntologyLoadException;
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
 import edu.stanford.smi.protegex.owl.jena.JenaOWLModel;
-import model.impl.ontologyImpl.ContextModelFactory;
+import model.impl.ontologyImpl.OntologyModelFactory;
 import model.interfaces.resources.Actuator;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
@@ -27,7 +30,7 @@ public class Main {
         JenaOWLModel owlModel = null;
         try {
             owlModel = ProtegeOWL.createJenaOWLModelFromURI(ontologyDataCenterFile.toURI().toString());
-            ContextModelFactory protegeFactory = new ContextModelFactory(owlModel);
+            OntologyModelFactory protegeFactory = new OntologyModelFactory(owlModel);
             Collection<Actuator> actuators = protegeFactory.getAllActuatorInstances();
             Iterator<Actuator> currentActuator = actuators.iterator();
             boolean over = false;
@@ -44,22 +47,24 @@ public class Main {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         OntModel policyConversionModel = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-
         policyConversionModel.add(owlModel.getJenaModel());
-        /*
-        Configuration config =
-                new Configuration();
-        config.configure("/utils/databaseAccess/hibernate.cfg.xml");
-        // SessionFactory sessionFactory = config.buildSessionFactory();
+        Reasoner reasoner = PelletReasonerFactory.theInstance().create();
+        Model emptyModel = ModelFactory.createDefaultModel();
 
-        SchemaExport export = new SchemaExport(config);
-        export.drop(false, true);
-        export.create(false, true);
-        List exceptions = export.getExceptions();
-        for (Object o : exceptions) {
-            System.out.println(o.toString());
-        }
-                        */
+        /*
+Configuration config =
+new Configuration();
+config.configure("/utils/databaseAccess/hibernate.cfg.xml");
+// SessionFactory sessionFactory = config.buildSessionFactory();
+
+SchemaExport export = new SchemaExport(config);
+export.drop(false, true);
+export.create(false, true);
+List exceptions = export.getExceptions();
+for (Object o : exceptions) {
+System.out.println(o.toString());
+}
+        */
 
 
 //        HibernateUtil.recreateDatabase();
