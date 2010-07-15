@@ -75,7 +75,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
 //    public <X> X create(Class<? extends X> javaInterface, String name) {
-//        return ProtegeJavaMapping.create(owlModel, javaInterface, name);
+//        return ProtegeJavaMapping.create(owlModel, javaInterface, name);        //aaaa
 //    }
 
 
