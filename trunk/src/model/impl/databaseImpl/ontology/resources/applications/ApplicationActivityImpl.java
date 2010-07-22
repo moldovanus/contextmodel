@@ -10,7 +10,7 @@ import model.interfaces.resources.applications.ApplicationActivity;
  * Time: 9:09:18 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ApplicationActivityImpl extends BusinessContextResourceImpl implements ApplicationActivity {
+public abstract class ApplicationActivityImpl extends BusinessContextResourceImpl implements ApplicationActivity {
     private Double CPURequiredValue;
     private Double HDDRequiredValue;
     private Double MEMRequiredValue;

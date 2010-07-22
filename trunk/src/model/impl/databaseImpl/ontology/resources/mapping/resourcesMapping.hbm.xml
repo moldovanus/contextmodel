@@ -5,10 +5,13 @@
 <hibernate-mapping package="model.impl.databaseImpl.ontology.resources">
 
     <!--ContextElement-->
-    <class name="model.impl.databaseImpl.ontology.ContextElementImpl" abstract="true" table="ContextElement">
-        <id name="id" column="UID">
-            <generator class="org.hibernate.id.GUIDGenerator"/>
+    <class name="model.impl.databaseImpl.ontology.ContextElementImpl" abstract="true" table="ContextElement"
+           lazy="false">
+        <!--<cache usage="read-write" include="all"/>-->
+        <id name="id" column="UID" unsaved-value="-1">
+            <generator class="increment"/>
         </id>
+
         <property name="name" column="name" type="string" unique="true"/>
     </class>
 
@@ -17,8 +20,8 @@
                      extends="model.impl.databaseImpl.ontology.ContextElementImpl"
                      table="ContextResource" abstract="true">
         <key column="UID"/>
-        <property name="resourceID" type="string" column="resourceID" generated="insert"
-                  formula="UID"/>
+        <property name="resourceID" type="int" column="resourceID"
+                />
     </joined-subclass>
 
     <!--ServiceCenterITComputingResourceImpl-->
@@ -26,15 +29,16 @@
                      extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
                      table="ServiceCenterITComputingResource">
         <key column="UID"/>
-        <list name="energyStates" cascade="save-update">
+        <list name="energyStates" cascade="save-update" lazy="false">
             <key column="state"/>
-            <list-index column="stateindex"/>
+            <list-index column="stateIndex"/>
             <element column="stateValue" type="java.lang.Integer"/>
         </list>
-        <list name="runningActivities" cascade="save-update">
+        <list name="runningActivities" cascade="save-update" lazy="false">
             <key column="runningActivities"/>
             <list-index column="runningActivitiesIndex"/>
-            <one-to-many class="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"/>
+            <many-to-many class="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
+                          lazy="false"/>
         </list>
         <property name="currentEnergyState" column="currentEnergyState" type="java.lang.Integer"/>
         <property name="optimalWorkLoad" column="optimalWorkLoad" type="java.lang.Double"/>
@@ -47,15 +51,15 @@
                      extends="ServiceCenterITComputingResourceImpl"
                      table="ComplexResource">
         <key column="UID"/>
-        <list name="resourceWorkloadProperty" cascade="save-update">
-            <key column="resourceWorkloadProperty"/>
+        <list name="resourceWorkloadProperty" cascade="none" lazy="false" table="ResourceWorkloadProperty">
+            <key column="resourceWorkloadPropertyId"/>
             <list-index column="resourceWorkloadPropertyIndex"/>
             <element column="resourceWorkloadPropertyValue" type="java.lang.String"/>
         </list>
-        <list name="resources" cascade="save-update">
-            <key column="resources"/>
+        <list name="resources" cascade="save-update" lazy="false" table="AssociatedResources">
+            <key column="resourcesId"/>
             <list-index column="resourcesIndex"/>
-            <one-to-many class="ServiceCenterITComputingResourceImpl"/>
+            <many-to-many class="ServiceCenterITComputingResourceImpl"/>
         </list>
     </joined-subclass>
 
@@ -88,11 +92,29 @@
         <property name="resourceID" column="resourceID" type="string"/>
     </joined-subclass>
 
+    <!--CoreImpl-->
+    <joined-subclass name="CoreImpl"
+                     extends="SimpleResourceImpl"
+                     table="CPU">
+        <key column="UID"/>
+        <many-to-one name="partOf" class="model.impl.databaseImpl.ontology.ContextElementImpl" cascade="save-update"
+                     lazy="false" not-null="true"/>
+
+    </joined-subclass>
+
     <!--CPUImpl-->
     <joined-subclass name="CPUImpl"
                      extends="SimpleResourceImpl"
                      table="CPU">
         <key column="UID"/>
+        <property name="cacheRate" column="cacheRate" type="float"/>
+        <property name="clockRate" column="clockRate" type="float"/>
+        <list name="associatedCores" cascade="save-update" lazy="false" table="AssociatedCores">
+            <key column="coreID"/>
+            <list-index column="coreListIndex"/>
+            <many-to-many class="CoreImpl"/>
+        </list>
+
     </joined-subclass>
 
     <!--ExternalStorageImpl-->

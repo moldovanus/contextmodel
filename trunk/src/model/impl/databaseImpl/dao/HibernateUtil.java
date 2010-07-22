@@ -28,7 +28,11 @@ public class HibernateUtil {
     }
 
     public static Session getSession() {
-        return factory.getCurrentSession();
+        Session session = factory.getCurrentSession();
+        if (!session.isOpen()) {
+            session = factory.openSession();
+        }
+        return session;
     }
 
     public static void closeSession() {
@@ -38,7 +42,8 @@ public class HibernateUtil {
     public static void recreateDatabase() {
         Configuration config;
         config = HibernateUtil.getInitializedConfiguration();
-        new SchemaExport(config).create(true, true);
+        SchemaExport schemaExport = new SchemaExport(config);
+        schemaExport.create(true, true);
     }
 
     public static Session beginTransaction() {

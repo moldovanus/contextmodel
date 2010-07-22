@@ -5,16 +5,18 @@
 <hibernate-mapping package="model.impl.databaseImpl.ontology.actions">
 
     <!--ContextActionImpl-->
-    <class name="model.impl.databaseImpl.ontology.actions.ContextActionImpl" table="ContextAction">
-        <id name="id" column="UID">
-            <generator class="increment"/>
-        </id>
-        <list name="resources">
-            <key column="resources"/>
+    <joined-subclass name="model.impl.databaseImpl.ontology.actions.ContextActionImpl"
+                     extends="model.impl.databaseImpl.ontology.ContextElementImpl"
+                     table="ContextAction"
+                     lazy="false">
+        <key column="UID"/>
+
+        <list name="resources" cascade="save-update" lazy="false" table="TargetResources">
+            <key column="resourcesId"/>
             <list-index column="resourcesIndex"/>
-            <one-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
+            <many-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl" lazy="false"/>
         </list>
-    </class>
+    </joined-subclass>
 
     <!--ApplicationAdaptationActionImpl-->
     <joined-subclass name="ApplicationAdaptationActionImpl" extends="ContextActionImpl"
@@ -46,10 +48,10 @@
         <key column="UID"/>
         <many-to-one name="activity" column="activity"
                      class="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
-                     update="true"/>
+                     cascade="save-update" lazy="false"/>
         <many-to-one name="resourceTo" column="resourceTo"
                      class="model.impl.databaseImpl.ontology.resources.ServiceCenterITFacilityResourceImpl"
-                     update="true"/>
+                     cascade="save-update" lazy="false"/>
 
     </joined-subclass>
 
@@ -63,7 +65,7 @@
         <property name="toLowOrHighState" column="toLowOrHighState" type="boolean"/>
         <many-to-one name="resourceOn" column="resourceOn"
                      class="model.impl.databaseImpl.ontology.resources.ServiceCenterITFacilityResourceImpl"
-                     update="true"/>
+                     cascade="save-update" lazy="false"/>
 
     </joined-subclass>
 
@@ -72,7 +74,7 @@
                      table="ITFacilityResourcesAdaptationAction">
         <key column="UID"/>
         <many-to-one name="action" class="ContextActionImpl" column="action"
-                     update="true" cascade="save-update"/>
+                     cascade="save-update" lazy="false"/>
     </joined-subclass>
 
     <!--MigrateActivityImpl-->
@@ -81,8 +83,8 @@
         <key column="UID"/>
         <many-to-one name="applicationActivity"
                      class="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
-                     column="applicationActivity" update="true" cascade="save-update"/>
+                     column="applicationActivity" cascade="save-update" lazy="false"/>
     </joined-subclass>
 
 
-</hibernate-mapping>         
+</hibernate-mapping>

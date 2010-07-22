@@ -4,6 +4,25 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="model.impl.databaseImpl.ontology.resources.applications">
 
+    <!--<class name="Payment" table="PAYMENT">-->
+    <!--<id name="id" type="long" column="PAYMENT_ID">-->
+    <!--<generator class="native"/>-->
+    <!--</id>-->
+    <!--<discriminator column="PAYMENT_TYPE" type="string"/>-->
+    <!--<property name="amount" column="AMOUNT"/>-->
+    <!--...-->
+    <!--<subclass name="CreditCardPayment" discriminator-value="CREDIT">-->
+    <!--<property name="creditCardType" column="CCTYPE"/>-->
+    <!--...-->
+    <!--</subclass>-->
+    <!--<subclass name="CashPayment" discriminator-value="CASH">-->
+    <!--...-->
+    <!--</subclass>-->
+    <!--<subclass name="ChequePayment" discriminator-value="CHEQUE">-->
+    <!--...-->
+    <!--</subclass>-->
+    <!--</class>-->
+
     <joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.ApplicationImpl"
                      extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
                      table="Application">
@@ -11,10 +30,14 @@
         <property name="resourceID" type="string" column="resourceID"/>
     </joined-subclass>
 
-    <joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
-                     extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
-                     table="ApplicationActivity">
-        <key column="UID"/>
+    <class name="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
+           table="ApplicationActivity" abstract="true" lazy="false">
+        <id name="id" unsaved-value="-1">
+            <generator class="increment"/>
+        </id>
+
+        <discriminator column="ActivityType" type="string"/>
+
         <property name="CPURequiredValue" column="CPURequiredValue" type="java.lang.Double"/>
         <property name="CPUAllocatedValue" column="CPUAllocatedValue" type="java.lang.Double"/>
         <property name="HDDRequiredValue" column="HDDRequiredValue" type="java.lang.Double"/>
@@ -23,25 +46,64 @@
         <property name="MEMRequiredValue" column="MEMRequiredValue" type="java.lang.Double"/>
         <property name="performanceEstimation" column="performanceEstimation" type="java.lang.Double"/>
         <property name="performanceDegradation" column="performanceDegradation" type="java.lang.Double"/>
-    </joined-subclass>
 
-    <joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.CPUIntensiveActivityImpl"
-                     extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
-                     table="CPUIntensiveActivity">
-        <key column="UID"/>
-    </joined-subclass>
+        <subclass name="CPUIntensiveActivityImpl" discriminator-value="CPU">
+            <join table="CPUIntensiveActivity">
+                <key column="UID"/>
+            </join>
+        </subclass>
+        <subclass name="HDDIntensiveActivityImpl" discriminator-value="HDD">
+            <join table="HDDIntensiveActivity">
+                <key column="UID"/>
+            </join>
+        </subclass>
+        <subclass name="MEMIntensiveActivityImpl" discriminator-value="MEM">
+            <join table="MEMIntensiveActivity">
+                <key column="UID"/>
+            </join>
+        </subclass>
 
-    <joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.HDDIntensiveActivityImpl"
-                     extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
-                     table="HDDIntensiveActivity">
-        <key column="UID"/>
-    </joined-subclass>
+    </class>
+    <!--<class name="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"-->
+    <!--table="ApplicationActivity" lazy="false">-->
+    <!--<id name="id" unsaved-value="-1">-->
+    <!--<generator class="increment"/>-->
+    <!--</id>-->
 
-    <joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.MEMIntensiveActivityImpl"
-                     extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
-                     table="MEMIntensiveActivity">
-        <key column="UID"/>
-    </joined-subclass>
+    <!--<discriminator column="ActivityType" type="string"/>-->
+
+    <!--<property name="CPURequiredValue" column="CPURequiredValue" type="java.lang.Double"/>-->
+    <!--<property name="CPUAllocatedValue" column="CPUAllocatedValue" type="java.lang.Double"/>-->
+    <!--<property name="HDDRequiredValue" column="HDDRequiredValue" type="java.lang.Double"/>-->
+    <!--<property name="HDDAllocatedValue" column="HDDAllocatedValue" type="java.lang.Double"/>-->
+    <!--<property name="MEMAllocatedValue" column="MEMAllocatedValue" type="java.lang.Double"/>-->
+    <!--<property name="MEMRequiredValue" column="MEMRequiredValue" type="java.lang.Double"/>-->
+    <!--<property name="performanceEstimation" column="performanceEstimation" type="java.lang.Double"/>-->
+    <!--<property name="performanceDegradation" column="performanceDegradation" type="java.lang.Double"/>-->
+
+    <!--<subclass name="CPUIntensiveActivityImpl" discriminator-value="CPU"/>-->
+    <!--<subclass name="HDDIntensiveActivityImpl" discriminator-value="HDD"/>-->
+    <!--<subclass name="MEMIntensiveActivityImpl" discriminator-value="MEM"/>-->
+
+    <!--</class>-->
+
+    <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.CPUIntensiveActivityImpl"-->
+    <!--extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"-->
+    <!--table="CPUIntensiveActivity">-->
+    <!--<key column="UID"/>-->
+    <!--</joined-subclass>-->
+
+    <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.HDDIntensiveActivityImpl"-->
+    <!--extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"-->
+    <!--table="HDDIntensiveActivity">-->
+    <!--<key column="UID"/>-->
+    <!--</joined-subclass>-->
+
+    <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.MEMIntensiveActivityImpl"-->
+    <!--extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"-->
+    <!--table="MEMIntensiveActivity">-->
+    <!--<key column="UID"/>-->
+    <!--</joined-subclass>-->
 
 
 </hibernate-mapping>

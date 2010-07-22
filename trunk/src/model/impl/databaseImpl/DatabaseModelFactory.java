@@ -4,7 +4,10 @@ import model.impl.databaseImpl.dao.HibernateUtil;
 import model.impl.databaseImpl.ontology.actions.*;
 import model.impl.databaseImpl.ontology.policies.*;
 import model.impl.databaseImpl.ontology.resources.*;
-import model.impl.databaseImpl.ontology.resources.applications.*;
+import model.impl.databaseImpl.ontology.resources.applications.ApplicationImpl;
+import model.impl.databaseImpl.ontology.resources.applications.CPUIntensiveActivityImpl;
+import model.impl.databaseImpl.ontology.resources.applications.HDDIntensiveActivityImpl;
+import model.impl.databaseImpl.ontology.resources.applications.MEMIntensiveActivityImpl;
 import model.impl.util.ModelFactory;
 import model.interfaces.ContextElement;
 import model.interfaces.actions.*;
@@ -54,8 +57,8 @@ public class DatabaseModelFactory implements ModelFactory {
     public void persistEntity(ContextElement entity) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(entity);
         session.flush();
+        session.saveOrUpdate(entity);
         transaction.commit();
     }
 
@@ -142,14 +145,15 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ApplicationActivity createApplicationActivity(String name) {
-        Session session = HibernateUtil.getSession();
-        Transaction transaction = session.beginTransaction();
-        ApplicationActivity object = new ApplicationActivityImpl();
-        object.setName(name);
-        session.save(object);
-        session.flush();
-        transaction.commit();
-        return object;
+//        Session session = HibernateUtil.getSession();
+//        Transaction transaction = session.beginTransaction();
+//        ApplicationActivity object = new ApplicationActivityImpl();
+//        object.setName(name);
+//        session.save(object);
+//        session.flush();
+//        transaction.commit();
+//        return object;
+        return null;
     }
 
     public ApplicationActivity getApplicationActivity(String name) {

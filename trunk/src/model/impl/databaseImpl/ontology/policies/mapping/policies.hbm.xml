@@ -14,24 +14,24 @@
         <list name="policySubject" cascade="save-update">
             <key column="policySubject"/>
             <list-index column="policySubjectIndex"/>
-            <one-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
+            <many-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
         </list>
 
-        <list name="policyTarget" cascade="save-update">
+        <list name="policyTarget">
             <key column="policyTarget"/>
             <list-index column="policyTargetIndex"/>
-            <one-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
+            <many-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
         </list>
 
         <many-to-one name="triggerEvent" class="model.impl.databaseImpl.ontology.EventImpl" column="triggerEvent"
-                     cascade="save-update"/>
+                />
     </joined-subclass>
 
     <joined-subclass name="GPI_KPI_PolicyImpl" extends="ContextPolicyImpl"
                      table="GPI_KPI_Policy">
         <key column="UID"/>
         <many-to-one name="policyGoal" column="policyGoal" class="model.impl.databaseImpl.ontology.GoalImpl"
-                     cascade="save-update"/>
+                />
     </joined-subclass>
 
     <joined-subclass name="BusinessPolicyImpl" extends="GPI_KPI_PolicyImpl"

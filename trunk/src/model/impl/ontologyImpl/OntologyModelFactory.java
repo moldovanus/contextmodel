@@ -1,6 +1,8 @@
 package model.impl.ontologyImpl;
 
 
+import edu.stanford.smi.protege.exception.OntologyLoadException;
+import edu.stanford.smi.protegex.owl.ProtegeOWL;
 import edu.stanford.smi.protegex.owl.javacode.ProtegeJavaMapping;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
@@ -14,6 +16,7 @@ import model.interfaces.policies.*;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,6 +27,8 @@ import java.util.Iterator;
  * @version generated on Fri Jul 09 18:31:36 GMT 2010
  */
 public class OntologyModelFactory implements ModelFactory {
+    public static final String ontologyFile = "./ontology/context.owl";
+
     public void persistEntity(ContextElement entity) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -71,8 +76,13 @@ public class OntologyModelFactory implements ModelFactory {
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction", ITFacilityResourceAdaptationAction.class, DefaultITFacilityResourceAdaptationAction.class);
     }
 
-    public OntologyModelFactory(OWLModel owlModel) {
-        this.owlModel = owlModel;
+    public OntologyModelFactory() {
+        File file = new File(ontologyFile);
+        try {
+            this.owlModel = ProtegeOWL.createJenaOWLModelFromURI(file.toURI().toString());
+        } catch (OntologyLoadException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
 //    public <X> X create(Class<? extends X> javaInterface, String name) {

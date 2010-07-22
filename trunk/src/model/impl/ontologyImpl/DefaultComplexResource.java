@@ -65,7 +65,7 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
 
 
     public void setResourceWorkloadProperty(List<String> newResourceWorkloadProperty) {
-        setResourceWorkloadProperty(newResourceWorkloadProperty);
+        setResourceWorkloadProperty((Collection) newResourceWorkloadProperty);
     }
 
     public void setResourceWorkloadProperty(Collection newResourceWorkloadProperty) {
