@@ -2,6 +2,7 @@ package model.impl.util;
 
 import model.impl.databaseImpl.DatabaseModelFactory;
 import model.impl.ontologyImpl.OntologyModelFactory;
+import model.impl.prevailerImpl.PrevailerModelFactory;
 import model.interfaces.ContextElement;
 import model.interfaces.actions.*;
 import model.interfaces.policies.*;
@@ -18,42 +19,69 @@ import java.util.Collection;
  * Delegates functionality to both OntologyModelFactory and DatabaseModelFactory
  */
 public class ModelAccess implements ModelFactory {
+    public static final int ONTOLOGY_ACCESS = 0;
+    public static final int DATABASE_ACCESS = 1;
+    public static final int PREVAYLER_ACCESS = 2;
+
     private OntologyModelFactory ontologyModelFactory;
     private DatabaseModelFactory databaseModelFactory;
-    public boolean primaryAccessIsOntology = true;
+    private PrevailerModelFactory prevailerModelFactory;
+    public int accessType = 0;
 
-    public ModelAccess(OntologyModelFactory ontologyModelFactory, DatabaseModelFactory databaseModelFactory) {
+    public OntologyModelFactory getOntologyModelFactory() {
+        return ontologyModelFactory;
+    }
+
+    public DatabaseModelFactory getDatabaseModelFactory() {
+        return databaseModelFactory;
+    }
+
+    public PrevailerModelFactory getPrevailerModelFactory() {
+        return prevailerModelFactory;
+    }
+
+    public ModelAccess(OntologyModelFactory ontologyModelFactory, DatabaseModelFactory databaseModelFactory,
+                       PrevailerModelFactory prevailerModelFactory) {
         this.ontologyModelFactory = ontologyModelFactory;
         this.databaseModelFactory = databaseModelFactory;
+        this.prevailerModelFactory = prevailerModelFactory;
     }
 
-    public boolean isPrimaryAccessIsOntology() {
-        return primaryAccessIsOntology;
-    }
 
-    public void setPrimaryAccessIsOntology(boolean primaryAccessIsOntology) {
-        this.primaryAccessIsOntology = primaryAccessIsOntology;
+    public void setAccessType(int accessType) {
+        this.accessType = accessType;
     }
 
     public void persistEntity(ContextElement entity) {
-        ontologyModelFactory.persistEntity(entity);
-        databaseModelFactory.persistEntity(entity);
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                ontologyModelFactory.persistEntity(entity);
+                break;
+            case DATABASE_ACCESS:
+                databaseModelFactory.persistEntity(entity);
+                break;
+            case PREVAYLER_ACCESS:
+                prevailerModelFactory.persistEntity(entity);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
+        }
     }
 
     public DPMAction createDPMAction(String name) {
         DPMAction object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createDPMAction(name);
-            databaseModelFactory.createDPMAction(name);
+            //databaseModelFactory.createDPMAction(name);
         } else {
-            ontologyModelFactory.createDPMAction(name);
+            //ontologyModelFactory.createDPMAction(name);
             object = databaseModelFactory.createDPMAction(name);
         }
         return object;
     }
 
     public DPMAction getDPMAction(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getDPMAction(name);
         } else {
             return databaseModelFactory.getDPMAction(name);
@@ -61,7 +89,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<DPMAction> getAllDPMActionInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllDPMActionInstances();
         } else {
             return databaseModelFactory.getAllDPMActionInstances();
@@ -70,18 +98,18 @@ public class ModelAccess implements ModelFactory {
 
     public ITComputingResourceAdaptationAction createITComputingResourceAdaptationAction(String name) {
         ITComputingResourceAdaptationAction object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createITComputingResourceAdaptationAction(name);
-            databaseModelFactory.createITComputingResourceAdaptationAction(name);
+            // databaseModelFactory.createITComputingResourceAdaptationAction(name);
         } else {
-            ontologyModelFactory.createITComputingResourceAdaptationAction(name);
+            // ontologyModelFactory.createITComputingResourceAdaptationAction(name);
             object = databaseModelFactory.createITComputingResourceAdaptationAction(name);
         }
         return object;
     }
 
     public ITComputingResourceAdaptationAction getITComputingResourceAdaptationAction(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getITComputingResourceAdaptationAction(name);
         } else {
             return databaseModelFactory.getITComputingResourceAdaptationAction(name);
@@ -89,7 +117,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ITComputingResourceAdaptationAction> getAllITComputingResourceAdaptationActionInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllITComputingResourceAdaptationActionInstances();
         } else {
             return databaseModelFactory.getAllITComputingResourceAdaptationActionInstances();
@@ -98,18 +126,18 @@ public class ModelAccess implements ModelFactory {
 
     public ContextAction createContextAction(String name) {
         ContextAction object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createContextAction(name);
-            databaseModelFactory.createContextAction(name);
+            //databaseModelFactory.createContextAction(name);
         } else {
-            ontologyModelFactory.createContextAction(name);
+            //ontologyModelFactory.createContextAction(name);
             object = databaseModelFactory.createContextAction(name);
         }
         return object;
     }
 
     public ContextAction getContextAction(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getContextAction(name);
         } else {
             return databaseModelFactory.getContextAction(name);
@@ -117,7 +145,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ContextAction> getAllContextActionInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllContextActionInstances();
         } else {
             return databaseModelFactory.getAllContextActionInstances();
@@ -126,46 +154,72 @@ public class ModelAccess implements ModelFactory {
 
     public HDDIntensiveActivity createHDDIntensiveActivity(String name) {
         HDDIntensiveActivity object;
-        if (primaryAccessIsOntology) {
-            object = ontologyModelFactory.createHDDIntensiveActivity(name);
-            databaseModelFactory.createContextAction(name);
-        } else {
-            ontologyModelFactory.createHDDIntensiveActivity(name);
-            object = databaseModelFactory.createHDDIntensiveActivity(name);
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.createHDDIntensiveActivity(name);
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.createHDDIntensiveActivity(name);
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.createHDDIntensiveActivity(name);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
         return object;
     }
 
     public HDDIntensiveActivity getHDDIntensiveActivity(String name) {
-        if (primaryAccessIsOntology) {
-            return ontologyModelFactory.getHDDIntensiveActivity(name);
-        } else {
-            return databaseModelFactory.getHDDIntensiveActivity(name);
+        HDDIntensiveActivity object = null;
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.getHDDIntensiveActivity(name);
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.getHDDIntensiveActivity(name);
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.getHDDIntensiveActivity(name);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
+        return object;
     }
 
     public Collection<HDDIntensiveActivity> getAllHDDIntensiveActivityInstances() {
-        if (primaryAccessIsOntology) {
-            return ontologyModelFactory.getAllHDDIntensiveActivityInstances();
-        } else {
-            return databaseModelFactory.getAllHDDIntensiveActivityInstances();
+        Collection<HDDIntensiveActivity> object = null;
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.getAllHDDIntensiveActivityInstances();
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.getAllHDDIntensiveActivityInstances();
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.getAllHDDIntensiveActivityInstances();
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
+        return object;
     }
 
     public ApplicationActivity createApplicationActivity(String name) {
         ApplicationActivity object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createApplicationActivity(name);
-            databaseModelFactory.createContextAction(name);
+            // databaseModelFactory.createContextAction(name);
         } else {
-            ontologyModelFactory.createApplicationActivity(name);
-            object = databaseModelFactory.createHDDIntensiveActivity(name);
+            //ontologyModelFactory.createApplicationActivity(name);
+            object = databaseModelFactory.createApplicationActivity(name);
         }
         return object;
     }
 
     public ApplicationActivity getApplicationActivity(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getApplicationActivity(name);
         } else {
             return databaseModelFactory.getApplicationActivity(name);
@@ -173,7 +227,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ApplicationActivity> getAllApplicationActivityInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllApplicationActivityInstances();
         } else {
             return databaseModelFactory.getAllApplicationActivityInstances();
@@ -182,18 +236,18 @@ public class ModelAccess implements ModelFactory {
 
     public GPI_KPI_Policy createGPI_KPI_Policy(String name) {
         GPI_KPI_Policy object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createGPI_KPI_Policy(name);
-            databaseModelFactory.createGPI_KPI_Policy(name);
+            // databaseModelFactory.createGPI_KPI_Policy(name);
         } else {
-            ontologyModelFactory.createGPI_KPI_Policy(name);
+            //ontologyModelFactory.createGPI_KPI_Policy(name);
             object = databaseModelFactory.createGPI_KPI_Policy(name);
         }
         return object;
     }
 
     public GPI_KPI_Policy getGPI_KPI_Policy(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getGPI_KPI_Policy(name);
         } else {
             return databaseModelFactory.getGPI_KPI_Policy(name);
@@ -201,7 +255,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<GPI_KPI_Policy> getAllGPI_KPI_PolicyInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllGPI_KPI_PolicyInstances();
         } else {
             return databaseModelFactory.getAllGPI_KPI_PolicyInstances();
@@ -210,18 +264,18 @@ public class ModelAccess implements ModelFactory {
 
     public ContextPolicy createContextPolicy(String name) {
         ContextPolicy object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createContextPolicy(name);
-            databaseModelFactory.createContextPolicy(name);
+            // databaseModelFactory.createContextPolicy(name);
         } else {
-            ontologyModelFactory.createContextPolicy(name);
+            // ontologyModelFactory.createContextPolicy(name);
             object = databaseModelFactory.createContextPolicy(name);
         }
         return object;
     }
 
     public ContextPolicy getContextPolicy(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getContextPolicy(name);
         } else {
             return databaseModelFactory.getContextPolicy(name);
@@ -229,7 +283,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ContextPolicy> getAllContextPolicyInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllContextPolicyInstances();
         } else {
             return databaseModelFactory.getAllContextPolicyInstances();
@@ -238,34 +292,61 @@ public class ModelAccess implements ModelFactory {
 
     public ServiceCenterITComputingResource createServiceCenterITComputingResource(String name) {
         ServiceCenterITComputingResource object;
-        if (primaryAccessIsOntology) {
-            object = ontologyModelFactory.createServiceCenterITComputingResource(name);
-            databaseModelFactory.createServiceCenterITComputingResource(name);
-        } else {
-            ontologyModelFactory.createServiceCenterITComputingResource(name);
-            object = databaseModelFactory.createServiceCenterITComputingResource(name);
+
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.createServiceCenterITComputingResource(name);
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.createServiceCenterITComputingResource(name);
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.createServiceCenterITComputingResource(name);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
         return object;
     }
 
     public ServiceCenterITComputingResource getServiceCenterITComputingResource(String name) {
-        if (primaryAccessIsOntology) {
-            return ontologyModelFactory.getServiceCenterITComputingResource(name);
-        } else {
-            return databaseModelFactory.getServiceCenterITComputingResource(name);
+        ServiceCenterITComputingResource object = null;
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.getServiceCenterITComputingResource(name);
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.getServiceCenterITComputingResource(name);
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.getServiceCenterITComputingResource(name);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
+        return object;
     }
 
     public Collection<ServiceCenterITComputingResource> getAllServiceCenterITComputingResourceInstances() {
-        if (primaryAccessIsOntology) {
-            return ontologyModelFactory.getAllServiceCenterITComputingResourceInstances();
-        } else {
-            return databaseModelFactory.getAllServiceCenterITComputingResourceInstances();
+        Collection<ServiceCenterITComputingResource> object = null;
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.getAllServiceCenterITComputingResourceInstances();
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.getAllServiceCenterITComputingResourceInstances();
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.getAllServiceCenterITComputingResourceInstances();
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
+        return object;
     }
 
     public ContextResource getContextResource(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getContextResource(name);
         } else {
             return databaseModelFactory.getContextResource(name);
@@ -273,7 +354,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ContextResource> getAllContextResourceInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllContextResourceInstances();
         } else {
             return databaseModelFactory.getAllContextResourceInstances();
@@ -282,18 +363,18 @@ public class ModelAccess implements ModelFactory {
 
     public ServiceCenterServer createServiceCenterServer(String name) {
         ServiceCenterServer object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createServiceCenterServer(name);
-            databaseModelFactory.createServiceCenterServer(name);
+            //databaseModelFactory.createServiceCenterServer(name);
         } else {
-            ontologyModelFactory.createServiceCenterServer(name);
+            //ontologyModelFactory.createServiceCenterServer(name);
             object = databaseModelFactory.createServiceCenterServer(name);
         }
         return object;
     }
 
     public ServiceCenterServer getServiceCenterServer(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getServiceCenterServer(name);
         } else {
             return databaseModelFactory.getServiceCenterServer(name);
@@ -301,7 +382,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ServiceCenterServer> getAllServiceCenterServerInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllServiceCenterServerInstances();
         } else {
             return databaseModelFactory.getAllServiceCenterServerInstances();
@@ -310,34 +391,60 @@ public class ModelAccess implements ModelFactory {
 
     public ComplexResource createComplexResource(String name) {
         ComplexResource object;
-        if (primaryAccessIsOntology) {
-            object = ontologyModelFactory.createComplexResource(name);
-            databaseModelFactory.createComplexResource(name);
-        } else {
-            ontologyModelFactory.createComplexResource(name);
-            object = databaseModelFactory.createComplexResource(name);
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.createComplexResource(name);
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.createComplexResource(name);
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.createComplexResource(name);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
         return object;
     }
 
     public ComplexResource getComplexResource(String name) {
-        if (primaryAccessIsOntology) {
-            return ontologyModelFactory.getComplexResource(name);
-        } else {
-            return databaseModelFactory.getComplexResource(name);
+        ComplexResource object = null;
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.getComplexResource(name);
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.getComplexResource(name);
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.getComplexResource(name);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
+        return object;
     }
 
     public Collection<ComplexResource> getAllComplexResourceInstances() {
-        if (primaryAccessIsOntology) {
-            return ontologyModelFactory.getAllComplexResourceInstances();
-        } else {
-            return databaseModelFactory.getAllComplexResourceInstances();
+        Collection<ComplexResource> object = null;
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.getAllComplexResourceInstances();
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.getAllComplexResourceInstances();
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.getAllComplexResourceInstances();
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
+        return object;
     }
 
     public ContextElement getContextElement(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getContextElement(name);
         } else {
             return databaseModelFactory.getContextElement(name);
@@ -345,27 +452,37 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ContextElement> getAllContextElementInstances() {
-        if (primaryAccessIsOntology) {
-            return ontologyModelFactory.getAllContextElementInstances();
-        } else {
-            return databaseModelFactory.getAllContextElementInstances();
+        Collection<ContextElement> object = null;
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                object = ontologyModelFactory.getAllContextElementInstances();
+                break;
+            case DATABASE_ACCESS:
+                object = databaseModelFactory.getAllContextElementInstances();
+                break;
+            case PREVAYLER_ACCESS:
+                object = prevailerModelFactory.getAllContextElementInstances();
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
         }
+        return object;
     }
 
     public ServiceCenterITFacilityResource createServiceCenterITFacilityResource(String name) {
         ServiceCenterITFacilityResource object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createServiceCenterITFacilityResource(name);
-            databaseModelFactory.createServiceCenterITFacilityResource(name);
+            //databaseModelFactory.createServiceCenterITFacilityResource(name);
         } else {
-            ontologyModelFactory.createServiceCenterITFacilityResource(name);
+            //ontologyModelFactory.createServiceCenterITFacilityResource(name);
             object = databaseModelFactory.createServiceCenterITFacilityResource(name);
         }
         return object;
     }
 
     public ServiceCenterITFacilityResource getServiceCenterITFacilityResource(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getServiceCenterITFacilityResource(name);
         } else {
             return databaseModelFactory.getServiceCenterITFacilityResource(name);
@@ -373,7 +490,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ServiceCenterITFacilityResource> getAllServiceCenterITFacilityResourceInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllServiceCenterITFacilityResourceInstances();
         } else {
             return databaseModelFactory.getAllServiceCenterITFacilityResourceInstances();
@@ -382,18 +499,18 @@ public class ModelAccess implements ModelFactory {
 
     public BusinessContextResource createBusinessContextResource(String name) {
         BusinessContextResource object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createBusinessContextResource(name);
-            databaseModelFactory.createBusinessContextResource(name);
+            //databaseModelFactory.createBusinessContextResource(name);
         } else {
-            ontologyModelFactory.createBusinessContextResource(name);
+            // ontologyModelFactory.createBusinessContextResource(name);
             object = databaseModelFactory.createBusinessContextResource(name);
         }
         return object;
     }
 
     public BusinessContextResource getBusinessContextResource(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getBusinessContextResource(name);
         } else {
             return databaseModelFactory.getBusinessContextResource(name);
@@ -401,7 +518,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<BusinessContextResource> getAllBusinessContextResourceInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllBusinessContextResourceInstances();
         } else {
             return databaseModelFactory.getAllBusinessContextResourceInstances();
@@ -410,18 +527,18 @@ public class ModelAccess implements ModelFactory {
 
     public Application createApplication(String name) {
         Application object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createApplication(name);
-            databaseModelFactory.createApplication(name);
+            // databaseModelFactory.createApplication(name);
         } else {
-            ontologyModelFactory.createApplication(name);
+            // ontologyModelFactory.createApplication(name);
             object = databaseModelFactory.createApplication(name);
         }
         return object;
     }
 
     public Application getApplication(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getApplication(name);
         } else {
             return databaseModelFactory.getApplication(name);
@@ -429,7 +546,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<Application> getAllApplicationInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllApplicationInstances();
         } else {
             return databaseModelFactory.getAllApplicationInstances();
@@ -438,7 +555,7 @@ public class ModelAccess implements ModelFactory {
 
     public CPUIntensiveActivity createCPUIntensiveActivity(String name) {
         CPUIntensiveActivity object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createCPUIntensiveActivity(name);
             databaseModelFactory.createCPUIntensiveActivity(name);
         } else {
@@ -449,7 +566,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public CPUIntensiveActivity getCPUIntensiveActivity(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getCPUIntensiveActivity(name);
         } else {
             return databaseModelFactory.getCPUIntensiveActivity(name);
@@ -457,7 +574,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<CPUIntensiveActivity> getAllCPUIntensiveActivityInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllCPUIntensiveActivityInstances();
         } else {
             return databaseModelFactory.getAllCPUIntensiveActivityInstances();
@@ -466,18 +583,18 @@ public class ModelAccess implements ModelFactory {
 
     public ApplicationAdaptationAction createApplicationAdaptationAction(String name) {
         ApplicationAdaptationAction object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createApplicationAdaptationAction(name);
-            databaseModelFactory.createApplicationAdaptationAction(name);
+            // databaseModelFactory.createApplicationAdaptationAction(name);
         } else {
-            ontologyModelFactory.createApplicationAdaptationAction(name);
+            //ontologyModelFactory.createApplicationAdaptationAction(name);
             object = databaseModelFactory.createApplicationAdaptationAction(name);
         }
         return object;
     }
 
     public ApplicationAdaptationAction getApplicationAdaptationAction(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getApplicationAdaptationAction(name);
         } else {
             return databaseModelFactory.getApplicationAdaptationAction(name);
@@ -485,7 +602,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ApplicationAdaptationAction> getAllApplicationAdaptationActionInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllApplicationAdaptationActionInstances();
         } else {
             return databaseModelFactory.getAllApplicationAdaptationActionInstances();
@@ -494,7 +611,7 @@ public class ModelAccess implements ModelFactory {
 
     public ApplicationRedesign createApplicationRedesign(String name) {
         ApplicationRedesign object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createApplicationRedesign(name);
             databaseModelFactory.createApplicationRedesign(name);
         } else {
@@ -505,7 +622,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public ApplicationRedesign getApplicationRedesign(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getApplicationRedesign(name);
         } else {
             return databaseModelFactory.getApplicationRedesign(name);
@@ -513,7 +630,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ApplicationRedesign> getAllApplicationRedesignInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllApplicationRedesignInstances();
         } else {
             return databaseModelFactory.getAllApplicationRedesignInstances();
@@ -522,18 +639,18 @@ public class ModelAccess implements ModelFactory {
 
     public ITFacilityActiveResource createITFacilityActiveResource(String name) {
         ITFacilityActiveResource object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createITFacilityActiveResource(name);
-            databaseModelFactory.createITFacilityActiveResource(name);
+            // databaseModelFactory.createITFacilityActiveResource(name);
         } else {
-            ontologyModelFactory.createITFacilityActiveResource(name);
+            // ontologyModelFactory.createITFacilityActiveResource(name);
             object = databaseModelFactory.createITFacilityActiveResource(name);
         }
         return object;
     }
 
     public ITFacilityActiveResource getITFacilityActiveResource(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getITFacilityActiveResource(name);
         } else {
             return databaseModelFactory.getITFacilityActiveResource(name);
@@ -541,7 +658,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ITFacilityActiveResource> getAllITFacilityActiveResourceInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllITFacilityActiveResourceInstances();
         } else {
             return databaseModelFactory.getAllITFacilityActiveResourceInstances();
@@ -550,18 +667,18 @@ public class ModelAccess implements ModelFactory {
 
     public HDD createHDD(String name) {
         HDD object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createHDD(name);
-            databaseModelFactory.createHDD(name);
+            //databaseModelFactory.createHDD(name);
         } else {
-            ontologyModelFactory.createHDD(name);
+            //ontologyModelFactory.createHDD(name);
             object = databaseModelFactory.createHDD(name);
         }
         return object;
     }
 
     public HDD getHDD(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getHDD(name);
         } else {
             return databaseModelFactory.getHDD(name);
@@ -569,7 +686,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<HDD> getAllHDDInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllHDDInstances();
         } else {
             return databaseModelFactory.getAllHDDInstances();
@@ -578,18 +695,18 @@ public class ModelAccess implements ModelFactory {
 
     public SimpleResource createSimpleResource(String name) {
         SimpleResource object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createSimpleResource(name);
-            databaseModelFactory.createSimpleResource(name);
+            //databaseModelFactory.createSimpleResource(name);
         } else {
-            ontologyModelFactory.createSimpleResource(name);
+            //ontologyModelFactory.createSimpleResource(name);
             object = databaseModelFactory.createSimpleResource(name);
         }
         return object;
     }
 
     public SimpleResource getSimpleResource(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getSimpleResource(name);
         } else {
             return databaseModelFactory.getSimpleResource(name);
@@ -597,7 +714,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<SimpleResource> getAllSimpleResourceInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllSimpleResourceInstances();
         } else {
             return databaseModelFactory.getAllSimpleResourceInstances();
@@ -606,18 +723,18 @@ public class ModelAccess implements ModelFactory {
 
     public ITComputingContextPolicy createITComputingContextPolicy(String name) {
         ITComputingContextPolicy object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createITComputingContextPolicy(name);
-            databaseModelFactory.createITComputingContextPolicy(name);
+            //databaseModelFactory.createITComputingContextPolicy(name);
         } else {
-            ontologyModelFactory.createITComputingContextPolicy(name);
+            //ontologyModelFactory.createITComputingContextPolicy(name);
             object = databaseModelFactory.createITComputingContextPolicy(name);
         }
         return object;
     }
 
     public ITComputingContextPolicy getITComputingContextPolicy(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getITComputingContextPolicy(name);
         } else {
             return databaseModelFactory.getITComputingContextPolicy(name);
@@ -625,7 +742,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ITComputingContextPolicy> getAllITComputingContextPolicyInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllITComputingContextPolicyInstances();
         } else {
             return databaseModelFactory.getAllITComputingContextPolicyInstances();
@@ -634,18 +751,18 @@ public class ModelAccess implements ModelFactory {
 
     public ITFacilityPassiveResource createITFacilityPassiveResource(String name) {
         ITFacilityPassiveResource object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createITFacilityPassiveResource(name);
-            databaseModelFactory.createITFacilityPassiveResource(name);
+            // databaseModelFactory.createITFacilityPassiveResource(name);
         } else {
-            ontologyModelFactory.createITFacilityPassiveResource(name);
+            //ontologyModelFactory.createITFacilityPassiveResource(name);
             object = databaseModelFactory.createITFacilityPassiveResource(name);
         }
         return object;
     }
 
     public ITFacilityPassiveResource getITFacilityPassiveResource(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getITFacilityPassiveResource(name);
         } else {
             return databaseModelFactory.getITFacilityPassiveResource(name);
@@ -653,7 +770,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ITFacilityPassiveResource> getAllITFacilityPassiveResourceInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllITFacilityPassiveResourceInstances();
         } else {
             return databaseModelFactory.getAllITFacilityPassiveResourceInstances();
@@ -662,18 +779,18 @@ public class ModelAccess implements ModelFactory {
 
     public MigrateActivity createMigrateActivity(String name) {
         MigrateActivity object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createMigrateActivity(name);
-            databaseModelFactory.createMigrateActivity(name);
+            // databaseModelFactory.createMigrateActivity(name);
         } else {
-            ontologyModelFactory.createMigrateActivity(name);
+            //ontologyModelFactory.createMigrateActivity(name);
             object = databaseModelFactory.createMigrateActivity(name);
         }
         return object;
     }
 
     public MigrateActivity getMigrateActivity(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getMigrateActivity(name);
         } else {
             return databaseModelFactory.getMigrateActivity(name);
@@ -681,7 +798,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<MigrateActivity> getAllMigrateActivityInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllMigrateActivityInstances();
         } else {
             return databaseModelFactory.getAllMigrateActivityInstances();
@@ -690,18 +807,18 @@ public class ModelAccess implements ModelFactory {
 
     public ConsolidationAction createConsolidationAction(String name) {
         ConsolidationAction object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createConsolidationAction(name);
-            databaseModelFactory.createConsolidationAction(name);
+            // databaseModelFactory.createConsolidationAction(name);
         } else {
-            ontologyModelFactory.createConsolidationAction(name);
+            // ontologyModelFactory.createConsolidationAction(name);
             object = databaseModelFactory.createConsolidationAction(name);
         }
         return object;
     }
 
     public ConsolidationAction getConsolidationAction(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getConsolidationAction(name);
         } else {
             return databaseModelFactory.getConsolidationAction(name);
@@ -709,7 +826,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ConsolidationAction> getAllConsolidationActionInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllConsolidationActionInstances();
         } else {
             return databaseModelFactory.getAllConsolidationActionInstances();
@@ -718,18 +835,18 @@ public class ModelAccess implements ModelFactory {
 
     public Sensor createSensor(String name) {
         Sensor object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createSensor(name);
-            databaseModelFactory.createSensor(name);
+            // databaseModelFactory.createSensor(name);
         } else {
-            ontologyModelFactory.createSensor(name);
+            // ontologyModelFactory.createSensor(name);
             object = databaseModelFactory.createSensor(name);
         }
         return object;
     }
 
     public Sensor getSensor(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getSensor(name);
         } else {
             return databaseModelFactory.getSensor(name);
@@ -737,7 +854,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<Sensor> getAllSensorInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllSensorInstances();
         } else {
             return databaseModelFactory.getAllSensorInstances();
@@ -746,18 +863,18 @@ public class ModelAccess implements ModelFactory {
 
     public Actuator createActuator(String name) {
         Actuator object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createActuator(name);
-            databaseModelFactory.createActuator(name);
+            //databaseModelFactory.createActuator(name);
         } else {
-            ontologyModelFactory.createActuator(name);
+            // ontologyModelFactory.createActuator(name);
             object = databaseModelFactory.createActuator(name);
         }
         return object;
     }
 
     public Actuator getActuator(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getActuator(name);
         } else {
             return databaseModelFactory.getActuator(name);
@@ -765,7 +882,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<Actuator> getAllActuatorInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllActuatorInstances();
         } else {
             return databaseModelFactory.getAllActuatorInstances();
@@ -774,18 +891,18 @@ public class ModelAccess implements ModelFactory {
 
     public BusinessPolicy createBusinessPolicy(String name) {
         BusinessPolicy object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createBusinessPolicy(name);
-            databaseModelFactory.createBusinessPolicy(name);
+            //databaseModelFactory.createBusinessPolicy(name);
         } else {
-            ontologyModelFactory.createBusinessPolicy(name);
+            //ontologyModelFactory.createBusinessPolicy(name);
             object = databaseModelFactory.createBusinessPolicy(name);
         }
         return object;
     }
 
     public BusinessPolicy getBusinessPolicy(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getBusinessPolicy(name);
         } else {
             return databaseModelFactory.getBusinessPolicy(name);
@@ -793,7 +910,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<BusinessPolicy> getAllBusinessPolicyInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllBusinessPolicyInstances();
         } else {
             return databaseModelFactory.getAllBusinessPolicyInstances();
@@ -802,18 +919,18 @@ public class ModelAccess implements ModelFactory {
 
     public MEM createMEM(String name) {
         MEM object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createMEM(name);
-            databaseModelFactory.createMEM(name);
+            //databaseModelFactory.createMEM(name);
         } else {
-            ontologyModelFactory.createMEM(name);
+            // ontologyModelFactory.createMEM(name);
             object = databaseModelFactory.createMEM(name);
         }
         return object;
     }
 
     public MEM getMEM(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getMEM(name);
         } else {
             return databaseModelFactory.getMEM(name);
@@ -821,7 +938,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<MEM> getAllMEMInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllMEMInstances();
         } else {
             return databaseModelFactory.getAllMEMInstances();
@@ -830,18 +947,18 @@ public class ModelAccess implements ModelFactory {
 
     public ExternalStorage createExternalStorage(String name) {
         ExternalStorage object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createExternalStorage(name);
-            databaseModelFactory.createExternalStorage(name);
+            // databaseModelFactory.createExternalStorage(name);
         } else {
-            ontologyModelFactory.createExternalStorage(name);
+            // ontologyModelFactory.createExternalStorage(name);
             object = databaseModelFactory.createExternalStorage(name);
         }
         return object;
     }
 
     public ExternalStorage getExternalStorage(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getExternalStorage(name);
         } else {
             return databaseModelFactory.getExternalStorage(name);
@@ -849,7 +966,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ExternalStorage> getAllExternalStorageInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllExternalStorageInstances();
         } else {
             return databaseModelFactory.getAllExternalStorageInstances();
@@ -858,18 +975,18 @@ public class ModelAccess implements ModelFactory {
 
     public CPU createCPU(String name) {
         CPU object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createCPU(name);
-            databaseModelFactory.createCPU(name);
+            //databaseModelFactory.createCPU(name);
         } else {
-            ontologyModelFactory.createCPU(name);
+            // ontologyModelFactory.createCPU(name);
             object = databaseModelFactory.createCPU(name);
         }
         return object;
     }
 
     public CPU getCPU(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getCPU(name);
         } else {
             return databaseModelFactory.getCPU(name);
@@ -877,7 +994,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<CPU> getAllCPUInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllCPUInstances();
         } else {
             return databaseModelFactory.getAllCPUInstances();
@@ -886,18 +1003,18 @@ public class ModelAccess implements ModelFactory {
 
     public SLAPolicy createSLAPolicy(String name) {
         SLAPolicy object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createSLAPolicy(name);
-            databaseModelFactory.createSLAPolicy(name);
+            // databaseModelFactory.createSLAPolicy(name);
         } else {
-            ontologyModelFactory.createSLAPolicy(name);
+            // ontologyModelFactory.createSLAPolicy(name);
             object = databaseModelFactory.createSLAPolicy(name);
         }
         return object;
     }
 
     public SLAPolicy getSLAPolicy(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getSLAPolicy(name);
         } else {
             return databaseModelFactory.getSLAPolicy(name);
@@ -905,7 +1022,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<SLAPolicy> getAllSLAPolicyInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllSLAPolicyInstances();
         } else {
             return databaseModelFactory.getAllSLAPolicyInstances();
@@ -914,18 +1031,18 @@ public class ModelAccess implements ModelFactory {
 
     public MEMIntensiveActivity createMEMIntensiveActivity(String name) {
         MEMIntensiveActivity object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createMEMIntensiveActivity(name);
-            databaseModelFactory.createMEMIntensiveActivity(name);
+            //databaseModelFactory.createMEMIntensiveActivity(name);
         } else {
-            ontologyModelFactory.createMEMIntensiveActivity(name);
+            //ontologyModelFactory.createMEMIntensiveActivity(name);
             object = databaseModelFactory.createMEMIntensiveActivity(name);
         }
         return object;
     }
 
     public MEMIntensiveActivity getMEMIntensiveActivity(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getMEMIntensiveActivity(name);
         } else {
             return databaseModelFactory.getMEMIntensiveActivity(name);
@@ -933,7 +1050,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<MEMIntensiveActivity> getAllMEMIntensiveActivityInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllMEMIntensiveActivityInstances();
         } else {
             return databaseModelFactory.getAllMEMIntensiveActivityInstances();
@@ -942,18 +1059,18 @@ public class ModelAccess implements ModelFactory {
 
     public Facility createFacility(String name) {
         Facility object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createFacility(name);
-            databaseModelFactory.createFacility(name);
+            //databaseModelFactory.createFacility(name);
         } else {
-            ontologyModelFactory.createFacility(name);
+            //ontologyModelFactory.createFacility(name);
             object = databaseModelFactory.createFacility(name);
         }
         return object;
     }
 
     public Facility getFacility(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getFacility(name);
         } else {
             return databaseModelFactory.getFacility(name);
@@ -961,7 +1078,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<Facility> getAllFacilityInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllFacilityInstances();
         } else {
             return databaseModelFactory.getAllFacilityInstances();
@@ -970,18 +1087,18 @@ public class ModelAccess implements ModelFactory {
 
     public QoSPolicy createQoSPolicy(String name) {
         QoSPolicy object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createQoSPolicy(name);
-            databaseModelFactory.createQoSPolicy(name);
+            //databaseModelFactory.createQoSPolicy(name);
         } else {
-            ontologyModelFactory.createQoSPolicy(name);
+            // ontologyModelFactory.createQoSPolicy(name);
             object = databaseModelFactory.createQoSPolicy(name);
         }
         return object;
     }
 
     public QoSPolicy getQoSPolicy(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getQoSPolicy(name);
         } else {
             return databaseModelFactory.getQoSPolicy(name);
@@ -989,7 +1106,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<QoSPolicy> getAllQoSPolicyInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllQoSPolicyInstances();
         } else {
             return databaseModelFactory.getAllQoSPolicyInstances();
@@ -998,18 +1115,18 @@ public class ModelAccess implements ModelFactory {
 
     public DeployActivity createDeployActivity(String name) {
         DeployActivity object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createDeployActivity(name);
-            databaseModelFactory.createDeployActivity(name);
+            //databaseModelFactory.createDeployActivity(name);
         } else {
-            ontologyModelFactory.createDeployActivity(name);
+            // ontologyModelFactory.createDeployActivity(name);
             object = databaseModelFactory.createDeployActivity(name);
         }
         return object;
     }
 
     public DeployActivity getDeployActivity(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getDeployActivity(name);
         } else {
             return databaseModelFactory.getDeployActivity(name);
@@ -1017,7 +1134,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<DeployActivity> getAllDeployActivityInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllDeployActivityInstances();
         } else {
             return databaseModelFactory.getAllDeployActivityInstances();
@@ -1026,18 +1143,18 @@ public class ModelAccess implements ModelFactory {
 
     public EnvironmentPolicy createEnvironmentPolicy(String name) {
         EnvironmentPolicy object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createEnvironmentPolicy(name);
-            databaseModelFactory.createEnvironmentPolicy(name);
+            //databaseModelFactory.createEnvironmentPolicy(name);
         } else {
-            ontologyModelFactory.createEnvironmentPolicy(name);
+            // ontologyModelFactory.createEnvironmentPolicy(name);
             object = databaseModelFactory.createEnvironmentPolicy(name);
         }
         return object;
     }
 
     public EnvironmentPolicy getEnvironmentPolicy(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getEnvironmentPolicy(name);
         } else {
             return databaseModelFactory.getEnvironmentPolicy(name);
@@ -1045,7 +1162,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<EnvironmentPolicy> getAllEnvironmentPolicyInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllEnvironmentPolicyInstances();
         } else {
             return databaseModelFactory.getAllEnvironmentPolicyInstances();
@@ -1054,18 +1171,18 @@ public class ModelAccess implements ModelFactory {
 
     public ITFacilityResourceAdaptationAction createITFacilityResourceAdaptationAction(String name) {
         ITFacilityResourceAdaptationAction object;
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createITFacilityResourceAdaptationAction(name);
-            databaseModelFactory.createITFacilityResourceAdaptationAction(name);
+            //databaseModelFactory.createITFacilityResourceAdaptationAction(name);
         } else {
-            ontologyModelFactory.createITFacilityResourceAdaptationAction(name);
+            // ontologyModelFactory.createITFacilityResourceAdaptationAction(name);
             object = databaseModelFactory.createITFacilityResourceAdaptationAction(name);
         }
         return object;
     }
 
     public ITFacilityResourceAdaptationAction getITFacilityResourceAdaptationAction(String name) {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getITFacilityResourceAdaptationAction(name);
         } else {
             return databaseModelFactory.getITFacilityResourceAdaptationAction(name);
@@ -1073,7 +1190,7 @@ public class ModelAccess implements ModelFactory {
     }
 
     public Collection<ITFacilityResourceAdaptationAction> getAllITFacilityResourceAdaptationActionInstances() {
-        if (primaryAccessIsOntology) {
+        if (accessType == ONTOLOGY_ACCESS) {
             return ontologyModelFactory.getAllITFacilityResourceAdaptationActionInstances();
         } else {
             return databaseModelFactory.getAllITFacilityResourceAdaptationActionInstances();

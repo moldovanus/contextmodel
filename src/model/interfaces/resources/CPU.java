@@ -12,8 +12,6 @@ import java.util.List;
 public interface CPU extends SimpleResource {
     List<Core> getAssociatedCores();
 
-    boolean hasAssociatedCores();
-
     void setAssociatedCores(List<Core> newAssociatedCores);
 
     float getCacheRate();

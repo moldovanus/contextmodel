@@ -43,7 +43,7 @@ public class PelletJena {
         owlModel = null;
         try {
             owlModel = ProtegeOWL.createJenaOWLModelFromURI(ontologyDataCenterFile.toURI().toString());
-            protegeFactory = new OntologyModelFactory(owlModel);
+            protegeFactory = new OntologyModelFactory();
         } catch (OntologyLoadException e) {
             e.printStackTrace();
         }

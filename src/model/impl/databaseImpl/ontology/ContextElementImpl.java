@@ -11,14 +11,18 @@ import model.interfaces.ContextElement;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class ContextElementImpl extends DefaultOWLIndividual implements ContextElement {
-    protected String id;
+    protected Integer id;
     protected String name;
 
-    public String getId() {
+    {
+        id = -1;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
