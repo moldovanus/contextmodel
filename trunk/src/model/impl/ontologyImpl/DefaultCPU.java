@@ -3,11 +3,12 @@ package model.impl.ontologyImpl;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import model.interfaces.ContextElement;
 import model.interfaces.resources.CPU;
+import model.interfaces.resources.Core;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -28,10 +29,71 @@ public class DefaultCPU extends DefaultSimpleResource
     }
 
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#associatedCores
+
+    public List<Core> getAssociatedCores() {
+        return new ArrayList<Core>(getPropertyValuesAs(getAssociatedCoresProperty(), Core.class));
+    }
+
+
+    public RDFProperty getAssociatedCoresProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#associatedCores";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasAssociatedCores() {
+        return getPropertyValueCount(getAssociatedCoresProperty()) > 0;
+    }
+
+
+    public Iterator listAssociatedCores() {
+        return listPropertyValuesAs(getAssociatedCoresProperty(), Core.class);
+    }
+
+
+    public void addAssociatedCores(Core newAssociatedCores) {
+        addPropertyValue(getAssociatedCoresProperty(), newAssociatedCores);
+    }
+
+
+    public void removeAssociatedCores(Core oldAssociatedCores) {
+        removePropertyValue(getAssociatedCoresProperty(), oldAssociatedCores);
+    }
+
+
+    public void setAssociatedCores(List<Core> newAssociatedCores) {
+        setPropertyValues(getAssociatedCoresProperty(), newAssociatedCores);
+    }
+
+
+    public float getCacheRate() {
+        return getPropertyValueLiteral(getCacheRateProperty()).getFloat();
+    }
+
+
+    public RDFProperty getCacheRateProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cacheRate";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasCacheRate() {
+        return getPropertyValueCount(getCacheRateProperty()) > 0;
+    }
+
+
+    public void setCacheRate(float newCacheRate) {
+        setPropertyValue(getCacheRateProperty(), new java.lang.Float(newCacheRate));
+    }
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#clockRate
 
-    public Collection getClockRate() {
-        return getPropertyValues(getClockRateProperty());
+    public float getClockRate() {
+        return getPropertyValueLiteral(getClockRateProperty()).getFloat();
     }
 
 
@@ -47,85 +109,9 @@ public class DefaultCPU extends DefaultSimpleResource
     }
 
 
-    public Iterator listClockRate() {
-        return listPropertyValues(getClockRateProperty());
+    public void setClockRate(float newClockRate) {
+        setPropertyValue(getClockRateProperty(), new java.lang.Float(newClockRate));
     }
 
 
-    public void addClockRate(float newClockRate) {
-        addPropertyValue(getClockRateProperty(), newClockRate);
-    }
-
-
-    public void removeClockRate(float oldClockRate) {
-        removePropertyValue(getClockRateProperty(), oldClockRate);
-    }
-
-
-    public void setClockRate(Collection newClockRate) {
-        setPropertyValues(getClockRateProperty(), newClockRate);
-    }
-
-
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
-
-    public Collection getPartOf() {
-        return getPropertyValuesAs(getPartOfProperty(), ContextElement.class);
-    }
-
-
-    public RDFProperty getPartOfProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
-    }
-
-
-    public boolean hasPartOf() {
-        return getPropertyValueCount(getPartOfProperty()) > 0;
-    }
-
-
-    public Iterator listPartOf() {
-        return listPropertyValuesAs(getPartOfProperty(), ContextElement.class);
-    }
-
-
-    public void addPartOf(ContextElement newPartOf) {
-        addPropertyValue(getPartOfProperty(), newPartOf);
-    }
-
-
-    public void removePartOf(ContextElement oldPartOf) {
-        removePropertyValue(getPartOfProperty(), oldPartOf);
-    }
-
-
-    public void setPartOf(Collection newPartOf) {
-        setPropertyValues(getPartOfProperty(), newPartOf);
-    }
-
-
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#rotationSpeed
-
-    public float getRotationSpeed() {
-        return getPropertyValueLiteral(getRotationSpeedProperty()).getFloat();
-    }
-
-
-    public RDFProperty getRotationSpeedProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#rotationSpeed";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
-    }
-
-
-    public boolean hasRotationSpeed() {
-        return getPropertyValueCount(getRotationSpeedProperty()) > 0;
-    }
-
-
-    public void setRotationSpeed(float newRotationSpeed) {
-        setPropertyValue(getRotationSpeedProperty(), new java.lang.Float(newRotationSpeed));
-    }
 }

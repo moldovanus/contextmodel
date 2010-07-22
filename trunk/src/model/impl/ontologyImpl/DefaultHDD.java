@@ -28,6 +28,30 @@ public class DefaultHDD extends DefaultSimpleResource
     }
 
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#capacity
+
+    public float getCapacity() {
+        return getPropertyValueLiteral(getCapacityProperty()).getFloat();
+    }
+
+
+    public RDFProperty getCapacityProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#capacity";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasCapacity() {
+        return getPropertyValueCount(getCapacityProperty()) > 0;
+    }
+
+
+    public void setCapacity(float newCapacity) {
+        setPropertyValue(getCapacityProperty(), new java.lang.Float(newCapacity));
+    }
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
 
     public Collection getPartOf() {
