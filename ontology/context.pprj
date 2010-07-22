@@ -1,4 +1,4 @@
-; Mon Jul 12 19:57:27 GMT 2010
+; Sun Jul 18 19:21:28 GMT 2010
 ; 
 ;+ (version "3.4.4")
 ;+ (build "Build 579")
@@ -6,11 +6,11 @@
 ([BROWSER_SLOT_NAMES] of  Property_List
 
 	(properties
-		[context_ProjectKB_Class20406]
-		[context_ProjectKB_Class20407]
-		[context_ProjectKB_Class20408]
-		[context_ProjectKB_Class20409]
-		[context_ProjectKB_Class20410]))
+		[context_ProjectKB_Class20062]
+		[context_ProjectKB_Class20063]
+		[context_ProjectKB_Class20064]
+		[context_ProjectKB_Class20065]
+		[context_ProjectKB_Class20066]))
 
 ([CLSES_TAB] of  Widget
 
@@ -249,7 +249,8 @@
 
 ([context_ProjectKB_Class10052] of  Widget
 
-	(is_hidden TRUE)
+	(is_hidden FALSE)
+	(name "Algernon")
 	(property_list [context_ProjectKB_Class10053])
 	(widget_class_name "org.algernon.kb.okbc.protege.plugins.AlgernonTab"))
 
@@ -301,24 +302,6 @@
 ([context_ProjectKB_Class10063] of  Property_List
 )
 
-([context_ProjectKB_Class10064] of  Widget
-
-	(is_hidden FALSE)
-	(label "Name")
-	(name ":NAME")
-	(property_list [context_ProjectKB_Class10066])
-	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
-
-([context_ProjectKB_Class10065] of  Widget
-
-	(is_hidden FALSE)
-	(label "Comment")
-	(name "http://www.w3.org/2000/01/rdf-schema#comment")
-	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
-
-([context_ProjectKB_Class10066] of  Property_List
-)
-
 ([context_ProjectKB_Class11] of  Widget
 
 	(height 0)
@@ -365,30 +348,94 @@
 	(name "http://www.w3.org/2000/01/rdf-schema#seeAlso")
 	(property_list [context_ProjectKB_Class21]))
 
-([context_ProjectKB_Class20406] of  String
+([context_ProjectKB_Class20007] of  Widget
+
+	(is_hidden FALSE)
+	(label "Name")
+	(name ":NAME")
+	(property_list [context_ProjectKB_Class20009])
+	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
+
+([context_ProjectKB_Class20008] of  Widget
+
+	(is_hidden FALSE)
+	(label "Comment")
+	(name "http://www.w3.org/2000/01/rdf-schema#comment")
+	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
+
+([context_ProjectKB_Class20009] of  Property_List
+)
+
+([context_ProjectKB_Class20057] of  String
+
+	(name "JavaCodeFileName")
+	(string_value "C:\\Users\\Administrator\\Desktop\\generatedCode"))
+
+([context_ProjectKB_Class20058] of  Boolean
+
+	(boolean_value FALSE)
+	(name "JavaCodeAbstract"))
+
+([context_ProjectKB_Class20059] of  Boolean
+
+	(boolean_value FALSE)
+	(name "JavaCodeSet"))
+
+([context_ProjectKB_Class20060] of  Boolean
+
+	(boolean_value FALSE)
+	(name "JavaCodeUsePrefix"))
+
+([context_ProjectKB_Class20061] of  String
+
+	(name "JavaCodeFactoryClassName")
+	(string_value "MyFactory"))
+
+([context_ProjectKB_Class20062] of  String
 
 	(name "http://www.w3.org/2002/07/owl#Class")
 	(string_value "%3ANAME"))
 
-([context_ProjectKB_Class20407] of  String
+([context_ProjectKB_Class20063] of  String
 
 	(name ":INSTANCE-ANNOTATION")
 	(string_value "%3AANNOTATION-TEXT"))
 
-([context_ProjectKB_Class20408] of  String
+([context_ProjectKB_Class20064] of  String
 
 	(name ":META-CLASS")
 	(string_value "%3ANAME"))
 
-([context_ProjectKB_Class20409] of  String
+([context_ProjectKB_Class20065] of  String
 
 	(name "http://www.w3.org/2002/07/owl#Thing")
 	(string_value "%3ANAME"))
 
-([context_ProjectKB_Class20410] of  String
+([context_ProjectKB_Class20066] of  String
 
 	(name ":PAL-CONSTRAINT")
 	(string_value "%3APAL-NAME"))
+
+([context_ProjectKB_Class20067] of  Map_Entry
+
+	(key "suppress_instance_counting")
+	(key_class "java.lang.String")
+	(value "false")
+	(value_class "java.lang.String"))
+
+([context_ProjectKB_Class20068] of  Map_Entry
+
+	(key "change_tracking_active")
+	(key_class "java.lang.String")
+	(value "true")
+	(value_class "java.lang.String"))
+
+([context_ProjectKB_Class20069] of  Map_Entry
+
+	(key "add_name_on_instance_form")
+	(key_class "java.lang.String")
+	(value "true")
+	(value_class "java.lang.String"))
 
 ([context_ProjectKB_Class21] of  Property_List
 )
@@ -464,8 +511,8 @@
 ([context_ProjectKB_Class6] of  Property_List
 
 	(properties
-		[context_ProjectKB_Class10064]
-		[context_ProjectKB_Class10065]))
+		[context_ProjectKB_Class20007]
+		[context_ProjectKB_Class20008]))
 
 ([context_ProjectKB_Class8] of  Property_List
 
@@ -623,7 +670,8 @@
 	(display_multi_parent_class_icon FALSE)
 	(is_readonly FALSE)
 	(tabbed_instance_form_layout TRUE)
-	(update_modification_slots FALSE))
+	(undo_enabled TRUE)
+	(update_modification_slots TRUE))
 
 ([Instance_581] of  Widget
 
@@ -1205,12 +1253,19 @@
 	(widget_class_name "edu.stanford.smi.protegex.owl.ui.widget.OWLFormWidget"))
 
 ([KB_325529_Class0] of  Map
-)
+
+	(entries
+		[context_ProjectKB_Class20067]
+		[context_ProjectKB_Class20068]
+		[context_ProjectKB_Class20069]))
 
 ([KB_325529_Class4] of  String
 
 	(name "owl_file_name")
 	(string_value "context.owl"))
+
+([KB_352060_Class3] of  Map
+)
 
 ([KB_444675_Instance_0] of  String
 
@@ -1223,9 +1278,6 @@
 	(name "http://protege.stanford.edu/plugins/owl/protege#ExternalResource")
 	(property_list [XY_Instance_890])
 	(widget_class_name "edu.stanford.smi.protegex.owl.ui.widget.OWLFormWidget"))
-
-([KB_596406_Class0] of  Map
-)
 
 ([KB_632156_Instance_0] of  String
 
@@ -6036,7 +6088,7 @@
 		"http://www.w3.org/2001/XMLSchema#decimal"
 		"http://www.w3.org/2001/XMLSchema#unsignedShort"
 		"http://www.w3.org/2003/11/swrl#classPredicate")
-	(journaling_enabled FALSE)
+	(journaling_enabled TRUE)
 	(next_frame_number 0)
 	(options [Instance_48])
 	(property_map [KB_325529_Class0])
@@ -6045,18 +6097,48 @@
 		[Instance_2534]
 		[Instance_86]
 		[Instance_2600]
-		[FORMS_TAB]
 		[Instance_3234]
+		[KB_865583_Instance_8]
+		[KB_865583_Instance_10]
+		[context_ProjectKB_Class10052]
+		[context_ProjectKB_Class10050]
+		[context_ProjectKB_Class10048]
+		[context_ProjectKB_Class10018]
 		[Instance_43]
 		[CLSES_TAB]
+		[context_ProjectKB_Class10046]
 		[KB_865583_Instance_6]
+		[context_ProjectKB_Class10022]
+		[FORMS_TAB]
 		[INSTANCES_TAB]
+		[context_ProjectKB_Class10036]
+		[context_ProjectKB_Class10042]
+		[context_ProjectKB_Class10040]
 		[Instance_45]
+		[context_ProjectKB_Class10034]
+		[context_ProjectKB_Class10044]
+		[context_ProjectKB_Class10016]
+		[context_ProjectKB_Class10010]
+		[context_ProjectKB_Class10006]
 		[KB_865583_Instance_12]
-		[KB_865583_Instance_8]
+		[context_ProjectKB_Class10062]
+		[context_ProjectKB_Class10032]
+		[context_ProjectKB_Class10028]
+		[context_ProjectKB_Class10030]
+		[context_ProjectKB_Class10008]
 		[KB_865583_Instance_4]
 		[SLOTS_TAB]
-		[KB_865583_Instance_10]))
+		[context_ProjectKB_Class10012]
+		[context_ProjectKB_Class10004]
+		[context_ProjectKB_Class10058]
+		[context_ProjectKB_Class10026]
+		[context_ProjectKB_Class10024]
+		[context_ProjectKB_Class10038]
+		[context_ProjectKB_Class10056]
+		[context_ProjectKB_Class10020]
+		[context_ProjectKB_Class10054]
+		[context_ProjectKB_Class10060]
+		[context_ProjectKB_Class10014]))
 
 ([SLOTS_TAB] of  Widget
 
@@ -6078,7 +6160,12 @@
 		[KB_632156_Instance_0]
 		[KB_325529_Class4]
 		[empty.owl_ProjectKB_Class5]
-		[empty.owl_ProjectKB_Class6]))
+		[empty.owl_ProjectKB_Class6]
+		[context_ProjectKB_Class20057]
+		[context_ProjectKB_Class20058]
+		[context_ProjectKB_Class20059]
+		[context_ProjectKB_Class20060]
+		[context_ProjectKB_Class20061]))
 
 ([STANDARD_CLASS_FORM_WIDGET] of  Widget
 

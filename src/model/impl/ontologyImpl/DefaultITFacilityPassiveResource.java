@@ -24,6 +24,54 @@ public class DefaultITFacilityPassiveResource extends DefaultServiceCenterITFaci
     }
 
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#maximumValue
+
+    public float getMaximumValue() {
+        return getPropertyValueLiteral(getMaximumValueProperty()).getFloat();
+    }
+
+
+    public RDFProperty getMaximumValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#maximumValue";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasMaximumValue() {
+        return getPropertyValueCount(getMaximumValueProperty()) > 0;
+    }
+
+
+    public void setMaximumValue(float newMaximumValue) {
+        setPropertyValue(getMaximumValueProperty(), new java.lang.Float(newMaximumValue));
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#minimumValue
+
+    public float getMinimumValue() {
+        return getPropertyValueLiteral(getMinimumValueProperty()).getFloat();
+    }
+
+
+    public RDFProperty getMinimumValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#minimumValue";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasMinimumValue() {
+        return getPropertyValueCount(getMinimumValueProperty()) > 0;
+    }
+
+
+    public void setMinimumValue(float newMinimumValue) {
+        setPropertyValue(getMinimumValueProperty(), new java.lang.Float(newMinimumValue));
+    }
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#recordedValue
 
     public Double getRecordedValue() {

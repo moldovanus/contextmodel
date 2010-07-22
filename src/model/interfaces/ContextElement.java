@@ -1,5 +1,7 @@
 package model.interfaces;
 
+import edu.stanford.smi.protegex.owl.model.OWLIndividual;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -7,7 +9,7 @@ package model.interfaces;
  * Time: 10:55:19 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface ContextElement {
+public interface ContextElement extends OWLIndividual {
     String getName();
 
     void setName(String s);

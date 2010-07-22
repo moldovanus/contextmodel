@@ -112,7 +112,7 @@ public class DefaultContextPolicy extends DefaultContextElement
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policySubject
 
     public List<ContextResource> getPolicySubject() {
-        return new ArrayList<ContextResource>(getPropertyValuesAs(getPolicySubjectProperty(), ContextResource.class));
+        return new ArrayList<ContextResource>(getPropertyValuesAs(getPolicySubjectProperty(), DefaultContextResource.class));
     }
 
 

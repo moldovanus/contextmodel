@@ -1,6 +1,7 @@
 package model.impl.ontologyImpl;
 
 
+import edu.stanford.smi.protegex.owl.javacode.ProtegeJavaMapping;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
@@ -29,46 +30,46 @@ public class OntologyModelFactory implements ModelFactory {
 
     private OWLModel owlModel;
 
-//    static {
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DPMAction", DPMAction.class, DefaultDPMAction.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITComputingResourceAdaptationAction", ITComputingResourceAdaptationAction.class, DefaultITComputingResourceAdaptationAction.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ContextAction", ContextAction.class, DefaultContextAction.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDDIntensiveActivity", HDDIntensiveActivity.class, DefaultHDDIntensiveActivity.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationActivity", ApplicationActivity.class, DefaultApplicationActivity.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#GPI_KPI_Policy", GPI_KPI_Policy.class, DefaultGPI_KPI_Policy.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ContextPolicy", ContextPolicy.class, DefaultContextPolicy.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ServiceCenterITComputingResource", ServiceCenterITComputingResource.class, DefaultServiceCenterITComputingResource.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ContextResource", ContextResource.class, DefaultContextResource.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ServiceCenterServer", ServiceCenterServer.class, DefaultServiceCenterServer.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ComplexResource", ComplexResource.class, DefaultComplexResource.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ContextElement", ContextElement.class, DefaultContextElement.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ServiceCenterITFacilityResource", ServiceCenterITFacilityResource.class, DefaultServiceCenterITFacilityResource.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#BusinessContextResource", BusinessContextResource.class, DefaultBusinessContextResource.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Application", Application.class, DefaultApplication.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPUIntensiveActivity", CPUIntensiveActivity.class, DefaultCPUIntensiveActivity.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationAdaptationAction", ApplicationAdaptationAction.class, DefaultApplicationAdaptationAction.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationRedesign", ApplicationRedesign.class, DefaultApplicationRedesign.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityActiveResource", ITFacilityActiveResource.class, DefaultITFacilityActiveResource.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDD", HDD.class, DefaultHDD.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SimpleResource", SimpleResource.class, DefaultSimpleResource.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITComputingContextPolicy", ITComputingContextPolicy.class, DefaultITComputingContextPolicy.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityPassiveResource", ITFacilityPassiveResource.class, DefaultITFacilityPassiveResource.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MigrateActivity", MigrateActivity.class, DefaultMigrateActivity.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ConsolidationAction", ConsolidationAction.class, DefaultConsolidationAction.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Sensor", Sensor.class, DefaultSensor.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Actuator", Actuator.class, DefaultActuator.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#BusinessPolicy", BusinessPolicy.class, DefaultBusinessPolicy.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEM", MEM.class, DefaultMEM.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ExternalStorage", ExternalStorage.class, DefaultExternalStorage.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPU", CPU.class, DefaultCPU.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SLAPolicy", SLAPolicy.class, DefaultSLAPolicy.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEMIntensiveActivity", MEMIntensiveActivity.class, DefaultMEMIntensiveActivity.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Facility", Facility.class, DefaultFacility.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#QoSPolicy", QoSPolicy.class, DefaultQoSPolicy.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DeployActivity", DeployActivity.class, DefaultDeployActivity.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#EnvironmentPolicy", EnvironmentPolicy.class, DefaultEnvironmentPolicy.class);
-//        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction", ITFacilityResourceAdaptationAction.class, DefaultITFacilityResourceAdaptationAction.class);
-//    }
+    static {
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DPMAction", DPMAction.class, DefaultDPMAction.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITComputingResourceAdaptationAction", ITComputingResourceAdaptationAction.class, DefaultITComputingResourceAdaptationAction.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ContextAction", ContextAction.class, DefaultContextAction.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDDIntensiveActivity", HDDIntensiveActivity.class, DefaultHDDIntensiveActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationActivity", ApplicationActivity.class, DefaultApplicationActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#GPI_KPI_Policy", GPI_KPI_Policy.class, DefaultGPI_KPI_Policy.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ContextPolicy", ContextPolicy.class, DefaultContextPolicy.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ServiceCenterITComputingResource", ServiceCenterITComputingResource.class, DefaultServiceCenterITComputingResource.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ContextResource", ContextResource.class, DefaultContextResource.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ServiceCenterServer", ServiceCenterServer.class, DefaultServiceCenterServer.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ComplexResource", ComplexResource.class, DefaultComplexResource.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ContextElement", ContextElement.class, DefaultContextElement.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ServiceCenterITFacilityResource", ServiceCenterITFacilityResource.class, DefaultServiceCenterITFacilityResource.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#BusinessContextResource", BusinessContextResource.class, DefaultBusinessContextResource.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Application", Application.class, DefaultApplication.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPUIntensiveActivity", CPUIntensiveActivity.class, DefaultCPUIntensiveActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationAdaptationAction", ApplicationAdaptationAction.class, DefaultApplicationAdaptationAction.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationRedesign", ApplicationRedesign.class, DefaultApplicationRedesign.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityActiveResource", ITFacilityActiveResource.class, DefaultITFacilityActiveResource.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDD", HDD.class, DefaultHDD.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SimpleResource", SimpleResource.class, DefaultSimpleResource.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITComputingContextPolicy", ITComputingContextPolicy.class, DefaultITComputingContextPolicy.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityPassiveResource", ITFacilityPassiveResource.class, DefaultITFacilityPassiveResource.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MigrateActivity", MigrateActivity.class, DefaultMigrateActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ConsolidationAction", ConsolidationAction.class, DefaultConsolidationAction.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Sensor", Sensor.class, DefaultSensor.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Actuator", Actuator.class, DefaultActuator.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#BusinessPolicy", BusinessPolicy.class, DefaultBusinessPolicy.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEM", MEM.class, DefaultMEM.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ExternalStorage", ExternalStorage.class, DefaultExternalStorage.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPU", CPU.class, DefaultCPU.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SLAPolicy", SLAPolicy.class, DefaultSLAPolicy.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEMIntensiveActivity", MEMIntensiveActivity.class, DefaultMEMIntensiveActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Facility", Facility.class, DefaultFacility.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#QoSPolicy", QoSPolicy.class, DefaultQoSPolicy.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DeployActivity", DeployActivity.class, DefaultDeployActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#EnvironmentPolicy", EnvironmentPolicy.class, DefaultEnvironmentPolicy.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction", ITFacilityResourceAdaptationAction.class, DefaultITFacilityResourceAdaptationAction.class);
+    }
 
     public OntologyModelFactory(OWLModel owlModel) {
         this.owlModel = owlModel;

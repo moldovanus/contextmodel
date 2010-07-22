@@ -1,5 +1,6 @@
 package model.impl.databaseImpl.ontology;
 
+import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import model.interfaces.ContextElement;
 
 /**
@@ -9,7 +10,7 @@ import model.interfaces.ContextElement;
  * Time: 10:56:26 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class ContextElementImpl implements ContextElement {
+public abstract class ContextElementImpl extends DefaultOWLIndividual implements ContextElement {
     protected String id;
     protected String name;
 
