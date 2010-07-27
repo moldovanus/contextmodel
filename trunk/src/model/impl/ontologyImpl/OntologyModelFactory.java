@@ -29,6 +29,10 @@ import java.util.Iterator;
 public class OntologyModelFactory implements ModelFactory {
     public static final String ontologyFile = "./ontology/context.owl";
 
+    public void removeEntity(ContextElement element) {
+        element.delete();
+    }
+
     public void persistEntity(ContextElement entity) {
         //To change body of implemented methods use File | Settings | File Templates.
     }

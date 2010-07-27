@@ -6,13 +6,13 @@
 
     <!--<class name="Payment" table="PAYMENT">-->
     <!--<id name="id" type="long" column="PAYMENT_ID">-->
-    <!--<generator class="native"/>-->
+    <!--<generator class="native" lazy="false"/>-->
     <!--</id>-->
-    <!--<discriminator column="PAYMENT_TYPE" type="string"/>-->
-    <!--<property name="amount" column="AMOUNT"/>-->
+    <!--<discriminator column="PAYMENT_TYPE" type="string" lazy="false"/>-->
+    <!--<property name="amount" column="AMOUNT" lazy="false"/>-->
     <!--...-->
     <!--<subclass name="CreditCardPayment" discriminator-value="CREDIT">-->
-    <!--<property name="creditCardType" column="CCTYPE"/>-->
+    <!--<property name="creditCardType" column="CCTYPE" lazy="false"/>-->
     <!--...-->
     <!--</subclass>-->
     <!--<subclass name="CashPayment" discriminator-value="CASH">-->
@@ -23,86 +23,104 @@
     <!--</subclass>-->
     <!--</class>-->
 
-    <joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.ApplicationImpl"
-                     extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
-                     table="Application">
-        <key column="UID"/>
-        <property name="resourceID" type="string" column="resourceID"/>
-    </joined-subclass>
+    <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.ApplicationImpl"-->
+    <!--extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"-->
+    <!--table="Application">-->
+    <!--<key column="UID" lazy="false"/>-->
+    <!--<property name="resourceID" type="string" column="resourceID" lazy="false"/>-->
+    <!--</joined-subclass>-->
 
-    <class name="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"
-           table="ApplicationActivity" abstract="true" lazy="false">
-        <id name="id" unsaved-value="-1">
+    <!--<class name="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"-->
+    <!--table="ApplicationActivity" abstract="true" lazy="false">-->
+    <!--<id name="id" unsaved-value="-1">-->
+    <!--<generator class="increment" lazy="false"/>-->
+    <!--</id>-->
+
+    <!--<discriminator column="ActivityType" type="string" lazy="false"/>-->
+
+    <!--<property name="CPURequiredValue" column="CPURequiredValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="CPUAllocatedValue" column="CPUAllocatedValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="HDDRequiredValue" column="HDDRequiredValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="HDDAllocatedValue" column="HDDAllocatedValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="MEMAllocatedValue" column="MEMAllocatedValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="MEMRequiredValue" column="MEMRequiredValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="performanceEstimation" column="performanceEstimation" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="performanceDegradation" column="performanceDegradation" type="java.lang.Double" lazy="false"/>-->
+
+    <!--<subclass name="CPUIntensiveActivityImpl" discriminator-value="CPU">-->
+    <!--<join table="CPUIntensiveActivity">-->
+    <!--<key column="UID" lazy="false"/>-->
+    <!--</join>-->
+    <!--</subclass>-->
+    <!--<subclass name="HDDIntensiveActivityImpl" discriminator-value="HDD">-->
+    <!--<join table="HDDIntensiveActivity">-->
+    <!--<key column="UID" lazy="false"/>-->
+    <!--</join>-->
+    <!--</subclass>-->
+    <!--<subclass name="MEMIntensiveActivityImpl" discriminator-value="MEM">-->
+    <!--<join table="MEMIntensiveActivity">-->
+    <!--<key column="UID" lazy="false"/>-->
+    <!--</join>-->
+    <!--</subclass>-->
+
+    <!--</class>-->
+
+    <class name="model.impl.databaseImpl.ontology.resources.applications.HDDIntensiveActivityImpl"
+           table="ApplicationActivity" lazy="false">
+        <id name="id" column="UID" unsaved-value="-1">
             <generator class="increment"/>
         </id>
 
-        <discriminator column="ActivityType" type="string"/>
-
-        <property name="CPURequiredValue" column="CPURequiredValue" type="java.lang.Double"/>
-        <property name="CPUAllocatedValue" column="CPUAllocatedValue" type="java.lang.Double"/>
-        <property name="HDDRequiredValue" column="HDDRequiredValue" type="java.lang.Double"/>
-        <property name="HDDAllocatedValue" column="HDDAllocatedValue" type="java.lang.Double"/>
-        <property name="MEMAllocatedValue" column="MEMAllocatedValue" type="java.lang.Double"/>
-        <property name="MEMRequiredValue" column="MEMRequiredValue" type="java.lang.Double"/>
-        <property name="performanceEstimation" column="performanceEstimation" type="java.lang.Double"/>
-        <property name="performanceDegradation" column="performanceDegradation" type="java.lang.Double"/>
-
-        <subclass name="CPUIntensiveActivityImpl" discriminator-value="CPU">
-            <join table="CPUIntensiveActivity">
-                <key column="UID"/>
-            </join>
-        </subclass>
-        <subclass name="HDDIntensiveActivityImpl" discriminator-value="HDD">
-            <join table="HDDIntensiveActivity">
-                <key column="UID"/>
-            </join>
-        </subclass>
-        <subclass name="MEMIntensiveActivityImpl" discriminator-value="MEM">
-            <join table="MEMIntensiveActivity">
-                <key column="UID"/>
-            </join>
-        </subclass>
+        <property name="name" column="name" type="java.lang.String" lazy="false"/>
+        <property name="CPURequiredValue" column="CPURequiredValue" type="java.lang.Double" lazy="false"/>
+        <property name="CPUAllocatedValue" column="CPUAllocatedValue" type="java.lang.Double" lazy="false"/>
+        <property name="HDDRequiredValue" column="HDDRequiredValue" type="java.lang.Double" lazy="false"/>
+        <property name="HDDAllocatedValue" column="HDDAllocatedValue" type="java.lang.Double" lazy="false"/>
+        <property name="MEMAllocatedValue" column="MEMAllocatedValue" type="java.lang.Double" lazy="false"/>
+        <property name="MEMRequiredValue" column="MEMRequiredValue" type="java.lang.Double" lazy="false"/>
+        <property name="performanceEstimation" column="performanceEstimation" type="java.lang.Double" lazy="false"/>
+        <property name="performanceDegradation" column="performanceDegradation" type="java.lang.Double" lazy="false"/>
 
     </class>
     <!--<class name="model.impl.databaseImpl.ontology.resources.applications.ApplicationActivityImpl"-->
     <!--table="ApplicationActivity" lazy="false">-->
     <!--<id name="id" unsaved-value="-1">-->
-    <!--<generator class="increment"/>-->
+    <!--<generator class="increment" lazy="false"/>-->
     <!--</id>-->
 
-    <!--<discriminator column="ActivityType" type="string"/>-->
+    <!--<discriminator column="ActivityType" type="string" lazy="false"/>-->
 
-    <!--<property name="CPURequiredValue" column="CPURequiredValue" type="java.lang.Double"/>-->
-    <!--<property name="CPUAllocatedValue" column="CPUAllocatedValue" type="java.lang.Double"/>-->
-    <!--<property name="HDDRequiredValue" column="HDDRequiredValue" type="java.lang.Double"/>-->
-    <!--<property name="HDDAllocatedValue" column="HDDAllocatedValue" type="java.lang.Double"/>-->
-    <!--<property name="MEMAllocatedValue" column="MEMAllocatedValue" type="java.lang.Double"/>-->
-    <!--<property name="MEMRequiredValue" column="MEMRequiredValue" type="java.lang.Double"/>-->
-    <!--<property name="performanceEstimation" column="performanceEstimation" type="java.lang.Double"/>-->
-    <!--<property name="performanceDegradation" column="performanceDegradation" type="java.lang.Double"/>-->
+    <!--<property name="CPURequiredValue" column="CPURequiredValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="CPUAllocatedValue" column="CPUAllocatedValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="HDDRequiredValue" column="HDDRequiredValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="HDDAllocatedValue" column="HDDAllocatedValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="MEMAllocatedValue" column="MEMAllocatedValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="MEMRequiredValue" column="MEMRequiredValue" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="performanceEstimation" column="performanceEstimation" type="java.lang.Double" lazy="false"/>-->
+    <!--<property name="performanceDegradation" column="performanceDegradation" type="java.lang.Double" lazy="false"/>-->
 
-    <!--<subclass name="CPUIntensiveActivityImpl" discriminator-value="CPU"/>-->
-    <!--<subclass name="HDDIntensiveActivityImpl" discriminator-value="HDD"/>-->
-    <!--<subclass name="MEMIntensiveActivityImpl" discriminator-value="MEM"/>-->
+    <!--<subclass name="CPUIntensiveActivityImpl" discriminator-value="CPU" lazy="false"/>-->
+    <!--<subclass name="HDDIntensiveActivityImpl" discriminator-value="HDD" lazy="false"/>-->
+    <!--<subclass name="MEMIntensiveActivityImpl" discriminator-value="MEM" lazy="false"/>-->
 
     <!--</class>-->
 
     <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.CPUIntensiveActivityImpl"-->
     <!--extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"-->
     <!--table="CPUIntensiveActivity">-->
-    <!--<key column="UID"/>-->
+    <!--<key column="UID" lazy="false"/>-->
     <!--</joined-subclass>-->
 
     <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.HDDIntensiveActivityImpl"-->
     <!--extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"-->
     <!--table="HDDIntensiveActivity">-->
-    <!--<key column="UID"/>-->
+    <!--<key column="UID" lazy="false"/>-->
     <!--</joined-subclass>-->
 
     <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.applications.MEMIntensiveActivityImpl"-->
     <!--extends="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"-->
     <!--table="MEMIntensiveActivity">-->
-    <!--<key column="UID"/>-->
+    <!--<key column="UID" lazy="false"/>-->
     <!--</joined-subclass>-->
 
 

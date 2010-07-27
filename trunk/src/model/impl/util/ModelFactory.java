@@ -11,6 +11,8 @@ import model.interfaces.ContextElement;
  */
 public interface ModelFactory {
 
+    void removeEntity(ContextElement element);
+
     void persistEntity(ContextElement entity);
 
     model.interfaces.actions.DPMAction createDPMAction(java.lang.String name);

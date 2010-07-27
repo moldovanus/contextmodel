@@ -52,6 +52,22 @@ public class ModelAccess implements ModelFactory {
         this.accessType = accessType;
     }
 
+    public void removeEntity(ContextElement entity) {
+        switch (accessType) {
+            case ONTOLOGY_ACCESS:
+                ontologyModelFactory.removeEntity(entity);
+                break;
+            case DATABASE_ACCESS:
+                databaseModelFactory.removeEntity(entity);
+                break;
+            case PREVAYLER_ACCESS:
+                prevailerModelFactory.removeEntity(entity);
+                break;
+            default:
+                throw new UnsupportedOperationException("Invalid access type");
+        }
+    }
+
     public void persistEntity(ContextElement entity) {
         switch (accessType) {
             case ONTOLOGY_ACCESS:
