@@ -40,4 +40,12 @@ public class GetAllResourceInstancesTransaction implements TransactionWithQuery 
             throw new UnsupportedOperationException("Unsupported class type for query");
         }
     }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
 }

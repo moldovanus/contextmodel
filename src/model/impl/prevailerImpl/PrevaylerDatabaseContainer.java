@@ -43,6 +43,10 @@ public class PrevaylerDatabaseContainer implements ModelFactory, Serializable {
         return containerInstance;
     }
 
+    public void removeEntity(ContextElement element) {
+        elements.remove(element.getName());
+    }
+
     public void persistEntity(ContextElement entity) {
         String key = entity.getName();
         if (elements.containsKey(key)) {

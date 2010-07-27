@@ -3,6 +3,7 @@ package model.impl.prevailerImpl;
 import model.impl.prevailerImpl.transactions.GetAllResourceInstancesTransaction;
 import model.impl.prevailerImpl.transactions.GetResourceByNameTransaction;
 import model.impl.prevailerImpl.transactions.PersistEntityTransaction;
+import model.impl.prevailerImpl.transactions.RemoveResourceTransaction;
 import model.impl.util.ModelFactory;
 import model.interfaces.ContextElement;
 import model.interfaces.actions.*;
@@ -31,10 +32,10 @@ public class PrevailerModelFactory implements ModelFactory {
     public PrevailerModelFactory() {
         PrevaylerFactory factory = new PrevaylerFactory();
         factory.configurePrevalenceDirectory("./contextModel_1");
-        factory.configureTransientMode(true);
+        //factory.configureTransientMode(true);
         factory.configurePrevalentSystem(PrevaylerDatabaseContainer.getContainerInstance());
         factory.configureSnapshotSerializer(new SkaringaSerializer());
-//        factory.configureJournalSerializer(new SkaringaSerializer());
+//      factory.configureJournalSerializer(new SkaringaSerializer());
 
         try {
             java.util.Date before = new Date();
@@ -44,7 +45,7 @@ public class PrevailerModelFactory implements ModelFactory {
 
             java.util.Date result = new Date(after.getTime() - before.getTime());
             System.out.println("Prevayler load time: " + result.getMinutes() + ":" + result.getSeconds());
-            System.exit(1);
+//            System.exit(1);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (ClassNotFoundException e) {
@@ -55,6 +56,10 @@ public class PrevailerModelFactory implements ModelFactory {
 
     public void takeSnapshot() throws IOException {
         prevailer.takeSnapshot();
+    }
+
+    public void removeEntity(ContextElement element) {
+        prevailer.execute(new RemoveResourceTransaction(element));
     }
 
     public void persistEntity(ContextElement entity) {

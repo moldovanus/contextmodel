@@ -38,7 +38,7 @@ public class DatabaseModelFactory implements ModelFactory {
         Criteria criteria = session.createCriteria(entityType);
         criteria.add(Restrictions.eq("name", name));
         T object = (T) criteria.uniqueResult();
-        session.flush();
+        // session.flush();
         transaction.commit();
         return object;
     }
@@ -48,17 +48,32 @@ public class DatabaseModelFactory implements ModelFactory {
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(entityType);
         Collection object = criteria.list();
-        session.flush();
+        // session.flush();
         transaction.commit();
         return object;
     }
 
 
-    public void persistEntity(ContextElement entity) {
+    public void removeEntity(ContextElement element) {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        session.flush();
+        session.delete(element);
+//        Query query = session.createSQLQuery("Delete from equals where uid = " + ((ContextElementImpl) element).getId());
+//        query.executeUpdate();
+        // session.flush();
+        transaction.commit();
+    }
+
+    public void persistEntity(ContextElement entity) {
+
+        Session session = HibernateUtil.getSession();
+
+        Transaction transaction = session.beginTransaction();
+        // session.flush();
         session.saveOrUpdate(entity);
+//        Query query = session.createSQLQuery("Insert into equals values(" + ((ContextElementImpl) entity).getId()
+//                + "," + ((ContextElementImpl) entity).getId() + ")");
+//        query.executeUpdate();
         transaction.commit();
     }
 
@@ -68,7 +83,7 @@ public class DatabaseModelFactory implements ModelFactory {
         DPMAction dpmAction = new DPMActionImpl();
         dpmAction.setName(name);
         session.save(dpmAction);
-        session.flush();
+        // session.flush();
         transaction.commit();
         return dpmAction;
     }
@@ -82,7 +97,7 @@ public class DatabaseModelFactory implements ModelFactory {
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(DPMAction.class);
         List dpmActions = criteria.list();
-        session.flush();
+        // session.flush();
         transaction.commit();
         return dpmActions;
     }
@@ -93,7 +108,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ITComputingResourceAdaptationAction object = new ITComputingResourcesAdaptationActionImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        // session.flush();
         transaction.commit();
         return object;
     }
@@ -112,7 +127,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ContextAction object = new ContextActionImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -131,7 +146,7 @@ public class DatabaseModelFactory implements ModelFactory {
         HDDIntensiveActivity object = new HDDIntensiveActivityImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+//       //// session.flush();
         transaction.commit();
         return object;
     }
@@ -150,7 +165,7 @@ public class DatabaseModelFactory implements ModelFactory {
 //        ApplicationActivity object = new ApplicationActivityImpl();
 //        object.setName(name);
 //        session.save(object);
-//        session.flush();
+//       //// session.flush();
 //        transaction.commit();
 //        return object;
         return null;
@@ -170,7 +185,7 @@ public class DatabaseModelFactory implements ModelFactory {
         GPI_KPI_Policy object = new GPI_KPI_PolicyImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -189,7 +204,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ContextPolicy object = new ContextPolicyImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -208,7 +223,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ServiceCenterITComputingResource object = new ServiceCenterITComputingResourceImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -235,7 +250,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ServiceCenterServer object = new ServiceCenterServerImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -254,7 +269,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ComplexResource object = new ComplexResourceImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -282,7 +297,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ServiceCenterITFacilityResource object = new ServiceCenterITFacilityResourceImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -301,7 +316,7 @@ public class DatabaseModelFactory implements ModelFactory {
         BusinessContextResource object = new BusinessContextResourceImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -320,7 +335,7 @@ public class DatabaseModelFactory implements ModelFactory {
         Application object = new ApplicationImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -339,7 +354,7 @@ public class DatabaseModelFactory implements ModelFactory {
         CPUIntensiveActivity object = new CPUIntensiveActivityImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -358,7 +373,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ApplicationAdaptationAction object = new ApplicationAdaptationActionImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -377,7 +392,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ApplicationRedesign object = new ApplicationRedesignImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -396,7 +411,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ITFacilityActiveResource object = new ITFacilityActiveResourceImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -415,7 +430,7 @@ public class DatabaseModelFactory implements ModelFactory {
         HDD object = new HDDImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -434,7 +449,7 @@ public class DatabaseModelFactory implements ModelFactory {
         SimpleResource object = new SimpleResourceImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -453,7 +468,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ITComputingContextPolicy object = new ITComputingContextPolicyImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -472,7 +487,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ITFacilityPassiveResource object = new ITFacilityPassiveResourceImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -491,7 +506,7 @@ public class DatabaseModelFactory implements ModelFactory {
         MigrateActivity object = new MigrateActivityImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -510,7 +525,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ConsolidationAction object = new ConsolidationActionImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -529,7 +544,7 @@ public class DatabaseModelFactory implements ModelFactory {
         Sensor object = new SensorImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -548,7 +563,7 @@ public class DatabaseModelFactory implements ModelFactory {
         Actuator object = new ActuatorImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -567,7 +582,7 @@ public class DatabaseModelFactory implements ModelFactory {
         BusinessPolicy object = new BusinessPolicyImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -586,7 +601,7 @@ public class DatabaseModelFactory implements ModelFactory {
         MEM object = new MEMImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -605,7 +620,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ExternalStorage object = new ExternalStorageImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -624,7 +639,7 @@ public class DatabaseModelFactory implements ModelFactory {
         CPU object = new CPUImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -643,7 +658,7 @@ public class DatabaseModelFactory implements ModelFactory {
         SLAPolicy object = new SLAPolicyImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -662,7 +677,7 @@ public class DatabaseModelFactory implements ModelFactory {
         MEMIntensiveActivity object = new MEMIntensiveActivityImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -681,7 +696,7 @@ public class DatabaseModelFactory implements ModelFactory {
         Facility object = new FacilityImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -700,7 +715,7 @@ public class DatabaseModelFactory implements ModelFactory {
         QoSPolicy object = new QoSPolicyImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -719,7 +734,7 @@ public class DatabaseModelFactory implements ModelFactory {
         DeployActivity object = new DeployActivityImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -738,7 +753,7 @@ public class DatabaseModelFactory implements ModelFactory {
         EnvironmentPolicy object = new EnvironmentPolicyImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }
@@ -757,7 +772,7 @@ public class DatabaseModelFactory implements ModelFactory {
         ITFacilityResourceAdaptationAction object = new ITFacilityResourcesAdaptationActionImpl();
         object.setName(name);
         session.save(object);
-        session.flush();
+        //// session.flush();
         transaction.commit();
         return object;
     }

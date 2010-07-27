@@ -11,6 +11,16 @@ import model.interfaces.resources.applications.ApplicationActivity;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class ApplicationActivityImpl extends BusinessContextResourceImpl implements ApplicationActivity {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private Double CPURequiredValue;
     private Double HDDRequiredValue;
     private Double MEMRequiredValue;

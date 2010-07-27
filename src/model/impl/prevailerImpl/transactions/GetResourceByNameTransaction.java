@@ -19,6 +19,7 @@ public class GetResourceByNameTransaction implements TransactionWithQuery {
     private String resourceType;
     private String resourceName;
 
+
     public GetResourceByNameTransaction() {
     }
 
@@ -38,5 +39,21 @@ public class GetResourceByNameTransaction implements TransactionWithQuery {
         } else {
             throw new UnsupportedOperationException("Unsupported class type for query");
         }
+    }
+
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
     }
 }
