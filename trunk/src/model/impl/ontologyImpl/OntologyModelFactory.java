@@ -118,7 +118,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<DPMAction> getAllDPMActionInstances() {
-        return getAllDPMActionInstances(false);
+        return getAllDPMActionInstances(true);
     }
 
     public Collection<DPMAction> getAllDPMActionInstances(boolean transitive) {
@@ -161,7 +161,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ITComputingResourceAdaptationAction> getAllITComputingResourceAdaptationActionInstances() {
-        return getAllITComputingResourceAdaptationActionInstances(false);
+        return getAllITComputingResourceAdaptationActionInstances(true);
     }
 
     public Collection<ITComputingResourceAdaptationAction> getAllITComputingResourceAdaptationActionInstances(boolean transitive) {
@@ -204,7 +204,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ContextAction> getAllContextActionInstances() {
-        return getAllContextActionInstances(false);
+        return getAllContextActionInstances(true);
     }
 
     public Collection<ContextAction> getAllContextActionInstances(boolean transitive) {
@@ -247,7 +247,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<HDDIntensiveActivity> getAllHDDIntensiveActivityInstances() {
-        return getAllHDDIntensiveActivityInstances(false);
+        return getAllHDDIntensiveActivityInstances(true);
     }
 
     public Collection<HDDIntensiveActivity> getAllHDDIntensiveActivityInstances(boolean transitive) {
@@ -290,7 +290,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ApplicationActivity> getAllApplicationActivityInstances() {
-        return getAllApplicationActivityInstances(false);
+        return getAllApplicationActivityInstances(true);
     }
 
     public Collection<ApplicationActivity> getAllApplicationActivityInstances(boolean transitive) {
@@ -333,7 +333,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<GPI_KPI_Policy> getAllGPI_KPI_PolicyInstances() {
-        return getAllGPI_KPI_PolicyInstances(false);
+        return getAllGPI_KPI_PolicyInstances(true);
     }
 
     public Collection<GPI_KPI_Policy> getAllGPI_KPI_PolicyInstances(boolean transitive) {
@@ -376,7 +376,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ContextPolicy> getAllContextPolicyInstances() {
-        return getAllContextPolicyInstances(false);
+        return getAllContextPolicyInstances(true);
     }
 
     public Collection<ContextPolicy> getAllContextPolicyInstances(boolean transitive) {
@@ -419,7 +419,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ServiceCenterITComputingResource> getAllServiceCenterITComputingResourceInstances() {
-        return getAllServiceCenterITComputingResourceInstances(false);
+        return getAllServiceCenterITComputingResourceInstances(true);
     }
 
     public Collection<ServiceCenterITComputingResource> getAllServiceCenterITComputingResourceInstances(boolean transitive) {
@@ -462,7 +462,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ContextResource> getAllContextResourceInstances() {
-        return getAllContextResourceInstances(false);
+        return getAllContextResourceInstances(true);
     }
 
     public Collection<ContextResource> getAllContextResourceInstances(boolean transitive) {
@@ -505,7 +505,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ServiceCenterServer> getAllServiceCenterServerInstances() {
-        return getAllServiceCenterServerInstances(false);
+        return getAllServiceCenterServerInstances(true);
     }
 
     public Collection<ServiceCenterServer> getAllServiceCenterServerInstances(boolean transitive) {
@@ -548,7 +548,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ComplexResource> getAllComplexResourceInstances() {
-        return getAllComplexResourceInstances(false);
+        return getAllComplexResourceInstances(true);
     }
 
     public Collection<ComplexResource> getAllComplexResourceInstances(boolean transitive) {
@@ -591,7 +591,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ContextElement> getAllContextElementInstances() {
-        return getAllContextElementInstances(false);
+        return getAllContextElementInstances(true);
     }
 
     public Collection<ContextElement> getAllContextElementInstances(boolean transitive) {
@@ -634,7 +634,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ServiceCenterITFacilityResource> getAllServiceCenterITFacilityResourceInstances() {
-        return getAllServiceCenterITFacilityResourceInstances(false);
+        return getAllServiceCenterITFacilityResourceInstances(true);
     }
 
     public Collection<ServiceCenterITFacilityResource> getAllServiceCenterITFacilityResourceInstances(boolean transitive) {
@@ -677,7 +677,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<BusinessContextResource> getAllBusinessContextResourceInstances() {
-        return getAllBusinessContextResourceInstances(false);
+        return getAllBusinessContextResourceInstances(true);
     }
 
     public Collection<BusinessContextResource> getAllBusinessContextResourceInstances(boolean transitive) {
@@ -720,7 +720,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<Application> getAllApplicationInstances() {
-        return getAllApplicationInstances(false);
+        return getAllApplicationInstances(true);
     }
 
     public Collection<Application> getAllApplicationInstances(boolean transitive) {
@@ -763,7 +763,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<CPUIntensiveActivity> getAllCPUIntensiveActivityInstances() {
-        return getAllCPUIntensiveActivityInstances(false);
+        return getAllCPUIntensiveActivityInstances(true);
     }
 
     public Collection<CPUIntensiveActivity> getAllCPUIntensiveActivityInstances(boolean transitive) {
@@ -806,7 +806,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ApplicationAdaptationAction> getAllApplicationAdaptationActionInstances() {
-        return getAllApplicationAdaptationActionInstances(false);
+        return getAllApplicationAdaptationActionInstances(true);
     }
 
     public Collection<ApplicationAdaptationAction> getAllApplicationAdaptationActionInstances(boolean transitive) {
@@ -849,7 +849,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ApplicationRedesign> getAllApplicationRedesignInstances() {
-        return getAllApplicationRedesignInstances(false);
+        return getAllApplicationRedesignInstances(true);
     }
 
     public Collection<ApplicationRedesign> getAllApplicationRedesignInstances(boolean transitive) {
@@ -892,7 +892,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ITFacilityActiveResource> getAllITFacilityActiveResourceInstances() {
-        return getAllITFacilityActiveResourceInstances(false);
+        return getAllITFacilityActiveResourceInstances(true);
     }
 
     public Collection<ITFacilityActiveResource> getAllITFacilityActiveResourceInstances(boolean transitive) {
@@ -935,7 +935,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<HDD> getAllHDDInstances() {
-        return getAllHDDInstances(false);
+        return getAllHDDInstances(true);
     }
 
     public Collection<HDD> getAllHDDInstances(boolean transitive) {
@@ -978,7 +978,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<SimpleResource> getAllSimpleResourceInstances() {
-        return getAllSimpleResourceInstances(false);
+        return getAllSimpleResourceInstances(true);
     }
 
     public Collection<SimpleResource> getAllSimpleResourceInstances(boolean transitive) {
@@ -1021,7 +1021,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ITComputingContextPolicy> getAllITComputingContextPolicyInstances() {
-        return getAllITComputingContextPolicyInstances(false);
+        return getAllITComputingContextPolicyInstances(true);
     }
 
     public Collection<ITComputingContextPolicy> getAllITComputingContextPolicyInstances(boolean transitive) {
@@ -1064,7 +1064,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ITFacilityPassiveResource> getAllITFacilityPassiveResourceInstances() {
-        return getAllITFacilityPassiveResourceInstances(false);
+        return getAllITFacilityPassiveResourceInstances(true);
     }
 
     public Collection<ITFacilityPassiveResource> getAllITFacilityPassiveResourceInstances(boolean transitive) {
@@ -1107,7 +1107,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<MigrateActivity> getAllMigrateActivityInstances() {
-        return getAllMigrateActivityInstances(false);
+        return getAllMigrateActivityInstances(true);
     }
 
     public Collection<MigrateActivity> getAllMigrateActivityInstances(boolean transitive) {
@@ -1150,7 +1150,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ConsolidationAction> getAllConsolidationActionInstances() {
-        return getAllConsolidationActionInstances(false);
+        return getAllConsolidationActionInstances(true);
     }
 
     public Collection<ConsolidationAction> getAllConsolidationActionInstances(boolean transitive) {
@@ -1193,7 +1193,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<Sensor> getAllSensorInstances() {
-        return getAllSensorInstances(false);
+        return getAllSensorInstances(true);
     }
 
     public Collection<Sensor> getAllSensorInstances(boolean transitive) {
@@ -1236,7 +1236,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<Actuator> getAllActuatorInstances() {
-        return getAllActuatorInstances(false);
+        return getAllActuatorInstances(true);
     }
 
     public Collection<Actuator> getAllActuatorInstances(boolean transitive) {
@@ -1279,7 +1279,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<BusinessPolicy> getAllBusinessPolicyInstances() {
-        return getAllBusinessPolicyInstances(false);
+        return getAllBusinessPolicyInstances(true);
     }
 
     public Collection<BusinessPolicy> getAllBusinessPolicyInstances(boolean transitive) {
@@ -1322,7 +1322,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<MEM> getAllMEMInstances() {
-        return getAllMEMInstances(false);
+        return getAllMEMInstances(true);
     }
 
     public Collection<MEM> getAllMEMInstances(boolean transitive) {
@@ -1365,7 +1365,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ExternalStorage> getAllExternalStorageInstances() {
-        return getAllExternalStorageInstances(false);
+        return getAllExternalStorageInstances(true);
     }
 
     public Collection<ExternalStorage> getAllExternalStorageInstances(boolean transitive) {
@@ -1408,7 +1408,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<CPU> getAllCPUInstances() {
-        return getAllCPUInstances(false);
+        return getAllCPUInstances(true);
     }
 
     public Collection<CPU> getAllCPUInstances(boolean transitive) {
@@ -1451,7 +1451,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<SLAPolicy> getAllSLAPolicyInstances() {
-        return getAllSLAPolicyInstances(false);
+        return getAllSLAPolicyInstances(true);
     }
 
     public Collection<SLAPolicy> getAllSLAPolicyInstances(boolean transitive) {
@@ -1494,7 +1494,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<MEMIntensiveActivity> getAllMEMIntensiveActivityInstances() {
-        return getAllMEMIntensiveActivityInstances(false);
+        return getAllMEMIntensiveActivityInstances(true);
     }
 
     public Collection<MEMIntensiveActivity> getAllMEMIntensiveActivityInstances(boolean transitive) {
@@ -1537,7 +1537,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<Facility> getAllFacilityInstances() {
-        return getAllFacilityInstances(false);
+        return getAllFacilityInstances(true);
     }
 
     public Collection<Facility> getAllFacilityInstances(boolean transitive) {
@@ -1580,7 +1580,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<QoSPolicy> getAllQoSPolicyInstances() {
-        return getAllQoSPolicyInstances(false);
+        return getAllQoSPolicyInstances(true);
     }
 
     public Collection<QoSPolicy> getAllQoSPolicyInstances(boolean transitive) {
@@ -1623,7 +1623,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<DeployActivity> getAllDeployActivityInstances() {
-        return getAllDeployActivityInstances(false);
+        return getAllDeployActivityInstances(true);
     }
 
     public Collection<DeployActivity> getAllDeployActivityInstances(boolean transitive) {
@@ -1666,7 +1666,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<EnvironmentPolicy> getAllEnvironmentPolicyInstances() {
-        return getAllEnvironmentPolicyInstances(false);
+        return getAllEnvironmentPolicyInstances(true);
     }
 
     public Collection<EnvironmentPolicy> getAllEnvironmentPolicyInstances(boolean transitive) {
@@ -1709,7 +1709,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<ITFacilityResourceAdaptationAction> getAllITFacilityResourceAdaptationActionInstances() {
-        return getAllITFacilityResourceAdaptationActionInstances(false);
+        return getAllITFacilityResourceAdaptationActionInstances(true);
     }
 
     public Collection<ITFacilityResourceAdaptationAction> getAllITFacilityResourceAdaptationActionInstances(boolean transitive) {
