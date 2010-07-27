@@ -1,12 +1,20 @@
 package main;
 
+import a.a.InconsistencyException;
+import bossam.app.Answer;
+import bossam.app.IReasoner;
+import bossam.app.IReasonerFactory;
+import bossam.app.ReasonerFactory;
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.reasoner.Reasoner;
 import edu.stanford.smi.protege.exception.OntologyLoadException;
+import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
 import edu.stanford.smi.protegex.owl.jena.JenaOWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFResource;
+import edu.stanford.smi.protegex.owl.model.RDFSNamedClass;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
 import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
@@ -21,6 +29,8 @@ import model.interfaces.resources.applications.ApplicationActivity;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -36,9 +46,10 @@ public class PelletJena {
     private JenaOWLModel owlModel;
     private OntModel ontModel;
     private OntologyModelFactory protegeFactory;
+    private Reasoner reasoner;
 
     public void initializeOntology() {
-        File ontologyDataCenterFile = new File("ontology/context.owl");
+        File ontologyDataCenterFile = new File("./ontology/myNewOntology.rdf-xml.owl");
         protegeFactory = null;
         owlModel = null;
         try {
@@ -48,9 +59,30 @@ public class PelletJena {
             e.printStackTrace();
         }
         /***************************Pellet Reasoner*****************************/
+        long start, end, total;
+        start = System.currentTimeMillis();
+        /*         
+        SWRLFactory factory = new SWRLFactory(owlModel);
+
+ 
+
+                String swrlRule =  "[rule1: ((?a ServiceCenterITFacilityResource * ), " +
+                             "(?x hasAssociatedActions false))   -> \n" +
+                             "(ITFacilityPassiveResource(?x))]";
+
+                      GenericRuleReasoner ruleReasoner = new GenericRuleReasoner(Rule.parseRules(swrlRule));
+         ruleReasoner.setDerivationLogging(true);
+            OntModelSpec spec = new OntModelSpec(PelletReasonerFactory.THE_SPEC);
+             spec.setReasoner(ruleReasoner);
+        ontModel = ModelFactory.createOntologyModel(spec);
+        ontModel.add(owlModel.getJenaModel());
+                 end = System.currentTimeMillis();
+                total = end - start;
+                System.out.println("AAA "+total);
+         */
         ontModel = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
         ontModel.add(owlModel.getJenaModel());
-        Reasoner reasoner = PelletReasonerFactory.theInstance().create();
+        reasoner = PelletReasonerFactory.theInstance().create();
         Model emptyModel = ModelFactory.createDefaultModel();
         InfModel model = ModelFactory.createInfModel(reasoner, emptyModel);
         model.add(owlModel.getJenaModel());
@@ -58,6 +90,7 @@ public class PelletJena {
 
     public void addRules() {
         Collection<ITComputingContextPolicy> energyPolicies = protegeFactory.getAllITComputingContextPolicyInstances();
+
         SWRLFactory factory = new SWRLFactory(owlModel);
         String swrlRule = "";
         for (Iterator it = energyPolicies.iterator(); it.hasNext();) {
@@ -83,6 +116,8 @@ public class PelletJena {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
+
+
         Collection<BusinessPolicy> businessPolicies = protegeFactory.getAllBusinessPolicyInstances();
         for (Iterator it = businessPolicies.iterator(); it.hasNext();) {
             BusinessPolicy businessPolicy = (BusinessPolicy) it.next();
@@ -117,10 +152,51 @@ public class PelletJena {
         System.out.println(total);
     }
 
+    public void checkNewRule() {
+        long start, end, total;
+        start = System.currentTimeMillis();
+
+        SWRLFactory factory = new SWRLFactory(owlModel);
+
+
+        String swrlRule = "";
+        try {
+            swrlRule = "ServiceCenterITFacilityResource(?x) ^ \n" +
+                    "hasAssociatedActions(?x, false)   -> \n" +
+                    "ITFacilityPassiveResource(?x)";
+
+            SWRLImp imp = factory.createImp(swrlRule);
+
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        end = System.currentTimeMillis();
+        total = end - start;
+        System.out.println("AAA " + total);
+        Collection<Instance> instances = owlModel.getDirectInstances(owlModel.getCls("http://www.owl-ontologies.com/Ontology1280294013.owl#ITFacilityPassiveResource"));
+
+        String uri = "http://www.owl-ontologies.com/Ontology1280294013.owl#ITFacilityPassiveResource";
+        String name = owlModel.getResourceNameForURI(uri);
+        RDFSNamedClass cls = owlModel.getRDFSNamedClass(name);
+        RDFResource owlIndividual;
+        for (Iterator it = cls.getInstances(true).iterator(); it.hasNext();) {
+            //  for (Iterator it =instances.iterator();it.hasNext();){
+            System.out.println(it.next().toString() + "AAA");
+
+        }
+
+        end = System.currentTimeMillis();
+        total = end - start;
+        System.out.println("AAA " + total);
+
+    }
+
     public boolean getRespected(OntModel ontModel, ContextElement el) {
 
         Individual ind = ontModel.getIndividual(el.getName());
-        final String name = owlModel.getResourceNameForURI("http://www.owl-ontologies.com/Datacenter.owl#isRespected");
+
+        final String name = owlModel.getResourceNameForURI("http://www.owl-ontologies.com/ContextModel.owl#isRespected");
         Property isOK = ontModel.getProperty(name);
         RDFNode ok = null;
         try {
@@ -138,10 +214,40 @@ public class PelletJena {
         }
     }
 
+    /**
+     * *****************************Bossam - face queriuri si evalueaza swrl-uri da nu le adauga *******
+     */
+    public void checkBossamReasoning() {
+
+        IReasonerFactory reasonerFactory = ReasonerFactory.getInstance();
+        IReasoner r = reasonerFactory.createOwlDlReasoner();
+        FileReader reader = null;
+        try {
+            reader = new FileReader("./ontology/myNewOntology.rdf-xml.owl");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        r.load(IReasoner.SWRLRDF, reader, "http://www.owl-ontologies.com/Ontology1280294013.owl");
+        try {
+            String result = r.run();
+            System.out.println("Result " + result);
+        } catch (InconsistencyException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        Answer answer = r.ask1("query q is ITFacilityPassiveResource(?x); ");
+        List l = answer.getBindings();
+        for (Iterator it = l.iterator(); it.hasNext();) {
+            System.out.println(it.next());
+        }
+    }
+
     public static void main(String args[]) {
         PelletJena pelletJena = new PelletJena();
-        pelletJena.initializeOntology();
-        pelletJena.addRules();
-        pelletJena.checkRespected();
+        // pelletJena.initializeOntology();
+        //pelletJena.addRules();
+        //pelletJena.checkRespected();
+        // pelletJena.checkNewRule();
+        pelletJena.checkBossamReasoning();
     }
 }

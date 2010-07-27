@@ -1,18 +1,19 @@
 package main;
 
-import evaluation.InstanceGenerator;
-import model.impl.databaseImpl.dao.HibernateUtil;
-import model.impl.util.ModelAccess;
 import org.semanticweb.kaon2.api.*;
-import org.semanticweb.kaon2.api.formatting.OntologyFileFormat;
+import org.semanticweb.kaon2.api.logic.Literal;
+import org.semanticweb.kaon2.api.logic.Rule;
 import org.semanticweb.kaon2.api.logic.Term;
+import org.semanticweb.kaon2.api.logic.Variable;
+import org.semanticweb.kaon2.api.owl.elements.DataProperty;
+import org.semanticweb.kaon2.api.owl.elements.OWLClass;
+import org.semanticweb.kaon2.api.owl.elements.ObjectProperty;
 import org.semanticweb.kaon2.api.reasoner.Query;
 import org.semanticweb.kaon2.api.reasoner.Reasoner;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,14 +23,115 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class Kaon2Reasoning {
-    public static String ONTOLOGY_DESCRIPTOR_URI = "file:src/model/impl/kaonImpl/dao/ontology_descriptor.xml";
-
     public void initializeOntology() {
-        HibernateUtil.recreateDatabase();
-        java.util.Date before = new Date();
-        System.out.println(new Date());
-        ModelAccess modelAccess = InstanceGenerator.generateComplexResourceInstances(75, ModelAccess.DATABASE_ACCESS);
-        System.out.println("created instances");
+        OntologyManager ontologyManager = null;
+        try {
+            ontologyManager = KAON2Manager.newOntologyManager();
+        } catch (KAON2Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        DefaultOntologyResolver resolver = new DefaultOntologyResolver();
+        String ontologyURL = "http://www.owl-ontologies.com/Ontology1280294013.owl#";
+        resolver.registerReplacement(ontologyURL, "file:./ontology/myNewOntology.rdf-xml.owl");
+        ontologyManager.setOntologyResolver(resolver);
+        Ontology ontology = null;
+        try {
+            ontology = ontologyManager.openOntology(ontologyURL, new HashMap<String, Object>());
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        // We now create a sample ontology describing relationships among objects in a domain.
+        OWLClass contextResource = KAON2Manager.factory().owlClass(ontologyURL + "ContextResource");
+        OWLClass serviceCenterITFacilityResource = KAON2Manager.factory().owlClass(ontologyURL + "ServiceCenterITFacilityResource");
+        OWLClass ITFacilityPassiveResource = KAON2Manager.factory().owlClass(ontologyURL + "ITFacilityPassiveResource");
+        OWLClass contextAction = KAON2Manager.factory().owlClass(ontologyURL + "ContextAction");
+
+        DataProperty hasAssociatedActions = KAON2Manager.factory().dataProperty(ontologyURL + "hasAssociatedActions");
+
+        ObjectProperty associatedActions = KAON2Manager.factory().objectProperty(ontologyURL + "associatedActions");
+
+        List<OntologyChangeEvent> changes = new ArrayList<OntologyChangeEvent>();
+
+        // We now add describe the domain of the ontology.
+//        changes.add(new OntologyChangeEvent(KAON2Manager.factory().subClassOf(serviceCenterITFacilityResource, contextResource), OntologyChangeEvent.ChangeType.ADD));
+//        changes.add(new OntologyChangeEvent(KAON2Manager.factory().subClassOf(ITFacilityPassiveResource, contextResource), OntologyChangeEvent.ChangeType.ADD));
+//        changes.add(new OntologyChangeEvent(KAON2Manager.factory().subClassOf(ITFacilityPassiveResource, serviceCenterITFacilityResource), OntologyChangeEvent.ChangeType.ADD));
+//
+//        changes.add(new OntologyChangeEvent(KAON2Manager.factory().objectPropertyDomain(associatedActions, contextAction), OntologyChangeEvent.ChangeType.ADD));
+
+        // We now create a rule that axiomatizes the following relationship:
+        //
+        // If
+        //    a person X works on a project Y, and
+        //    the project Y is about a topic Z,
+        // then
+        //    the person X knows about topic Z.
+        //
+        // In Prolog, this rule would be written like this:
+        //     personKnowsAboutTopic(X,Z) :- worksOn(X,Y), projectHasTopic(Y,Z).
+        //       ITFacilityPassiveResource(X) :- ServiceCenterITFacilityResource(X), recordedValue(X,V),
+        //                                       associatedActions(X,A).
+        // Although the practice often disputes this rule, we shall pretend that we live in a perfect
+        // world where only competent people are woking on interesting projects. (sigh!)
+        //
+        // The above rule is directly converted into an object strucutre. We first create the variables X, Y and Z:
+        Variable X = KAON2Manager.factory().variable("X");
+        Variable V = KAON2Manager.factory().variable("V");
+        Variable A = KAON2Manager.factory().variable("A");
+        Literal serviceCenterITFacilityResource_X = KAON2Manager.factory().literal(true, serviceCenterITFacilityResource, new Term[]{X});
+        Literal associatedActions_X_A = KAON2Manager.factory().literal(true, hasAssociatedActions, new Term[]{X, A});
+        Literal ITFacilityPassiveResource_X = KAON2Manager.factory().literal(true, ITFacilityPassiveResource, new Term[]{X});
+        Literal check = KAON2Manager.factory().literal(false, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = true"),
+                A);
+        long start, end, total;
+        start = System.currentTimeMillis();
+        // We now create the rule.
+        Rule rule = KAON2Manager.factory().rule(
+                ITFacilityPassiveResource_X,                          // this is the rule head, i.e. the consequent of the rule
+                new Literal[]{serviceCenterITFacilityResource_X, associatedActions_X_A, check}   // this is the rule body, i.e. the condition of the rule
+        );
+        try {
+            // Rule is a kind of axiom, so it can be added to the ontology in the same way as
+            // any axiom is added, i.e. by an OntologyChangeEvent.
+            changes.add(new OntologyChangeEvent(rule, OntologyChangeEvent.ChangeType.ADD));
+            System.out.println(rule.toString());
+
+            ontology.applyChanges(changes);
+            end = System.currentTimeMillis();
+            total = end - start;
+            System.out.println("Total" + total);
+            Reasoner reasoner = null;
+            reasoner = ontology.createReasoner();
+
+            Query whoIsPassive = reasoner.createQuery(new Literal[]{
+                    KAON2Manager.factory().literal(true, ITFacilityPassiveResource, new Term[]{X}),
+            }, new Variable[]{X});
+//           Query whoIsPassive = reasoner.createQuery(Namespaces.INSTANCE, "SELECT *   WHERE {" +
+//                   " ?x rdf:type <"+ontologyURL+"ITFacilityPassiveResource> ;} ");
+            System.out.println();
+            System.out.println("-----------The list of passive resources:-------------");
+            whoIsPassive.open();
+
+            // We now iterate over the query results.
+            while (!whoIsPassive.afterLast()) {
+                // A query result is a set of tuples. The values in each tuple correspond to the distinguished variables.
+                // In the above example, the distinguished variables are [X,Y]; this means that the first object in
+                // the tuple is the value for the X variable, and the second one is the value for the Y variable.
+                Term[] tupleBuffer = whoIsPassive.tupleBuffer();
+                System.out.println("Resource '" + tupleBuffer[0].toString() + "is passive.");
+                whoIsPassive.next();
+            }
+            end = System.currentTimeMillis();
+            total = end - start;
+            System.out.println("Total" + total);
+            whoIsPassive.close();
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    public void simpleOnt() {
+        //http://www.owl-ontologies.com/Ontology1280211994.owl
         OntologyManager ontologyManager = null;
         try {
             ontologyManager = KAON2Manager.newOntologyManager();
@@ -38,195 +140,101 @@ public class Kaon2Reasoning {
         }
         DefaultOntologyResolver resolver = new DefaultOntologyResolver();
 
-//        resolver.registerReplacement("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#",
-//                "/model/impl/kaonImpl/dao/ontology_descriptor.xml");
-//        ontologyManager.setOntologyResolver(resolver);
-
-        Ontology ontology = null;
-
-        String ontologyURI = null;
-        try {
-            System.out.println("registering ontology");
-            ontologyURI = resolver.registerOntology(ONTOLOGY_DESCRIPTOR_URI);
-        } catch (KAON2Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
+        resolver.registerReplacement("http://www.owl-ontologies.com/Ontology1280211994.owl#", "file:./ontology/newTry.owl");
         ontologyManager.setOntologyResolver(resolver);
-
+        Ontology ontology = null;
         try {
-            System.out.println("opening ontology");
-            ontology = ontologyManager.openOntology(ontologyURI,
-                    new HashMap<String, Object>());
-        } catch (KAON2Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InterruptedException e) {
+            ontology = ontologyManager.openOntology("http://www.owl-ontologies.com/Ontology1280211994.owl#", new HashMap<String, Object>());
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        // We now create a sample ontology describing relationships among objects in a domain.
+        OWLClass myClass = KAON2Manager.factory().owlClass("http://www.owl-ontologies.com/Ontology1280211994.owl#myClass");
+        OWLClass activeClass = KAON2Manager.factory().owlClass("http://www.owl-ontologies.com/Ontology1280211994.owl#activeClass");
+        OWLClass passiveClass = KAON2Manager.factory().owlClass("http://www.owl-ontologies.com/Ontology1280211994.owl#passiveClass");
+        OWLClass contextAction = KAON2Manager.factory().owlClass("http://www.owl-ontologies.com/Ontology1280211994.owl#Action");
+        ObjectProperty associatedActions = KAON2Manager.factory().objectProperty("http://www.owl-ontologies.com/Ontology1280211994.owl#associatedActions");
+        DataProperty hasAssociatedActions = KAON2Manager.factory().dataProperty("http://www.owl-ontologies.com/Ontology1280211994.owl#hasAssociatedActions");
+        List<OntologyChangeEvent> changes = new ArrayList<OntologyChangeEvent>();
 
-        java.util.Date after = new Date();
+        // We now add describe the domain of the ontology.
+        //  changes.add(new OntologyChangeEvent(KAON2Manager.factory().subClassOf(serviceCenterITFacilityResource, contextResource), OntologyChangeEvent.ChangeType.ADD));
+        //   changes.add(new OntologyChangeEvent(KAON2Manager.factory().subClassOf(ITFacilityPassiveResource, contextResource), OntologyChangeEvent.ChangeType.ADD));
+        //  changes.add(new OntologyChangeEvent(KAON2Manager.factory().subClassOf(ITFacilityPassiveResource, serviceCenterITFacilityResource), OntologyChangeEvent.ChangeType.ADD));
 
-        java.util.Date result = new Date(after.getTime() - before.getTime());
-        System.out.println("Creation time: " + result.getMinutes() + ":" + result.getSeconds());
-//        DatabaseModelFactory databaseModelFactory = new DatabaseModelFactory();
-//        ApplicationActivity activity = databaseModelFactory.createHDDIntensiveActivity("AA_1");
-//        activity.setCPUAllocatedValue(34.0);
-//        databaseModelFactory.persistEntity(activity);
+        // changes.add(new OntologyChangeEvent(KAON2Manager.factory().objectPropertyDomain(associatedActions, contextAction), OntologyChangeEvent.ChangeType.ADD));
 
+        // We now create a rule that axiomatizes the following relationship:
+        //
+        // If
+        //    a person X works on a project Y, and
+        //    the project Y is about a topic Z,
+        // then
+        //    the person X knows about topic Z.
+        //
+        // In Prolog, this rule would be written like this:
+        //     personKnowsAboutTopic(X,Z) :- worksOn(X,Y), projectHasTopic(Y,Z).
+        //       ITFacilityPassiveResource(X) :- ServiceCenterITFacilityResource(X), recordedValue(X,V),
+        //                                       associatedActions(X,A).
+        // Although the practice often disputes this rule, we shall pretend that we live in a perfect
+        // world where only competent people are working on interesting projects. (sigh!)
+        //
+        // The above rule is directly converted into an object strucutre. We first create the variables X, Y and Z:
+        Variable X = KAON2Manager.factory().variable("X");
+        Variable A = KAON2Manager.factory().variable("A");
 
-//        DataProperty goodResource =
-//                KAON2Manager.factory().dataProperty("http://coned.dsrl.com/contextmodel#goodResourcePredicate");
-//
-//        DataProperty hasName =
-//                KAON2Manager.factory().dataProperty("http://coned.dsrl.com/contextmodel#applicationActivityName");
-//
-//
-//        // We now create a rule that axiomatizes the following relationship:
-//        //
-//        // If
-//        //    a person X works on a project Y, and
-//        //    the project Y is about a topic Z,
-//        // then
-//        //    the person X knows about topic Z.
-//        //
-//        // In Prolog, this rule would be written like this:
-//        //     personKnowsAboutTopic(X,Z) :- worksOn(X,Y), projectHasTopic(Y,Z).
-//        //
-//        // Although the practice often disputes this rule, we shall pretend that we live in a perfect
-//        // world where only competent people are woking on interesting projects. (sigh!)
-//        //
-//        // The above rule is directly converted into an object strucutre. We first create the variables X, Y and Z:
-//        Variable X = KAON2Manager.factory().variable("X");
-//        Variable Y = KAON2Manager.factory().variable("Y");
-//        Variable Z = KAON2Manager.factory().variable("Z");
-//
-//        // We now create the literals (notice that all of them are positive):
-//        Literal head = KAON2Manager.factory().literal(true, goodResource, new Term[]{X, Z});
-//        Literal condition = KAON2Manager.factory().literal(true, hasName, new Term[]{X, Y});
-//
-//
-//        // We now create the rule.
-//        Rule rule = KAON2Manager.factory().rule(
-//                head,                          // this is the rule head, i.e. the consequent of the rule
-//                new Literal[]{condition}   // this is the rule body, i.e. the condition of the rule
-//        );
-//        List<OntologyChangeEvent> changes = new ArrayList<OntologyChangeEvent>();
-//        changes.add(new OntologyChangeEvent(rule, OntologyChangeEvent.ChangeType.ADD));
-////        try {
-////            ontology.applyChanges(changes);
-////        } catch (KAON2Exception e) {
-////            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-////        }
-
-//         java.util.Date before = new Date();
-
-//        ModelAccess modelAccess = InstanceGenerator.getModelAccessInstance(ModelAccess.PREVAYLER_ACCESS);
-        //ModelAccess modelAccess = InstanceGenerator.generateComplexResourceInstances(5, ModelAccess.DATABASE_ACCESS);
-        before = new Date();
-
-        //long total = Runtime.getRuntime().totalMemory();
-        long used = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        System.out.println("Used memory:" + used);
-
-        Reasoner reasoner = null;
-//
+        // We now create the literals (notice that all of them are positive):
+        Literal serviceCenterITFacilityResource_X = KAON2Manager.factory().literal(true, myClass, new Term[]{X});
+        Literal associatedActions_X_A = KAON2Manager.factory().literal(true, hasAssociatedActions, new Term[]{X, A});
+        Literal ITFacilityPassiveResource_X = KAON2Manager.factory().literal(true, passiveClass, new Term[]{X});
+        Literal check = KAON2Manager.factory().literal(false, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = true"),
+                A);
+        // We now create the rule.
+        Rule rule = KAON2Manager.factory().rule(
+                ITFacilityPassiveResource_X,                          // this is the rule head, i.e. the consequent of the rule
+                new Literal[]{serviceCenterITFacilityResource_X, associatedActions_X_A, check}   // this is the rule body, i.e. the condition of the rule
+        );
         try {
+            // Rule is a kind of axiom, so it can be added to the ontology in the same way as
+            // any axiom is added, i.e. by an OntologyChangeEvent.
+            changes.add(new OntologyChangeEvent(rule, OntologyChangeEvent.ChangeType.ADD));
+            System.out.println(rule.toString());
+            long start, end, total;
+            start = System.currentTimeMillis();
+            ontology.applyChanges(changes);
+            end = System.currentTimeMillis();
+            total = end - start;
+            System.out.println("Total" + total);
+            Reasoner reasoner = null;
             reasoner = ontology.createReasoner();
+            Query whoIsPassive = reasoner.createQuery(new Literal[]{
+                    KAON2Manager.factory().literal(true, passiveClass, new Term[]{X}),
 
-            Query query = reasoner.createQuery(Namespaces.INSTANCE, "SELECT *   WHERE {" +
-                    " ?x rdf:type <http://coned.dsrl.com/contextmodel#ContextEntity> ; " +
-                    " <http://coned.dsrl.com/contextmodel#resourceName> ?Y; }");
-            query.open();
+            }, new Variable[]{X});
 
-            while (!query.afterLast()) {
-                Term[] tupleBuffer = query.tupleBuffer();
+            System.out.println();
+            System.out.println("-----------The list of passive resources:-------------");
+            whoIsPassive.open();
 
-                for (int i = 0; i < tupleBuffer.length; i++) {
-
-
-                    // System.out.print(tupleBuffer[i]);
-
-                }
-                //System.out.println(" ]");
-                query.next();
+            // We now iterate over the query results.
+            while (!whoIsPassive.afterLast()) {
+                // A query result is a set of tuples. The values in each tuple correspond to the distinguished variables.
+                // In the above example, the distinguished variables are [X,Y]; this means that the first object in
+                // the tuple is the value for the X variable, and the second one is the value for the Y variable.
+                Term[] tupleBuffer = whoIsPassive.tupleBuffer();
+                System.out.println("Resource '" + tupleBuffer[0].toString() + "is passive.");
+                whoIsPassive.next();
             }
-            after = new Date();
 
-            result = new Date(after.getTime() - before.getTime());
-            System.out.println("Querry time: " + result.getMinutes() + ":" + result.getSeconds());
-
-            query.dispose();
-            reasoner.dispose();
-        } catch (KAON2Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InterruptedException e) {
+            whoIsPassive.close();
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-//        OntologyManager ontologyManager = null;
-//        try {
-//            ontologyManager = KAON2Manager.newOntologyManager();
-//        } catch (KAON2Exception e) {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        }
-//        DefaultOntologyResolver resolver = new DefaultOntologyResolver();
-//
-////        resolver.registerReplacement("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#",
-////                "/model/impl/kaonImpl/dao/ontology_descriptor.xml");
-////        ontologyManager.setOntologyResolver(resolver);
-//
-//        Ontology ontology = null;
-//        try {
-//            String ontologyURI = resolver.registerOntology(ONTOLOGY_DESCRIPTOR_URI);
-//
-//            ontologyManager.setOntologyResolver(resolver);
-//
-//            ontology = ontologyManager.openOntology(ontologyURI,
-//                    new HashMap<String, Object>());
-//            Reasoner reasoner = ontology.createReasoner();
-//            Query query = reasoner.createQuery(Namespaces.INSTANCE, "SELECT *   WHERE {" +
-//                    " ?x rdf:type <http://coned.dsrl.com/contextmodel#ApplicationActivity> ; " +
-//                    " <http://coned.dsrl.com/contextmodel#applicationActivityName> ?j; " +
-//                    " <http://coned.dsrl.com/contextmodel#applicationActivityCPUAllocated> ?k; " +
-//                    " <http://coned.dsrl.com/contextmodel#applicationActivityPerformanceDegradation> ?f }");
-//            query.open();
-//
-//
-//            while (!query.afterLast()) {
-//                Term[] tupleBuffer = query.tupleBuffer();
-//                System.out.print("[ ");
-//                for (int i = 0; i < tupleBuffer.length; i++) {
-//                    if (i != 0)
-//                        System.out.print(", ");
-//                    System.out.print(tupleBuffer[i]);
-//
-//                }
-//                System.out.println(" ]");
-//                query.next();
-//            }
-//            query.dispose();
-//            reasoner.dispose();
-//
-//        } catch (KAON2Exception e) {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        }
-//        System.out.println("-----------------------------------");
-
-        try {
-            ontology.saveOntology(OntologyFileFormat.OWL_XML, new File("C:\\Users\\Administrator\\Desktop\\contextmodel\\src\\model\\impl\\kaonImpl\\dao\\ontology_descriptor_1.xml"), "ISO-8859-1");
-        } catch (KAON2Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-
     }
 
     public static void main(String args[]) {
         Kaon2Reasoning kaon2Reasoning = new Kaon2Reasoning();
         kaon2Reasoning.initializeOntology();
+
     }
 }
