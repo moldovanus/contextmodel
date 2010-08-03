@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<db:DBOntology db:name="http://coned.dsrl.com/database/contextmodel#" xmlns:db="http://kaon2.semanticweb.org/db#">
+
+    <!--<db:Database db:connectionString="jdbc:mysql://localhost:3306/ContextModel" db:userName="root" db:password="123456"-->
+    <!--db:driverClassName="com.mysql.jdbc.Driver"/>-->
+    <db:Database db:connectionString="jdbc:hsqldb:mem:contextmodel" db:userName="sa" db:password=""
+                 db:driverClassName="org.hsqldb.jdbcDriver"/>
+    <!--<db:Database db:connectionString="jdbc:hsqldb:hsql://localhost" db:userName="sa" db:password=""-->
+    <!--db:driverClassName="org.hsqldb.jdbcDriver"/>-->
+
+    <!-- BEGIN ContextElementImpl-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ContextEntity" db:complete="false">
+        <db:Table db:tableName="ContextElement">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+        </db:Table>
+    </db:OWLClass>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#resourceName">
+        <db:Table db:tableName="ContextElement">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:String db:fieldName="name"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#name"/>
+        </db:Table>
+    </db:DatatypeProperty>
+    <!-- END ContextElementImpl-->
+
+    <!-- BEGIN ApplicationActivityImpl-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ApplicationActivity">
+        <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ContextEntity"/>
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+        </db:Table>
+    </db:OWLClass>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityCPURequired">
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="CPURequiredValue"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#CPURequiredValue"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityHDDRequired">
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="HDDRequiredValue"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#HDDRequiredValue"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityMEMRequired">
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="MEMRequiredValue"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#MEMRequiredValue"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityCPUAllocated">
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="CPUAllocatedValue"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#CPUAllocatedValue"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityHDDAllocated">
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="HDDAllocatedValue"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#HDDAllocatedValue"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityMEMAllocated">
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="MEMAllocatedValue"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#MEMAllocatedValue"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityPerformanceEstimation">
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="performanceEstimation"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#performanceEstimation"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityPerformanceDegradation">
+        <db:Table db:tableName="ApplicationActivity">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="performanceDegradation"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#performanceDegradation"/>
+        </db:Table>
+    </db:DatatypeProperty>
+    <!-- END ApplicationActivityImpl-->
+
+    <!-- BEGIN ServiceCenterITComputingResourceImpl-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ServiceCenterITComputingResource">
+        <db:Table db:tableName="ServiceCenterITComputingResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+
+        </db:Table>
+    </db:OWLClass>
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceMaximumWorkLoad">
+        <db:Table db:tableName="ServiceCenterITComputingResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="maximumWorkLoad"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#maximumWorkLoad"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceOptimalWorkLoad">
+        <db:Table db:tableName="ServiceCenterITComputingResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="optimalWorkLoad"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#optimalWorkLoad"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceCurrentWorkLoad">
+        <db:Table db:tableName="ServiceCenterITComputingResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Double db:fieldName="currentWorkLoad"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#currentWorkLoad"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+
+    <db:DatatypeProperty
+            db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceCurrentEnergyState">
+        <db:Table db:tableName="ServiceCenterITComputingResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Integer db:fieldName="currentEnergyState"
+                        db:uriPrefix="http://coned.dsrl.com/contextmodel#currentEnergyState"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#resourceName">
+        <db:Table db:tableName="ContextElement">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:String db:fieldName="name"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#name"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceID">
+        <db:Table db:tableName="ContextResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:String db:fieldName="resourceID"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#resourceID"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <!--private List<Integer> energyStates;-->
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceEnergyStates">
+        <db:Table db:tableName="EnergyStates">
+            <db:IndividualInteger db:fieldName="resourceUID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Integer db:fieldName="stateValue" db:uriPrefix="http://coned.dsrl.com/contextmodel#energyState"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <!--private List<ApplicationActivity> runningActivities;-->
+    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceRunningActivities">
+        <db:Table db:tableName="RunningActivities">
+            <db:IndividualInteger db:fieldName="resourceUID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+            <db:IndividualInteger db:fieldName="applicationActivityUID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+        </db:Table>
+    </db:ObjectProperty>
+
+    <!--END ServiceCenterITComputingResourceImpl-->
+
+    <!--BEGIN ComplexResourceImpl-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ComplexResource">
+        <db:Table db:tableName="ComplexResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+        </db:Table>
+    </db:OWLClass>
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceMaximumWorkLoad">-->
+    <!--<db:Table db:tableName="ServiceCenterITComputingResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Double db:fieldName="maximumWorkLoad"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#maximumWorkLoad"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceOptimalWorkLoad">-->
+    <!--<db:Table db:tableName="ServiceCenterITComputingResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Double db:fieldName="optimalWorkLoad"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#optimalWorkLoad"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceCurrentWorkLoad">-->
+    <!--<db:Table db:tableName="ServiceCenterITComputingResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Double db:fieldName="currentWorkLoad"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#currentWorkLoad"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+
+    <!--<db:DatatypeProperty-->
+    <!--db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceCurrentEnergyState">-->
+    <!--<db:Table db:tableName="ServiceCenterITComputingResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Integer db:fieldName="currentEnergyState"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#currentEnergyState"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#resourceName">-->
+    <!--<db:Table db:tableName="ContextElement">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:String db:fieldName="name"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#name"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceID">-->
+    <!--<db:Table db:tableName="ContextResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:String db:fieldName="resourceID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#resourceID"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--&lt;!&ndash;private List<Integer> energyStates;&ndash;&gt;-->
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceEnergyStates">-->
+    <!--<db:Table db:tableName="EnergyStates">-->
+    <!--<db:IndividualInteger db:fieldName="resourceUID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Integer db:fieldName="stateValue" db:uriPrefix="http://coned.dsrl.com/contextmodel#energyState"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--&lt;!&ndash;private List<ApplicationActivity> runningActivities;&ndash;&gt;-->
+    <!--<db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceRunningActivities">-->
+    <!--<db:Table db:tableName="AssociatedResources">-->
+    <!--<db:IndividualInteger db:fieldName="resourceID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>-->
+
+    <!--<db:IndividualInteger db:fieldName="associatedResourceID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>-->
+
+    <!--</db:Table>-->
+    <!--</db:ObjectProperty>-->
+
+    <!--List<String> resourceWorkloadProperty;-->
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#complexResourceWorkloadProperty">
+        <db:Table db:tableName="ResourceWorkloadProperty">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:String db:fieldName="resourceWorkloadPropertyValue"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#resourceWorkloadProperty"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <!--List<ServiceCenterITComputingResource> resources;-->
+    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#complexResourceResources">
+        <db:Table db:tableName="AssociatedResources">
+            <db:IndividualInteger db:fieldName="resourceID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+            <db:IndividualInteger db:fieldName="associatedResourceID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+        </db:Table>
+    </db:ObjectProperty>
+
+    <!--END ComplexResourceImpl-->
+
+
+    <!-- BEGIN SimpleResourceImpl-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ServiceCenterITComputingResource">
+        <db:Table db:tableName="SimpleResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+
+        </db:Table>
+    </db:OWLClass>
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceMaximumWorkLoad">-->
+    <!--<db:Table db:tableName="ServiceCenterITComputingResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Double db:fieldName="maximumWorkLoad"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#maximumWorkLoad"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceOptimalWorkLoad">-->
+    <!--<db:Table db:tableName="ServiceCenterITComputingResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Double db:fieldName="optimalWorkLoad"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#optimalWorkLoad"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceCurrentWorkLoad">-->
+    <!--<db:Table db:tableName="ServiceCenterITComputingResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Double db:fieldName="currentWorkLoad"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#currentWorkLoad"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+
+    <!--<db:DatatypeProperty-->
+    <!--db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceCurrentEnergyState">-->
+    <!--<db:Table db:tableName="ServiceCenterITComputingResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Integer db:fieldName="currentEnergyState"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#currentEnergyState"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#resourceName">-->
+    <!--<db:Table db:tableName="ContextElement">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:String db:fieldName="name"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#name"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceID">-->
+    <!--<db:Table db:tableName="ContextResource">-->
+    <!--<db:IndividualInteger db:fieldName="UID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:String db:fieldName="resourceID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#resourceID"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--&lt;!&ndash;private List<Integer> energyStates;&ndash;&gt;-->
+    <!--<db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceEnergyStates">-->
+    <!--<db:Table db:tableName="EnergyStates">-->
+    <!--<db:IndividualInteger db:fieldName="resourceUID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"-->
+    <!--db:primaryKey="true"/>-->
+    <!--<db:Integer db:fieldName="stateValue" db:uriPrefix="http://coned.dsrl.com/contextmodel#energyState"/>-->
+    <!--</db:Table>-->
+    <!--</db:DatatypeProperty>-->
+
+    <!--&lt;!&ndash;private List<ApplicationActivity> runningActivities;&ndash;&gt;-->
+    <!--<db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceRunningActivities">-->
+    <!--<db:Table db:tableName="RunningActivities">-->
+    <!--<db:IndividualInteger db:fieldName="resourceUID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>-->
+
+    <!--<db:IndividualInteger db:fieldName="applicationActivityUID"-->
+    <!--db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>-->
+
+    <!--</db:Table>-->
+    <!--</db:ObjectProperty>-->
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#simpleResourceWorkLoadProperty">
+        <db:Table db:tableName="SimpleResource">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:String db:fieldName="resourceWorkLoadProperty"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#resourceWorkLoadProperty"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <!--END SimpleResourceImpl-->
+
+    <!-- BEGIN Event-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#Event">
+        <db:Table db:tableName="Event">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+        </db:Table>
+    </db:OWLClass>
+
+    <!--END EventImpl-->
+
+    <!--BEGIN ContextPolicyImpl-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ContextPolicy" db:complete="false">
+        <db:Table db:tableName="ContextPolicy">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+        </db:Table>
+    </db:OWLClass>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#contextPolicyName">
+        <db:Table db:tableName="ContextPolicy">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:String db:fieldName="policyName"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#policyName"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#contextPolicyEvaluationCondition">
+        <db:Table db:tableName="ContextPolicy">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:String db:fieldName="evaluationCondition"
+                       db:uriPrefix="http://coned.dsrl.com/contextmodel#evaluationCondition"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#contextPolicyRespected">
+        <db:Table db:tableName="ContextPolicy">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:Boolean db:fieldName="respected"
+                        db:uriPrefix="http://coned.dsrl.com/contextmodel#respected"/>
+        </db:Table>
+    </db:DatatypeProperty>
+
+    <!--private List<ContextResource> policySubject;-->
+    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#policySubject">
+        <db:Table db:tableName="policySubject">
+            <db:IndividualInteger db:fieldName="policyUID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+            <db:IndividualInteger db:fieldName="subjectUID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+        </db:Table>
+    </db:ObjectProperty>
+
+    <!--private List<ContextResource> policyTarget;-->
+    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#policyTarget">
+        <db:Table db:tableName="policyTarget">
+            <db:IndividualInteger db:fieldName="policyUID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+            <db:IndividualInteger db:fieldName="targetUID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+        </db:Table>
+    </db:ObjectProperty>
+
+    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#triggerEvent">
+        <db:Table db:tableName="ContextPolicy">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+            <db:IndividualInteger db:fieldName="triggerEvent"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+
+        </db:Table>
+    </db:ObjectProperty>
+
+    <!--END ContextPolicyImpl-->
+
+
+    <!-- BEGIN GPI_KPI_PolicyImpl-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#GPI_KPI_Policy">
+        <db:Table db:tableName="GPI_KPI_Policy">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+        </db:Table>
+    </db:OWLClass>
+
+    <!--END GPI_KPI_PolicyImpl-->
+
+    <!-- BEGIN ITComputingContextPolicyImpl-->
+    <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ITComputingContextPolicy">
+        <db:Table db:tableName="ITComputingContextPolicy">
+            <db:IndividualInteger db:fieldName="UID"
+                                  db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+        </db:Table>
+    </db:OWLClass>
+
+    <!--END ITComputingContextPolicyImpl-->
+
+
+    <!--<db:SameIndividual>-->
+    <!--<db:Table db:tableName="equals">-->
+    <!--<db:IndividualInteger db:fieldName="UID1" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>-->
+    <!--<db:IndividualInteger db:fieldName="UID2" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>-->
+    <!--</db:Table>-->
+    <!--</db:SameIndividual>-->
+
+
+    <db:HerbrandUniverse>
+        <db:Table db:tableName="ContextElement">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
+        </db:Table>
+    </db:HerbrandUniverse>
+
+</db:DBOntology>
+

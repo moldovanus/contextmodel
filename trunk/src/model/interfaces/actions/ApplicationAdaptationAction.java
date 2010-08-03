@@ -1,10 +1,5 @@
 package model.interfaces.actions;
 
-import model.interfaces.resources.ServiceCenterITFacilityResource;
-import model.interfaces.resources.applications.ApplicationActivity;
-
-import java.util.List;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -13,5 +8,5 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface ApplicationAdaptationAction extends ContextAction {
-    
+
 }

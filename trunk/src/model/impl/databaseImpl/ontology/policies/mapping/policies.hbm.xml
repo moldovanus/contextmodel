@@ -12,14 +12,14 @@
         <property name="respected" column="respected" type="boolean"/>
 
         <list name="policySubject" cascade="save-update">
-            <key column="policySubject"/>
-            <list-index column="policySubjectIndex"/>
+            <key column="policyUID"/>
+            <list-index column="subjectUID"/>
             <many-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
         </list>
 
         <list name="policyTarget">
-            <key column="policyTarget"/>
-            <list-index column="policyTargetIndex"/>
+            <key column="policyUID"/>
+            <list-index column="targetUID"/>
             <many-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
         </list>
 
@@ -30,8 +30,7 @@
     <joined-subclass name="GPI_KPI_PolicyImpl" extends="ContextPolicyImpl"
                      table="GPI_KPI_Policy">
         <key column="UID"/>
-        <many-to-one name="policyGoal" column="policyGoal" class="model.impl.databaseImpl.ontology.GoalImpl"
-                />
+        <many-to-one name="policyGoal" column="policyGoal" class="model.impl.databaseImpl.ontology.GoalImpl"/>
     </joined-subclass>
 
     <joined-subclass name="BusinessPolicyImpl" extends="GPI_KPI_PolicyImpl"

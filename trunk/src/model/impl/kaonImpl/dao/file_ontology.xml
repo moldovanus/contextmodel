@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<owlx:Ontology owlx:name="http://coned.dsrl.com/file/contextmodel"
+               xml:base="http://coned.dsrl.com/file/contextmodel"
+               xmlns:owlx="http://www.w3.org/2003/05/owl-xml#">
+    <owlx:Imports owlx:ontology="http://coned.dsrl.com/database/contextmodel#"/>
+
+
+</owlx:Ontology>

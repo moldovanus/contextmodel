@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ehcache name="EventCache">
+    <diskStore path="./diskStore"/>
+    <cache
+            name="org.hibernate.cache.UpdateTimestampsCache"
+            maxElementsInMemory="150000"
+            eternal="true"
+            overflowToDisk="true"
+            >
+    </cache>
+
+    <cache
+            name="model.impl.databaseImpl.ontology.ContextElementImpl"
+            maxElementsInMemory="150000"
+            eternal="true"
+            overflowToDisk="true"
+            >
+
+    </cache>
+    <cache
+            name="org.hibernate.cache.StandardQueryCache"
+            maxElementsInMemory="150000"
+            eternal="true"
+            overflowToDisk="true">
+
+    </cache>
+    <defaultCache
+            maxElementsInMemory="150000"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU">
+
+    </defaultCache>
+</ehcache>

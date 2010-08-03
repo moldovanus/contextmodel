@@ -1,5 +1,6 @@
 package model.impl.databaseImpl.dao;
 
+import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -31,6 +32,8 @@ public class HibernateUtil {
         Session session = factory.getCurrentSession();
         if (!session.isOpen()) {
             session = factory.openSession();
+            session.setCacheMode(CacheMode.NORMAL);
+
         }
         return session;
     }

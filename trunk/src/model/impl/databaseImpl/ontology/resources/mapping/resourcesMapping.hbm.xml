@@ -7,12 +7,16 @@
     <!--ContextElement-->
     <class name="model.impl.databaseImpl.ontology.ContextElementImpl" abstract="true" table="ContextElement"
            lazy="false">
+
+        <cache usage="read-write"/>
+
         <!--<cache usage="read-write" include="all"/>-->
         <id name="id" column="UID" unsaved-value="-1">
             <generator class="increment"/>
         </id>
 
-        <property name="name" column="name" type="string" unique="true"/>
+        <property name="name" column="name" type="string"/>
+
     </class>
 
     <!--ContextResourceImpl-->
@@ -62,6 +66,15 @@
         </list>
     </joined-subclass>
 
+    <!--SimpleResourceImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.SimpleResourceImpl"
+                     extends="ServiceCenterITComputingResourceImpl"
+                     table="SimpleResource">
+        <key column="UID"/>
+        <property name="resourceWorkLoadProperty" column="resourceWorkLoadProperty" type="string"/>
+    </joined-subclass>
+
+
     <!--&lt;!&ndash;SimpleResourceImpl&ndash;&gt;-->
     <!--<joined-subclass name="SimpleResourceImpl" extends="ServiceCenterITComputingResourceImpl"-->
     <!--table="SimpleResource">-->
@@ -69,129 +82,129 @@
     <!--<property name="resourceWorkLoadProperty" column="resourceWorkLoadProperty" type="string"/>-->
     <!--</joined-subclass>-->
 
-    <!--&lt;!&ndash;EventImpl&ndash;&gt;-->
-    <!--<joined-subclass name="model.impl.databaseImpl.ontology.EventImpl"-->
-    <!--extends="model.impl.databaseImpl.ontology.ContextElementImpl"-->
-    <!--table="Event">-->
-    <!--<key column="UID"/>-->
-    <!--</joined-subclass>-->
+    <!--EventImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.EventImpl"
+                     extends="model.impl.databaseImpl.ontology.ContextElementImpl"
+                     table="Event">
+        <key column="UID"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;GoalImpl&ndash;&gt;-->
-    <!--<joined-subclass name="model.impl.databaseImpl.ontology.GoalImpl"-->
-    <!--extends="model.impl.databaseImpl.ontology.ContextElementImpl"-->
-    <!--table="Goal">-->
-    <!--<key column="UID"/>-->
-    <!--</joined-subclass>-->
+    <!--GoalImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.GoalImpl"
+                     extends="model.impl.databaseImpl.ontology.ContextElementImpl"
+                     table="Goal">
+        <key column="UID"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;BusinessContextResourceImpl&ndash;&gt;-->
-    <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"-->
-    <!--extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"-->
-    <!--table="BusinessContextResource">-->
-    <!--<key column="UID"/>-->
-    <!--<property name="resourceID" column="resourceID" type="string"/>-->
-    <!--</joined-subclass>-->
+    <!--BusinessContextResourceImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.BusinessContextResourceImpl"
+                     extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
+                     table="BusinessContextResource">
+        <key column="UID"/>
+        <property name="resourceID" column="resourceID" type="string"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;CoreImpl&ndash;&gt;-->
-    <!--<joined-subclass name="CoreImpl"-->
-    <!--extends="SimpleResourceImpl"-->
-    <!--table="CPU">-->
-    <!--<key column="UID"/>-->
-    <!--<many-to-one name="partOf" class="model.impl.databaseImpl.ontology.ContextElementImpl" cascade="save-update"-->
-    <!--lazy="false" not-null="true"/>-->
+    <!--CoreImpl-->
+    <joined-subclass name="CoreImpl"
+                     extends="SimpleResourceImpl"
+                     table="CPU">
+        <key column="UID"/>
+        <many-to-one name="partOf" class="model.impl.databaseImpl.ontology.ContextElementImpl" cascade="save-update"
+                     lazy="false" not-null="true"/>
 
-    <!--</joined-subclass>-->
+    </joined-subclass>
 
-    <!--&lt;!&ndash;CPUImpl&ndash;&gt;-->
-    <!--<joined-subclass name="CPUImpl"-->
-    <!--extends="SimpleResourceImpl"-->
-    <!--table="CPU">-->
-    <!--<key column="UID"/>-->
-    <!--<property name="cacheRate" column="cacheRate" type="float"/>-->
-    <!--<property name="clockRate" column="clockRate" type="float"/>-->
-    <!--<list name="associatedCores" cascade="save-update" lazy="false" table="AssociatedCores">-->
-    <!--<key column="coreID"/>-->
-    <!--<list-index column="coreListIndex"/>-->
-    <!--<many-to-many class="CoreImpl"/>-->
-    <!--</list>-->
+    <!--CPUImpl-->
+    <joined-subclass name="CPUImpl"
+                     extends="SimpleResourceImpl"
+                     table="CPU">
+        <key column="UID"/>
+        <property name="cacheRate" column="cacheRate" type="float"/>
+        <property name="clockRate" column="clockRate" type="float"/>
+        <list name="associatedCores" cascade="save-update" lazy="false" table="AssociatedCores">
+            <key column="coreID"/>
+            <list-index column="coreListIndex"/>
+            <many-to-many class="CoreImpl"/>
+        </list>
 
-    <!--</joined-subclass>-->
+    </joined-subclass>
 
-    <!--&lt;!&ndash;ExternalStorageImpl&ndash;&gt;-->
-    <!--<joined-subclass name="ExternalStorageImpl"-->
-    <!--extends="ContextResourceImpl"-->
-    <!--table="ExternalStorage">-->
-    <!--<key column="UID"/>-->
-    <!--</joined-subclass>-->
+    <!--ExternalStorageImpl-->
+    <joined-subclass name="ExternalStorageImpl"
+                     extends="ContextResourceImpl"
+                     table="ExternalStorage">
+        <key column="UID"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;HDDImpl&ndash;&gt;-->
-    <!--<joined-subclass name="HDDImpl"-->
-    <!--extends="SimpleResourceImpl"-->
-    <!--table="HDD">-->
-    <!--<key column="UID"/>-->
-    <!--</joined-subclass>-->
+    <!--HDDImpl-->
+    <joined-subclass name="HDDImpl"
+                     extends="SimpleResourceImpl"
+                     table="HDD">
+        <key column="UID"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;ServiceCenterITFacilityResourceImpl&ndash;&gt;-->
-    <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.ServiceCenterITFacilityResourceImpl"-->
-    <!--extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"-->
-    <!--table="ServiceCenterITFacilityResource">-->
-    <!--<key column="UID"/>-->
-    <!--<property name="resourceProperty" column="resourceProperty" type="string"/>-->
-    <!--</joined-subclass>-->
+    <!--ServiceCenterITFacilityResourceImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.ServiceCenterITFacilityResourceImpl"
+                     extends="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"
+                     table="ServiceCenterITFacilityResource">
+        <key column="UID"/>
+        <property name="resourceProperty" column="resourceProperty" type="string"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;ITFacilityActiveResourceImpl&ndash;&gt;-->
-    <!--<joined-subclass name="ITFacilityActiveResourceImpl"-->
-    <!--extends="ServiceCenterITFacilityResourceImpl"-->
-    <!--table="ITFacilityActiveResource">-->
-    <!--<key column="UID"/>-->
-    <!--<list name="actions" cascade="save-update">-->
-    <!--<key column="actions"/>-->
-    <!--<list-index column="actionsIndex"/>-->
-    <!--<one-to-many class="model.impl.databaseImpl.ontology.actions.ITFacilityResourcesAdaptationActionImpl"/>-->
-    <!--</list>-->
-    <!--</joined-subclass>-->
+    <!--ITFacilityActiveResourceImpl-->
+    <joined-subclass name="ITFacilityActiveResourceImpl"
+                     extends="ServiceCenterITFacilityResourceImpl"
+                     table="ITFacilityActiveResource">
+        <key column="UID"/>
+        <list name="actions" cascade="save-update">
+            <key column="actions"/>
+            <list-index column="actionsIndex"/>
+            <one-to-many class="model.impl.databaseImpl.ontology.actions.ITFacilityResourcesAdaptationActionImpl"/>
+        </list>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;FacilityImpl&ndash;&gt;-->
-    <!--<joined-subclass name="FacilityImpl"-->
-    <!--extends="ITFacilityActiveResourceImpl"-->
-    <!--table="Facility">-->
-    <!--<key column="UID"/>-->
-    <!--</joined-subclass>-->
+    <!--FacilityImpl-->
+    <joined-subclass name="FacilityImpl"
+                     extends="ITFacilityActiveResourceImpl"
+                     table="Facility">
+        <key column="UID"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;ITFacilityPassiveResourceImpl&ndash;&gt;-->
-    <!--<joined-subclass name="ITFacilityPassiveResourceImpl"-->
-    <!--extends="ServiceCenterITFacilityResourceImpl"-->
-    <!--table="ITFacilityPassiveResource">-->
-    <!--<key column="UID"/>-->
-    <!--<property name="recordedValue" column="recordedValue" type="java.lang.Double"/>-->
-    <!--</joined-subclass>-->
+    <!--ITFacilityPassiveResourceImpl-->
+    <joined-subclass name="ITFacilityPassiveResourceImpl"
+                     extends="ServiceCenterITFacilityResourceImpl"
+                     table="ITFacilityPassiveResource">
+        <key column="UID"/>
+        <property name="recordedValue" column="recordedValue" type="java.lang.Double"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;MEMImpl&ndash;&gt;-->
-    <!--<joined-subclass name="MEMImpl"-->
-    <!--extends="SimpleResourceImpl"-->
-    <!--table="MEM">-->
-    <!--<key column="UID"/>-->
-    <!--</joined-subclass>-->
+    <!--MEMImpl-->
+    <joined-subclass name="MEMImpl"
+                     extends="SimpleResourceImpl"
+                     table="MEM">
+        <key column="UID"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;SensorImpl&ndash;&gt;-->
-    <!--<joined-subclass name="SensorImpl"-->
-    <!--extends="ITFacilityPassiveResourceImpl"-->
-    <!--table="Sensor">-->
-    <!--<key column="UID"/>-->
+    <!--SensorImpl-->
+    <joined-subclass name="SensorImpl"
+                     extends="ITFacilityPassiveResourceImpl"
+                     table="Sensor">
+        <key column="UID"/>
 
-    <!--</joined-subclass>-->
+    </joined-subclass>
 
-    <!--&lt;!&ndash;ServiceCenterServerImpl&ndash;&gt;-->
-    <!--<joined-subclass name="model.impl.databaseImpl.ontology.resources.ServiceCenterServerImpl"-->
-    <!--extends="model.impl.databaseImpl.ontology.ContextElementImpl"-->
-    <!--table="ServiceCenterServer">-->
-    <!--<key column="UID"/>-->
-    <!--</joined-subclass>-->
+    <!--ServiceCenterServerImpl-->
+    <joined-subclass name="model.impl.databaseImpl.ontology.resources.ServiceCenterServerImpl"
+                     extends="model.impl.databaseImpl.ontology.ContextElementImpl"
+                     table="ServiceCenterServer">
+        <key column="UID"/>
+    </joined-subclass>
 
-    <!--&lt;!&ndash;ActuatorImpl&ndash;&gt;-->
-    <!--<joined-subclass name="ActuatorImpl"-->
-    <!--extends="ITFacilityActiveResourceImpl"-->
-    <!--table="Actuator">-->
-    <!--<key column="UID"/>-->
-    <!--</joined-subclass>-->
+    <!--ActuatorImpl-->
+    <joined-subclass name="ActuatorImpl"
+                     extends="ITFacilityActiveResourceImpl"
+                     table="Actuator">
+        <key column="UID"/>
+    </joined-subclass>
 
 </hibernate-mapping>
