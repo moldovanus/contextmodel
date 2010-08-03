@@ -14,6 +14,7 @@ import model.interfaces.actions.*;
 import model.interfaces.policies.*;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.*;
+import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -36,6 +37,8 @@ public class DatabaseModelFactory implements ModelFactory {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(entityType);
+        criteria.setCacheable(true);
+        criteria.setCacheMode(CacheMode.GET);
         criteria.add(Restrictions.eq("name", name));
         T object = (T) criteria.uniqueResult();
         // session.flush();
@@ -47,9 +50,14 @@ public class DatabaseModelFactory implements ModelFactory {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(entityType);
+        criteria.setCacheMode(CacheMode.GET);
+        criteria.setCacheable(true);
         Collection object = criteria.list();
-        // session.flush();
+        // session.flush()
+        // ;
+        //System.out.println("\n !!!!!!! \n" +session.getSessionFactory().getStatistics() );
         transaction.commit();
+
         return object;
     }
 
@@ -69,6 +77,7 @@ public class DatabaseModelFactory implements ModelFactory {
         Session session = HibernateUtil.getSession();
 
         Transaction transaction = session.beginTransaction();
+        session.setCacheMode(CacheMode.PUT);
         // session.flush();
         session.saveOrUpdate(entity);
 //        Query query = session.createSQLQuery("Insert into equals values(" + ((ContextElementImpl) entity).getId()
