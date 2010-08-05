@@ -4,11 +4,15 @@ import model.impl.databaseImpl.DatabaseModelFactory;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.prevailerImpl.PrevailerModelFactory;
 import model.impl.util.ModelAccess;
+import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.resources.ComplexResource;
+import model.interfaces.resources.ContextResource;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,9 +34,31 @@ public class InstanceGenerator {
         return modelAccess;
     }
 
+    public static ModelAccess generatePolicyInstances(int instanceCount, int accessType) {
+        OntologyModelFactory ontologyModelFactory = (accessType == ModelAccess.ONTOLOGY_ACCESS) ? new OntologyModelFactory() : null;
+        DatabaseModelFactory databaseModelFactory = (accessType == ModelAccess.DATABASE_ACCESS) ? new DatabaseModelFactory() : null;
+        PrevailerModelFactory prevailerModelFactory = (accessType == ModelAccess.PREVAYLER_ACCESS) ? new PrevailerModelFactory() : null;
+
+        ModelAccess modelAccess = new ModelAccess(ontologyModelFactory, databaseModelFactory, prevailerModelFactory);
+        modelAccess.setAccessType(accessType);
+        generateComplexResourceInstances(instanceCount, accessType);
+        Collection<ComplexResource> complexResources = modelAccess.getAllComplexResourceInstances();
+        Iterator<ComplexResource> iterator = complexResources.iterator();
+        for (int i = 0; i < instanceCount; i++) {
+            ITComputingContextPolicy itComputingContextPolicy = modelAccess.createITComputingContextPolicy("EnergyPolicy_" + i);
+            List<ContextResource> associatedResource = new ArrayList<ContextResource>(1);
+            itComputingContextPolicy.setEditable(true);
+            associatedResource.add(iterator.next());
+            itComputingContextPolicy.setPolicySubject(associatedResource);
+            itComputingContextPolicy.setPolicyName("EnergyPolicy_" + i);
+            modelAccess.persistEntity(itComputingContextPolicy);
+        }
+        return modelAccess;
+
+    }
+
+
     public static ModelAccess generateComplexResourceInstances(int instanceCount, int accessType) {
-
-
         OntologyModelFactory ontologyModelFactory = (accessType == ModelAccess.ONTOLOGY_ACCESS) ? new OntologyModelFactory() : null;
         DatabaseModelFactory databaseModelFactory = (accessType == ModelAccess.DATABASE_ACCESS) ? new DatabaseModelFactory() : null;
         PrevailerModelFactory prevailerModelFactory = (accessType == ModelAccess.PREVAYLER_ACCESS) ? new PrevailerModelFactory() : null;
