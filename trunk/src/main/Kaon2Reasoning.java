@@ -228,7 +228,9 @@ public class Kaon2Reasoning {
             while (energyPoliciesIterator.hasNext()) {
                 // Term[] tupleBuffer = allEnergyPolicies.tupleBuffer();
                 ITComputingContextPolicy currentPolicy = energyPoliciesIterator.next();
+
                 String nameOfPolicy = currentPolicy.getName();
+                //  policy = KAON2Manager.factory().individual(ontologyURL+"nameOfPolicy");
 //                Query complexResources = reasoner.createQuery(new Literal[]{
 //                        KAON2Manager.factory().literal(true, complexResource, new Term[]{X}), KAON2Manager.factory().literal(true, resourceID, Y),
 //                }, new Variable[]{X, Y});
@@ -280,10 +282,14 @@ public class Kaon2Reasoning {
                     simpleResourceNumber++;
                     //simpleResQuery.next();
                 }
+                Literal[] literals = new Literal[i];
+                for (int j = 0; j < i; j++) {
+                    literals[j] = arrayOfLiterals[j];
+                }
                 //simpleResQuery.close();
                 Rule rule = KAON2Manager.factory().rule(
                         isRespectedPolicy_X,                          // this is the rule head, i.e. the consequent of the rule
-                        arrayOfLiterals  // this is the rule body, i.e. the condition of the rule
+                        literals  // this is the rule body, i.e. the condition of the rule
                 );
                 changes.add(new OntologyChangeEvent(rule, OntologyChangeEvent.ChangeType.ADD));
                 // allEnergyPolicies.next();
@@ -299,7 +305,7 @@ public class Kaon2Reasoning {
 //                    " swrlb:divide(?sumOf" + a + ", 2,?upDif" + a + ") ^ \n" +
 //                    "sqwrl:sum(?optimalWorkload" + a + ",?upDif" + a + ",?maxThreshold" + a + " )   ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?currentWorkload" + a + ")^ swrlb:lessThanOrEqual(?currentWorkload" + a + ",?maxThreshold" + a + ") ^ ";
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            e.printStackTrace();
         }
     }
 
