@@ -48,6 +48,7 @@ public class InstanceGenerator {
             ITComputingContextPolicy itComputingContextPolicy = modelAccess.createITComputingContextPolicy("EnergyPolicy_" + i);
             List<ContextResource> associatedResource = new ArrayList<ContextResource>(1);
             itComputingContextPolicy.setEditable(true);
+            itComputingContextPolicy.setRespected(false);
             associatedResource.add(iterator.next());
             itComputingContextPolicy.setPolicySubject(associatedResource);
             itComputingContextPolicy.setPolicyName("EnergyPolicy_" + i);
@@ -77,9 +78,9 @@ public class InstanceGenerator {
                 List<Integer> integer = new ArrayList<Integer>();
                 List<ApplicationActivity> activities = new ArrayList<ApplicationActivity>();
                 resource.setCurrentEnergyState(0);
-                resource.setMaximumWorkLoad(0.0);
-                resource.setOptimalWorkLoad(0.0);
-                resource.setCurrentWorkLoad(0.0);
+                resource.setMaximumWorkLoad(100.0);
+                resource.setOptimalWorkLoad(70.0);
+                resource.setCurrentWorkLoad(60.0);
                 for (int k = 0; k < instanceCount; k++) {
                     integer.add(k);
                     ApplicationActivity activity =
