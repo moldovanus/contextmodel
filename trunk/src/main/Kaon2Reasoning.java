@@ -241,9 +241,9 @@ public class Kaon2Reasoning {
 //                Query simpleResQuery = reasoner.createQuery(new Literal[]{
 //                        KAON2Manager.factory().literal(true, simpleResource, new Term[]{X}), KAON2Manager.factory().literal(true, resourceID, Y),
 //                }, new Variable[]{X, Y});
-                Literal enforceRespected = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(1), Z);
+                // Literal enforceRespected = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(1), Z);
                 Literal energyPolicy_X = KAON2Manager.factory().literal(true, energyPolicy, new Term[]{X});
-                Literal isRespectedPolicy_X = KAON2Manager.factory().literal(true, isRespected, new Term[]{X, Z});
+                Literal isRespectedPolicy_X = KAON2Manager.factory().literal(true, isRespected, new Term[]{X, KAON2Manager.factory().individual("true")});
                 Literal energyPolicyName = KAON2Manager.factory().literal(true, policyName, new Term[]{X, Y});
                 Literal checkPolicyName = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = " + nameOfPolicy), Y);
                 Literal associatedComplexResource_X = KAON2Manager.factory().literal(true, associatedComplexResource, new Term[]{X, complexRes});
@@ -256,7 +256,6 @@ public class Kaon2Reasoning {
 
                 arrayOfLiterals[i++] = energyPolicy_X;
                 arrayOfLiterals[i++] = energyPolicyName;
-                arrayOfLiterals[i++] = isRespectedPolicy_X;
                 arrayOfLiterals[i++] = checkPolicyName;
                 arrayOfLiterals[i++] = associatedComplexResource_X;
                 arrayOfLiterals[i++] = complexResID;
@@ -291,11 +290,26 @@ public class Kaon2Reasoning {
                 }
                 //simpleResQuery.close();
                 Rule rule = KAON2Manager.factory().rule(
-                        enforceRespected,                          // this is the rule head, i.e. the consequent of the rule
+                        isRespectedPolicy_X,                          // this is the rule head, i.e. the consequent of the rule
                         literals  // this is the rule body, i.e. the condition of the rule
                 );
                 changes.add(new OntologyChangeEvent(rule, OntologyChangeEvent.ChangeType.ADD));
                 // allEnergyPolicies.next();
+            }
+//            Query getAllPolicies = reasoner.createQuery(new Literal[]{
+//                    KAON2Manager.factory().literal(true, energyPolicy, new Term[]{X}), KAON2Manager.factory().literal(true, isRespected, new Term[]{X, Y})
+//            }, new Variable[]{X, Y});
+            Query getAllPolicies = reasoner.createQuery(Namespaces.INSTANCE, "SELECT *   WHERE {" +
+                    " ?x rdf:type <" + ontologyURL + "ITComputingContextPolicy> ;}");
+            getAllPolicies.open();
+            while (getAllPolicies.afterLast()) {
+                Term[] tupleBuffer = getAllPolicies.tupleBuffer();
+                for (int i = 0; i < tupleBuffer.length; i++) {
+                    System.out.println(tupleBuffer[i]);
+                }
+
+                System.out.println(tupleBuffer.toString());
+                getAllPolicies.next();
             }
             energyPolicies = modelAccess.getAllITComputingContextPolicyInstances();
             energyPoliciesIterator = energyPolicies.iterator();
