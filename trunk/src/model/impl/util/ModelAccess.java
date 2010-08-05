@@ -278,6 +278,7 @@ public class ModelAccess implements ModelFactory {
         }
     }
 
+
     public ContextPolicy createContextPolicy(String name) {
         ContextPolicy object;
         if (accessType == ONTOLOGY_ACCESS) {

@@ -7,30 +7,32 @@
     <joined-subclass name="ContextPolicyImpl" extends="model.impl.databaseImpl.ontology.ContextElementImpl"
                      table="ContextPolicy">
         <key column="UID"/>
-        <property name="policyName" column="policyName" type="string"/>
-        <property name="evaluationCondition" column="evaluationCondition" type="string"/>
-        <property name="respected" column="respected" type="boolean"/>
+        <property name="policyName" column="policyName" type="string" lazy="false"/>
+        <property name="evaluationCondition" column="evaluationCondition" lazy="false" type="string"/>
+        <property name="respected" column="respected" type="boolean" lazy="false"/>
 
-        <list name="policySubject" cascade="save-update">
+        <list name="policySubject" cascade="save-update" lazy="false">
             <key column="policyUID"/>
             <list-index column="subjectUID"/>
             <many-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
         </list>
 
-        <list name="policyTarget">
+        <list name="policyTarget" lazy="false">
             <key column="policyUID"/>
             <list-index column="targetUID"/>
             <many-to-many class="model.impl.databaseImpl.ontology.resources.ContextResourceImpl"/>
         </list>
 
-        <many-to-one name="triggerEvent" class="model.impl.databaseImpl.ontology.EventImpl" column="triggerEvent"
+        <many-to-one name="triggerEvent" lazy="false" class="model.impl.databaseImpl.ontology.EventImpl"
+                     column="triggerEvent"
                 />
     </joined-subclass>
 
     <joined-subclass name="GPI_KPI_PolicyImpl" extends="ContextPolicyImpl"
                      table="GPI_KPI_Policy">
         <key column="UID"/>
-        <many-to-one name="policyGoal" column="policyGoal" class="model.impl.databaseImpl.ontology.GoalImpl"/>
+        <many-to-one name="policyGoal" column="policyGoal" lazy="false"
+                     class="model.impl.databaseImpl.ontology.GoalImpl"/>
     </joined-subclass>
 
     <joined-subclass name="BusinessPolicyImpl" extends="GPI_KPI_PolicyImpl"
