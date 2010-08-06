@@ -39,7 +39,7 @@
         </db:Table>
     </db:OWLClass>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityCPURequired">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#cpuRequiredValue">
         <db:Table db:tableName="ApplicationActivity">
             <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
@@ -48,7 +48,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityHDDRequired">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#hddRequiredValue">
         <db:Table db:tableName="ApplicationActivity">
             <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
@@ -57,7 +57,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityMEMRequired">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#memRequiredValue">
         <db:Table db:tableName="ApplicationActivity">
             <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
@@ -66,7 +66,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityCPUAllocated">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#cpuAllocatedValue">
         <db:Table db:tableName="ApplicationActivity">
             <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
@@ -75,7 +75,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityHDDAllocated">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#hddAllocatedValue">
         <db:Table db:tableName="ApplicationActivity">
             <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
@@ -84,7 +84,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityMEMAllocated">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#memAllocatedValue">
         <db:Table db:tableName="ApplicationActivity">
             <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
@@ -93,7 +93,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityPerformanceEstimation">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#performanceEstimation">
         <db:Table db:tableName="ApplicationActivity">
             <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
@@ -102,7 +102,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#applicationActivityPerformanceDegradation">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#performanceDegradation">
         <db:Table db:tableName="ApplicationActivity">
             <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
@@ -121,7 +121,7 @@
 
         </db:Table>
     </db:OWLClass>
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceMaximumWorkLoad">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#maximumWorkload">
         <db:Table db:tableName="ServiceCenterITComputingResource">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -131,7 +131,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceOptimalWorkLoad">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#optimalWorkload">
         <db:Table db:tableName="ServiceCenterITComputingResource">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -141,7 +141,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceCurrentWorkLoad">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#currentWorkload">
         <db:Table db:tableName="ServiceCenterITComputingResource">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -153,7 +153,7 @@
 
 
     <db:DatatypeProperty
-            db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceCurrentEnergyState">
+            db:name="http://coned.dsrl.com/contextmodel#currentEnergyState">
         <db:Table db:tableName="ServiceCenterITComputingResource">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -173,7 +173,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceID">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#resourceID">
         <db:Table db:tableName="ContextResource">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -184,7 +184,7 @@
     </db:DatatypeProperty>
 
     <!--private List<Integer> energyStates;-->
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceEnergyStates">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#energyStates">
         <db:Table db:tableName="EnergyStates">
             <db:IndividualInteger db:fieldName="resourceUID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -194,7 +194,7 @@
     </db:DatatypeProperty>
 
     <!--private List<ApplicationActivity> runningActivities;-->
-    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#serviceCenterITComputingResourceRunningActivities">
+    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#runningActivities">
         <db:Table db:tableName="RunningActivities">
             <db:IndividualInteger db:fieldName="resourceUID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
@@ -301,7 +301,7 @@
     <!--</db:ObjectProperty>-->
 
     <!--List<String> resourceWorkloadProperty;-->
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#complexResourceWorkloadProperty">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#resourceWorkloadProperty">
         <db:Table db:tableName="ResourceWorkloadProperty">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -312,7 +312,7 @@
     </db:DatatypeProperty>
 
     <!--List<ServiceCenterITComputingResource> resources;-->
-    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#complexResourceResources">
+    <db:ObjectProperty db:name="http://coned.dsrl.com/contextmodel#resources">
         <db:Table db:tableName="AssociatedResources">
             <db:IndividualInteger db:fieldName="resourceID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"/>
@@ -418,7 +418,7 @@
     <!--</db:Table>-->
     <!--</db:ObjectProperty>-->
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#simpleResourceWorkLoadProperty">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#workLoadProperty">
         <db:Table db:tableName="SimpleResource">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -450,7 +450,7 @@
         </db:Table>
     </db:OWLClass>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#contextPolicyName">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#policyName">
         <db:Table db:tableName="ContextPolicy">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -460,7 +460,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#contextPolicyEvaluationCondition">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#evaluationCondition">
         <db:Table db:tableName="ContextPolicy">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
@@ -470,7 +470,7 @@
         </db:Table>
     </db:DatatypeProperty>
 
-    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#contextPolicyRespected">
+    <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#isRespected">
         <db:Table db:tableName="ContextPolicy">
             <db:IndividualInteger db:fieldName="UID"
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
