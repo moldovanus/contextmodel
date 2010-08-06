@@ -8,12 +8,15 @@
     <class name="model.impl.databaseImpl.ontology.ContextElementImpl" abstract="true" table="ContextElement"
            lazy="false">
 
-        <cache usage="read-write"/>
+        <!--<cache usage="read-write"/>-->
 
         <!--<cache usage="read-write" include="all"/>-->
         <id name="id" column="UID" unsaved-value="-1">
             <generator class="increment"/>
         </id>
+        <!--<natural-id>-->
+        <!--<property name="id" type="java.lang.Integer" column="UID" insert="false"/>-->
+        <!--</natural-id>-->
 
         <property name="name" column="name" type="string"/>
 
@@ -24,7 +27,7 @@
                      extends="model.impl.databaseImpl.ontology.ContextElementImpl"
                      table="ContextResource" abstract="true">
         <key column="UID"/>
-        <property name="resourceID" type="string" column="resourceID"/>
+        <property name="resourceID" type="string" column="resourceID" insert="true" formula="UID"/>
     </joined-subclass>
 
     <!--ServiceCenterITComputingResourceImpl-->

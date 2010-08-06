@@ -15,6 +15,7 @@ import org.semanticweb.kaon2.api.logic.Rule;
 import org.semanticweb.kaon2.api.logic.Term;
 import org.semanticweb.kaon2.api.logic.Variable;
 import org.semanticweb.kaon2.api.owl.elements.DataProperty;
+import org.semanticweb.kaon2.api.owl.elements.Individual;
 import org.semanticweb.kaon2.api.owl.elements.OWLClass;
 import org.semanticweb.kaon2.api.owl.elements.ObjectProperty;
 import org.semanticweb.kaon2.api.reasoner.Query;
@@ -36,7 +37,7 @@ public class Kaon2Reasoning {
     public void initializeOntology() {
 
         Logger logger = Logger.getLogger(Kaon2Reasoning.class);
-        PropertyConfigurator.configure("D:\\contextmodel\\src\\model\\impl\\databaseImpl\\dao\\log4j.properties");
+        PropertyConfigurator.configure("C:\\Users\\Administrator\\Desktop\\contextmodel\\src\\model\\impl\\databaseImpl\\dao\\log4j.properties");
         HibernateUtil.recreateDatabase();
         ModelAccess modelAccess = InstanceGenerator.generatePolicyInstances(10, ModelAccess.DATABASE_ACCESS);
 //        modelAccess = InstanceGenerator.generateComplexResourceInstances(2, ModelAccess.DATABASE_ACCESS);
@@ -222,29 +223,37 @@ public class Kaon2Reasoning {
             while (energyPoliciesIterator.hasNext()) {
                 // Term[] tupleBuffer = allEnergyPolicies.tupleBuffer();
                 ITComputingContextPolicy currentPolicy = energyPoliciesIterator.next();
+                ContextResource target = currentPolicy.getPolicySubject().get(0);
                 String nameOfPolicy = currentPolicy.getName();
                 //  policy = KAON2Manager.factory().individual(ontologyURL+"nameOfPolicy");
                 List<ContextResource> contextRes = currentPolicy.getPolicySubject();
                 String complexID = contextRes.get(0).getResourceID();
+                Individual targetIndividual = KAON2Manager.factory().individual(ontologyURL + "id" + currentPolicy.getId());
                 // Literal enforceRespected = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(1), Z);
                 Literal energyPolicy_X = KAON2Manager.factory().literal(true, energyPolicy, new Term[]{X});
-                Literal isRespectedPolicy_X = KAON2Manager.factory().literal(true, isRespected, new Term[]{X, KAON2Manager.factory().constant("true")});
-                Literal energyPolicyName = KAON2Manager.factory().literal(true, policyName, new Term[]{X, Y});
-                Literal checkPolicyName = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = " + nameOfPolicy), Y);
-                Literal associatedComplexResource_X = KAON2Manager.factory().literal(true, associatedComplexResource, new Term[]{X, complexRes});
-                Literal complexResID = KAON2Manager.factory().literal(true, resourceID, new Term[]{complexRes, complexResourceID});
-                Literal checkResID = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = " + complexID), complexResourceID);
+                Literal isRespectedPolicy_X =
+                        KAON2Manager.factory().literal(true, isRespected, new Term[]{targetIndividual, KAON2Manager.factory().constant(true)});
+//                Literal energyPolicyName =
+//                        KAON2Manager.factory().literal(true, policyName, new Term[]{targetIndividual, KAON2Manager.factory().constant(nameOfPolicy)});
+////                Literal checkPolicyName =
+////                        KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = " + nameOfPolicy), Y);
+                Literal associatedComplexResource_X =
+                        KAON2Manager.factory().literal(true, associatedComplexResource, new Term[]{targetIndividual, complexRes});
+                Literal complexResID =
+                        KAON2Manager.factory().literal(true, resourceID, new Term[]{complexRes, complexResourceID});
+                Literal checkResID =
+                        KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = " + complexID), complexResourceID);
 
                 Literal[] arrayOfLiterals = new Literal[100];
                 int i = 0;
                 int simpleResourceNumber = 0;
 
-                arrayOfLiterals[i++] = energyPolicy_X;
-                arrayOfLiterals[i++] = energyPolicyName;
-                arrayOfLiterals[i++] = checkPolicyName;
+//                arrayOfLiterals[i++] = energyPolicy_X;
+//                arrayOfLiterals[i++] = energyPolicyName;
+//                arrayOfLiterals[i++] = checkPolicyName;
                 arrayOfLiterals[i++] = associatedComplexResource_X;
-                arrayOfLiterals[i++] = complexResID;
-                arrayOfLiterals[i++] = checkResID;
+//                arrayOfLiterals[i++] = complexResID;
+//                arrayOfLiterals[i++] = checkResID;
                 Collection<ServiceCenterITComputingResource> simpleResources = ((ComplexResource) contextRes.get(0)).getResources();
                 Iterator<ServiceCenterITComputingResource> simpleResourceIterator = simpleResources.iterator();
                 while (simpleResourceIterator.hasNext()) {
@@ -253,18 +262,18 @@ public class Kaon2Reasoning {
                     Variable maxWorkloadi = KAON2Manager.factory().variable("maximumWorkload" + simpleResourceNumber);
                     Variable optimalWorkloadi = KAON2Manager.factory().variable("optimalWorkload" + simpleResourceNumber);
                     Variable simpleResIDi = KAON2Manager.factory().variable("resourceID" + simpleResourceNumber);
-                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, simpleResource, new Term[]{assocResource});
-                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, resourceID, new Term[]{assocResource, simpleResIDi});
-                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = " + currentSimpleResource.getResourceID()), simpleResIDi);
-                    /**********************check constraints*****************/
-                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, currentWorkload, new Term[]{assocResource, currentWorkloadi});
-                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, optimalWorkload, new Term[]{assocResource, optimalWorkloadi});
-                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, maxWorkload, new Term[]{assocResource, maxWorkloadi});
-                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(4),
-                            new Term[]{
-                                    KAON2Manager.factory().constant("($2/2.0) <=$1  &&  $1<($2+($3-$2)/2.0)"),
-                                    currentWorkloadi, optimalWorkloadi, maxWorkloadi,
-                            });
+//                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, simpleResource, new Term[]{assocResource});
+//                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, resourceID, new Term[]{assocResource, simpleResIDi});
+//                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(2), KAON2Manager.factory().constant("$1 = " + currentSimpleResource.getResourceID()), simpleResIDi);
+//                    /**********************check constraints*****************/
+//                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, currentWorkload, new Term[]{assocResource, currentWorkloadi});
+//                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, optimalWorkload, new Term[]{assocResource, optimalWorkloadi});
+//                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, maxWorkload, new Term[]{assocResource, maxWorkloadi});
+////                    arrayOfLiterals[i++] = KAON2Manager.factory().literal(true, KAON2Manager.factory().ifTrue(4),
+//                            new Term[]{
+//                                    KAON2Manager.factory().constant("($2/2.0) <=$1  &&  $1<($2+($3-$2)/2.0)"),
+//                                    currentWorkloadi, optimalWorkloadi, maxWorkloadi,
+//                            });
                     simpleResourceNumber++;
                 }
                 Literal[] literals = new Literal[i];
@@ -280,21 +289,41 @@ public class Kaon2Reasoning {
 
 ////            Query getAllPolicies = reasoner.createQuery(Namespaces.INSTANCE, "SELECT *   WHERE {" +
 ////                    " ?x rdf:type <" + ontologyURL + "ITComputingContextPolicy> ;}");
-
-
+//         
             ontology.applyChanges(changes);
-//            Query getAllPolicies = reasoner.createQuery(new Literal[]{
-//                     KAON2Manager.factory().literal(true, isRespected, new Term[]{X, Y})
-//            }, new Variable[]{X, Y});
-//            getAllPolicies.open();
-//            while (!getAllPolicies.afterLast()) {
-//                Term[] tupleBuffer = getAllPolicies.tupleBuffer();
-//                for (int i = 0; i < tupleBuffer.length; i++) {
-//                    System.out.println(tupleBuffer[i]);
-//                }
-//                System.out.println(tupleBuffer.toString());
-//                getAllPolicies.next();
-//            }
+            Request request = ontology.createAxiomRequest(Rule.class);
+            Set<Rule> ruleSet = request.getAll();
+            for (Rule r : ruleSet) {
+                System.out.println(r.toString());
+            }
+
+            Query getAllPolicies = reasoner.createQuery(new Literal[]{
+//                    KAON2Manager.factory().literal(true, isRespected, new Term[]{X, Y}),
+                    KAON2Manager.factory().literal(true, KAON2Manager.factory().dataProperty(ontologyURL + "policyName"), new Term[]{X, Z})
+            }, new Variable[]{X, Z});
+            getAllPolicies.open();
+            while (!getAllPolicies.afterLast()) {
+                Term[] tupleBuffer = getAllPolicies.tupleBuffer();
+                for (Term aTupleBuffer : tupleBuffer) {
+                    System.out.print("  " + aTupleBuffer);
+                }
+                System.out.println();
+                getAllPolicies.next();
+            }
+
+            getAllPolicies = reasoner.createQuery(new Literal[]{
+                    KAON2Manager.factory().literal(true, isRespected, new Term[]{X, Y}),
+//                    KAON2Manager.factory().literal(true, KAON2Manager.factory().dataProperty(ontologyURL+"policyName"), new Term[]{X, Z})
+            }, new Variable[]{X, Y});
+            getAllPolicies.open();
+            while (!getAllPolicies.afterLast()) {
+                Term[] tupleBuffer = getAllPolicies.tupleBuffer();
+                for (Term aTupleBuffer : tupleBuffer) {
+                    System.out.print("  " + aTupleBuffer);
+                }
+                System.out.println();
+                getAllPolicies.next();
+            }
             energyPolicies = modelAccess.getAllITComputingContextPolicyInstances();
             energyPoliciesIterator = energyPolicies.iterator();
             while (energyPoliciesIterator.hasNext()) {
