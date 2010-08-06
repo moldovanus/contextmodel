@@ -1,13 +1,11 @@
 package model.impl.databaseImpl;
 
 import model.impl.databaseImpl.dao.HibernateUtil;
+import model.impl.databaseImpl.ontology.ContextElementImpl;
 import model.impl.databaseImpl.ontology.actions.*;
 import model.impl.databaseImpl.ontology.policies.*;
 import model.impl.databaseImpl.ontology.resources.*;
-import model.impl.databaseImpl.ontology.resources.applications.ApplicationImpl;
-import model.impl.databaseImpl.ontology.resources.applications.CPUIntensiveActivityImpl;
-import model.impl.databaseImpl.ontology.resources.applications.HDDIntensiveActivityImpl;
-import model.impl.databaseImpl.ontology.resources.applications.MEMIntensiveActivityImpl;
+import model.impl.databaseImpl.ontology.resources.applications.*;
 import model.impl.util.ModelFactory;
 import model.interfaces.ContextElement;
 import model.interfaces.actions.*;
@@ -38,7 +36,7 @@ public class DatabaseModelFactory implements ModelFactory {
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(entityType);
         criteria.setCacheable(true);
-        criteria.setCacheMode(CacheMode.GET);
+        criteria.setCacheMode(CacheMode.NORMAL);
         criteria.add(Restrictions.eq("name", name));
         T object = (T) criteria.uniqueResult();
         // session.flush();
@@ -50,12 +48,35 @@ public class DatabaseModelFactory implements ModelFactory {
         Session session = HibernateUtil.getSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(entityType);
-        criteria.setCacheMode(CacheMode.GET);
+        criteria.setCacheMode(CacheMode.NORMAL);
         criteria.setCacheable(true);
         Collection object = criteria.list();
         // session.flush()
         // ;
-        //System.out.println("\n !!!!!!! \n" +session.getSessionFactory().getStatistics() );
+
+//        System.out.println("\n !!!!!!! \n");
+//        Statistics statistics = session.getSessionFactory().getStatistics();
+//        System.out.println("Collection fetch count: " + statistics.getCollectionFetchCount());
+//        System.out.println("Collection recreate count: " + statistics.getCollectionRecreateCount());
+//        System.out.println("Collection load count: " + statistics.getCollectionLoadCount());
+//        System.out.println("Query cache put: " + statistics.getQueryCachePutCount());
+//        System.out.println("Query cache hit: " + statistics.getQueryCacheHitCount());
+//        System.out.println("Query cache miss: " + statistics.getQueryCacheMissCount());
+//          System.out.println("Query execution time: " + statistics.getQueryExecutionMaxTime());
+//        System.out.println("Second level cache put: " + statistics.getSecondLevelCachePutCount());
+//        System.out.println("Second level cache hit: " + statistics.getSecondLevelCacheHitCount());
+//        System.out.println("Second level cache miss: " + statistics.getSecondLevelCacheMissCount());
+
+//        String[] regionNames = statistics.getSecondLevelCacheRegionNames();
+//        for(String name : regionNames){
+//            SecondLevelCacheStatistics secondLevelCacheStatistics = statistics.getSecondLevelCacheStatistics(name);
+//             System.out.println("Second level cache \""+name+"\" elements in mem: " + secondLevelCacheStatistics.getElementCountInMemory());
+//             System.out.println("Second level cache \""+name+"\" elements on disk: " + secondLevelCacheStatistics.getElementCountOnDisk());
+//             System.out.println("Second level cache \""+name+"\" hit count: " + secondLevelCacheStatistics.getHitCount());
+//             System.out.println("Second level cache \""+name+"\" miss count: " + secondLevelCacheStatistics.getMissCount());
+//             System.out.println("Second level cache \""+name+"\" put count: " + secondLevelCacheStatistics.getPutCount());
+//        }
+//
         transaction.commit();
 
         return object;
@@ -75,9 +96,7 @@ public class DatabaseModelFactory implements ModelFactory {
     public void persistEntity(ContextElement entity) {
 
         Session session = HibernateUtil.getSession();
-
         Transaction transaction = session.beginTransaction();
-        session.setCacheMode(CacheMode.PUT);
         // session.flush();
         session.saveOrUpdate(entity);
 //        Query query = session.createSQLQuery("Insert into equals values(" + ((ContextElementImpl) entity).getId()
@@ -127,7 +146,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ITComputingResourceAdaptationAction> getAllITComputingResourceAdaptationActionInstances() {
-        return getAllEntityInstances(ITComputingResourceAdaptationAction.class);
+        return getAllEntityInstances(ITComputingResourcesAdaptationActionImpl.class);
     }
 
     public ContextAction createContextAction(String name) {
@@ -146,7 +165,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ContextAction> getAllContextActionInstances() {
-        return getAllEntityInstances(ContextAction.class);
+        return getAllEntityInstances(ContextActionImpl.class);
     }
 
     public HDDIntensiveActivity createHDDIntensiveActivity(String name) {
@@ -165,7 +184,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<HDDIntensiveActivity> getAllHDDIntensiveActivityInstances() {
-        return getAllEntityInstances(HDDIntensiveActivity.class);
+        return getAllEntityInstances(HDDIntensiveActivityImpl.class);
     }
 
     public ApplicationActivity createApplicationActivity(String name) {
@@ -185,7 +204,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ApplicationActivity> getAllApplicationActivityInstances() {
-        return getAllEntityInstances(ApplicationActivity.class);
+        return getAllEntityInstances(ApplicationActivityImpl.class);
     }
 
     public GPI_KPI_Policy createGPI_KPI_Policy(String name) {
@@ -204,7 +223,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<GPI_KPI_Policy> getAllGPI_KPI_PolicyInstances() {
-        return getAllEntityInstances(GPI_KPI_Policy.class);
+        return getAllEntityInstances(GPI_KPI_PolicyImpl.class);
     }
 
     public ContextPolicy createContextPolicy(String name) {
@@ -223,7 +242,7 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ContextPolicy> getAllContextPolicyInstances() {
-        return getAllEntityInstances(ContextPolicy.class);
+        return getAllEntityInstances(ContextPolicyImpl.class);
     }
 
     public ServiceCenterITComputingResource createServiceCenterITComputingResource(String name) {
@@ -242,15 +261,15 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Collection<ServiceCenterITComputingResource> getAllServiceCenterITComputingResourceInstances() {
-        return getAllEntityInstances(ServiceCenterITComputingResource.class);
+        return getAllEntityInstances(ServiceCenterITComputingResourceImpl.class);
     }
 
     public ContextResource getContextResource(String name) {
-        return getEntity(ContextResource.class, name);
+        return getEntity(ContextResourceImpl.class, name);
     }
 
     public Collection<ContextResource> getAllContextResourceInstances() {
-        return getAllEntityInstances(ContextResource.class);
+        return getAllEntityInstances(ContextResourceImpl.class);
     }
 
     public ServiceCenterServer createServiceCenterServer(String name) {
@@ -265,11 +284,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ServiceCenterServer getServiceCenterServer(String name) {
-        return getEntity(ServiceCenterServer.class, name);
+        return getEntity(ServiceCenterServerImpl.class, name);
     }
 
     public Collection<ServiceCenterServer> getAllServiceCenterServerInstances() {
-        return getAllEntityInstances(ServiceCenterServer.class);
+        return getAllEntityInstances(ServiceCenterServerImpl.class);
     }
 
     public ComplexResource createComplexResource(String name) {
@@ -284,20 +303,20 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ComplexResource getComplexResource(String name) {
-        return getEntity(ComplexResource.class, name);
+        return getEntity(ComplexResourceImpl.class, name);
     }
 
     public Collection<ComplexResource> getAllComplexResourceInstances() {
-        return getAllEntityInstances(ComplexResource.class);
+        return getAllEntityInstances(ComplexResourceImpl.class);
     }
 
 
     public ContextElement getContextElement(String name) {
-        return getEntity(ContextElement.class, name);
+        return getEntity(ContextElementImpl.class, name);
     }
 
     public Collection<ContextElement> getAllContextElementInstances() {
-        return getAllEntityInstances(ContextElement.class);
+        return getAllEntityInstances(ContextElementImpl.class);
     }
 
     public ServiceCenterITFacilityResource createServiceCenterITFacilityResource(String name) {
@@ -312,11 +331,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ServiceCenterITFacilityResource getServiceCenterITFacilityResource(String name) {
-        return getEntity(ServiceCenterITFacilityResource.class, name);
+        return getEntity(ServiceCenterITFacilityResourceImpl.class, name);
     }
 
     public Collection<ServiceCenterITFacilityResource> getAllServiceCenterITFacilityResourceInstances() {
-        return getAllEntityInstances(ServiceCenterITFacilityResource.class);
+        return getAllEntityInstances(ServiceCenterITFacilityResourceImpl.class);
     }
 
     public BusinessContextResource createBusinessContextResource(String name) {
@@ -331,11 +350,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public BusinessContextResource getBusinessContextResource(String name) {
-        return getEntity(BusinessContextResource.class, name);
+        return getEntity(BusinessContextResourceImpl.class, name);
     }
 
     public Collection<BusinessContextResource> getAllBusinessContextResourceInstances() {
-        return getAllEntityInstances(BusinessContextResource.class);
+        return getAllEntityInstances(BusinessContextResourceImpl.class);
     }
 
     public Application createApplication(String name) {
@@ -350,11 +369,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Application getApplication(String name) {
-        return getEntity(Application.class, name);
+        return getEntity(ApplicationImpl.class, name);
     }
 
     public Collection<Application> getAllApplicationInstances() {
-        return getAllEntityInstances(Application.class);
+        return getAllEntityInstances(ApplicationImpl.class);
     }
 
     public CPUIntensiveActivity createCPUIntensiveActivity(String name) {
@@ -369,11 +388,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public CPUIntensiveActivity getCPUIntensiveActivity(String name) {
-        return getEntity(CPUIntensiveActivity.class, name);
+        return getEntity(CPUIntensiveActivityImpl.class, name);
     }
 
     public Collection<CPUIntensiveActivity> getAllCPUIntensiveActivityInstances() {
-        return getAllEntityInstances(CPUIntensiveActivity.class);
+        return getAllEntityInstances(CPUIntensiveActivityImpl.class);
     }
 
     public ApplicationAdaptationAction createApplicationAdaptationAction(String name) {
@@ -388,11 +407,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ApplicationAdaptationAction getApplicationAdaptationAction(String name) {
-        return getEntity(ApplicationAdaptationAction.class, name);
+        return getEntity(ApplicationAdaptationActionImpl.class, name);
     }
 
     public Collection<ApplicationAdaptationAction> getAllApplicationAdaptationActionInstances() {
-        return getAllEntityInstances(ApplicationAdaptationAction.class);
+        return getAllEntityInstances(ApplicationAdaptationActionImpl.class);
     }
 
     public ApplicationRedesign createApplicationRedesign(String name) {
@@ -407,11 +426,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ApplicationRedesign getApplicationRedesign(String name) {
-        return getEntity(ApplicationRedesign.class, name);
+        return getEntity(ApplicationRedesignImpl.class, name);
     }
 
     public Collection<ApplicationRedesign> getAllApplicationRedesignInstances() {
-        return getAllEntityInstances(ApplicationRedesign.class);
+        return getAllEntityInstances(ApplicationRedesignImpl.class);
     }
 
     public ITFacilityActiveResource createITFacilityActiveResource(String name) {
@@ -426,11 +445,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ITFacilityActiveResource getITFacilityActiveResource(String name) {
-        return getEntity(ITFacilityActiveResource.class, name);
+        return getEntity(ITFacilityActiveResourceImpl.class, name);
     }
 
     public Collection<ITFacilityActiveResource> getAllITFacilityActiveResourceInstances() {
-        return getAllEntityInstances(ITFacilityActiveResource.class);
+        return getAllEntityInstances(ITFacilityActiveResourceImpl.class);
     }
 
     public HDD createHDD(String name) {
@@ -445,11 +464,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public HDD getHDD(String name) {
-        return getEntity(HDD.class, name);
+        return getEntity(HDDImpl.class, name);
     }
 
     public Collection<HDD> getAllHDDInstances() {
-        return getAllEntityInstances(HDD.class);
+        return getAllEntityInstances(HDDImpl.class);
     }
 
     public SimpleResource createSimpleResource(String name) {
@@ -464,11 +483,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public SimpleResource getSimpleResource(String name) {
-        return getEntity(SimpleResource.class, name);
+        return getEntity(SimpleResourceImpl.class, name);
     }
 
     public Collection<SimpleResource> getAllSimpleResourceInstances() {
-        return getAllEntityInstances(SimpleResource.class);
+        return getAllEntityInstances(SimpleResourceImpl.class);
     }
 
     public ITComputingContextPolicy createITComputingContextPolicy(String name) {
@@ -483,11 +502,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ITComputingContextPolicy getITComputingContextPolicy(String name) {
-        return getEntity(ITComputingContextPolicy.class, name);
+        return getEntity(ITComputingContextPolicyImpl.class, name);
     }
 
     public Collection<ITComputingContextPolicy> getAllITComputingContextPolicyInstances() {
-        return getAllEntityInstances(ITComputingContextPolicy.class);
+        return getAllEntityInstances(ITComputingContextPolicyImpl.class);
     }
 
     public ITFacilityPassiveResource createITFacilityPassiveResource(String name) {
@@ -502,11 +521,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ITFacilityPassiveResource getITFacilityPassiveResource(String name) {
-        return getEntity(ITFacilityPassiveResource.class, name);
+        return getEntity(ITFacilityPassiveResourceImpl.class, name);
     }
 
     public Collection<ITFacilityPassiveResource> getAllITFacilityPassiveResourceInstances() {
-        return getAllEntityInstances(ITFacilityPassiveResource.class);
+        return getAllEntityInstances(ITFacilityPassiveResourceImpl.class);
     }
 
     public MigrateActivity createMigrateActivity(String name) {
@@ -521,11 +540,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public MigrateActivity getMigrateActivity(String name) {
-        return getEntity(MigrateActivity.class, name);
+        return getEntity(MigrateActivityImpl.class, name);
     }
 
     public Collection<MigrateActivity> getAllMigrateActivityInstances() {
-        return getAllEntityInstances(MigrateActivity.class);
+        return getAllEntityInstances(MigrateActivityImpl.class);
     }
 
     public ConsolidationAction createConsolidationAction(String name) {
@@ -540,11 +559,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ConsolidationAction getConsolidationAction(String name) {
-        return getEntity(ConsolidationAction.class, name);
+        return getEntity(ConsolidationActionImpl.class, name);
     }
 
     public Collection<ConsolidationAction> getAllConsolidationActionInstances() {
-        return getAllEntityInstances(ConsolidationAction.class);
+        return getAllEntityInstances(ConsolidationActionImpl.class);
     }
 
     public Sensor createSensor(String name) {
@@ -559,11 +578,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Sensor getSensor(String name) {
-        return getEntity(Sensor.class, name);
+        return getEntity(SensorImpl.class, name);
     }
 
     public Collection<Sensor> getAllSensorInstances() {
-        return getAllEntityInstances(Sensor.class);
+        return getAllEntityInstances(SensorImpl.class);
     }
 
     public Actuator createActuator(String name) {
@@ -578,11 +597,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Actuator getActuator(String name) {
-        return getEntity(Actuator.class, name);
+        return getEntity(ActuatorImpl.class, name);
     }
 
     public Collection<Actuator> getAllActuatorInstances() {
-        return getAllEntityInstances(Actuator.class);
+        return getAllEntityInstances(ActuatorImpl.class);
     }
 
     public BusinessPolicy createBusinessPolicy(String name) {
@@ -597,11 +616,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public BusinessPolicy getBusinessPolicy(String name) {
-        return getEntity(BusinessPolicy.class, name);
+        return getEntity(BusinessPolicyImpl.class, name);
     }
 
     public Collection<BusinessPolicy> getAllBusinessPolicyInstances() {
-        return getAllEntityInstances(BusinessPolicy.class);
+        return getAllEntityInstances(BusinessPolicyImpl.class);
     }
 
     public MEM createMEM(String name) {
@@ -616,11 +635,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public MEM getMEM(String name) {
-        return getEntity(MEM.class, name);
+        return getEntity(MEMImpl.class, name);
     }
 
     public Collection<MEM> getAllMEMInstances() {
-        return getAllEntityInstances(MEM.class);
+        return getAllEntityInstances(MEMImpl.class);
     }
 
     public ExternalStorage createExternalStorage(String name) {
@@ -635,11 +654,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ExternalStorage getExternalStorage(String name) {
-        return getEntity(ExternalStorage.class, name);
+        return getEntity(ExternalStorageImpl.class, name);
     }
 
     public Collection<ExternalStorage> getAllExternalStorageInstances() {
-        return getAllEntityInstances(ExternalStorage.class);
+        return getAllEntityInstances(ExternalStorageImpl.class);
     }
 
     public CPU createCPU(String name) {
@@ -654,11 +673,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public CPU getCPU(String name) {
-        return getEntity(CPU.class, name);
+        return getEntity(CPUImpl.class, name);
     }
 
     public Collection<CPU> getAllCPUInstances() {
-        return getAllEntityInstances(CPU.class);
+        return getAllEntityInstances(CPUImpl.class);
     }
 
     public SLAPolicy createSLAPolicy(String name) {
@@ -673,11 +692,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public SLAPolicy getSLAPolicy(String name) {
-        return getEntity(SLAPolicy.class, name);
+        return getEntity(SLAPolicyImpl.class, name);
     }
 
     public Collection<SLAPolicy> getAllSLAPolicyInstances() {
-        return getAllEntityInstances(SLAPolicy.class);
+        return getAllEntityInstances(SLAPolicyImpl.class);
     }
 
     public MEMIntensiveActivity createMEMIntensiveActivity(String name) {
@@ -692,11 +711,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public MEMIntensiveActivity getMEMIntensiveActivity(String name) {
-        return getEntity(MEMIntensiveActivity.class, name);
+        return getEntity(MEMIntensiveActivityImpl.class, name);
     }
 
     public Collection<MEMIntensiveActivity> getAllMEMIntensiveActivityInstances() {
-        return getAllEntityInstances(MEMIntensiveActivity.class);
+        return getAllEntityInstances(MEMIntensiveActivityImpl.class);
     }
 
     public Facility createFacility(String name) {
@@ -711,11 +730,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public Facility getFacility(String name) {
-        return getEntity(Facility.class, name);
+        return getEntity(FacilityImpl.class, name);
     }
 
     public Collection<Facility> getAllFacilityInstances() {
-        return getAllEntityInstances(Facility.class);
+        return getAllEntityInstances(FacilityImpl.class);
     }
 
     public QoSPolicy createQoSPolicy(String name) {
@@ -730,11 +749,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public QoSPolicy getQoSPolicy(String name) {
-        return getEntity(QoSPolicy.class, name);
+        return getEntity(QoSPolicyImpl.class, name);
     }
 
     public Collection<QoSPolicy> getAllQoSPolicyInstances() {
-        return getAllEntityInstances(QoSPolicy.class);
+        return getAllEntityInstances(QoSPolicyImpl.class);
     }
 
     public DeployActivity createDeployActivity(String name) {
@@ -749,11 +768,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public DeployActivity getDeployActivity(String name) {
-        return getEntity(DeployActivity.class, name);
+        return getEntity(DeployActivityImpl.class, name);
     }
 
     public Collection<DeployActivity> getAllDeployActivityInstances() {
-        return getAllEntityInstances(DeployActivity.class);
+        return getAllEntityInstances(DeployActivityImpl.class);
     }
 
     public EnvironmentPolicy createEnvironmentPolicy(String name) {
@@ -768,11 +787,11 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public EnvironmentPolicy getEnvironmentPolicy(String name) {
-        return getEntity(EnvironmentPolicy.class, name);
+        return getEntity(EnvironmentPolicyImpl.class, name);
     }
 
     public Collection<EnvironmentPolicy> getAllEnvironmentPolicyInstances() {
-        return getAllEntityInstances(EnvironmentPolicy.class);
+        return getAllEntityInstances(EnvironmentPolicyImpl.class);
     }
 
     public ITFacilityResourceAdaptationAction createITFacilityResourceAdaptationAction(String name) {
@@ -787,10 +806,10 @@ public class DatabaseModelFactory implements ModelFactory {
     }
 
     public ITFacilityResourceAdaptationAction getITFacilityResourceAdaptationAction(String name) {
-        return getEntity(ITFacilityResourceAdaptationAction.class, name);
+        return getEntity(ITFacilityResourcesAdaptationActionImpl.class, name);
     }
 
     public Collection<ITFacilityResourceAdaptationAction> getAllITFacilityResourceAdaptationActionInstances() {
-        return getAllEntityInstances(ITFacilityResourceAdaptationAction.class);
+        return getAllEntityInstances(ITFacilityResourcesAdaptationActionImpl.class);
     }
 }

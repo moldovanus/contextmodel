@@ -26,17 +26,17 @@
         <property name="current_session_context_class">thread</property>
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">false</property>
-        <property name="hibernate.cache.use_query_cache">true</property>
-        <property name="hibernate.cache.use_second_level_cache">true</property>
-        <property name="hibernate.generate_statistics">true</property>
+        <!--<property name="hibernate.cache.use_query_cache">true</property>-->
+        <!--<property name="hibernate.cache.use_second_level_cache">true</property>-->
+        <!--<property name="hibernate.generate_statistics">true</property>-->
 
-        <property name="net.sf.ehcache.configurationResourceName">
-            /model/impl/databaseImpl/dao/ehcache_config.xml
-        </property>
+        <!--<property name="net.sf.ehcache.configurationResourceName">-->
+        <!--/model/impl/databaseImpl/dao/ehcache_config.xml-->
+        <!--</property>-->
 
-        <property name="hibernate.cache.provider_class">
-            net.sf.ehcache.hibernate.SingletonEhCacheProvider
-        </property>
+        <!--<property name="hibernate.cache.provider_class">-->
+        <!--net.sf.ehcache.hibernate.SingletonEhCacheProvider-->
+        <!--</property>-->
 
 
         <!--Mapping files -->

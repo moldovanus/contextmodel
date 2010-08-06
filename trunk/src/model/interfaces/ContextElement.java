@@ -15,4 +15,8 @@ public interface ContextElement extends Serializable, OWLIndividual {
     String getName();
 
     void setName(String s);
+
+    Integer getId();
+
+    void setId(Integer integer);
 }

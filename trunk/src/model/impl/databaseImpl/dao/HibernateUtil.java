@@ -33,7 +33,6 @@ public class HibernateUtil {
         if (!session.isOpen()) {
             session = factory.openSession();
             session.setCacheMode(CacheMode.NORMAL);
-
         }
         return session;
     }

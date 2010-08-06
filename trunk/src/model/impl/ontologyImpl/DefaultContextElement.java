@@ -15,10 +15,18 @@ import model.interfaces.ContextElement;
 public class DefaultContextElement extends AbstractCodeGeneratorIndividual
         implements ContextElement {
 
+
     public DefaultContextElement(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
     }
 
+    public Integer getId() {
+        return null;
+    }
+
+    public void setId(Integer integer) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
     public DefaultContextElement() {
     }
