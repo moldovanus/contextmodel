@@ -2,6 +2,7 @@ package model.interfaces.resources;
 
 import model.interfaces.actions.ITFacilityResourceAdaptationAction;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,9 +13,15 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface ITFacilityActiveResource extends ServiceCenterITFacilityResource {
-
     List<ITFacilityResourceAdaptationAction> getActions();
 
     void setActions(List<ITFacilityResourceAdaptationAction> actions);
 
+    boolean hasAssociatedActions();
+
+    void addAssociatedActions(ITFacilityResourceAdaptationAction newAssociatedActions);
+
+    void removeAssociatedActions(ITFacilityResourceAdaptationAction oldAssociatedActions);
+
+    void setAssociatedActions(Collection newAssociatedActions);
 }

@@ -1,5 +1,6 @@
 package model.interfaces.actions;
 
+import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.applications.ApplicationActivity;
 
 /**
@@ -10,7 +11,30 @@ import model.interfaces.resources.applications.ApplicationActivity;
  * To change this template use File | Settings | File Templates.
  */
 public interface MigrateActivity extends ConsolidationAction {
-    ApplicationActivity getApplicationActivity();
 
-    void setApplicationActivity(ApplicationActivity applicationActivity);
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activity
+
+    ApplicationActivity getActivity();
+
+    boolean hasActivity();
+
+    void setActivity(ApplicationActivity newActivity);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceFrom
+
+    ServiceCenterITComputingResource getResourceFrom();
+
+    boolean hasResourceFrom();
+
+    void setResourceFrom(ServiceCenterITComputingResource newResourceFrom);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceTo
+
+    ServiceCenterITComputingResource getResourceTo();
+
+    boolean hasResourceTo();
+
+    void setResourceTo(ServiceCenterITComputingResource newResourceTo);
 }
