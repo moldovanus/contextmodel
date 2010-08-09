@@ -1,7 +1,6 @@
 package model.interfaces.actions;
 
 import model.interfaces.resources.ServiceCenterITComputingResource;
-import model.interfaces.resources.ServiceCenterITFacilityResource;
 import model.interfaces.resources.applications.ApplicationActivity;
 
 /**
@@ -14,9 +13,15 @@ import model.interfaces.resources.applications.ApplicationActivity;
 public interface DeployActivity extends ConsolidationAction {
     ApplicationActivity getActivity();
 
-    void setActivity(ApplicationActivity activity);
+    boolean hasActivity();
+
+    void setActivity(ApplicationActivity newActivity);
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceTo
 
     ServiceCenterITComputingResource getResourceTo();
 
-    void setResourceTo(ServiceCenterITComputingResource resource);
+    boolean hasResourceTo();
+
+    void setResourceTo(ServiceCenterITComputingResource newResourceTo);
 }

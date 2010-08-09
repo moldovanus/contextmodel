@@ -1,6 +1,7 @@
 package model.interfaces.policies;
 
 import model.interfaces.Goal;
+import model.interfaces.actions.ContextAction;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,5 +18,19 @@ public interface GPI_KPI_Policy extends ContextPolicy {
     //ContextAction getPolicyAction();
     //void setPolicyAction(ContextAction contextAction);
 
+    Object getHasAttached();
+
+    boolean hasHasAttached();
+
+    void setHasAttached(Object newHasAttached);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policyAction
+
+    ContextAction getPolicyAction();
+
+    boolean hasPolicyAction();
+
+    void setPolicyAction(ContextAction newPolicyAction);
 
 }

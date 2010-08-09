@@ -1,5 +1,7 @@
 package model.interfaces.resources;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,4 +21,26 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
 
     void setResources(List<ServiceCenterITComputingResource> list);
 
+    Iterator listResourceWorkloadProperty();
+
+    void addResourceWorkloadProperty(String newResourceWorkloadProperty);
+
+    void removeResourceWorkloadProperty(String oldResourceWorkloadProperty);
+
+    void setResourceWorkloadProperty(Collection newResourceWorkloadProperty);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#simpleResources
+
+    Collection getSimpleResources();
+
+    boolean hasSimpleResources();
+
+    Iterator listSimpleResources();
+
+    void addSimpleResources(SimpleResource newSimpleResources);
+
+    void removeSimpleResources(SimpleResource oldSimpleResources);
+
+    void setSimpleResources(Collection newSimpleResources);
 }

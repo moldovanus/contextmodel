@@ -14,10 +14,7 @@ import org.semanticweb.kaon2.api.logic.Literal;
 import org.semanticweb.kaon2.api.logic.Rule;
 import org.semanticweb.kaon2.api.logic.Term;
 import org.semanticweb.kaon2.api.logic.Variable;
-import org.semanticweb.kaon2.api.owl.elements.DataProperty;
-import org.semanticweb.kaon2.api.owl.elements.Individual;
-import org.semanticweb.kaon2.api.owl.elements.OWLClass;
-import org.semanticweb.kaon2.api.owl.elements.ObjectProperty;
+import org.semanticweb.kaon2.api.owl.elements.*;
 import org.semanticweb.kaon2.api.reasoner.Query;
 import org.semanticweb.kaon2.api.reasoner.Reasoner;
 
@@ -37,7 +34,7 @@ public class Kaon2Reasoning {
     public void initializeOntology() {
 
         Logger logger = Logger.getLogger(Kaon2Reasoning.class);
-        PropertyConfigurator.configure("C:\\Users\\Administrator\\Desktop\\contextmodel\\src\\model\\impl\\databaseImpl\\dao\\log4j.properties");
+        PropertyConfigurator.configure("D:\\contextmodel\\src\\model\\impl\\databaseImpl\\dao\\log4j.properties");
         HibernateUtil.recreateDatabase();
         ModelAccess modelAccess = InstanceGenerator.generatePolicyInstances(10, ModelAccess.DATABASE_ACCESS);
 //        modelAccess = InstanceGenerator.generateComplexResourceInstances(2, ModelAccess.DATABASE_ACCESS);
@@ -201,7 +198,17 @@ public class Kaon2Reasoning {
         DataProperty currentWorkload = KAON2Manager.factory().dataProperty(ontologyURL + "currentWorkload");
         DataProperty maxWorkload = KAON2Manager.factory().dataProperty(ontologyURL + "maximumWorkload");
         DataProperty optimalWorkload = KAON2Manager.factory().dataProperty(ontologyURL + "optimalWorkload");
+
         DataProperty isRespected = KAON2Manager.factory().dataProperty(ontologyURL + "isRespected");
+        DataRange range = null;
+        DataCardinality cardinality = null;
+        try {
+            range = KAON2Manager.factory().dataRange("<xsd:boolean>", Namespaces.INSTANCE);
+            cardinality = KAON2Manager.factory().dataCardinality(1, 1, isRespected, range);
+
+        } catch (Exception e) {
+            System.out.println(e.getCause());
+        }
         //KAON2Manager.factory().dataPropertyAttribute(maxWorkload,DataPropertyAttribute.DATA_PROPERTY_FUNCTIONAL );
         // DataPropertyAttribute.DATA_PROPERTY_FUNCTIONAL
 
@@ -211,10 +218,10 @@ public class Kaon2Reasoning {
         Variable assocResource = KAON2Manager.factory().variable("assocResource");
         Variable complexRes = KAON2Manager.factory().variable("complexResource");
         Variable complexResourceID = KAON2Manager.factory().variable("resourceID");
-
+        Literal card = KAON2Manager.factory().literal(true, cardinality, new Term[]{X});
 
         List<OntologyChangeEvent> changes = new ArrayList<OntologyChangeEvent>();
-
+        // changes.add(new OntologyChangeEvent(card,OntologyChangeEvent.ChangeType.ADD));
         /*****************Add energy policies****************************/
         try {
             Reasoner reasoner = ontology.createReasoner();
@@ -254,6 +261,10 @@ public class Kaon2Reasoning {
                 arrayOfLiterals[i++] = associatedComplexResource_X;
 //                arrayOfLiterals[i++] = complexResID;
 //                arrayOfLiterals[i++] = checkResID;
+                Axiom cardinal = KAON2Manager.factory().axiom("[dataAtMost 1 http://coned.dsrl.com/contextmodel#isRespected]", Namespaces.INSTANCE);
+                ontology.addAxiom(cardinal);
+
+
                 Collection<ServiceCenterITComputingResource> simpleResources = ((ComplexResource) contextRes.get(0)).getResources();
                 Iterator<ServiceCenterITComputingResource> simpleResourceIterator = simpleResources.iterator();
                 while (simpleResourceIterator.hasNext()) {
@@ -329,8 +340,6 @@ public class Kaon2Reasoning {
             while (energyPoliciesIterator.hasNext()) {
                 System.out.println(energyPoliciesIterator.next().isRespected());
             }
-
-
             reasoner.dispose();
         } catch (Exception e) {
             e.printStackTrace();

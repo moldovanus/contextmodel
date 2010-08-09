@@ -8,4 +8,6 @@ package model.interfaces.actions;
  * To change this template use File | Settings | File Templates.
  */
 public interface ITComputingResourceAdaptationAction extends ContextAction {
+
+
 }
