@@ -2,6 +2,7 @@ package model.impl.ontologyImpl;
 
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import model.impl.util.ModelAccess;
 import model.interfaces.resources.Sensor;
 
 
@@ -18,6 +19,9 @@ public class DefaultSensor extends DefaultITFacilityPassiveResource
         super(owlModel, id);
     }
 
+    public boolean hasAcceptableValue(ModelAccess modelAccess) {
+        return true;
+    }
 
     public DefaultSensor() {
     }

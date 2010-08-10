@@ -28,11 +28,4 @@ public interface SimpleResource extends ServiceCenterITComputingResource {
     void setPartOf(Collection newPartOf);
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceWorkloadProperty
-
-    String getResourceWorkloadProperty();
-
-    boolean hasResourceWorkloadProperty();
-
-    void setResourceWorkloadProperty(String newResourceWorkloadProperty);
 }

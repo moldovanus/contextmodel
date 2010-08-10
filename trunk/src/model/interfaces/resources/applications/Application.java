@@ -18,7 +18,6 @@ public interface Application extends BusinessContextResource {
 
     Collection getBP_ActivityList();
 
-
     boolean hasBP_ActivityList();
 
     Iterator listBP_ActivityList();

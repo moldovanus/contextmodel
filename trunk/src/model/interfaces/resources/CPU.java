@@ -20,45 +20,25 @@ public interface CPU extends SimpleResource {
 
     void setAssociatedCores(List<Core> newAssociatedCores);
 
-    float getCacheRate();
-
-    void setCacheRate(float newCacheRate);
-
-    float getClockRate();
-
-    void setClockRate(float newClockRate);
-
     void removeAssociatedCores(Core oldAssociatedCores);
-
-    void setAssociatedCores(Collection newAssociatedCores);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cacheRate
 
+    Double getCacheRate();
+
     boolean hasCacheRate();
 
-    Iterator listCacheRate();
-
-    void addCacheRate(float newCacheRate);
-
-    void removeCacheRate(float oldCacheRate);
-
-    void setCacheRate(Collection newCacheRate);
+    void setCacheRate(Double newCacheRate);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuClockRate
 
-    Collection getCpuClockRate();
+    Double getCpuClockRate();
 
     boolean hasCpuClockRate();
 
-    Iterator listCpuClockRate();
-
-    void addCpuClockRate(float newCpuClockRate);
-
-    void removeCpuClockRate(float oldCpuClockRate);
-
-    void setCpuClockRate(Collection newCpuClockRate);
+    void setCpuClockRate(Double newCpuClockRate);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf

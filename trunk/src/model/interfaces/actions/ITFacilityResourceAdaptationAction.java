@@ -1,7 +1,6 @@
 package model.interfaces.actions;
 
 import model.interfaces.resources.ContextResource;
-import model.interfaces.resources.ITFacilityActiveResource;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -39,17 +38,4 @@ public interface ITFacilityResourceAdaptationAction extends ContextAction {
     void setFacilityAction(ContextAction newFacilityAction);
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#interractsWith
-
-    Collection getInterractsWith();
-
-    boolean hasInterractsWith();
-
-    Iterator listInterractsWith();
-
-    void addInterractsWith(ITFacilityActiveResource newInterractsWith);
-
-    void removeInterractsWith(ITFacilityActiveResource oldInterractsWith);
-
-    void setInterractsWith(Collection newInterractsWith);
 }

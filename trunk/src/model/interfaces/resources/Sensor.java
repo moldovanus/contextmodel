@@ -2,8 +2,6 @@ package model.interfaces.resources;
 
 import model.impl.util.ModelAccess;
 
-import java.util.Collection;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -16,9 +14,4 @@ public interface Sensor extends ITFacilityPassiveResource {
 
     boolean hasAcceptableValue(ModelAccess access);
 
-    Collection<Actuator> getAssociatedActuators();
-
-    void setAssociatedActuators(Collection<Actuator> actuators);
-
-    void addActuator(Actuator actuator);
 }

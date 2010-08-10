@@ -8,28 +8,28 @@ package model.interfaces.resources;
  * To change this template use File | Settings | File Templates.
  */
 public interface ITFacilityPassiveResource extends ServiceCenterITFacilityResource {
-    void setRecordedValue(Double value);
 
-    float getMaximumValue();
+
+    Double getMaximumValue();
 
     boolean hasMaximumValue();
 
-    void setMaximumValue(float newMaximumValue);
+    void setMaximumValue(Double newMaximumValue);
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#minimumValue
 
-    float getMinimumValue();
+    Double getMinimumValue();
 
     boolean hasMinimumValue();
 
-    void setMinimumValue(float newMinimumValue);
+    void setMinimumValue(Double newMinimumValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#recordedValue
 
-    float getRecordedValue();
+    Double getRecordedValue();
 
     boolean hasRecordedValue();
 
-    void setRecordedValue(float newRecordedValue);
+    void setRecordedValue(Double newRecordedValue);
 }

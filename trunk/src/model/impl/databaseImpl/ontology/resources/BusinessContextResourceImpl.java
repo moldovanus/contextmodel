@@ -10,4 +10,5 @@ import model.interfaces.resources.BusinessContextResource;
  * To change this template use File | Settings | File Templates.
  */
 public class BusinessContextResourceImpl extends ContextResourceImpl implements BusinessContextResource {
+
 }

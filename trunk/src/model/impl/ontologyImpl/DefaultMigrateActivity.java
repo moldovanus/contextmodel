@@ -28,7 +28,7 @@ public class DefaultMigrateActivity extends DefaultConsolidationAction
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activity
 
-    public ApplicationActivity getApplicationActivity() {
+    public ApplicationActivity getActivity() {
         return (ApplicationActivity) getPropertyValueAs(getActivityProperty(), ApplicationActivity.class);
     }
 
@@ -45,7 +45,7 @@ public class DefaultMigrateActivity extends DefaultConsolidationAction
     }
 
 
-    public void setApplicationActivity(ApplicationActivity newActivity) {
+    public void setActivity(ApplicationActivity newActivity) {
         setPropertyValue(getActivityProperty(), newActivity);
     }
 
