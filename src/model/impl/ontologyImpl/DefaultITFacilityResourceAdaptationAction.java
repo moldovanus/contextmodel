@@ -6,7 +6,6 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.actions.ContextAction;
 import model.interfaces.actions.ITFacilityResourceAdaptationAction;
 import model.interfaces.resources.ContextResource;
-import model.interfaces.resources.ITFacilityActiveResource;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -71,7 +70,7 @@ public class DefaultITFacilityResourceAdaptationAction extends DefaultContextAct
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#facilityAction
 
-    public ContextAction getAction() {
+    public ContextAction getFacilityAction() {
         return (ContextAction) getPropertyValueAs(getFacilityActionProperty(), ContextAction.class);
     }
 
@@ -88,46 +87,9 @@ public class DefaultITFacilityResourceAdaptationAction extends DefaultContextAct
     }
 
 
-    public void setAction(ContextAction newFacilityAction) {
+    public void setFacilityAction(ContextAction newFacilityAction) {
         setPropertyValue(getFacilityActionProperty(), newFacilityAction);
     }
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#interractsWith
-
-    public Collection getInterractsWith() {
-        return getPropertyValuesAs(getInterractsWithProperty(), ITFacilityActiveResource.class);
-    }
-
-
-    public RDFProperty getInterractsWithProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#interractsWith";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
-    }
-
-
-    public boolean hasInterractsWith() {
-        return getPropertyValueCount(getInterractsWithProperty()) > 0;
-    }
-
-
-    public Iterator listInterractsWith() {
-        return listPropertyValuesAs(getInterractsWithProperty(), ITFacilityActiveResource.class);
-    }
-
-
-    public void addInterractsWith(ITFacilityActiveResource newInterractsWith) {
-        addPropertyValue(getInterractsWithProperty(), newInterractsWith);
-    }
-
-
-    public void removeInterractsWith(ITFacilityActiveResource oldInterractsWith) {
-        removePropertyValue(getInterractsWithProperty(), oldInterractsWith);
-    }
-
-
-    public void setInterractsWith(Collection newInterractsWith) {
-        setPropertyValues(getInterractsWithProperty(), newInterractsWith);
-    }
 }

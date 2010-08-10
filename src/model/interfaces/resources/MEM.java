@@ -15,11 +15,11 @@ public interface MEM extends SimpleResource {
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memClockRate
 
-    float getMemClockRate();
+    Double getMemClockRate();
 
     boolean hasMemClockRate();
 
-    void setMemClockRate(float newMemClockRate);
+    void setMemClockRate(Double newMemClockRate);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf

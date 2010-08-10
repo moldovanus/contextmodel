@@ -74,14 +74,14 @@ public class DefaultSimpleResource extends DefaultServiceCenterITComputingResour
     }
 
 
-    public RDFProperty getResourceWorkloadPropertyProperty() {
+    public RDFProperty getResourceWorkLoadPropertyProperty() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceWorkloadProperty";
         final String name = getOWLModel().getResourceNameForURI(uri);
         return getOWLModel().getRDFProperty(name);
     }
 
 
-    public boolean hasResourceWorkloadProperty() {
+    public boolean hasResourceWorkLoadProperty() {
         return getPropertyValueCount(getResourceWorkloadPropertyProperty()) > 0;
     }
 

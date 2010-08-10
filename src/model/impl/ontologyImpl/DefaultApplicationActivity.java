@@ -29,6 +29,78 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
     }
 
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPUWeight
+
+    public Double getCPUWeight() {
+        return getPropertyValueLiteral(getCPUWeightProperty()).getDouble();
+    }
+
+
+    public RDFProperty getCPUWeightProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPUWeight";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasCPUWeight() {
+        return getPropertyValueCount(getCPUWeightProperty()) > 0;
+    }
+
+
+    public void setCPUWeight(Double newCPUWeight) {
+        setPropertyValue(getCPUWeightProperty(), new java.lang.Float(newCPUWeight));
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDDWeight
+
+    public Double getHDDWeight() {
+        return getPropertyValueLiteral(getHDDWeightProperty()).getDouble();
+    }
+
+
+    public RDFProperty getHDDWeightProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDDWeight";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasHDDWeight() {
+        return getPropertyValueCount(getHDDWeightProperty()) > 0;
+    }
+
+
+    public void setHDDWeight(Double newHDDWeight) {
+        setPropertyValue(getHDDWeightProperty(), new java.lang.Float(newHDDWeight));
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEMWeight
+
+    public Double getMEMWeight() {
+        return getPropertyValueLiteral(getMEMWeightProperty()).getDouble();
+    }
+
+
+    public RDFProperty getMEMWeightProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEMWeight";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasMEMWeight() {
+        return getPropertyValueCount(getMEMWeightProperty()) > 0;
+    }
+
+
+    public void setMEMWeight(Double newMEMWeight) {
+        setPropertyValue(getMEMWeightProperty(), new java.lang.Float(newMEMWeight));
+    }
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies
 
     public Collection getActivityPolicies() {

@@ -28,30 +28,6 @@ public class DefaultHDD extends DefaultSimpleResource
     }
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#capacity
-
-    public float getCapacity() {
-        return getPropertyValueLiteral(getCapacityProperty()).getFloat();
-    }
-
-
-    public RDFProperty getCapacityProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#capacity";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
-    }
-
-
-    public boolean hasCapacity() {
-        return getPropertyValueCount(getCapacityProperty()) > 0;
-    }
-
-
-    public void setCapacity(float newCapacity) {
-        setPropertyValue(getCapacityProperty(), new java.lang.Float(newCapacity));
-    }
-
-
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
 
     public Collection getPartOf() {
@@ -93,8 +69,8 @@ public class DefaultHDD extends DefaultSimpleResource
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#rotationSpeed
 
-    public Collection getRotationSpeed() {
-        return getPropertyValues(getRotationSpeedProperty());
+    public Double getRotationSpeed() {
+        return getPropertyValueLiteral(getRotationSpeedProperty()).getDouble();
     }
 
 
@@ -110,22 +86,7 @@ public class DefaultHDD extends DefaultSimpleResource
     }
 
 
-    public Iterator listRotationSpeed() {
-        return listPropertyValues(getRotationSpeedProperty());
-    }
-
-
-    public void addRotationSpeed(float newRotationSpeed) {
-        addPropertyValue(getRotationSpeedProperty(), newRotationSpeed);
-    }
-
-
-    public void removeRotationSpeed(float oldRotationSpeed) {
-        removePropertyValue(getRotationSpeedProperty(), oldRotationSpeed);
-    }
-
-
-    public void setRotationSpeed(Collection newRotationSpeed) {
-        setPropertyValues(getRotationSpeedProperty(), newRotationSpeed);
+    public void setRotationSpeed(Double newRotationSpeed) {
+        setPropertyValue(getRotationSpeedProperty(), new java.lang.Float(newRotationSpeed));
     }
 }

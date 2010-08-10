@@ -26,8 +26,8 @@ public class DefaultITFacilityPassiveResource extends DefaultServiceCenterITFaci
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#maximumValue
 
-    public float getMaximumValue() {
-        return getPropertyValueLiteral(getMaximumValueProperty()).getFloat();
+    public Double getMaximumValue() {
+        return getPropertyValueLiteral(getMaximumValueProperty()).getDouble();
     }
 
 
@@ -43,15 +43,15 @@ public class DefaultITFacilityPassiveResource extends DefaultServiceCenterITFaci
     }
 
 
-    public void setMaximumValue(float newMaximumValue) {
+    public void setMaximumValue(Double newMaximumValue) {
         setPropertyValue(getMaximumValueProperty(), new java.lang.Float(newMaximumValue));
     }
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#minimumValue
 
-    public float getMinimumValue() {
-        return getPropertyValueLiteral(getMinimumValueProperty()).getFloat();
+    public Double getMinimumValue() {
+        return getPropertyValueLiteral(getMinimumValueProperty()).getDouble();
     }
 
 
@@ -67,7 +67,7 @@ public class DefaultITFacilityPassiveResource extends DefaultServiceCenterITFaci
     }
 
 
-    public void setMinimumValue(float newMinimumValue) {
+    public void setMinimumValue(Double newMinimumValue) {
         setPropertyValue(getMinimumValueProperty(), new java.lang.Float(newMinimumValue));
     }
 

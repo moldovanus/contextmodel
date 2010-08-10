@@ -68,8 +68,8 @@ public class DefaultCPU extends DefaultSimpleResource
     }
 
 
-    public float getCacheRate() {
-        return getPropertyValueLiteral(getCacheRateProperty()).getFloat();
+    public Double getCacheRate() {
+        return getPropertyValueLiteral(getCacheRateProperty()).getDouble();
     }
 
 
@@ -85,32 +85,32 @@ public class DefaultCPU extends DefaultSimpleResource
     }
 
 
-    public void setCacheRate(float newCacheRate) {
+    public void setCacheRate(Double newCacheRate) {
         setPropertyValue(getCacheRateProperty(), new java.lang.Float(newCacheRate));
     }
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#clockRate
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuClockRate
 
-    public float getClockRate() {
-        return getPropertyValueLiteral(getClockRateProperty()).getFloat();
+    public Double getCpuClockRate() {
+        return getPropertyValueLiteral(getCpuClockRateProperty()).getDouble();
     }
 
 
-    public RDFProperty getClockRateProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#clockRate";
+    public RDFProperty getCpuClockRateProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuClockRate";
         final String name = getOWLModel().getResourceNameForURI(uri);
         return getOWLModel().getRDFProperty(name);
     }
 
 
-    public boolean hasClockRate() {
-        return getPropertyValueCount(getClockRateProperty()) > 0;
+    public boolean hasCpuClockRate() {
+        return getPropertyValueCount(getCpuClockRateProperty()) > 0;
     }
 
 
-    public void setClockRate(float newClockRate) {
-        setPropertyValue(getClockRateProperty(), new java.lang.Float(newClockRate));
+    public void setCpuClockRate(Double newClockRate) {
+        setPropertyValue(getCpuClockRateProperty(), new java.lang.Float(newClockRate));
     }
 
 

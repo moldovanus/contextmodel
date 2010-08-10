@@ -64,7 +64,7 @@ public class DefaultITFacilityActiveResource extends DefaultServiceCenterITFacil
     }
 
 
-    public void setActions(List<ITFacilityResourceAdaptationAction> actions) {
+    public void setAssociatedActions(List<ITFacilityResourceAdaptationAction> actions) {
         setPropertyValues(getAssociatedActionsProperty(), actions);
     }
 

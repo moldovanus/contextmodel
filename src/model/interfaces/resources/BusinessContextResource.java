@@ -1,9 +1,6 @@
 package model.interfaces.resources;
 
-import model.interfaces.policies.BusinessPolicy;
-
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,82 +11,62 @@ import java.util.Iterator;
  */
 public interface BusinessContextResource extends ContextResource {
 
-    //TODO: de scos si lasat in ApplicationN Activity
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies
 
     Collection getActivityPolicies();
-
-    boolean hasActivityPolicies();
-
-    Iterator listActivityPolicies();
-
-    void addActivityPolicies(BusinessPolicy newActivityPolicies);
-
-    void removeActivityPolicies(BusinessPolicy oldActivityPolicies);
 
     void setActivityPolicies(Collection newActivityPolicies);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuAllocatedValue
 
-    float getCpuAllocatedValue();
+    Double getCpuAllocatedValue();
 
-    boolean hasCpuAllocatedValue();
-
-    void setCpuAllocatedValue(float newCpuAllocatedValue);
+    void setCpuAllocatedValue(Double newCpuAllocatedValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredValue
 
-    float getCpuRequiredValue();
+    Double getCpuRequiredValue();
 
-    boolean hasCpuRequiredValue();
-
-    void setCpuRequiredValue(float newCpuRequiredValue);
+    void setCpuRequiredValue(Double newCpuRequiredValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddAllocatedValue
 
-    float getHddAllocatedValue();
+    Double getHddAllocatedValue();
 
-    boolean hasHddAllocatedValue();
-
-    void setHddAllocatedValue(float newHddAllocatedValue);
+    void setHddAllocatedValue(Double newHddAllocatedValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredValue
 
-    float getHddRequiredValue();
+    Double getHddRequiredValue();
 
-    boolean hasHddRequiredValue();
-
-    void setHddRequiredValue(float newHddRequiredValue);
+    void setHddRequiredValue(Double newHddRequiredValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memAllocatedValue
 
-    float getMemAllocatedValue();
+    Double getMemAllocatedValue();
 
     boolean hasMemAllocatedValue();
 
-    void setMemAllocatedValue(float newMemAllocatedValue);
+    void setMemAllocatedValue(Double newMemAllocatedValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memRequiredValue
 
-    float getMemRequiredValue();
+    Double getMemRequiredValue();
 
-    boolean hasMemRequiredValue();
-
-    void setMemRequiredValue(float newMemRequiredValue);
+    void setMemRequiredValue(Double newMemRequiredValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#performanceDegradation
 
     Double getPerformanceDegradation();
 
-    boolean hasPerformanceDegradation();
 
     void setPerformanceDegradation(Double newPerformanceDegradation);
 
@@ -98,7 +75,6 @@ public interface BusinessContextResource extends ContextResource {
 
     Double getPerformanceEstimation();
 
-    boolean hasPerformanceEstimation();
 
     void setPerformanceEstimation(Double newPerformanceEstimation);
 }

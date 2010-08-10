@@ -14,14 +14,6 @@ import java.util.Iterator;
  */
 public interface HDD extends SimpleResource {
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#capacity
-
-    float getCapacity();
-
-    boolean hasCapacity();
-
-    void setCapacity(float newCapacity);
-
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
 
@@ -40,18 +32,9 @@ public interface HDD extends SimpleResource {
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#rotationSpeed
 
-    float getRotationSpeed();
+    Double getRotationSpeed();
 
     boolean hasRotationSpeed();
 
-    void setRotationSpeed(float newRotationSpeed);
-
-
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#storage
-
-    Object getStorage();
-
-    boolean hasStorage();
-
-    void setStorage(Object newStorage);
+    void setRotationSpeed(Double newRotationSpeed);
 }

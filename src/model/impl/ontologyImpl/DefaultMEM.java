@@ -28,81 +28,27 @@ public class DefaultMEM extends DefaultSimpleResource
     }
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cacheRate
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memClockRate
 
-    public Collection getCacheRate() {
-        return getPropertyValues(getCacheRateProperty());
+    public Double getMemClockRate() {
+        return getPropertyValueLiteral(getMemClockRateProperty()).getDouble();
     }
 
 
-    public RDFProperty getCacheRateProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cacheRate";
+    public RDFProperty getMemClockRateProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memClockRate";
         final String name = getOWLModel().getResourceNameForURI(uri);
         return getOWLModel().getRDFProperty(name);
     }
 
 
-    public boolean hasCacheRate() {
-        return getPropertyValueCount(getCacheRateProperty()) > 0;
+    public boolean hasMemClockRate() {
+        return getPropertyValueCount(getMemClockRateProperty()) > 0;
     }
 
 
-    public Iterator listCacheRate() {
-        return listPropertyValues(getCacheRateProperty());
-    }
-
-
-    public void addCacheRate(float newCacheRate) {
-        addPropertyValue(getCacheRateProperty(), newCacheRate);
-    }
-
-
-    public void removeCacheRate(float oldCacheRate) {
-        removePropertyValue(getCacheRateProperty(), oldCacheRate);
-    }
-
-
-    public void setCacheRate(Collection newCacheRate) {
-        setPropertyValues(getCacheRateProperty(), newCacheRate);
-    }
-
-
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#clockRate
-
-    public Collection getClockRate() {
-        return getPropertyValues(getClockRateProperty());
-    }
-
-
-    public RDFProperty getClockRateProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#clockRate";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
-    }
-
-
-    public boolean hasClockRate() {
-        return getPropertyValueCount(getClockRateProperty()) > 0;
-    }
-
-
-    public Iterator listClockRate() {
-        return listPropertyValues(getClockRateProperty());
-    }
-
-
-    public void addClockRate(float newClockRate) {
-        addPropertyValue(getClockRateProperty(), newClockRate);
-    }
-
-
-    public void removeClockRate(float oldClockRate) {
-        removePropertyValue(getClockRateProperty(), oldClockRate);
-    }
-
-
-    public void setClockRate(Collection newClockRate) {
-        setPropertyValues(getClockRateProperty(), newClockRate);
+    public void setMemClockRate(Double newMemClockRate) {
+        setPropertyValue(getMemClockRateProperty(), new java.lang.Float(newMemClockRate));
     }
 
 
