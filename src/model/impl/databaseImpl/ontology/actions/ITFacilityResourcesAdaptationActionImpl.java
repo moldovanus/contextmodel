@@ -1,5 +1,6 @@
 package model.impl.databaseImpl.ontology.actions;
 
+import model.impl.util.ModelAccess;
 import model.interfaces.actions.ContextAction;
 import model.interfaces.actions.ITFacilityResourceAdaptationAction;
 
@@ -26,5 +27,13 @@ public class ITFacilityResourcesAdaptationActionImpl extends ContextActionImpl i
 
     public void setAction(ContextAction action) {
         this.action = action;
+    }
+
+    public void execute(ModelAccess modelAccess) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void undo(ModelAccess modelAccess) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
  * Time: 9:13:29 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ContextActionImpl extends ContextElementImpl implements ContextAction {
+public abstract class ContextActionImpl extends ContextElementImpl implements ContextAction {
     private List<ContextResource> resources;
 
     public ContextActionImpl() {

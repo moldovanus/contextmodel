@@ -26,6 +26,29 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
         super(owlModel, id);
     }
 
+    public void setEnergyStates(Collection newEnergyStates) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public float getMaximumWorkload() {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public void setMaximumWorkload(float newMaximumWorkload) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public float getOptimalWorkload() {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public void setOptimalWorkload(float newOptimalWorkload) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public void setRunningActivities(Collection newRunningActivities) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
 
     public DefaultComplexResource() {
     }

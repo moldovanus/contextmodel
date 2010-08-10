@@ -14,6 +14,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface CPU extends SimpleResource {
+    //TODO: de bagat eventual weight
+
     List<Core> getAssociatedCores();
 
     void setAssociatedCores(List<Core> newAssociatedCores);

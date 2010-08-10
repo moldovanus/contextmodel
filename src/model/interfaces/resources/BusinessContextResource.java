@@ -14,6 +14,8 @@ import java.util.Iterator;
  */
 public interface BusinessContextResource extends ContextResource {
 
+    //TODO: de scos si lasat in ApplicationN Activity
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies
 
     Collection getActivityPolicies();

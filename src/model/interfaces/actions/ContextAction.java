@@ -1,5 +1,6 @@
 package model.interfaces.actions;
 
+import model.impl.util.ModelAccess;
 import model.interfaces.ContextElement;
 import model.interfaces.resources.ContextResource;
 
@@ -16,4 +17,10 @@ public interface ContextAction extends ContextElement {
     List<ContextResource> getResources();
 
     void setResources(List<ContextResource> resources);
+
+    void execute(ModelAccess modelAccess);
+
+    void undo(ModelAccess modelAccess);
+
+
 }
