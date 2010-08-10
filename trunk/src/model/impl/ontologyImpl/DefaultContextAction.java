@@ -3,6 +3,7 @@ package model.impl.ontologyImpl;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import model.impl.util.ModelAccess;
 import model.interfaces.actions.ContextAction;
 import model.interfaces.resources.ContextResource;
 
@@ -152,5 +153,13 @@ public class DefaultContextAction extends DefaultContextElement
 
     public void setResources(List<ContextResource> newResources) {
         setPropertyValues(getResourcesProperty(), newResources);
+    }
+
+    public void execute(ModelAccess modelAccess) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void undo(ModelAccess modelAccess) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

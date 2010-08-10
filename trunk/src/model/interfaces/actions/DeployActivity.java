@@ -25,3 +25,4 @@ public interface DeployActivity extends ConsolidationAction {
 
     void setResourceTo(ServiceCenterITComputingResource newResourceTo);
 }
+ 

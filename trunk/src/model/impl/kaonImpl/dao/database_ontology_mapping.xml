@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<db:DBOntology db:name="http://coned.dsrl.com/database/contextmodel#" xmlns:db="http://kaon2.semanticweb.org/db#">
+<db:DBOntology db:name="http://coned.dsrl.com/database/contextmodel#" xmlns:db="http://kaon2.semanticweb.org/db#"
+               xmlns:owlx="http://www.w3.org/2003/05/owl-xml#">
 
     <!--<db:Database db:connectionString="jdbc:mysql://localhost:3306/ContextModel" db:userName="root" db:password="123456"-->
     <!--db:driverClassName="com.mysql.jdbc.Driver"/>-->
@@ -28,6 +29,15 @@
         </db:Table>
     </db:DatatypeProperty>
     <!-- END ContextElementImpl-->
+
+    <db:PredicateSymbol db:name="http://coned.dsrl.com/contextmodel#Data">
+        <db:Table db:tableName="ContextElement">
+            <db:IndividualInteger db:fieldName="UID" db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
+                                  db:primaryKey="true"/>
+            <db:String db:fieldName="name" db:uriPrefix="http://coned.dsrl.com/contextmodel#name"/>
+        </db:Table>
+    </db:PredicateSymbol>
+
 
     <!-- BEGIN ApplicationActivityImpl-->
     <db:OWLClass db:name="http://coned.dsrl.com/contextmodel#ApplicationActivity">
@@ -448,6 +458,7 @@
                                   db:uriPrefix="http://coned.dsrl.com/contextmodel#id"
                                   db:primaryKey="true"/>
         </db:Table>
+
     </db:OWLClass>
 
     <db:DatatypeProperty db:name="http://coned.dsrl.com/contextmodel#policyName">

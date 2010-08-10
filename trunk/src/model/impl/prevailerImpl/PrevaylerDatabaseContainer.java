@@ -1,6 +1,9 @@
 package model.impl.prevailerImpl;
 
-import model.impl.databaseImpl.ontology.actions.*;
+import model.impl.databaseImpl.ontology.actions.ApplicationAdaptationActionImpl;
+import model.impl.databaseImpl.ontology.actions.ApplicationRedesignImpl;
+import model.impl.databaseImpl.ontology.actions.DPMActionImpl;
+import model.impl.databaseImpl.ontology.actions.ITComputingResourcesAdaptationActionImpl;
 import model.impl.databaseImpl.ontology.policies.ContextPolicyImpl;
 import model.impl.databaseImpl.ontology.policies.GPI_KPI_PolicyImpl;
 import model.impl.databaseImpl.ontology.resources.*;
@@ -86,10 +89,11 @@ public class PrevaylerDatabaseContainer implements ModelFactory, Serializable {
     }
 
     public ContextAction createContextAction(String name) {
-        ContextElement element = new ContextActionImpl();
-        element.setName(name);
-        persistEntity(element);
-        return (ContextAction) element;
+//        ContextElement element = new ContextActionImpl();
+//        element.setName(name);
+//        persistEntity(element);
+//        return (ContextAction) element;
+        return null;
     }
 
     public ContextAction getContextAction(String name) {

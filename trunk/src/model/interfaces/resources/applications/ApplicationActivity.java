@@ -10,9 +10,27 @@ import model.interfaces.resources.BusinessContextResource;
  * To change this template use File | Settings | File Templates.
  */
 public interface ApplicationActivity extends BusinessContextResource {
+
+    //TODO: de bagat task weight 
+    //TODO: de bagat mai multe cores
+
     Double getCPURequiredValue();
 
     void setCPURequiredValue(Double value);
+
+    Double getCPUWeight();
+
+    Double getHDDWeight();
+
+    Double getMEMWeight();
+
+
+    void setCPUWeight(Double weight);
+
+    void setHDDWeight(Double weight);
+
+    void setMEMWeight(Double weight);
+
 
     Double getHDDRequiredValue();
 

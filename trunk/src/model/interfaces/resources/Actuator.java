@@ -8,4 +8,5 @@ package model.interfaces.resources;
  * To change this template use File | Settings | File Templates.
  */
 public interface Actuator extends ITFacilityActiveResource {
+
 }
