@@ -31,11 +31,11 @@ public interface ITFacilityResourceAdaptationAction extends ContextAction {
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#facilityAction
 
-    ContextAction getFacilityAction();
+    FacilityDefaultAction getFacilityAction();
 
     boolean hasFacilityAction();
 
-    void setFacilityAction(ContextAction newFacilityAction);
+    void setFacilityAction(FacilityDefaultAction newFacilityAction);
 
 
 }

@@ -3,7 +3,11 @@ package model.impl.ontologyImpl;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import model.interfaces.resources.ITFacilityActiveResource;
 import model.interfaces.resources.ITFacilityPassiveResource;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
@@ -21,6 +25,45 @@ public class DefaultITFacilityPassiveResource extends DefaultServiceCenterITFaci
 
 
     public DefaultITFacilityPassiveResource() {
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#associatedActiveResources
+
+    public Collection getAssociatedActiveResources() {
+        return getPropertyValuesAs(getAssociatedActiveResourcesProperty(), ITFacilityActiveResource.class);
+    }
+
+
+    public RDFProperty getAssociatedActiveResourcesProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#associatedActiveResources";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasAssociatedActiveResources() {
+        return getPropertyValueCount(getAssociatedActiveResourcesProperty()) > 0;
+    }
+
+
+    public Iterator listAssociatedActiveResources() {
+        return listPropertyValuesAs(getAssociatedActiveResourcesProperty(), ITFacilityActiveResource.class);
+    }
+
+
+    public void addAssociatedActiveResources(ITFacilityActiveResource newAssociatedActiveResources) {
+        addPropertyValue(getAssociatedActiveResourcesProperty(), newAssociatedActiveResources);
+    }
+
+
+    public void removeAssociatedActiveResources(ITFacilityActiveResource oldAssociatedActiveResources) {
+        removePropertyValue(getAssociatedActiveResourcesProperty(), oldAssociatedActiveResources);
+    }
+
+
+    public void setAssociatedActiveResources(Collection newAssociatedActiveResources) {
+        setPropertyValues(getAssociatedActiveResourcesProperty(), newAssociatedActiveResources);
     }
 
 

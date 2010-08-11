@@ -27,7 +27,7 @@ import java.util.Iterator;
  * @version generated on Fri Jul 09 18:31:36 GMT 2010
  */
 public class OntologyModelFactory implements ModelFactory {
-    public static final String ontologyFile = "./ontology/context.owl";
+    public static final String ontologyFile = "./ontology/context_KAON.rdf-xml.owl";
 
     public void removeEntity(ContextElement element) {
         element.delete();

@@ -3,7 +3,7 @@ package model.impl.ontologyImpl;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import model.interfaces.actions.ContextAction;
+import model.interfaces.actions.FacilityDefaultAction;
 import model.interfaces.actions.ITFacilityResourceAdaptationAction;
 import model.interfaces.resources.ContextResource;
 
@@ -70,8 +70,8 @@ public class DefaultITFacilityResourceAdaptationAction extends DefaultContextAct
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#facilityAction
 
-    public ContextAction getFacilityAction() {
-        return (ContextAction) getPropertyValueAs(getFacilityActionProperty(), ContextAction.class);
+    public FacilityDefaultAction getFacilityAction() {
+        return (FacilityDefaultAction) getPropertyValueAs(getFacilityActionProperty(), FacilityDefaultAction.class);
     }
 
 
@@ -87,7 +87,7 @@ public class DefaultITFacilityResourceAdaptationAction extends DefaultContextAct
     }
 
 
-    public void setFacilityAction(ContextAction newFacilityAction) {
+    public void setFacilityAction(FacilityDefaultAction newFacilityAction) {
         setPropertyValue(getFacilityActionProperty(), newFacilityAction);
     }
 

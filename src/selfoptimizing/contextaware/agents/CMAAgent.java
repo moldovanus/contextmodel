@@ -4,7 +4,6 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
 import edu.stanford.smi.protegex.owl.jena.JenaOWLModel;
-import evaluation.InstanceGenerator;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.wrapper.AgentContainer;
@@ -55,7 +54,7 @@ public class CMAAgent extends Agent {
         System.out.println("CMA Agent " + getLocalName() + " started.");
 
         try {
-            modelAccess = InstanceGenerator.generatePolicyInstances(10, ModelAccess.DATABASE_ACCESS);
+            //     modelAccess = InstanceGenerator.generatePolicyInstances(10, ModelAccess.DATABASE_ACCESS);
             //create owlModeSelfHealing from Ontology
             File ontologyFile = new File(GlobalVars.ONTOLOGY_ENVIROMENT_FILE);
             this.owlModeSelfHealing = ProtegeOWL.createJenaOWLModelFromURI(ontologyFile.toURI().toString());

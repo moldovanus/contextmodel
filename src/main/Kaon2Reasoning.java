@@ -1,14 +1,10 @@
 package main;
 
-import evaluation.InstanceGenerator;
-import model.impl.databaseImpl.dao.HibernateUtil;
 import model.impl.util.ModelAccess;
 import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.resources.ComplexResource;
 import model.interfaces.resources.ContextResource;
 import model.interfaces.resources.ServiceCenterITComputingResource;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.semanticweb.kaon2.api.*;
 import org.semanticweb.kaon2.api.logic.Literal;
 import org.semanticweb.kaon2.api.logic.Rule;
@@ -33,46 +29,46 @@ public class Kaon2Reasoning {
 
     public void initializeOntology() {
 
-        Logger logger = Logger.getLogger(Kaon2Reasoning.class);
-        PropertyConfigurator.configure("D:\\contextmodel\\src\\model\\impl\\databaseImpl\\dao\\log4j.properties");
-        HibernateUtil.recreateDatabase();
-        ModelAccess modelAccess = InstanceGenerator.generatePolicyInstances(10, ModelAccess.DATABASE_ACCESS);
-//        modelAccess = InstanceGenerator.generateComplexResourceInstances(2, ModelAccess.DATABASE_ACCESS);
-
-        System.out.println("created instances");
-        OntologyManager ontologyManager = null;
-        try {
-            ontologyManager = KAON2Manager.newOntologyManager();
-        } catch (KAON2Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        DefaultOntologyResolver resolver = new DefaultOntologyResolver();
-        Ontology ontology_1 = null;
-        Ontology ontology_2 = null;
-        String ontologyURI_1 = null;
-        String ontologyURI_2 = "http://coned.dsrl.com/database/contextmodel#";
-        try {
-            System.out.println("registering ontology");
-            resolver.registerReplacement(ontologyURI_2, DATABASE_ONTOLOGY_DESCRIPTOR_URI);
-            ontologyURI_1 = resolver.registerOntology(FILE_ONTOLOGY_DESCRIPTOR_URI);
-        } catch (KAON2Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        ontologyManager.setOntologyResolver(resolver);
-        try {
-            System.out.println("opening ontology");
-            ontology_1 = ontologyManager.openOntology(ontologyURI_1,
-                    new HashMap<String, Object>());
-            ontology_2 = ontologyManager.openOntology(ontologyURI_2,
-                    new HashMap<String, Object>());
-        } catch (KAON2Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        // URL : "http://coned.dsrl.com/contextmodel#"
-        createRulesForPolicies(ontology_1, "http://coned.dsrl.com/contextmodel#", modelAccess);
+//        Logger logger = Logger.getLogger(Kaon2Reasoning.class);
+//        PropertyConfigurator.configure("D:\\contextmodel\\src\\model\\impl\\databaseImpl\\dao\\log4j.properties");
+//        HibernateUtil.recreateDatabase();
+//        ModelAccess modelAccess = InstanceGenerator.generatePolicyInstances(10, ModelAccess.DATABASE_ACCESS);
+////        modelAccess = InstanceGenerator.generateComplexResourceInstances(2, ModelAccess.DATABASE_ACCESS);
 //
+//        System.out.println("created instances");
+//        OntologyManager ontologyManager = null;
+//        try {
+//            ontologyManager = KAON2Manager.newOntologyManager();
+//        } catch (KAON2Exception e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+//        DefaultOntologyResolver resolver = new DefaultOntologyResolver();
+//        Ontology ontology_1 = null;
+//        Ontology ontology_2 = null;
+//        String ontologyURI_1 = null;
+//        String ontologyURI_2 = "http://coned.dsrl.com/database/contextmodel#";
+//        try {
+//            System.out.println("registering ontology");
+//            resolver.registerReplacement(ontologyURI_2, DATABASE_ONTOLOGY_DESCRIPTOR_URI);
+//            ontologyURI_1 = resolver.registerOntology(FILE_ONTOLOGY_DESCRIPTOR_URI);
+//        } catch (KAON2Exception e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+//        ontologyManager.setOntologyResolver(resolver);
+//        try {
+//            System.out.println("opening ontology");
+//            ontology_1 = ontologyManager.openOntology(ontologyURI_1,
+//                    new HashMap<String, Object>());
+//            ontology_2 = ontologyManager.openOntology(ontologyURI_2,
+//                    new HashMap<String, Object>());
+//        } catch (KAON2Exception e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+//        // URL : "http://coned.dsrl.com/contextmodel#"
+//        createRulesForPolicies(ontology_1, "http://coned.dsrl.com/contextmodel#", modelAccess);
+////
 //        OntologyManager ontologyManager = null;
 //        try {
 //            ontologyManager = KAON2Manager.newOntologyManager();
