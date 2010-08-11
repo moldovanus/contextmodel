@@ -1,19 +1,6 @@
 package evaluation;
 
-import model.impl.databaseImpl.DatabaseModelFactory;
-import model.impl.ontologyImpl.OntologyModelFactory;
-import model.impl.prevailerImpl.PrevailerModelFactory;
-import model.impl.util.ModelAccess;
-import model.interfaces.policies.ITComputingContextPolicy;
-import model.interfaces.resources.ComplexResource;
-import model.interfaces.resources.ContextResource;
-import model.interfaces.resources.ServiceCenterITComputingResource;
-import model.interfaces.resources.applications.ApplicationActivity;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+//import model.impl.databaseImpl.DatabaseModelFactory;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,126 +11,126 @@ import java.util.List;
  */
 public class InstanceGenerator {
 
-    public static ModelAccess getModelAccessInstance(int accessType) {
-        OntologyModelFactory ontologyModelFactory = (accessType == ModelAccess.ONTOLOGY_ACCESS) ? new OntologyModelFactory() : null;
-        DatabaseModelFactory databaseModelFactory = (accessType == ModelAccess.DATABASE_ACCESS) ? new DatabaseModelFactory() : null;
-        PrevailerModelFactory prevailerModelFactory = (accessType == ModelAccess.PREVAYLER_ACCESS) ? new PrevailerModelFactory() : null;
-
-        ModelAccess modelAccess = new ModelAccess(ontologyModelFactory, databaseModelFactory, prevailerModelFactory);
-        modelAccess.setAccessType(accessType);
-        return modelAccess;
-    }
-
-    public static ModelAccess generatePolicyInstances(int instanceCount, int accessType) {
-        OntologyModelFactory ontologyModelFactory = (accessType == ModelAccess.ONTOLOGY_ACCESS) ? new OntologyModelFactory() : null;
-        DatabaseModelFactory databaseModelFactory = (accessType == ModelAccess.DATABASE_ACCESS) ? new DatabaseModelFactory() : null;
-        PrevailerModelFactory prevailerModelFactory = (accessType == ModelAccess.PREVAYLER_ACCESS) ? new PrevailerModelFactory() : null;
-
-        ModelAccess modelAccess = new ModelAccess(ontologyModelFactory, databaseModelFactory, prevailerModelFactory);
-        modelAccess.setAccessType(accessType);
-        generateComplexResourceInstances(instanceCount, accessType);
-        Collection<ComplexResource> complexResources = modelAccess.getAllComplexResourceInstances();
-        Iterator<ComplexResource> iterator = complexResources.iterator();
-        for (int i = 0; i < instanceCount; i++) {
-            ITComputingContextPolicy itComputingContextPolicy = modelAccess.createITComputingContextPolicy("EnergyPolicy_" + i);
-            List<ContextResource> associatedResource = new ArrayList<ContextResource>(1);
-            itComputingContextPolicy.setEditable(true);
-            itComputingContextPolicy.setRespected(false);
-            associatedResource.add(iterator.next());
-            itComputingContextPolicy.setPolicySubject(associatedResource);
-            itComputingContextPolicy.setPolicyName("EnergyPolicy_" + i);
-            modelAccess.persistEntity(itComputingContextPolicy);
-        }
-        return modelAccess;
-
-    }
-
-
-    public static ModelAccess generateComplexResourceInstances(int instanceCount, int accessType) {
-        OntologyModelFactory ontologyModelFactory = (accessType == ModelAccess.ONTOLOGY_ACCESS) ? new OntologyModelFactory() : null;
-        DatabaseModelFactory databaseModelFactory = (accessType == ModelAccess.DATABASE_ACCESS) ? new DatabaseModelFactory() : null;
-        PrevailerModelFactory prevailerModelFactory = (accessType == ModelAccess.PREVAYLER_ACCESS) ? new PrevailerModelFactory() : null;
-
-        ModelAccess modelAccess = new ModelAccess(ontologyModelFactory, databaseModelFactory, prevailerModelFactory);
-        modelAccess.setAccessType(accessType);
-
-        for (int i = 0; i < instanceCount; i++) {
-            ComplexResource complexResource = modelAccess.createComplexResource("ComplexResource_" + i);
-            List<String> workload = new ArrayList<String>();
-            List<ServiceCenterITComputingResource> resources = new ArrayList<ServiceCenterITComputingResource>();
-            for (int j = 0; j < instanceCount; j++) {
-                workload.add(complexResource.getName() + "Workload_" + j);
-                ServiceCenterITComputingResource resource =
-                        modelAccess.createServiceCenterITComputingResource(complexResource.getName() + "_SCITCR_" + j);
-                List<Integer> integer = new ArrayList<Integer>();
-                List<ApplicationActivity> activities = new ArrayList<ApplicationActivity>();
-                resource.setCurrentEnergyState(0);
-                resource.setMaximumWorkLoad(100.0);
-                resource.setOptimalWorkLoad(70.0);
-                resource.setCurrentWorkLoad(60.0);
-                for (int k = 0; k < instanceCount; k++) {
-                    integer.add(k);
-                    ApplicationActivity activity =
-                            modelAccess.createHDDIntensiveActivity(
-                                    complexResource.getName() + "_" + resource.getName()
-                                            + "_" + "AA_" + k);
-                    activity.setCPUAllocatedValue(0.0);
-                    activity.setHDDAllocatedValue(0.0);
-                    activity.setMEMAllocatedValue(0.0);
-
-                    activity.setCPURequiredValue(0.0);
-                    activity.setHDDRequiredValue(0.0);
-                    activity.setMEMRequiredValue(0.0);
-
-                    activity.setPerformanceDegradation(0.0);
-                    activity.setPerformanceEstimation(0.0);
-                    activities.add(activity);
-                    //modelAccess.persistEntity(activity);
-                }
-                resource.setEnergyStates(integer);
-                resource.setRunningActivities(activities);
-                //modelAccess.persistEntity(resource);
-                resources.add(resource);
-            }
-            complexResource.setResourceWorkloadProperty(workload);
-            complexResource.setResources(resources);
-            modelAccess.persistEntity(complexResource);
-        }
-
-//         ComplexResource resource = modelAccess.createComplexResource("Test");
-//        List<String> workload = new ArrayList<String>();
-//        List<ServiceCenterITComputingResource> resources = new ArrayList<ServiceCenterITComputingResource>();
-//        ServiceCenterITComputingResource r =
-//                modelAccess.createServiceCenterITComputingResource("_SCITCR_");
-//        List<Integer> integer = new ArrayList<Integer>();
-//        List<ApplicationActivity> activities = new ArrayList<ApplicationActivity>();
+//    public static ModelAccess getModelAccessInstance(int accessType) {
+//        OntologyModelFactory ontologyModelFactory = (accessType == ModelAccess.ONTOLOGY_ACCESS) ? new OntologyModelFactory() : null;
+//       // DatabaseModelFactory databaseModelFactory = (accessType == ModelAccess.DATABASE_ACCESS) ? new DatabaseModelFactory() : null;
+//        PrevailerModelFactory prevailerModelFactory = (accessType == ModelAccess.PREVAYLER_ACCESS) ? new PrevailerModelFactory() : null;
 //
-//        ApplicationActivity activity =
-//                modelAccess.createApplicationActivity(
-//                        "_" + "AA_");
-//        activity.setCPUAllocatedValue(0.0);
-//        activity.setHDDAllocatedValue(0.0);
-//        activity.setMEMAllocatedValue(0.0);
+//        ModelAccess modelAccess = new ModelAccess(ontologyModelFactory, databaseModelFactory, prevailerModelFactory);
+//        modelAccess.setAccessType(accessType);
+//        return modelAccess;
+//    }
 //
-//        activity.setCPURequiredValue(0.0);
-//        activity.setHDDRequiredValue(0.0);
-//        activity.setMEMRequiredValue(0.0);
+//    public static ModelAccess generatePolicyInstances(int instanceCount, int accessType) {
+//        OntologyModelFactory ontologyModelFactory = (accessType == ModelAccess.ONTOLOGY_ACCESS) ? new OntologyModelFactory() : null;
+//        DatabaseModelFactory databaseModelFactory = (accessType == ModelAccess.DATABASE_ACCESS) ? new DatabaseModelFactory() : null;
+//        PrevailerModelFactory prevailerModelFactory = (accessType == ModelAccess.PREVAYLER_ACCESS) ? new PrevailerModelFactory() : null;
 //
-//        activity.setPerformanceDegradation(0.0);
-//        activity.setPerformanceEstimation(0.0);
-//        activities.add(activity);
-//        modelAccess.persistEntity(activity);
+//        ModelAccess modelAccess = new ModelAccess(ontologyModelFactory, databaseModelFactory, prevailerModelFactory);
+//        modelAccess.setAccessType(accessType);
+//        generateComplexResourceInstances(instanceCount, accessType);
+//        Collection<ComplexResource> complexResources = modelAccess.getAllComplexResourceInstances();
+//        Iterator<ComplexResource> iterator = complexResources.iterator();
+//        for (int i = 0; i < instanceCount; i++) {
+//            ITComputingContextPolicy itComputingContextPolicy = modelAccess.createITComputingContextPolicy("EnergyPolicy_" + i);
+//            List<ContextResource> associatedResource = new ArrayList<ContextResource>(1);
+//            itComputingContextPolicy.setEditable(true);
+//            itComputingContextPolicy.setRespected(false);
+//            associatedResource.add(iterator.next());
+//            itComputingContextPolicy.setPolicySubject(associatedResource);
+//            itComputingContextPolicy.setPolicyName("EnergyPolicy_" + i);
+//            modelAccess.persistEntity(itComputingContextPolicy);
+//        }
+//        return modelAccess;
 //
-//        r.setEnergyStates(integer);
-//        r.setRunningActivities(activities);
-//        modelAccess.persistEntity(r);
-//        resources.add(resource);
+//    }
 //
-//         resource.setResourceWorkloadProperty(workload);
-//         resource.setResources(resources);
-//         modelAccess.persistEntity(resource);
-
-        return modelAccess;
-
-    }
+//
+//    public static ModelAccess generateComplexResourceInstances(int instanceCount, int accessType) {
+//        OntologyModelFactory ontologyModelFactory = (accessType == ModelAccess.ONTOLOGY_ACCESS) ? new OntologyModelFactory() : null;
+//        DatabaseModelFactory databaseModelFactory = (accessType == ModelAccess.DATABASE_ACCESS) ? new DatabaseModelFactory() : null;
+//        PrevailerModelFactory prevailerModelFactory = (accessType == ModelAccess.PREVAYLER_ACCESS) ? new PrevailerModelFactory() : null;
+//
+//        ModelAccess modelAccess = new ModelAccess(ontologyModelFactory, databaseModelFactory, prevailerModelFactory);
+//        modelAccess.setAccessType(accessType);
+//
+//        for (int i = 0; i < instanceCount; i++) {
+//            ComplexResource complexResource = modelAccess.createComplexResource("ComplexResource_" + i);
+//            List<String> workload = new ArrayList<String>();
+//            List<ServiceCenterITComputingResource> resources = new ArrayList<ServiceCenterITComputingResource>();
+//            for (int j = 0; j < instanceCount; j++) {
+//                workload.add(complexResource.getName() + "Workload_" + j);
+//                ServiceCenterITComputingResource resource =
+//                        modelAccess.createServiceCenterITComputingResource(complexResource.getName() + "_SCITCR_" + j);
+//                List<Integer> integer = new ArrayList<Integer>();
+//                List<ApplicationActivity> activities = new ArrayList<ApplicationActivity>();
+//                resource.setCurrentEnergyState(0);
+//                resource.setMaximumWorkLoad(100.0);
+//                resource.setOptimalWorkLoad(70.0);
+//                resource.setCurrentWorkLoad(60.0);
+//                for (int k = 0; k < instanceCount; k++) {
+//                    integer.add(k);
+//                    ApplicationActivity activity =
+//                            modelAccess.createHDDIntensiveActivity(
+//                                    complexResource.getName() + "_" + resource.getName()
+//                                            + "_" + "AA_" + k);
+//                    activity.setCPUAllocatedValue(0.0);
+//                    activity.setHDDAllocatedValue(0.0);
+//                    activity.setMEMAllocatedValue(0.0);
+//
+//                    activity.setCPURequiredValue(0.0);
+//                    activity.setHDDRequiredValue(0.0);
+//                    activity.setMEMRequiredValue(0.0);
+//
+//                    activity.setPerformanceDegradation(0.0);
+//                    activity.setPerformanceEstimation(0.0);
+//                    activities.add(activity);
+//                    //modelAccess.persistEntity(activity);
+//                }
+//                resource.setEnergyStates(integer);
+//                resource.setRunningActivities(activities);
+//                //modelAccess.persistEntity(resource);
+//                resources.add(resource);
+//            }
+//            complexResource.setResourceWorkloadProperty(workload);
+//            complexResource.setResources(resources);
+//            modelAccess.persistEntity(complexResource);
+//        }
+//
+////         ComplexResource resource = modelAccess.createComplexResource("Test");
+////        List<String> workload = new ArrayList<String>();
+////        List<ServiceCenterITComputingResource> resources = new ArrayList<ServiceCenterITComputingResource>();
+////        ServiceCenterITComputingResource r =
+////                modelAccess.createServiceCenterITComputingResource("_SCITCR_");
+////        List<Integer> integer = new ArrayList<Integer>();
+////        List<ApplicationActivity> activities = new ArrayList<ApplicationActivity>();
+////
+////        ApplicationActivity activity =
+////                modelAccess.createApplicationActivity(
+////                        "_" + "AA_");
+////        activity.setCPUAllocatedValue(0.0);
+////        activity.setHDDAllocatedValue(0.0);
+////        activity.setMEMAllocatedValue(0.0);
+////
+////        activity.setCPURequiredValue(0.0);
+////        activity.setHDDRequiredValue(0.0);
+////        activity.setMEMRequiredValue(0.0);
+////
+////        activity.setPerformanceDegradation(0.0);
+////        activity.setPerformanceEstimation(0.0);
+////        activities.add(activity);
+////        modelAccess.persistEntity(activity);
+////
+////        r.setEnergyStates(integer);
+////        r.setRunningActivities(activities);
+////        modelAccess.persistEntity(r);
+////        resources.add(resource);
+////
+////         resource.setResourceWorkloadProperty(workload);
+////         resource.setResources(resources);
+////         modelAccess.persistEntity(resource);
+//
+//        return modelAccess;
+//
+//    }
 }

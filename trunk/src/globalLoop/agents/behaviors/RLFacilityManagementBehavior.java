@@ -12,8 +12,8 @@ import model.interfaces.actions.ContextAction;
 import model.interfaces.actions.ITFacilityResourceAdaptationAction;
 import model.interfaces.policies.ContextPolicy;
 import model.interfaces.policies.EnvironmentPolicy;
-import model.interfaces.resources.Actuator;
 import model.interfaces.resources.ContextResource;
+import model.interfaces.resources.ITFacilityActiveResource;
 import model.interfaces.resources.Sensor;
 import selfoptimizing.utils.Pair;
 
@@ -105,9 +105,9 @@ public class RLFacilityManagementBehavior extends TickerBehaviour {
                         continue;
                     }
 
-                    Collection<Actuator> associatedActuators = sensor.getAssociatedActuators();
+                    Collection<ITFacilityActiveResource> associatedActuators = sensor.getAssociatedActiveResources();
 
-                    for (Actuator actuator : associatedActuators) {
+                    for (ITFacilityActiveResource actuator : associatedActuators) {
 
                         Collection<ITFacilityResourceAdaptationAction> associatedActions = actuator.getActions();
                         //get all actions possible on this

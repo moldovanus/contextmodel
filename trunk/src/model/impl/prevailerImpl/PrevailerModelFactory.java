@@ -33,7 +33,7 @@ public class PrevailerModelFactory implements ModelFactory {
         PrevaylerFactory factory = new PrevaylerFactory();
         factory.configurePrevalenceDirectory("./contextModel_1");
         //factory.configureTransientMode(true);
-        factory.configurePrevalentSystem(PrevaylerDatabaseContainer.getContainerInstance());
+        // factory.configurePrevalentSystem(PrevaylerDatabaseContainer.getContainerInstance());
         factory.configureSnapshotSerializer(new SkaringaSerializer());
 //      factory.configureJournalSerializer(new SkaringaSerializer());
 

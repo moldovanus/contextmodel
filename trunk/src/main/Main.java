@@ -1,22 +1,10 @@
 package main;
 
-import evaluation.InstanceGenerator;
-import model.impl.databaseImpl.DatabaseModelFactory;
-import model.impl.databaseImpl.dao.HibernateUtil;
-import model.impl.util.ModelAccess;
-import model.interfaces.ContextElement;
-import model.interfaces.policies.ContextPolicy;
-import model.interfaces.resources.ComplexResource;
-import model.interfaces.resources.ServiceCenterITComputingResource;
-import model.interfaces.resources.SimpleResource;
-import model.interfaces.resources.applications.ApplicationActivity;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import model.impl.ontologyImpl.OntologyModelFactory;
+import model.interfaces.policies.GPI_KPI_Policy;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,8 +15,12 @@ import java.util.List;
  */
 public class Main {
     public static void main(String args[]) {
-
-
+        OntologyModelFactory ontologyModelFactory = new OntologyModelFactory();
+        Collection<GPI_KPI_Policy> gpi_kpi_policies = ontologyModelFactory.getAllGPI_KPI_PolicyInstances();
+        for (Iterator<GPI_KPI_Policy> gpi_kpi_policyIterator = gpi_kpi_policies.iterator(); gpi_kpi_policyIterator.hasNext();) {
+            GPI_KPI_Policy policy = gpi_kpi_policyIterator.next();
+            System.out.println(policy.getName() + " Respected: " + policy.isRespected());
+        }
 //         private String policyName;
 //    private String evaluationCondition;
 //
@@ -85,57 +77,57 @@ public class Main {
 //            System.out.println(resource.getPolicyName() + " __ " + resource.getEvaluationCondition());
 //        }
         //HibernateUtil.recreateDatabase();
-        java.util.Date before = new Date();
+//        java.util.Date before = new Date();
 
 //        ModelAccess modelAccess = InstanceGenerator.getModelAccessInstance(ModelAccess.PREVAYLER_ACCESS);
-        ModelAccess modelAccess = InstanceGenerator.generateComplexResourceInstances(5, ModelAccess.DATABASE_ACCESS);
-        java.util.Date after = new Date();
-
-        java.util.Date result = new Date(after.getTime() - before.getTime());
-        System.out.println("Creation time: " + result.getMinutes() + ":" + result.getSeconds());
-
-        //long total = Runtime.getRuntime().totalMemory();
-        long used = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        System.out.println("Used memory:" + used);
-
-        before = new Date();
+//        ModelAccess modelAccess = InstanceGenerator.generateComplexResourceInstances(5, ModelAccess.DATABASE_ACCESS);
+//        java.util.Date after = new Date();
+//
+//        java.util.Date result = new Date(after.getTime() - before.getTime());
+//        System.out.println("Creation time: " + result.getMinutes() + ":" + result.getSeconds());
+//
+//        //long total = Runtime.getRuntime().totalMemory();
+//        long used = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+//        System.out.println("Used memory:" + used);
+//
+//        before = new Date();
         //System.out.println(modelAccess.getAllContextElementInstances().size());
-
-        for(ContextElement element : modelAccess.getAllContextElementInstances()){
+//
+//        for(ContextElement element : modelAccess.getAllContextElementInstances()){
 //            System.out.println(element.getName());
-        }
-        after = new Date();
-
-        result = new Date(after.getTime() - before.getTime());
-        System.out.println("Query time: " + result.getMinutes() + ":" + result.getSeconds());
-
-        before = new Date();
-        Collection<ComplexResource> resources = modelAccess.getAllComplexResourceInstances();
-        for (ComplexResource resource : resources) {
-            List<ServiceCenterITComputingResource> list = resource.getResources();
-            for (ServiceCenterITComputingResource serviceCenterITComputingResource : list) {
-                List<ApplicationActivity> activities = serviceCenterITComputingResource.getRunningActivities();
-                for (ApplicationActivity activity : activities) {
+//        }
+//        after = new Date();
+//
+//        result = new Date(after.getTime() - before.getTime());
+//        System.out.println("Query time: " + result.getMinutes() + ":" + result.getSeconds());
+//
+//        before = new Date();
+//        Collection<ComplexResource> resources = modelAccess.getAllComplexResourceInstances();
+//        for (ComplexResource resource : resources) {
+//            List<ServiceCenterITComputingResource> list = resource.getResources();
+//            for (ServiceCenterITComputingResource serviceCenterITComputingResource : list) {
+//                List<ApplicationActivity> activities = serviceCenterITComputingResource.getRunningActivities();
+//                for (ApplicationActivity activity : activities) {
 //                    Double d = activity.getCPUAllocatedValue();
 //                    d += 20;
 //                    System.out.println(d);
-                }
-            }
-        }
-
-        after = new Date();
-
-        result = new Date(after.getTime() - before.getTime());
-        System.out.println("Query CR time: " + result.getMinutes() + ":" + result.getSeconds());
-
-        before = new Date();
-        modelAccess.getComplexResource("ComplexResource_34");
-
-        after = new Date();
-
-        result = new Date(after.getTime() - before.getTime());
-        System.out.println("Query by name : " + result.getMinutes() + ":" + result.getSeconds());
-       // System.exit(1);
+//                }
+//            }
+//        }
+//
+//        after = new Date();
+//
+//        result = new Date(after.getTime() - before.getTime());
+//        System.out.println("Query CR time: " + result.getMinutes() + ":" + result.getSeconds());
+//
+//        before = new Date();
+//        modelAccess.getComplexResource("ComplexResource_34");
+//
+//        after = new Date();
+//
+//        result = new Date(after.getTime() - before.getTime());
+//        System.out.println("Query by name : " + result.getMinutes() + ":" + result.getSeconds());
+        // System.exit(1);
 //        try {
 //            before = new Date();
 //            modelAccess.getPrevailerModelFactory().takeSnapshot();

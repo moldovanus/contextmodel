@@ -1,5 +1,8 @@
 package model.interfaces.resources;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -9,12 +12,21 @@ package model.interfaces.resources;
  */
 public interface ITFacilityPassiveResource extends ServiceCenterITFacilityResource {
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#associatedActiveResources
 
-    Double getMaximumValue();
+    Collection getAssociatedActiveResources();
 
-    boolean hasMaximumValue();
 
-    void setMaximumValue(Double newMaximumValue);
+    boolean hasAssociatedActiveResources();
+
+    Iterator listAssociatedActiveResources();
+
+    void addAssociatedActiveResources(ITFacilityActiveResource newAssociatedActiveResources);
+
+    void removeAssociatedActiveResources(ITFacilityActiveResource oldAssociatedActiveResources);
+
+    void setAssociatedActiveResources(Collection newAssociatedActiveResources);
+
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#minimumValue
 
