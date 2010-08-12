@@ -1,3 +1,5 @@
+package model.interfaces.actions;
+
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.actions.ConsolidationAction;
 

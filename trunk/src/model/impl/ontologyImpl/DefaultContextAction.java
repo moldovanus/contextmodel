@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultContextAction extends DefaultContextElement
+public abstract class DefaultContextAction extends DefaultContextElement
         implements ContextAction {
 
     public DefaultContextAction(OWLModel owlModel, FrameID id) {
@@ -141,12 +141,12 @@ public class DefaultContextAction extends DefaultContextElement
     }
 
 
-    public void addResources(ContextResource newResources) {
+    public void addResource(ContextResource newResources) {
         addPropertyValue(getResourcesProperty(), newResources);
     }
 
 
-    public void removeResources(ContextResource oldResources) {
+    public void removeResource(ContextResource oldResources) {
         removePropertyValue(getResourcesProperty(), oldResources);
     }
 
@@ -155,11 +155,7 @@ public class DefaultContextAction extends DefaultContextElement
         setPropertyValues(getResourcesProperty(), newResources);
     }
 
-    public void execute(ModelAccess modelAccess) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+    public abstract void execute(ModelAccess modelAccess);
 
-    public void undo(ModelAccess modelAccess) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+    public abstract void undo(ModelAccess modelAccess);
 }

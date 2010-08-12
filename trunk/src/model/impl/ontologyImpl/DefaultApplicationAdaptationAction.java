@@ -2,6 +2,7 @@ package model.impl.ontologyImpl;
 
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import model.impl.util.ModelAccess;
 import model.interfaces.actions.ApplicationAdaptationAction;
 
 /**
@@ -19,5 +20,15 @@ public class DefaultApplicationAdaptationAction extends DefaultContextAction
 
 
     public DefaultApplicationAdaptationAction() {
+    }
+
+    @Override
+    public void execute(ModelAccess modelAccess) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    @Override
+    public void undo(ModelAccess modelAccess) {
+        throw new UnsupportedOperationException("not implemented yet");
     }
 }

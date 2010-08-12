@@ -19,9 +19,7 @@ public interface ITFacilityResourceAdaptationAction extends ContextAction {
     Collection getAssociatedResources();
 
     boolean hasAssociatedResources();
-
-    Iterator listAssociatedResources();
-
+    
     void addAssociatedResources(ContextResource newAssociatedResources);
 
     void removeAssociatedResources(ContextResource oldAssociatedResources);

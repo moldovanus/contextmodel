@@ -18,6 +18,10 @@ public interface ContextAction extends ContextElement {
 
     void setResources(List<ContextResource> resources);
 
+    void addResource(ContextResource resource);
+
+    void removeResource(ContextResource resource);
+
     void execute(ModelAccess modelAccess);
 
     void undo(ModelAccess modelAccess);

@@ -30,7 +30,7 @@ public class RLFacilityManagementBehavior extends TickerBehaviour {
     private Agent agent;
     private ModelAccess modelAccess;
 
-    public RLFacilityManagementBehavior(Agent a, ModelAccess modelAccess, long period) {
+    public RLFacilityManagementBehavior(Agent a, long period, ModelAccess modelAccess) {
         super(a, period);
         agent = a;
         this.modelAccess = modelAccess;
@@ -110,65 +110,17 @@ public class RLFacilityManagementBehavior extends TickerBehaviour {
                     for (ITFacilityActiveResource actuator : associatedActuators) {
 
                         Collection<ITFacilityResourceAdaptationAction> associatedActions = actuator.getActions();
-                        //get all actions possible on this
 
                         for (ITFacilityResourceAdaptationAction action : associatedActions) {
-                            //TODO: De adaugat Effect
-//                            String effect = action.getEffect();
-//                            char firstChar = effect.trim().charAt(0);
-//
-//                            if (firstChar == '+') {
-//
-//                                String numberString = effect.substring(1, effect.length());
-//                                int value = integerNumberFormat.parse(numberString).intValue();
-//                                //TODO: constructor cu value
-//                                IncrementCommand incrementCommand = new IncrementCommand(protegeFactory, sensor.getName(), value);
-//                                Queue<Command> incrementQueue = new LinkedList(context.getActions());
-//
-//                                incrementCommand.execute(policyConversionModel);
-//                                incrementQueue.add(incrementCommand);
-//
-//                                ContextSnapshot afterIncrement = new ContextSnapshot(incrementQueue);
-//                                queue.add(afterIncrement);
-//                                incrementCommand.rewind(policyConversionModel);
-//
-//
-//                            } else if (firstChar == '-') {
-//
-//                                String numberString = effect.substring(1, effect.length());
-//                                int value = integerNumberFormat.parse(numberString).intValue();
-//                                Queue<Command> decrementQueue = new LinkedList(context.getActions());
-//                                DecrementCommand decrementCommand = new DecrementCommand(protegeFactory, sensor.getName(), value);
-//
-//                                decrementCommand.execute(policyConversionModel);
-//                                decrementQueue.add(decrementCommand);
-//
-//                                ContextSnapshot afterDecrement = new ContextSnapshot(decrementQueue);
-//                                queue.add(afterDecrement);
-//                                decrementCommand.rewind(policyConversionModel);
-//
-//                            } else if (firstChar >= '0' && firstChar <= '9') {
-//
-//                                String numberString = effect.substring(0, effect.length());
-//                                int value = integerNumberFormat.parse(numberString).intValue();
-//
-//                                SetCommand setCommand = new SetCommand(protegeFactory, sensor.getName(), value);
-//
-//                                int before = sensor.getValueOfService();
-//                                setCommand.execute(policyConversionModel);
-//                                int after = sensor.getValueOfService();
-//
-//                                if (after != before) {
-//                                    Queue<Command> setCommandQueue = new LinkedList(context.getActions());
-//                                    setCommandQueue.add(setCommand);
-//                                    ContextSnapshot afterSet = new ContextSnapshot(setCommandQueue);
-//                                    queue.add(afterSet);
-//                                }
-//                                setCommand.rewind(policyConversionModel);
-//
-//                            } else {
-//                                throw new Exception("Unsupported effect exception:" + firstChar);
-//                            }
+                            Queue<ContextAction> commandsQueue = new LinkedList(context.getActions());
+
+                            action.execute(modelAccess);
+                            commandsQueue.add(action);
+
+                            ContextSnapshot afterIncrement = new ContextSnapshot(commandsQueue);
+                            queue.add(afterIncrement);
+                            action.undo(modelAccess);
+
                         }
                     }
                 }
@@ -245,7 +197,7 @@ public class RLFacilityManagementBehavior extends TickerBehaviour {
         if (entropyState.getFirst() != 0) {
 //            contextBroken = true;
             ArrayList<String> list = new ArrayList<String>();
-            String policyName = entropyState.getSecond().getName().split("#")[1];
+            String policyName = entropyState.getSecond().getLocalName();
             list.add(policyName);
 
             EnvironmentPolicy brokenPolicy = entropyState.getSecond();
@@ -260,7 +212,7 @@ public class RLFacilityManagementBehavior extends TickerBehaviour {
 
                 //skip sensor if its value respects the Policy
                 if (!sensor.hasAcceptableValue(modelAccess)) {
-                    brokenSensorsList.add(sensor.getName().split("#")[1]);
+                    brokenSensorsList.add(sensor.getLocalName());
                 }
             }
 

@@ -1,7 +1,10 @@
 package main;
 
+import globalLoop.agents.CMAAgent;
+import globalLoop.utils.GlobalVars;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.interfaces.resources.applications.ApplicationActivity;
+
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -15,12 +18,15 @@ import java.util.Iterator;
  */
 public class Main {
     public static void main(String args[]) {
-        OntologyModelFactory ontologyModelFactory = new OntologyModelFactory();
-        Collection<ApplicationActivity> gpi_kpi_policies = ontologyModelFactory.getAllApplicationActivityInstances(true);
-        for (Iterator<ApplicationActivity> gpi_kpi_policyIterator = gpi_kpi_policies.iterator(); gpi_kpi_policyIterator.hasNext();) {
-            ApplicationActivity policy = gpi_kpi_policyIterator.next();
-            System.out.println(policy.getName() + " Respected: " + policy.getResourceID());
-        }
+        String[] jadeArgs = new String[]{"-mtp jamr.jademtp.http.MessageTransportProtocol", "-gui", GlobalVars.CMAGENT_NAME + ":" + CMAAgent.class.getName()};
+        jade.Boot.main(jadeArgs);
+
+//        OntologyModelFactory ontologyModelFactory = new OntologyModelFactory();
+//        Collection<ApplicationActivity> gpi_kpi_policies = ontologyModelFactory.getAllApplicationActivityInstances(true);
+//        for (Iterator<ApplicationActivity> gpi_kpi_policyIterator = gpi_kpi_policies.iterator(); gpi_kpi_policyIterator.hasNext();) {
+//            ApplicationActivity policy = gpi_kpi_policyIterator.next();
+//            System.out.println(policy.getName() + " Respected: " + policy.getResourceID());
+//        }
 //         private String policyName;
 //    private String evaluationCondition;
 //

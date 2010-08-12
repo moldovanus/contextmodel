@@ -4,8 +4,12 @@ import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.actions.MigrateActivity;
+import model.interfaces.resources.ContextResource;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.applications.ApplicationActivity;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -52,48 +56,63 @@ public class DefaultMigrateActivity extends DefaultConsolidationAction
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceFrom
 
+    //FACUT JMECHELIE :D
+
     public ServiceCenterITComputingResource getResourceFrom() {
-        return (ServiceCenterITComputingResource) getPropertyValueAs(getResourceFromProperty(), ServiceCenterITComputingResource.class);
+        return (ServiceCenterITComputingResource)
+                ((Collection<ContextResource>) getPropertyValueAs(getResourcesProperty(), ContextResource.class)).toArray()[0];
     }
 
 
     public RDFProperty getResourceFromProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceFrom";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
+        throw new UnsupportedOperationException("This method should not exist. Please delete it.");
+//        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceFrom";
+//        final String name = getOWLModel().getResourceNameForURI(uri);
+//        return getOWLModel().getRDFProperty(name);
     }
 
 
     public boolean hasResourceFrom() {
-        return getPropertyValueCount(getResourceFromProperty()) > 0;
+        return getPropertyValueCount(getResourcesProperty()) > 1;
     }
 
 
     public void setResourceFrom(ServiceCenterITComputingResource newResourceFrom) {
-        setPropertyValue(getResourceFromProperty(), newResourceFrom);
+        ContextResource resourceTo = getResourceTo();
+        removePropertyValue(getResourcesProperty(), getResourceFrom());
+        removePropertyValue(getResourcesProperty(), resourceTo);
+        addPropertyValue(getResourcesProperty(), newResourceFrom);
+        setPropertyValue(getResourcesProperty(), resourceTo);
     }
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceTo
 
     public ServiceCenterITComputingResource getResourceTo() {
-        return (ServiceCenterITComputingResource) getPropertyValueAs(getResourceToProperty(), ServiceCenterITComputingResource.class);
+        return (ServiceCenterITComputingResource)
+                ((Collection<ContextResource>) getPropertyValueAs(getResourcesProperty(), ContextResource.class)).toArray()[1];
     }
 
 
     public RDFProperty getResourceToProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceTo";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
+        throw new UnsupportedOperationException("This method should not exist. Please delete it.");
+//        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceTo";
+//        final String name = getOWLModel().getResourceNameForURI(uri);
+//        return getOWLModel().getRDFProperty(name);
     }
 
 
     public boolean hasResourceTo() {
-        return getPropertyValueCount(getResourceToProperty()) > 0;
+        return getPropertyValueCount(getResourcesProperty()) > 2;
     }
 
 
     public void setResourceTo(ServiceCenterITComputingResource newResourceTo) {
         setPropertyValue(getResourceToProperty(), newResourceTo);
+        ContextResource resourceFrom = getResourceFrom();
+        removePropertyValue(getResourcesProperty(), resourceFrom);
+        removePropertyValue(getResourcesProperty(), getResourceTo());
+        addPropertyValue(getResourcesProperty(), resourceFrom);
+        setPropertyValue(getResourcesProperty(), newResourceTo);
     }
 }

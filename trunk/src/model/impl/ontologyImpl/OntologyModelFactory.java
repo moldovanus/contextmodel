@@ -9,6 +9,7 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.RDFSNamedClass;
 import edu.stanford.smi.protegex.owl.model.impl.OWLUtil;
+import globalLoop.utils.GlobalVars;
 import model.impl.util.ModelFactory;
 import model.interfaces.ContextElement;
 import model.interfaces.actions.*;
@@ -27,7 +28,7 @@ import java.util.Iterator;
  * @version generated on Fri Jul 09 18:31:36 GMT 2010
  */
 public class OntologyModelFactory implements ModelFactory {
-    public static final String ontologyFile = "./ontology/context_KAON.rdf-xml.owl";
+    public static final String ontologyFile = GlobalVars.ONTOLOGY_FILE;
 
     public void removeEntity(ContextElement element) {
         element.delete();
@@ -78,6 +79,7 @@ public class OntologyModelFactory implements ModelFactory {
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DeployActivity", DeployActivity.class, DefaultDeployActivity.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#EnvironmentPolicy", EnvironmentPolicy.class, DefaultEnvironmentPolicy.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction", ITFacilityResourceAdaptationAction.class, DefaultITFacilityResourceAdaptationAction.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#FacilityDefaultAction", FacilityDefaultAction.class, DefaultFacilityDefaultAction.class);
     }
 
     public OntologyModelFactory() {
@@ -93,6 +95,47 @@ public class OntologyModelFactory implements ModelFactory {
 //        return ProtegeJavaMapping.create(owlModel, javaInterface, name);        //aaaa
 //    }
 
+    public RDFSNamedClass getFacilityDefaultActionClass() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#FacilityDefaultAction";
+        final String name = owlModel.getResourceNameForURI(uri);
+        return owlModel.getRDFSNamedClass(name);
+    }
+
+    public FacilityDefaultAction createFacilityDefaultAction(String name) {
+        final RDFSNamedClass cls = getFacilityDefaultActionClass();
+        if (name == null) {
+            name = owlModel.getNextAnonymousResourceName();
+        }
+        return new DefaultFacilityDefaultAction(owlModel, cls.createInstance(name).getFrameID());
+    }
+
+    public FacilityDefaultAction getFacilityDefaultAction(String name) {
+        RDFResource res = owlModel.getRDFResource(OWLUtil.getInternalFullName(owlModel, name));
+        if (res == null) {
+            return null;
+        }
+        if (res instanceof FacilityDefaultAction) {
+            return (FacilityDefaultAction) res;
+        } else if (res.hasProtegeType(getFacilityDefaultActionClass())) {
+            return new DefaultFacilityDefaultAction(owlModel, res.getFrameID());
+        }
+        return null;
+    }
+
+    public Collection<FacilityDefaultAction> getAllFacilityDefaultActionInstances() {
+        return getAllFacilityDefaultActionInstances(false);
+    }
+
+    public Collection<FacilityDefaultAction> getAllFacilityDefaultActionInstances(boolean transitive) {
+        Collection<FacilityDefaultAction> result = new ArrayList<FacilityDefaultAction>();
+        final RDFSNamedClass cls = getFacilityDefaultActionClass();
+        RDFResource owlIndividual;
+        for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
+            owlIndividual = (RDFResource) it.next();
+            result.add(new DefaultFacilityDefaultAction(owlModel, owlIndividual.getFrameID()));
+        }
+        return result;
+    }
 
     public RDFSNamedClass getDPMActionClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DPMAction";
@@ -186,42 +229,42 @@ public class OntologyModelFactory implements ModelFactory {
         return owlModel.getRDFSNamedClass(name);
     }
 
-    public ContextAction createContextAction(String name) {
-        final RDFSNamedClass cls = getContextActionClass();
-        if (name == null) {
-            name = owlModel.getNextAnonymousResourceName();
-        }
-        return new DefaultContextAction(owlModel, cls.createInstance(name).getFrameID());
-    }
-
-    public ContextAction getContextAction(String name) {
-        RDFResource res = owlModel.getRDFResource(OWLUtil.getInternalFullName(owlModel, name));
-        if (res == null) {
-            return null;
-        }
-        if (res instanceof ContextAction) {
-            return (ContextAction) res;
-        } else if (res.hasProtegeType(getContextActionClass())) {
-            return new DefaultContextAction(owlModel, res.getFrameID());
-        }
-        return null;
-    }
-
-    public Collection<ContextAction> getAllContextActionInstances() {
-        return getAllContextActionInstances(true);
-    }
-
-    public Collection<ContextAction> getAllContextActionInstances(boolean transitive) {
-        Collection<ContextAction> result = new ArrayList<ContextAction>();
-        final RDFSNamedClass cls = getContextActionClass();
-        RDFResource owlIndividual;
-        for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
-            owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultContextAction(owlModel, owlIndividual.getFrameID()));
-        }
-        return result;
-    }
-
+//    public ContextAction createContextAction(String name) {
+//        final RDFSNamedClass cls = getContextActionClass();
+//        if (name == null) {
+//            name = owlModel.getNextAnonymousResourceName();
+//        }
+//        return new DefaultContextAction(owlModel, cls.createInstance(name).getFrameID());
+//    }
+//
+//    public ContextAction getContextAction(String name) {
+//        RDFResource res = owlModel.getRDFResource(OWLUtil.getInternalFullName(owlModel, name));
+//        if (res == null) {
+//            return null;
+//        }
+//        if (res instanceof ContextAction) {
+//            return (ContextAction) res;
+//        } else if (res.hasProtegeType(getContextActionClass())) {
+//            return new DefaultContextAction(owlModel, res.getFrameID());
+//        }
+//        return null;
+//    }
+//
+//    public Collection<ContextAction> getAllContextActionInstances() {
+//        return getAllContextActionInstances(true);
+//    }
+//
+//    public Collection<ContextAction> getAllContextActionInstances(boolean transitive) {
+//        Collection<ContextAction> result = new ArrayList<ContextAction>();
+//        final RDFSNamedClass cls = getContextActionClass();
+//        RDFResource owlIndividual;
+//        for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
+//            owlIndividual = (RDFResource) it.next();
+//            result.add(new DefaultContextAction(owlModel, owlIndividual.getFrameID()));
+//        }
+//        return result;
+//    }
+//
 
     public RDFSNamedClass getHDDIntensiveActivityClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDDIntensiveActivity";
@@ -2041,4 +2084,6 @@ public class OntologyModelFactory implements ModelFactory {
         final String name = owlModel.getResourceNameForURI(uri);
         return owlModel.getRDFProperty(name);
     }
+
+
 }

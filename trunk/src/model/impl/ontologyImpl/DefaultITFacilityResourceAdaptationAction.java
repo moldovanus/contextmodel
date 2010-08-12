@@ -3,6 +3,7 @@ package model.impl.ontologyImpl;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import model.impl.util.ModelAccess;
 import model.interfaces.actions.FacilityDefaultAction;
 import model.interfaces.actions.ITFacilityResourceAdaptationAction;
 import model.interfaces.resources.ContextResource;
@@ -24,8 +25,17 @@ public class DefaultITFacilityResourceAdaptationAction extends DefaultContextAct
         super(owlModel, id);
     }
 
-
     public DefaultITFacilityResourceAdaptationAction() {
+    }
+
+    @Override
+    public void execute(ModelAccess modelAccess) {
+        getFacilityAction().execute(modelAccess);
+    }
+
+    @Override
+    public void undo(ModelAccess modelAccess) {
+        getFacilityAction().undo(modelAccess);
     }
 
 

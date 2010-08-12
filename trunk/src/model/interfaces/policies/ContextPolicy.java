@@ -22,9 +22,17 @@ public interface ContextPolicy extends ContextElement {
 
     void setPolicySubject(List<ContextResource> policySubject);
 
+    void addPolicySubject(ContextResource policySubject);
+
+    void removePolicySubject(ContextResource policySubject);
+
     List<ContextResource> getPolicyTarget();
 
     void setPolicyTarget(List<ContextResource> policyTarget);
+
+    void addPolicyTarget(ContextResource policySubject);
+
+    void removePolicyTarget(ContextResource policySubject);
 
     Event getTriggerEvent();
 

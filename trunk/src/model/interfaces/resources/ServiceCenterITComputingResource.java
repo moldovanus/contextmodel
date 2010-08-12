@@ -36,5 +36,4 @@ public interface ServiceCenterITComputingResource extends ContextResource {
 
     void setCurrentEnergyState(Integer value);
 
-
 }

@@ -6,6 +6,8 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.Goal;
 import model.interfaces.actions.ContextAction;
 import model.interfaces.policies.GPI_KPI_Policy;
+import model.interfaces.resources.ContextResource;
+import model.interfaces.resources.ITFacilityPassiveResource;
 
 
 /**
@@ -17,6 +19,7 @@ import model.interfaces.policies.GPI_KPI_Policy;
 public class DefaultGPI_KPI_Policy extends DefaultContextPolicy
         implements GPI_KPI_Policy {
 
+    private Goal policyGoal;
 
     public DefaultGPI_KPI_Policy(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
@@ -26,30 +29,13 @@ public class DefaultGPI_KPI_Policy extends DefaultContextPolicy
     public DefaultGPI_KPI_Policy() {
     }
 
-
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hasAttached
-
-    public Object getHasAttached() {
-        return (Object) getPropertyValue(getHasAttachedProperty());
+    public Goal getPolicyGoal() {
+        return policyGoal;
     }
 
-
-    public RDFProperty getHasAttachedProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hasAttached";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
+    public void setPolicyGoal(Goal policyGoal) {
+        this.policyGoal = policyGoal;
     }
-
-
-    public boolean hasHasAttached() {
-        return getPropertyValueCount(getHasAttachedProperty()) > 0;
-    }
-
-
-    public void setHasAttached(Object newHasAttached) {
-        setPropertyValue(getHasAttachedProperty(), newHasAttached);
-    }
-
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policyAction
 
@@ -74,12 +60,18 @@ public class DefaultGPI_KPI_Policy extends DefaultContextPolicy
         setPropertyValue(getPolicyActionProperty(), newPolicyAction);
     }
 
-    public Goal getPolicyGoal() {
-        System.out.println("We have no goal! ");
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void setPolicyGoal(Goal goal) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    @Override
+    public boolean isRespected() {
+        Goal goal = getPolicyGoal();
+        if (goal == null) {
+            System.err.println("No goal specified for policy:" + this.getLocalName() + ". Returning isRespected = false");
+            return false;
+        }
+        for (ContextResource resource : getPolicySubject()) {
+            if (!goal.isAchieved((ITFacilityPassiveResource) resource)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
