@@ -11,6 +11,34 @@ import java.util.Collection;
  */
 public interface BusinessContextResource extends ContextResource {
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPUWeight
+
+    float getCPUWeight();
+
+    boolean hasCPUWeight();
+
+    void setCPUWeight(float newCPUWeight);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDDWeight
+
+    float getHDDWeight();
+
+
+    boolean hasHDDWeight();
+
+    void setHDDWeight(float newHDDWeight);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEMWeight
+
+    float getMEMWeight();
+
+
+    boolean hasMEMWeight();
+
+    void setMEMWeight(float newMEMWeight);
+
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies
 

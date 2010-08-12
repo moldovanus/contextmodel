@@ -2,21 +2,17 @@ package globalLoop.agents.behaviors;
 
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
+import model.impl.ontologyImpl.DefaultDeployActivity;
 import model.impl.util.ModelAccess;
 import model.interfaces.ContextSnapshot;
 import model.interfaces.actions.ContextAction;
-import model.interfaces.policies.ContextPolicy;
 import model.interfaces.policies.GPI_KPI_Policy;
 import model.interfaces.policies.QoSPolicy;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.EnergyPolicy;
 import selfoptimizing.utils.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,11 +34,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
 
     private double taskRespectanceDegree(ApplicationActivity applicationActivity) {
-
-        double respectance = applicationActivity.getCPUWeight()
-//                * (requested.getCores() - received.getCores()
-//                + requested.getCpuMaxAcceptableValue() - received.getCpuReceived())
-                + applicationActivity.getCPURequiredValue() - applicationActivity.getCPUAllocatedValue()
+        double respectance = applicationActivity.getCPUWeight() * (applicationActivity.getNumberOfCoresAllocatedValue() - applicationActivity.getNumberOfCoresRequiredValue() + applicationActivity.getCPURequiredValue() - applicationActivity.getCPUAllocatedValue())
                 + applicationActivity.getMEMWeight() * (applicationActivity.getMEMRequiredValue() - applicationActivity.getMEMAllocatedValue())
                 + applicationActivity.getHDDWeight() * (applicationActivity.getHDDRequiredValue() - applicationActivity.getHDDAllocatedValue());
         return respectance;
@@ -54,58 +46,79 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
         CPU associatedCPU = null;
         Collection<Core> cores = new ArrayList<Core>();
-//        selfoptimizing.ontologyRepresentations.greenContextOntology.Memory serverMemory = server.getAssociatedMemory();
         HDD storage = null;
         MEM memory = null;
-        double cpuCores = 0.0;
-
         double diff = 0.0;
-        for (Core core : cores) {
-            diff = 0.0;
-            Double usedCore = core.getCurrentWorkLoad();
-            Double coreMaxAcceptableValue = core.getMaximumWorkLoad();
+        for (CPU cpu : server.getCpuResources()) {
+            double cpuCores = 0.0;
+            cores = cpu.getAssociatedCores();
+            for (Core core : cores) {
+                diff = 0.0;
+                Double usedCore = core.getCurrentWorkLoad();
+                Double coreMaxAcceptableValue = core.getOptimalWorkLoad() + (core.getMaximumWorkLoad() - core.getOptimalWorkLoad()) / 2.0;
 
-            if (usedCore > coreMaxAcceptableValue) {
-                diff = usedCore - coreMaxAcceptableValue;
-            } else if (usedCore < coreMaxAcceptableValue) {
-                //TODO:changed din usedCore - coreMaxAcceptableValue pentru ca dadea entropie negativa
-                diff = coreMaxAcceptableValue - usedCore;
+                if (usedCore > coreMaxAcceptableValue) {
+                    diff = usedCore - coreMaxAcceptableValue;
+                } else if (usedCore < coreMaxAcceptableValue) {
+                    diff = coreMaxAcceptableValue - usedCore;
+                }
+                cpuCores += diff;
             }
-            cpuCores += diff;
+            cpuCores /= cores.size();
+            if (server.hasCPUWeight())
+                respectance += server.getCPUWeight() * cpuCores;
+            else
+                respectance += cpuCores;
+
         }
-        cpuCores /= cores.size();
-//        respectance += associatedCPU.getWeight() * cpuCores;
-        respectance += cpuCores;
+        diff = 0.0;
+        double usedMemory = 0.0;
+        double total = 0.0;
+        double optimal = 0.0;
+        double memoryMaxAcceptableValue = 0.0;
+
+        //TODO: de verificat daca e ok rangeu
+        double memoryMinAcceptableValue = optimal / 2.0;
+        Collection<MEM> memories = server.getMemResources();
+        for (MEM mem : memories) {
+            usedMemory = mem.getCurrentWorkLoad();
+            total = mem.getMaximumWorkLoad();
+            optimal = mem.getOptimalWorkLoad();
+            memoryMaxAcceptableValue = optimal + (total - optimal) / 2.0;
+
+            if (usedMemory > memoryMaxAcceptableValue) {
+                diff = usedMemory - memoryMaxAcceptableValue;
+            } else if (usedMemory < memoryMinAcceptableValue) {
+                diff = usedMemory - memoryMinAcceptableValue;
+            }
+            if (server.hasMEMWeight())
+                respectance += server.getMEMWeight() * diff;
+            respectance += diff;
+        }
         diff = 0.0;
 
-        double usedMemory = memory.getCurrentWorkLoad();
-        double memoryMaxAcceptableValue = memory.getMaximumWorkLoad();
+        Double usedStorage = 0.0;
+        Double storageMaxAcceptableValue = 0.0;
+        double storageMinAcceptableValue = 0.0;
 
-        //TODO: trebe minimum workload cred
-        int memoryMinAcceptableValue = 0; //memory.getMinAcceptableValue();
-
-        if (usedMemory > memoryMaxAcceptableValue) {
-            diff = usedMemory - memoryMaxAcceptableValue;
-        } else if (usedMemory < memoryMinAcceptableValue) {
-            diff = usedMemory - memoryMinAcceptableValue;
-        }
-//        respectance += memory.getWeight() * diff;
-        respectance += diff;
-        diff = 0.0;
-
-        Double usedStorage = storage.getCurrentWorkLoad();
-        Double storageMaxAcceptableValue = storage.getMaximumWorkLoad();
-        int storageMinAcceptableValue = 0;//storage.getMinAcceptableValue();
-
-        if (usedStorage > storageMaxAcceptableValue) {
-            diff = usedStorage - storageMaxAcceptableValue;
-        } else if (usedStorage < storageMinAcceptableValue) {
-            //TODO:changed din usedStorage - storageMinAcceptableValue pentru ca dadea entropie negativa
-            diff = storageMinAcceptableValue - usedStorage;
+        for (HDD hdd : server.getHddResources()) {
+            total = hdd.getMaximumWorkLoad();
+            optimal = hdd.getOptimalWorkLoad();
+            usedStorage = hdd.getCurrentWorkLoad();
+            storageMaxAcceptableValue = optimal + (total - optimal) / 2.0;
+            storageMinAcceptableValue = optimal / 2.0;
+            if (usedStorage > storageMaxAcceptableValue) {
+                diff = usedStorage - storageMaxAcceptableValue;
+            } else if (usedStorage < storageMinAcceptableValue) {
+                diff = storageMinAcceptableValue - usedStorage;
+            }
+            if (server.hasHDDWeight())
+                respectance += server.getHDDWeight() * diff;
+            else
+                respectance += diff;
         }
 
-//        respectance += storage.getWeight() * diff;
-        respectance += diff;
+
         return respectance;
     }
 
@@ -125,11 +138,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 if (brokenPolicy == null) {
                     brokenPolicy = policy;
                 }
-
-                //TODO; de bagat priority la politica
-//                if (policy.hasPriority()) {
-//                    entropy += policy.getPriority() * taskRespectanceDegree(task);
-//                }
+                if (policy.hasPolicyWeight()) {
+                    for (ContextResource app : task) {
+                        entropy += policy.getPolicyWeight() * taskRespectanceDegree((ApplicationActivity) app);
+                    }
+                }
             }
         }
 
@@ -138,18 +151,18 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Collection<ContextResource> servers = policy.getPolicySubject();
 
             for (ContextResource r : servers) {
-//                if (!server.getIsInLowPowerState())
-                if (!policy.isRespected()) {
-                    //System.out.println("Broken server : " + server);
-                    if (brokenPolicy == null) {
-                        brokenPolicy = policy;
+                ServiceCenterServer server = (ServiceCenterServer) r;
+                if (server.getIsActive())
+                    if (!policy.isRespected()) {
+                        System.out.println("Broken server : " + server);
+                        if (brokenPolicy == null) {
+                            brokenPolicy = policy;
+                        }
+                        if (policy.hasPolicyWeight()) {
+                            entropy += policy.getPolicyWeight() * energyRespectanceDegree(server);
+                        } else
+                            entropy += energyRespectanceDegree((ServiceCenterServer) r);
                     }
-//                if (policy.hasPriority()) {
-//
-//                    entropy += policy.getPriority() * energyRespectanceDegree(server);
-//                }
-                    entropy += energyRespectanceDegree((ServiceCenterServer) r);
-                }
             }
         }
 
@@ -176,34 +189,37 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         double difference;
         double minDif = 10000000.0d;
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
-        MEM mem = null;
-        HDD hdd = null;
+
 
         for (ServiceCenterServer server : servers) {
-            //TODO: de facut ceva k f nashpa asa sa iterezi de fiecare data
-
+            difference = 0.0d;
+            double optimal = 0.0;
+            double total = 0.0;
             Collection<Core> cores = new ArrayList<Core>();
-            for (ServiceCenterITComputingResource resource : server.getResources()) {
-                if (resource instanceof Core) {
-                    cores.add((Core) resource);
-                } else if (resource instanceof MEM) {
-                    mem = (MEM) resource;
-                } else if (resource instanceof HDD) {
-                    hdd = (HDD) resource;
+            for (CPU resource : server.getCpuResources()) {
+                cores = resource.getAssociatedCores();
+                for (Core core : cores) {
+                    optimal = core.getOptimalWorkLoad();
+                    total = core.getMaximumWorkLoad();
+                    difference += Math.pow(total - (total - optimal) / 2.0 - core.getCurrentWorkLoad()
+                            - optimal, 2);
                 }
             }
 
-            difference = 0.0d;
-            for (Core core : cores) {
-                difference += Math.pow(core.getMaximumWorkLoad()
-                        - core.getCurrentWorkLoad()
-                        - 0, 2);      //TODO: Aceeasi problema pentru ca nu este minim
-            }
 
-            difference += Math.pow(mem.getMaximumWorkLoad() - mem.getCurrentWorkLoad()
-                    - 0, 2);      // Aceeasi problema pentru ca nu este minim
-            difference += Math.pow(hdd.getMaximumWorkLoad() - hdd.getCurrentWorkLoad()
-                    - 0, 2);  // Aceeasi problema pentru ca nu este minim
+            for (MEM mem : server.getMemResources()) {
+                optimal = mem.getOptimalWorkLoad();
+                total = mem.getMaximumWorkLoad();
+
+                difference += Math.pow(total - (total - optimal) / 2.0 - mem.getCurrentWorkLoad()
+                        - optimal / 2.0, 2);
+            }
+            for (HDD hdd : server.getHddResources()) {
+                optimal = hdd.getOptimalWorkLoad();
+                total = hdd.getMaximumWorkLoad();
+                difference += Math.pow(total - (total - optimal) / 2.0 - hdd.getCurrentWorkLoad()
+                        - optimal / 2.0, 2);  // Aceeasi problema pentru ca nu este minim
+            }
             difference = Math.sqrt(difference);
 
             //TODO; pentru cand bagam negociere sa facem si metodele astea
@@ -239,7 +255,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         newContext.executeActions(modelAccess);
 //        datacenterMemory.restoreProtegeFactory(protegeFactory);
-          //TODO: de bagat dupa ce bagam memoria
+        //TODO: de bagat dupa ce bagam memoria
 //        Queue<ContextAction> commands = datacenterMemory.getActionsForTasks(protegeFactory);
 //        if (commands != null) {
 //            System.out.println("Remembered...!!");
@@ -258,42 +274,49 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         System.out.println("---B");
 
 
-        ApplicationActivity task = null;
-        ServiceCenterServer server = null;
+        Collection<ContextResource> associatedTasks = null;
+        Collection<ContextResource> associatedServers = null;
 
         if (entropyAndPolicy.getFirst() > 0) {
             if (entropyAndPolicy.getSecond() != null) {
                 GPI_KPI_Policy policy = entropyAndPolicy.getSecond();
-                if (policy instanceof QoSPolicy) {
-                    task = (ApplicationActivity) policy.getReferenced();
+
+                if (policy.getPolicySubject().get(0) instanceof ApplicationActivity) {
+                    associatedTasks = policy.getPolicySubject();
                 } else {
-                    server = (ServiceCenterServer) policy.getReferenced();
+                    associatedServers = policy.getPolicySubject();
                 }
             }
             boolean deployed = false;     /// sa zica daca ii  deployed sau nu
-//            if (task != null) {
-//                // deploy actions
-//                for (Server serverInstance : servers) {
-//                    if (!serverInstance.getIsInLowPowerState() && serverInstance.hasResourcesFor(task)
-//                            && !serverInstance.containsTask(task) && !task.isRunning()) {
-//                        SelfOptimizingCommand newAction = new DeployTaskCommand(protegeFactory, serverInstance.getName(), task.getName());
-//                        if (!newContext.getActions().contains(newAction)) {
-//                            ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-//                            cs.getActions().add(newAction);
-//                            deployed = true;
-//                            newAction.execute(datacenterPolicyConversionModel);
-//
-//                            Double afterExecuteEntropy = computeEntropy().getFirst();
-//                            cs.setContextEntropy(afterExecuteEntropy);
-//                            cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-//                            newAction.rewind(datacenterPolicyConversionModel);
-//
-//                            queue.add(cs);
-//                        }
-//                    }
-//                }
+            if (associatedTasks != null) {
+                // deploy actions
+                for (ServiceCenterServer serverInstance : servers) {
 
-            // move actions
+                    for (ContextResource res : associatedTasks) {
+
+                        ApplicationActivity task = (ApplicationActivity) res;
+                        //TODO : make this condition work ! next -> contains task. task is running
+                        if (serverInstance.getIsActive() && serverInstance.hasResourcesFor(task)
+                                && !serverInstance.containsTask(task) && !task.isRunning()) {
+                            ContextAction newAction = new DefaultDeployActivity();//(protegeFactory, serverInstance.getName(), task.getName());
+                            if (!newContext.getActions().contains(newAction)) {
+                                ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                                cs.getActions().add(newAction);
+                                deployed = true;
+                                newAction.execute(datacenterPolicyConversionModel);
+
+                                Double afterExecuteEntropy = computeEntropy().getFirst();
+                                cs.setContextEntropy(afterExecuteEntropy);
+                                cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
+                                newAction.rewind(datacenterPolicyConversionModel);
+
+                                queue.add(cs);
+                            }
+                        }
+                    }
+                }
+
+                // move actions
 //                Collection<Server> servers1 = protegeFactory.getAllServerInstances();
 //                for (Server serverInstance : servers) {
 //                    if (!serverInstance.getIsInLowPowerState()) {
@@ -347,7 +370,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //                    }
 //                }
 //    }
-            // wake up
+                // wake up
 
 //            for (Server serverInstance : servers) {
 //                if (serverInstance.getIsInLowPowerState()) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
@@ -386,43 +409,45 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //                }
 //            }
 
-            /*
+                /*
 
-            //TODO : to be changed to allow allocating less than maximum also ? nush ce am vrut sa zic aici
-            //negotiate allocating more resources only if all the tasks have been deployed
-            //if (allDeployed &&
-            //always try a negotiation in order to solve problems :P
-            if( server != null) {
-                NegotiateResourcesCommand negotiateResourcesCommand = new NegotiateResourcesCommand(protegeFactory, utils.negotiator,server.getName());
+                //TODO : to be changed to allow allocating less than maximum also ? nush ce am vrut sa zic aici
+                //negotiate allocating more resources only if all the tasks have been deployed
+                //if (allDeployed &&
+                //always try a negotiation in order to solve problems :P
+                if( server != null) {
+                    NegotiateResourcesCommand negotiateResourcesCommand = new NegotiateResourcesCommand(protegeFactory, utils.negotiator,server.getName());
 
-                if (!newContext.getActions().contains(negotiateResourcesCommand)) {
-                    ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-                    cs.getActions().add(negotiateResourcesCommand);
-                    //  cs.executeActions();
-                    negotiateResourcesCommand.execute(datacenterPolicyConversionModel);
-                    cs.setContextEntropy(computeEntropy().getFirst());
-                    Pair<Double,Policy> e = computeEntropy();
+                    if (!newContext.getActions().contains(negotiateResourcesCommand)) {
+                        ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                        cs.getActions().add(negotiateResourcesCommand);
+                        //  cs.executeActions();
+                        negotiateResourcesCommand.execute(datacenterPolicyConversionModel);
+                        cs.setContextEntropy(computeEntropy().getFirst());
+                        Pair<Double,Policy> e = computeEntropy();
 
-                    System.out.println("After negotiation " + negotiateResourcesCommand + "\n For server : " + server +   + e.getFirst() + "  " + e.getSecond());
-                    cs.setRewardFunction(computeRewardFunction(newContext, cs, negotiateResourcesCommand));
-                    // cs.rewind();
-                    negotiateResourcesCommand.rewind(datacenterPolicyConversionModel);
-                    queue.add(cs);
-                }
-            }*/
+                        System.out.println("After negotiation " + negotiateResourcesCommand + "\n For server : " + server +   + e.getFirst() + "  " + e.getSecond());
+                        cs.setRewardFunction(computeRewardFunction(newContext, cs, negotiateResourcesCommand));
+                        // cs.rewind();
+                        negotiateResourcesCommand.rewind(datacenterPolicyConversionModel);
+                        queue.add(cs);
+                    }
+                }*/
 
-            newContext.undoAllActions(modelAccess);
+                newContext.undoAllActions(modelAccess);
 
-            newContext = reinforcementLearning(queue);
-        } else {
-            newContext.undoAllActions(modelAccess);
+                newContext = reinforcementLearning(queue);
+            } else {
+                newContext.undoAllActions(modelAccess);
+            }
+            return newContext;
         }
-        return newContext;
-    }
 
 
-    @Override
-    protected void onTick() {
-        throw new UnsupportedOperationException("not implemented yet");
+        @Override
+        protected void onTick
+        ()
+        {
+            throw new UnsupportedOperationException("not implemented yet");
+        }
     }
-}

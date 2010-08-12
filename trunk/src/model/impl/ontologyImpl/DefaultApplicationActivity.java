@@ -163,27 +163,54 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
         setPropertyValue(getCpuAllocatedValueProperty(), new java.lang.Float(newCpuAllocatedValue));
     }
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredValue
 
-    public Double getCPURequiredValue() {
-        return getPropertyValueLiteral(getCpuRequiredValueProperty()).getDouble();
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredMaxValue
+
+    public float getCpuRequiredMaxValue() {
+        return getPropertyValueLiteral(getCpuRequiredMaxValueProperty()).getFloat();
     }
 
-    public RDFProperty getCpuRequiredValueProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredValue";
+
+    public RDFProperty getCpuRequiredMaxValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredMaxValue";
         final String name = getOWLModel().getResourceNameForURI(uri);
         return getOWLModel().getRDFProperty(name);
     }
 
 
-    public boolean hasCpuRequiredValue() {
-        return getPropertyValueCount(getCpuRequiredValueProperty()) > 0;
+    public boolean hasCpuRequiredMaxValue() {
+        return getPropertyValueCount(getCpuRequiredMaxValueProperty()) > 0;
     }
 
 
-    public void setCPURequiredValue(Double newCpuRequiredValue) {
-        setPropertyValue(getCpuRequiredValueProperty(), new java.lang.Float(newCpuRequiredValue));
+    public void setCpuRequiredMaxValue(float newCpuRequiredMaxValue) {
+        setPropertyValue(getCpuRequiredMaxValueProperty(), new java.lang.Float(newCpuRequiredMaxValue));
     }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredMinValue
+
+    public float getCpuRequiredMinValue() {
+        return getPropertyValueLiteral(getCpuRequiredMinValueProperty()).getFloat();
+    }
+
+
+    public RDFProperty getCpuRequiredMinValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredMinValue";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasCpuRequiredMinValue() {
+        return getPropertyValueCount(getCpuRequiredMinValueProperty()) > 0;
+    }
+
+
+    public void setCpuRequiredMinValue(float newCpuRequiredMinValue) {
+        setPropertyValue(getCpuRequiredMinValueProperty(), new java.lang.Float(newCpuRequiredMinValue));
+    }
+
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddAllocatedValue
 
@@ -213,30 +240,51 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
     }
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredValue
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredMaxValue
 
-    public Double getHDDRequiredValue() {
-        return getPropertyValueLiteral(getHddRequiredValueProperty()).getDouble();
+    public float getHddRequiredMaxValue() {
+        return getPropertyValueLiteral(getHddRequiredMaxValueProperty()).getFloat();
     }
 
-    public RDFProperty getHddRequiredValueProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredValue";
+
+    public RDFProperty getHddRequiredMaxValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredMaxValue";
         final String name = getOWLModel().getResourceNameForURI(uri);
         return getOWLModel().getRDFProperty(name);
     }
 
 
-    public boolean hasHddRequiredValue() {
-        return getPropertyValueCount(getHddRequiredValueProperty()) > 0;
+    public boolean hasHddRequiredMaxValue() {
+        return getPropertyValueCount(getHddRequiredMaxValueProperty()) > 0;
     }
 
 
-    public void setHDDRequiredValue(Double newHddRequiredValue) {
-        setHddRequiredValue(newHddRequiredValue);
+    public void setHddRequiredMaxValue(float newHddRequiredMaxValue) {
+        setPropertyValue(getHddRequiredMaxValueProperty(), new java.lang.Float(newHddRequiredMaxValue));
     }
 
-    public void setHddRequiredValue(float newHddRequiredValue) {
-        setPropertyValue(getHddRequiredValueProperty(), new java.lang.Float(newHddRequiredValue));
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredMinValue
+
+    public float getHddRequiredMinValue() {
+        return getPropertyValueLiteral(getHddRequiredMinValueProperty()).getFloat();
+    }
+
+
+    public RDFProperty getHddRequiredMinValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredMinValue";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasHddRequiredMinValue() {
+        return getPropertyValueCount(getHddRequiredMinValueProperty()) > 0;
+    }
+
+
+    public void setHddRequiredMinValue(float newHddRequiredMinValue) {
+        setPropertyValue(getHddRequiredMinValueProperty(), new java.lang.Float(newHddRequiredMinValue));
     }
 
 
@@ -277,14 +325,40 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
     }
 
 
-    public boolean hasMemRequiredValue() {
-        return getPropertyValueCount(getMemRequiredValueProperty()) > 0;
+    public boolean hasMemRequiredMaxValue() {
+        return getPropertyValueCount(getMemRequiredMaxValueProperty()) > 0;
     }
 
 
-    public void setMEMRequiredValue(Double newMemRequiredValue) {
-        setPropertyValue(getMemRequiredValueProperty(), new java.lang.Float(newMemRequiredValue));
+    public void setMemRequiredMaxValue(float newMemRequiredMaxValue) {
+        setPropertyValue(getMemRequiredMaxValueProperty(), new java.lang.Float(newMemRequiredMaxValue));
     }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memRequiredMinValue
+
+    public float getMemRequiredMinValue() {
+        return getPropertyValueLiteral(getMemRequiredMinValueProperty()).getFloat();
+    }
+
+
+    public RDFProperty getMemRequiredMinValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memRequiredMinValue";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasMemRequiredMinValue() {
+        return getPropertyValueCount(getMemRequiredMinValueProperty()) > 0;
+    }
+
+
+    public void setMemRequiredMinValue(float newMemRequiredMinValue) {
+        setPropertyValue(getMemRequiredMinValueProperty(), new java.lang.Float(newMemRequiredMinValue));
+    }
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
 
     public Collection getPartOf() {

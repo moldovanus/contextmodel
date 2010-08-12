@@ -1,5 +1,7 @@
 package model.interfaces.resources;
 
+import model.interfaces.resources.applications.ApplicationActivity;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +22,34 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
     List<ServiceCenterITComputingResource> getResources();
 
     void setResources(List<ServiceCenterITComputingResource> list);
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPUWeight
+
+    float getCPUWeight();
+
+
+    boolean hasCPUWeight();
+
+    void setCPUWeight(float newCPUWeight);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDDWeight
+
+    float getHDDWeight();
+
+
+    boolean hasHDDWeight();
+
+    void setHDDWeight(float newHDDWeight);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEMWeight
+
+    float getMEMWeight();
+
+
+    boolean hasMEMWeight();
+
+    void setMEMWeight(float newMEMWeight);
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuResources
 
     Collection<CPU> getCpuResources();
@@ -85,5 +115,6 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
 
     void setResourceWorkloadProperty(Collection newResourceWorkloadProperty);
 
+    boolean hasResourcesFor(ApplicationActivity task);
 
 }
