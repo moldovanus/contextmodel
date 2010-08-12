@@ -211,6 +211,54 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     }
 
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#numberOfCoresAllocatedValue
+
+    public float getNumberOfCoresAllocatedValue() {
+        return getPropertyValueLiteral(getNumberOfCoresAllocatedValueProperty()).getFloat();
+    }
+
+
+    public RDFProperty getNumberOfCoresAllocatedValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#numberOfCoresAllocatedValue";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasNumberOfCoresAllocatedValue() {
+        return getPropertyValueCount(getNumberOfCoresAllocatedValueProperty()) > 0;
+    }
+
+
+    public void setNumberOfCoresAllocatedValue(float newNumberOfCoresAllocatedValue) {
+        setPropertyValue(getNumberOfCoresAllocatedValueProperty(), new java.lang.Float(newNumberOfCoresAllocatedValue));
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#numberOfCoresRequiredValue
+
+    public float getNumberOfCoresRequiredValue() {
+        return getPropertyValueLiteral(getNumberOfCoresRequiredValueProperty()).getFloat();
+    }
+
+
+    public RDFProperty getNumberOfCoresRequiredValueProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#numberOfCoresRequiredValue";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasNumberOfCoresRequiredValue() {
+        return getPropertyValueCount(getNumberOfCoresRequiredValueProperty()) > 0;
+    }
+
+
+    public void setNumberOfCoresRequiredValue(float newNumberOfCoresRequiredValue) {
+        setPropertyValue(getNumberOfCoresRequiredValueProperty(), new java.lang.Float(newNumberOfCoresRequiredValue));
+    }
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#performanceDegradation
 
     public Double getPerformanceDegradation() {

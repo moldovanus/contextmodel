@@ -20,6 +20,62 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
     List<ServiceCenterITComputingResource> getResources();
 
     void setResources(List<ServiceCenterITComputingResource> list);
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuResources
+
+    Collection<CPU> getCpuResources();
+
+
+    boolean hasCpuResources();
+
+    Iterator listCpuResources();
+
+    void addCpuResources(CPU newCpuResources);
+
+    void removeCpuResources(CPU oldCpuResources);
+
+    void setCpuResources(Collection newCpuResources);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddResources
+
+    Collection<HDD> getHddResources();
+
+
+    boolean hasHddResources();
+
+    Iterator listHddResources();
+
+    void addHddResources(HDD newHddResources);
+
+    void removeHddResources(HDD oldHddResources);
+
+    void setHddResources(Collection newHddResources);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#isActive
+
+    boolean getIsActive();
+
+
+    boolean hasIsActive();
+
+    void setIsActive(boolean newIsActive);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memResources
+
+    Collection<MEM> getMemResources();
+
+
+    boolean hasMemResources();
+
+    Iterator listMemResources();
+
+    void addMemResources(MEM newMemResources);
+
+    void removeMemResources(MEM oldMemResources);
+
+    void setMemResources(Collection newMemResources);
 
     Iterator listResourceWorkloadProperty();
 
@@ -30,17 +86,4 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
     void setResourceWorkloadProperty(Collection newResourceWorkloadProperty);
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#simpleResources
-
-    Collection getSimpleResources();
-
-    boolean hasSimpleResources();
-
-    Iterator listSimpleResources();
-
-    void addSimpleResources(SimpleResource newSimpleResources);
-
-    void removeSimpleResources(SimpleResource oldSimpleResources);
-
-    void setSimpleResources(Collection newSimpleResources);
 }

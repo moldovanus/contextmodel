@@ -38,4 +38,12 @@ public interface ContextPolicy extends ContextElement {
 
     void setRespected(boolean value);
 
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policyWeight
+
+    float getPolicyWeight();
+
+    boolean hasPolicyWeight();
+
+    void setPolicyWeight(float newPolicyWeight);
 }

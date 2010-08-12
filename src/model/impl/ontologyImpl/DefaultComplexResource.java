@@ -30,6 +30,123 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
     }
 
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuResources
+
+    public Collection getCpuResources() {
+        return getPropertyValuesAs(getCpuResourcesProperty(), CPU.class);
+    }
+
+
+    public RDFProperty getCpuResourcesProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuResources";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasCpuResources() {
+        return getPropertyValueCount(getCpuResourcesProperty()) > 0;
+    }
+
+
+    public Iterator listCpuResources() {
+        return listPropertyValuesAs(getCpuResourcesProperty(), CPU.class);
+    }
+
+
+    public void addCpuResources(CPU newCpuResources) {
+        addPropertyValue(getCpuResourcesProperty(), newCpuResources);
+    }
+
+
+    public void removeCpuResources(CPU oldCpuResources) {
+        removePropertyValue(getCpuResourcesProperty(), oldCpuResources);
+    }
+
+
+    public void setCpuResources(Collection newCpuResources) {
+        setPropertyValues(getCpuResourcesProperty(), newCpuResources);
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddResources
+
+    public Collection getHddResources() {
+        return getPropertyValuesAs(getHddResourcesProperty(), HDD.class);
+    }
+
+
+    public RDFProperty getHddResourcesProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddResources";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasHddResources() {
+        return getPropertyValueCount(getHddResourcesProperty()) > 0;
+    }
+
+
+    public Iterator listHddResources() {
+        return listPropertyValuesAs(getHddResourcesProperty(), HDD.class);
+    }
+
+
+    public void addHddResources(HDD newHddResources) {
+        addPropertyValue(getHddResourcesProperty(), newHddResources);
+    }
+
+
+    public void removeHddResources(HDD oldHddResources) {
+        removePropertyValue(getHddResourcesProperty(), oldHddResources);
+    }
+
+
+    public void setHddResources(Collection newHddResources) {
+        setPropertyValues(getHddResourcesProperty(), newHddResources);
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memResources
+
+    public Collection getMemResources() {
+        return getPropertyValuesAs(getMemResourcesProperty(), MEM.class);
+    }
+
+
+    public RDFProperty getMemResourcesProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memResources";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasMemResources() {
+        return getPropertyValueCount(getMemResourcesProperty()) > 0;
+    }
+
+
+    public Iterator listMemResources() {
+        return listPropertyValuesAs(getMemResourcesProperty(), MEM.class);
+    }
+
+
+    public void addMemResources(MEM newMemResources) {
+        addPropertyValue(getMemResourcesProperty(), newMemResources);
+    }
+
+
+    public void removeMemResources(MEM oldMemResources) {
+        removePropertyValue(getMemResourcesProperty(), oldMemResources);
+    }
+
+
+    public void setMemResources(Collection newMemResources) {
+        setPropertyValues(getMemResourcesProperty(), newMemResources);
+    }
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceWorkloadProperty
 
     public List<String> getResourceWorkloadProperty() {

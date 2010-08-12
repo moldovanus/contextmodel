@@ -61,6 +61,24 @@ public interface BusinessContextResource extends ContextResource {
     Double getMemRequiredValue();
 
     void setMemRequiredValue(Double newMemRequiredValue);
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#numberOfCoresAllocatedValue
+
+    float getNumberOfCoresAllocatedValue();
+
+
+    boolean hasNumberOfCoresAllocatedValue();
+
+    void setNumberOfCoresAllocatedValue(float newNumberOfCoresAllocatedValue);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#numberOfCoresRequiredValue
+
+    float getNumberOfCoresRequiredValue();
+
+
+    boolean hasNumberOfCoresRequiredValue();
+
+    void setNumberOfCoresRequiredValue(float newNumberOfCoresRequiredValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#performanceDegradation
