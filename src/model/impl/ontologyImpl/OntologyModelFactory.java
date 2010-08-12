@@ -80,6 +80,7 @@ public class OntologyModelFactory implements ModelFactory {
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#EnvironmentPolicy", EnvironmentPolicy.class, DefaultEnvironmentPolicy.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction", ITFacilityResourceAdaptationAction.class, DefaultITFacilityResourceAdaptationAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#FacilityDefaultAction", FacilityDefaultAction.class, DefaultFacilityDefaultAction.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SetServerStateActivity", SetServerStateActivity.class, DefaultSetServerStateActivity.class);
     }
 
     public OntologyModelFactory() {
@@ -94,6 +95,49 @@ public class OntologyModelFactory implements ModelFactory {
 //    public <X> X create(Class<? extends X> javaInterface, String name) {
 //        return ProtegeJavaMapping.create(owlModel, javaInterface, name);        //aaaa
 //    }
+
+
+    public RDFSNamedClass getSetServerStateActivityClass() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SetServerStateActivity";
+        final String name = owlModel.getResourceNameForURI(uri);
+        return owlModel.getRDFSNamedClass(name);
+    }
+
+    public SetServerStateActivity createSetServerStateActivity(String name) {
+        final RDFSNamedClass cls = getSetServerStateActivityClass();
+        if (name == null) {
+            name = owlModel.getNextAnonymousResourceName();
+        }
+        return new DefaultSetServerStateActivity(owlModel, cls.createInstance(name).getFrameID());
+    }
+
+    public SetServerStateActivity getSetServerStateActivity(String name) {
+        RDFResource res = owlModel.getRDFResource(OWLUtil.getInternalFullName(owlModel, name));
+        if (res == null) {
+            return null;
+        }
+        if (res instanceof SetServerStateActivity) {
+            return (SetServerStateActivity) res;
+        } else if (res.hasProtegeType(getSetServerStateActivityClass())) {
+            return new DefaultSetServerStateActivity(owlModel, res.getFrameID());
+        }
+        return null;
+    }
+
+    public Collection<SetServerStateActivity> getAllSetServerStateActivityInstances() {
+        return getAllSetServerStateActivityInstances(true);
+    }
+
+    public Collection<SetServerStateActivity> getAllSetServerStateActivityInstances(boolean transitive) {
+        Collection<SetServerStateActivity> result = new ArrayList<SetServerStateActivity>();
+        final RDFSNamedClass cls = getSetServerStateActivityClass();
+        RDFResource owlIndividual;
+        for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
+            owlIndividual = (RDFResource) it.next();
+            result.add(new DefaultSetServerStateActivity(owlModel, owlIndividual.getFrameID()));
+        }
+        return result;
+    }
 
     public RDFSNamedClass getFacilityDefaultActionClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#FacilityDefaultAction";
@@ -123,7 +167,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public Collection<FacilityDefaultAction> getAllFacilityDefaultActionInstances() {
-        return getAllFacilityDefaultActionInstances(false);
+        return getAllFacilityDefaultActionInstances(true);
     }
 
     public Collection<FacilityDefaultAction> getAllFacilityDefaultActionInstances(boolean transitive) {

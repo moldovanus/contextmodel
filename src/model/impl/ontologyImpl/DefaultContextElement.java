@@ -31,7 +31,8 @@ public class DefaultContextElement extends AbstractCodeGeneratorIndividual
     public DefaultContextElement() {
     }
 
-    public void setName(String s) {
-
+    public boolean equals(Object o) {
+        return (o instanceof ContextElement) && (((ContextElement) o).getName().equals(this.getName()));
     }
+
 }

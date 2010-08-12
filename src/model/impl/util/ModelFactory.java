@@ -2,6 +2,9 @@ package model.impl.util;
 
 import model.interfaces.ContextElement;
 import model.interfaces.actions.FacilityDefaultAction;
+import model.interfaces.actions.SetServerStateActivity;
+
+import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,6 +18,12 @@ public interface ModelFactory {
     void removeEntity(ContextElement element);
 
     void persistEntity(ContextElement entity);
+
+    public SetServerStateActivity createSetServerStateActivity(String name);
+
+    public SetServerStateActivity getSetServerStateActivity(String name);
+
+    public Collection<SetServerStateActivity> getAllSetServerStateActivityInstances();
 
     FacilityDefaultAction createFacilityDefaultAction(java.lang.String name);
 

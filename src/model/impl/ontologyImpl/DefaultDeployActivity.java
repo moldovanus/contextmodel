@@ -3,9 +3,14 @@ package model.impl.ontologyImpl;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import model.impl.util.ModelAccess;
 import model.interfaces.actions.DeployActivity;
+import model.interfaces.resources.ContextResource;
 import model.interfaces.resources.ServiceCenterITComputingResource;
+import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
+
+import java.util.Collection;
 
 
 /**
@@ -53,23 +58,26 @@ public class DefaultDeployActivity extends DefaultConsolidationAction
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceTo
 
     public ServiceCenterITComputingResource getResourceTo() {
-        return (ServiceCenterITComputingResource) getPropertyValueAs(getResourceToProperty(), ServiceCenterITComputingResource.class);
-    }
-
-
-    public RDFProperty getResourceToProperty() {
-        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceTo";
-        final String name = getOWLModel().getResourceNameForURI(uri);
-        return getOWLModel().getRDFProperty(name);
-    }
-
-
-    public boolean hasResourceTo() {
-        return getPropertyValueCount(getResourceToProperty()) > 0;
+        return (ServiceCenterITComputingResource)
+                ((Collection<ContextResource>) getPropertyValueAs(getResourcesProperty(), ContextResource.class)).toArray()[0];
     }
 
 
     public void setResourceTo(ServiceCenterITComputingResource newResourceTo) {
-        setPropertyValue(getResourceToProperty(), newResourceTo);
+        ContextResource resourceTo = getResourceTo();
+        removePropertyValue(getResourcesProperty(), resourceTo);
+        addPropertyValue(getResourcesProperty(), resourceTo);
+    }
+
+    @Override
+    public void execute(ModelAccess modelAccess) {
+        ServiceCenterServer server = (ServiceCenterServer) getResourceTo();
+        server.addRunningActivity(getActivity());
+    }
+
+    @Override
+    public void undo(ModelAccess modelAccess) {
+        ServiceCenterServer server = (ServiceCenterServer) getResourceTo();
+        server.removeRunningActivity(getActivity());
     }
 }

@@ -108,7 +108,6 @@ public class DefaultMigrateActivity extends DefaultConsolidationAction
 
 
     public void setResourceTo(ServiceCenterITComputingResource newResourceTo) {
-        setPropertyValue(getResourceToProperty(), newResourceTo);
         ContextResource resourceFrom = getResourceFrom();
         removePropertyValue(getResourcesProperty(), resourceFrom);
         removePropertyValue(getResourcesProperty(), getResourceTo());

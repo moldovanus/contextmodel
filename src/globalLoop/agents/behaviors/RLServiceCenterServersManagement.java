@@ -6,6 +6,9 @@ import model.impl.ontologyImpl.DefaultDeployActivity;
 import model.impl.util.ModelAccess;
 import model.interfaces.ContextSnapshot;
 import model.interfaces.actions.ContextAction;
+import model.interfaces.actions.DeployActivity;
+import model.interfaces.actions.MigrateActivity;
+import model.interfaces.actions.SetServerStateActivity;
 import model.interfaces.policies.GPI_KPI_Policy;
 import model.interfaces.policies.QoSPolicy;
 import model.interfaces.resources.*;
@@ -34,9 +37,16 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
 
     private double taskRespectanceDegree(ApplicationActivity applicationActivity) {
-        double respectance = applicationActivity.getCPUWeight() * (applicationActivity.getNumberOfCoresAllocatedValue() - applicationActivity.getNumberOfCoresRequiredValue() + applicationActivity.getCPURequiredValue() - applicationActivity.getCPUAllocatedValue())
-                + applicationActivity.getMEMWeight() * (applicationActivity.getMEMRequiredValue() - applicationActivity.getMEMAllocatedValue())
-                + applicationActivity.getHDDWeight() * (applicationActivity.getHDDRequiredValue() - applicationActivity.getHDDAllocatedValue());
+        double respectance =
+                applicationActivity.getCPUWeight() *
+                        (applicationActivity.getNumberOfCoresAllocatedValue()
+                                - applicationActivity.getNumberOfCoresRequiredValue()
+                                + applicationActivity.getCpuRequiredMaxValue()
+                                - applicationActivity.getCpuAllocatedValue())
+                        + applicationActivity.getMEMWeight() *
+                        (applicationActivity.getMemRequiredMaxValue() - applicationActivity.getMemAllocatedValue())
+                        + applicationActivity.getHDDWeight() *
+                        (applicationActivity.getHddRequiredMaxValue() - applicationActivity.getHddAllocatedValue());
         return respectance;
     }
 
@@ -246,7 +256,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 System.out.println(command.toString());
             }
 
-            System.out.println("Broken " + entropyAndPolicy.getSecond().getLocalName() + "\n Referenced " + entropyAndPolicy.getSecond().getReferenced().toString());
+//            System.out.println("Broken " + entropyAndPolicy.getSecond().getLocalName() + "\n Referenced " + entropyAndPolicy.getSecond().getReferenced().toString());
 
             //agent.getSelfOptimizingLogger().log(Color.red, "No solution found", "Could not repair the context totally. Returning best solution.");
             return smallestEntropyContext;
@@ -276,6 +286,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
         Collection<ContextResource> associatedTasks = null;
         Collection<ContextResource> associatedServers = null;
+        ServiceCenterServer server = null;
 
         if (entropyAndPolicy.getFirst() > 0) {
             if (entropyAndPolicy.getSecond() != null) {
@@ -293,22 +304,24 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 for (ServiceCenterServer serverInstance : servers) {
 
                     for (ContextResource res : associatedTasks) {
-
                         ApplicationActivity task = (ApplicationActivity) res;
                         //TODO : make this condition work ! next -> contains task. task is running
                         if (serverInstance.getIsActive() && serverInstance.hasResourcesFor(task)
-                                && !serverInstance.containsTask(task) && !task.isRunning()) {
-                            ContextAction newAction = new DefaultDeployActivity();//(protegeFactory, serverInstance.getName(), task.getName());
+                                && !serverInstance.hostsActivity(task) && !task.isRunning()) {
+                            DeployActivity newAction = new DefaultDeployActivity();//(protegeFactory, serverInstance.getName(), task.getName());
                             if (!newContext.getActions().contains(newAction)) {
+                                newAction.addResource(serverInstance);
+                                newAction.setActivity(task);
+
                                 ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
                                 cs.getActions().add(newAction);
                                 deployed = true;
-                                newAction.execute(datacenterPolicyConversionModel);
+                                newAction.execute(modelAccess);
 
                                 Double afterExecuteEntropy = computeEntropy().getFirst();
                                 cs.setContextEntropy(afterExecuteEntropy);
                                 cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-                                newAction.rewind(datacenterPolicyConversionModel);
+                                newAction.undo(modelAccess);
 
                                 queue.add(cs);
                             }
@@ -316,138 +329,158 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                     }
                 }
 
-                // move actions
-//                Collection<Server> servers1 = protegeFactory.getAllServerInstances();
-//                for (Server serverInstance : servers) {
-//                    if (!serverInstance.getIsInLowPowerState()) {
-//                        Iterator it = serverInstance.listRunningTasks();
-//                        while (it.hasNext()) {
-//                            Task myTask = (DefaultTask) it.next();
-//                            for (Server otherServerInstance : servers1) {
-//                                if (!otherServerInstance.getIsInLowPowerState() && otherServerInstance.hasResourcesFor(myTask)
-//                                        && !otherServerInstance.containsTask(myTask)) {
-//                                    SelfOptimizingCommand newAction = new MoveTaskCommand(protegeFactory, serverInstance.getName(), otherServerInstance.getName(), myTask.getName());
-//
-//                                    ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-//                                    //if action is not already in the actions list
-//                                    if (!cs.getActions().contains(newAction)) {
-//                                        cs.getActions().add(newAction);
-//                                        newAction.execute(datacenterPolicyConversionModel);
-//
-//                                        cs.setContextEntropy(computeEntropy().getFirst());
-//                                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-//                                        newAction.rewind(datacenterPolicyConversionModel);
-//
-//                                        queue.add(cs);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//        }
-//            if (server != null) {
-//                Iterator it = server.listRunningTasks();
-//                // move tasks from server
-//                while (it.hasNext()) {
-//                    Task myTask = (DefaultTask) it.next();
-//                    for (Server serverInstance : servers) {
-//                        if (!serverInstance.getIsInLowPowerState() && !serverInstance.containsTask(myTask)
-//                                && serverInstance.hasResourcesFor(myTask)) {
-//                            Command newAction = new MoveTaskCommand(protegeFactory, server.getName(), serverInstance.getName(), myTask.getName());
-//                            if (!newContext.getActions().contains(newAction)) {
-//                                ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-//                                cs.getActions().add(newAction);
-//
-//                                newAction.execute(datacenterPolicyConversionModel);
-//                                cs.setContextEntropy(computeEntropy().getFirst());
-//                                cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-//                                newAction.rewind(datacenterPolicyConversionModel);
-//
-//                                queue.add(cs);
-//                            }
-//                        }
-//                    }
-//                }
-//    }
-                // wake up
 
-//            for (Server serverInstance : servers) {
-//                if (serverInstance.getIsInLowPowerState()) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
-//                    System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsInLowPowerState() + " is waking up");
-//                    Command newAction = new WakeUpServerCommand(protegeFactory, serverInstance.getName());
-//                    ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-//                    //if action is not already in the actions list
-//                    if (!cs.getActions().contains(newAction)) {
-//                        cs.getActions().add(newAction);
-//
-//                        newAction.execute(datacenterPolicyConversionModel);
-//                        cs.setContextEntropy(computeEntropy().getFirst());
-//                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-//                        newAction.rewind(datacenterPolicyConversionModel);
-//
-//                        queue.add(cs);
-//                    }
-//                }
-//            }
-//            // sleep
-//            for (Server serverInstance : servers) {
-//                if (!serverInstance.getIsInLowPowerState() && !serverInstance.hasRunningTasks()) {
-//                    Command newAction = new SendServerToLowPowerStateCommand(protegeFactory, serverInstance.getName());
-//
-//                    if (!newContext.getActions().contains(newAction)) {
-//                        ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-//                        cs.getActions().add(newAction);
-//
-//                        newAction.execute(datacenterPolicyConversionModel);
-//                        cs.setContextEntropy(computeEntropy().getFirst());
-//                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-//
-//                        newAction.rewind(datacenterPolicyConversionModel);
-//                        queue.add(cs);
-//                    }
-//                }
-//            }
+//             move actions
+                Collection<ServiceCenterServer> servers1 = modelAccess.getAllServiceCenterServerInstances();
+                for (ServiceCenterServer sourceServer : servers) {
+                    if (!sourceServer.getIsActive()) {
+                        Iterator it = sourceServer.getRunningActivities().iterator();
+                        while (it.hasNext()) {
+                            ApplicationActivity myTask = (ApplicationActivity) it.next();
+                            for (ServiceCenterServer destinationServer : servers1) {
+                                if (!destinationServer.getIsActive() && destinationServer.hasResourcesFor(myTask)
+                                        && !destinationServer.hostsActivity(myTask)) {
+                                    MigrateActivity newAction =
+                                            modelAccess.createMigrateActivity("Migrate_from_"
+                                                    + destinationServer.getName()
+                                                    + "_to_" + myTask.getName() + "_Activity");
 
-                /*
+                                    ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                                    //if action is not already in the actions list
+                                    if (!cs.getActions().contains(newAction)) {
+                                        newAction.setResourceFrom(sourceServer);
+                                        newAction.setResourceTo(destinationServer);
+                                        newAction.setActivity(myTask);
 
-                //TODO : to be changed to allow allocating less than maximum also ? nush ce am vrut sa zic aici
-                //negotiate allocating more resources only if all the tasks have been deployed
-                //if (allDeployed &&
-                //always try a negotiation in order to solve problems :P
-                if( server != null) {
-                    NegotiateResourcesCommand negotiateResourcesCommand = new NegotiateResourcesCommand(protegeFactory, utils.negotiator,server.getName());
+                                        cs.getActions().add(newAction);
+                                        newAction.execute(modelAccess);
 
-                    if (!newContext.getActions().contains(negotiateResourcesCommand)) {
-                        ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-                        cs.getActions().add(negotiateResourcesCommand);
-                        //  cs.executeActions();
-                        negotiateResourcesCommand.execute(datacenterPolicyConversionModel);
+                                        cs.setContextEntropy(computeEntropy().getFirst());
+                                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
+                                        newAction.undo(modelAccess);
+
+                                        queue.add(cs);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (server != null) {
+                Iterator it = server.getRunningActivities().iterator();
+                // move tasks from server
+                //TODO: aici ce se intampla? :P
+                while (it.hasNext()) {
+                    ApplicationActivity myTask = (ApplicationActivity) it.next();
+                    for (ServiceCenterServer destinationServer : servers) {
+                        if (!destinationServer.getIsActive() && !destinationServer.hostsActivity(myTask)
+                                && destinationServer.hasResourcesFor(myTask)) {
+                            MigrateActivity newAction = modelAccess.createMigrateActivity("Migrate_from_"
+                                    + server.getName()
+                                    + "_to_" + myTask.getName() + "_Activity");
+                            if (!newContext.getActions().contains(newAction)) {
+                                newAction.setResourceFrom(server);
+                                newAction.setResourceTo(destinationServer);
+                                newAction.setActivity(myTask);
+
+                                ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                                cs.getActions().add(newAction);
+
+                                newAction.execute(modelAccess);
+                                cs.setContextEntropy(computeEntropy().getFirst());
+                                cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
+                                newAction.undo(modelAccess);
+
+                                queue.add(cs);
+                            }
+                        }
+                    }
+                }
+            }
+//             wake up
+
+            for (ServiceCenterServer serverInstance : servers) {
+                if (serverInstance.getIsActive()) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
+                    System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
+                    SetServerStateActivity newActivity =
+                            modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
+                                    + "_to_" + 1);
+                    ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                    //if action is not already in the actions list
+                    if (!cs.getActions().contains(newActivity)) {
+                        newActivity.addResource(serverInstance);
+                        cs.getActions().add(newActivity);
+
+                        newActivity.execute(modelAccess);
                         cs.setContextEntropy(computeEntropy().getFirst());
-                        Pair<Double,Policy> e = computeEntropy();
+                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newActivity));
+                        newActivity.undo(modelAccess);
 
-                        System.out.println("After negotiation " + negotiateResourcesCommand + "\n For server : " + server +   + e.getFirst() + "  " + e.getSecond());
-                        cs.setRewardFunction(computeRewardFunction(newContext, cs, negotiateResourcesCommand));
-                        // cs.rewind();
-                        negotiateResourcesCommand.rewind(datacenterPolicyConversionModel);
                         queue.add(cs);
                     }
-                }*/
-
-                newContext.undoAllActions(modelAccess);
-
-                newContext = reinforcementLearning(queue);
-            } else {
-                newContext.undoAllActions(modelAccess);
+                }
             }
-            return newContext;
-        }
 
+            //TODO: ce inseamna getIsActive? adik nu trebe energy states de alea?
+            // sleep
+            for (ServiceCenterServer serverInstance : servers) {
+                if (!serverInstance.getIsActive() && !(serverInstance.getRunningActivities()!= null)) {
+                    SetServerStateActivity newActivity =
+                            modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
+                                    + "_to_" + 0);
+                    ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                    if (!cs.getActions().contains(newActivity)) {
+                        newActivity.addResource(serverInstance);
+                        cs.getActions().add(newActivity);
 
-        @Override
-        protected void onTick
-        ()
-        {
-            throw new UnsupportedOperationException("not implemented yet");
+                        newActivity.execute(modelAccess);
+                        cs.setContextEntropy(computeEntropy().getFirst());
+                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newActivity));
+                        newActivity.undo(modelAccess);
+
+                        queue.add(cs);
+                    }
+                }
+            }
+
+            /*
+
+            //TODO : to be changed to allow allocating less than maximum also ? nush ce am vrut sa zic aici
+            //negotiate allocating more resources only if all the tasks have been deployed
+            //if (allDeployed &&
+            //always try a negotiation in order to solve problems :P
+            if( server != null) {
+                NegotiateResourcesCommand negotiateResourcesCommand = new NegotiateResourcesCommand(protegeFactory, utils.negotiator,server.getName());
+
+                if (!newContext.getActions().contains(negotiateResourcesCommand)) {
+                    ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                    cs.getActions().add(negotiateResourcesCommand);
+                    //  cs.executeActions();
+                    negotiateResourcesCommand.execute(datacenterPolicyConversionModel);
+                    cs.setContextEntropy(computeEntropy().getFirst());
+                    Pair<Double,Policy> e = computeEntropy();
+
+                    System.out.println("After negotiation " + negotiateResourcesCommand + "\n For server : " + server +   + e.getFirst() + "  " + e.getSecond());
+                    cs.setRewardFunction(computeRewardFunction(newContext, cs, negotiateResourcesCommand));
+                    // cs.rewind();
+                    negotiateResourcesCommand.rewind(datacenterPolicyConversionModel);
+                    queue.add(cs);
+                }
+            }*/
+
+            newContext.undoAllActions(modelAccess);
+
+            newContext = reinforcementLearning(queue);
+        } else {
+            newContext.undoAllActions(modelAccess);
         }
+        return newContext;
     }
+
+
+    @Override
+    protected void onTick() {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+}

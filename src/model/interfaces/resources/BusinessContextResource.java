@@ -40,55 +40,94 @@ public interface BusinessContextResource extends ContextResource {
     void setMEMWeight(float newMEMWeight);
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies
+    /// Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuAllocatedValue
 
-    Collection getActivityPolicies();
+    float getCpuAllocatedValue();
 
-    void setActivityPolicies(Collection newActivityPolicies);
+    boolean hasCpuAllocatedValue();
 
-
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuAllocatedValue
-
-    Double getCpuAllocatedValue();
-
-    void setCpuAllocatedValue(Double newCpuAllocatedValue);
+    void setCpuAllocatedValue(float newCpuAllocatedValue);
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredValue
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredMaxValue
 
-    Double getCpuRequiredValue();
+    float getCpuRequiredMaxValue();
 
-    void setCpuRequiredValue(Double newCpuRequiredValue);
+    boolean hasCpuRequiredMaxValue();
+
+    void setCpuRequiredMaxValue(float newCpuRequiredMaxValue);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuRequiredMinValue
+
+    float getCpuRequiredMinValue();
+
+
+    boolean hasCpuRequiredMinValue();
+
+    void setCpuRequiredMinValue(float newCpuRequiredMinValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddAllocatedValue
 
-    Double getHddAllocatedValue();
-
-    void setHddAllocatedValue(Double newHddAllocatedValue);
+    float getHddAllocatedValue();
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredValue
+    boolean hasHddAllocatedValue();
 
-    Double getHddRequiredValue();
+    void setHddAllocatedValue(float newHddAllocatedValue);
 
-    void setHddRequiredValue(Double newHddRequiredValue);
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredMaxValue
+
+    float getHddRequiredMaxValue();
+
+
+    boolean hasHddRequiredMaxValue();
+
+    void setHddRequiredMaxValue(float newHddRequiredMaxValue);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddRequiredMinValue
+
+    float getHddRequiredMinValue();
+
+
+    boolean hasHddRequiredMinValue();
+
+    void setHddRequiredMinValue(float newHddRequiredMinValue);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memAllocatedValue
 
-    Double getMemAllocatedValue();
+    float getMemAllocatedValue();
+
 
     boolean hasMemAllocatedValue();
 
-    void setMemAllocatedValue(Double newMemAllocatedValue);
+    void setMemAllocatedValue(float newMemAllocatedValue);
 
 
-    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memRequiredValue
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memRequiredMaxValue
 
-    Double getMemRequiredValue();
+    float getMemRequiredMaxValue();
 
-    void setMemRequiredValue(Double newMemRequiredValue);
+
+    boolean hasMemRequiredMaxValue();
+
+    void setMemRequiredMaxValue(float newMemRequiredMaxValue);
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memRequiredMinValue
+
+    float getMemRequiredMinValue();
+
+
+    boolean hasMemRequiredMinValue();
+
+    void setMemRequiredMinValue(float newMemRequiredMinValue);
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#numberOfCoresAllocatedValue
 
     float getNumberOfCoresAllocatedValue();
@@ -111,16 +150,20 @@ public interface BusinessContextResource extends ContextResource {
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#performanceDegradation
 
-    Double getPerformanceDegradation();
+    float getPerformanceDegradation();
 
 
-    void setPerformanceDegradation(Double newPerformanceDegradation);
+    boolean hasPerformanceDegradation();
+
+    void setPerformanceDegradation(float newPerformanceDegradation);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#performanceEstimation
 
-    Double getPerformanceEstimation();
+    float getPerformanceEstimation();
 
 
-    void setPerformanceEstimation(Double newPerformanceEstimation);
+    boolean hasPerformanceEstimation();
+
+    void setPerformanceEstimation(float newPerformanceEstimation);
 }
