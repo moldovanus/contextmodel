@@ -227,12 +227,12 @@ public class DefaultServiceCenterITComputingResource extends DefaultContextResou
     }
 
 
-    public void addRunningActivities(ApplicationActivity newRunningActivities) {
+    public void addRunningActivity(ApplicationActivity newRunningActivities) {
         addPropertyValue(getRunningActivitiesProperty(), newRunningActivities);
     }
 
 
-    public void removeRunningActivities(ApplicationActivity oldRunningActivities) {
+    public void removeRunningActivity(ApplicationActivity oldRunningActivities) {
         removePropertyValue(getRunningActivitiesProperty(), oldRunningActivities);
     }
 

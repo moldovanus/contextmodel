@@ -86,6 +86,34 @@ public class ModelAccess implements ModelFactory {
         }
     }
 
+    public SetServerStateActivity createSetServerStateActivity(String name) {
+        SetServerStateActivity object;
+        if (accessType == ONTOLOGY_ACCESS) {
+            object = ontologyModelFactory.createSetServerStateActivity(name);
+            //databaseModelFactory.createDPMAction(name);
+        } else {
+            //ontologyModelFactory.createDPMAction(name);
+            object = databaseModelFactory.createSetServerStateActivity(name);
+        }
+        return object;
+    }
+
+    public SetServerStateActivity getSetServerStateActivity(String name) {
+        if (accessType == ONTOLOGY_ACCESS) {
+            return ontologyModelFactory.getSetServerStateActivity(name);
+        } else {
+            return databaseModelFactory.getSetServerStateActivity(name);
+        }
+    }
+
+    public Collection<SetServerStateActivity> getAllSetServerStateActivityInstances() {
+        if (accessType == ONTOLOGY_ACCESS) {
+            return ontologyModelFactory.getAllSetServerStateActivityInstances();
+        } else {
+            return databaseModelFactory.getAllSetServerStateActivityInstances();
+        }
+    }
+
     public FacilityDefaultAction createFacilityDefaultAction(String name) {
         FacilityDefaultAction object;
         if (accessType == ONTOLOGY_ACCESS) {

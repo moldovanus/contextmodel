@@ -3,6 +3,9 @@ package model.impl.ontologyImpl;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import model.interfaces.resources.ServiceCenterServer;
+import model.interfaces.resources.applications.ApplicationActivity;
+
+import java.util.List;
 
 
 /**
@@ -20,5 +23,15 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
 
 
     public DefaultServiceCenterServer() {
+    }
+
+    public boolean hostsActivity(ApplicationActivity activity) {
+        List<ApplicationActivity> activities = getRunningActivities();
+        for (ApplicationActivity a : activities) {
+            if (a.getName().equals(activity.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

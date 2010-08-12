@@ -14,7 +14,7 @@ import java.io.Serializable;
 public interface ContextElement extends Serializable, OWLIndividual {
     String getName();
 
-    void setName(String s);
+//    void setName(String s);
 
     Integer getId();
 

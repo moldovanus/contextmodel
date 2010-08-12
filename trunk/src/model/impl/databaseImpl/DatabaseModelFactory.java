@@ -819,6 +819,18 @@ public class DatabaseModelFactory implements ModelFactory {
         throw new UnsupportedOperationException("not implemented yet");
     }
 
+    public SetServerStateActivity createSetServerStateActivity(String name) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public SetServerStateActivity getSetServerStateActivity(String name) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public Collection<SetServerStateActivity> getAllSetServerStateActivityInstances() {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
     public FacilityDefaultAction createFacilityDefaultAction(String name) {
         throw new UnsupportedOperationException("not implemented yet");
     }

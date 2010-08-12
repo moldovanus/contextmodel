@@ -12,6 +12,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface ServiceCenterITComputingResource extends ContextResource {
+    //TODO: ApplicationActivity nu trebe scos din asta?
     List<Integer> getEnergyStates();
 
     void setEnergyStates(List<Integer> states);
@@ -19,6 +20,10 @@ public interface ServiceCenterITComputingResource extends ContextResource {
     List<ApplicationActivity> getRunningActivities();
 
     void setRunningActivities(List<ApplicationActivity> states);
+
+    void addRunningActivity(ApplicationActivity applicationActivity);
+
+    void removeRunningActivity(ApplicationActivity applicationActivity);
 
     Double getMaximumWorkLoad();
 
@@ -35,5 +40,4 @@ public interface ServiceCenterITComputingResource extends ContextResource {
     Integer getCurrentEnergyState();
 
     void setCurrentEnergyState(Integer value);
-
 }
