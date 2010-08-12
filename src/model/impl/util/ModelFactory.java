@@ -1,6 +1,7 @@
 package model.impl.util;
 
 import model.interfaces.ContextElement;
+import model.interfaces.actions.FacilityDefaultAction;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,6 +16,8 @@ public interface ModelFactory {
 
     void persistEntity(ContextElement entity);
 
+    FacilityDefaultAction createFacilityDefaultAction(java.lang.String name);
+
     model.interfaces.actions.DPMAction createDPMAction(java.lang.String name);
 
     model.interfaces.actions.DPMAction getDPMAction(java.lang.String name);
@@ -27,11 +30,11 @@ public interface ModelFactory {
 
     java.util.Collection<model.interfaces.actions.ITComputingResourceAdaptationAction> getAllITComputingResourceAdaptationActionInstances();
 
-    model.interfaces.actions.ContextAction createContextAction(java.lang.String name);
-
-    model.interfaces.actions.ContextAction getContextAction(java.lang.String name);
-
-    java.util.Collection<model.interfaces.actions.ContextAction> getAllContextActionInstances();
+//    model.interfaces.actions.ContextAction createContextAction(java.lang.String name);
+//
+//    model.interfaces.actions.ContextAction getContextAction(java.lang.String name);
+//
+//    java.util.Collection<model.interfaces.actions.ContextAction> getAllContextActionInstances();
 
     model.interfaces.resources.applications.HDDIntensiveActivity createHDDIntensiveActivity(java.lang.String name);
 

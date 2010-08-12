@@ -54,12 +54,12 @@ public class DefaultITFacilityActiveResource extends DefaultServiceCenterITFacil
     }
 
 
-    public void addAssociatedActions(ITFacilityResourceAdaptationAction newAssociatedActions) {
+    public void addAssociatedAction(ITFacilityResourceAdaptationAction newAssociatedActions) {
         addPropertyValue(getAssociatedActionsProperty(), newAssociatedActions);
     }
 
 
-    public void removeAssociatedActions(ITFacilityResourceAdaptationAction oldAssociatedActions) {
+    public void removeAssociatedAction(ITFacilityResourceAdaptationAction oldAssociatedActions) {
         removePropertyValue(getAssociatedActionsProperty(), oldAssociatedActions);
     }
 

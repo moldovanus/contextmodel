@@ -12,6 +12,7 @@ import model.interfaces.resources.applications.ApplicationActivity;
  */
 public interface MigrateActivity extends ConsolidationAction {
 
+    //TODO: de facut jmechrie de genu getResourceFrom{ getAllResources().get(0)}
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activity
 
     ApplicationActivity getActivity();

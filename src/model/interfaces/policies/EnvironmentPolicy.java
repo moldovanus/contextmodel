@@ -9,4 +9,6 @@ package model.interfaces.policies;
  */
 public interface EnvironmentPolicy extends GPI_KPI_Policy {
 //    List<ServiceCenterITFacilityResource> getPolicySubject();
+    //Subject  = Passive
+    //Target = Active
 }

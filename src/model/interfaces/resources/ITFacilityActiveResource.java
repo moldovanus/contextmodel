@@ -16,9 +16,9 @@ public interface ITFacilityActiveResource extends ServiceCenterITFacilityResourc
 
     boolean hasAssociatedActions();
 
-    void addAssociatedActions(ITFacilityResourceAdaptationAction newAssociatedActions);
+    void addAssociatedAction(ITFacilityResourceAdaptationAction newAssociatedActions);
 
-    void removeAssociatedActions(ITFacilityResourceAdaptationAction oldAssociatedActions);
+    void removeAssociatedAction(ITFacilityResourceAdaptationAction oldAssociatedActions);
 
     void setAssociatedActions(List<ITFacilityResourceAdaptationAction> newAssociatedActions);
 }

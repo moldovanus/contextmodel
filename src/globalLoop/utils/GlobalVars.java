@@ -10,18 +10,18 @@ import java.util.Map;
  * Time: 1:28:30 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GlobalVars {
+public final class GlobalVars {
+    private GlobalVars() {
+    }
+
     public static final String x3dScene = "x3d/datacenter.x3d";
     public static final String XML_ELEMENT = "int";
     public static final String CONTEXT_INSTANCE_MODIFIED = "Context instance modified";
-    public static final String baseDataCenter = "http://www.owl-ontologies.com/Ontology1230214892.owl";
-    public static final String base = "http://www.owl-ontologies.com/Ontology1230214892.owl";
-    public static final String CIAGENT_NAME = "CIAgent";
     public static final String CMAGENT_NAME = "CMAAgent";
     public static final String RPAGENT_NAME = "RPAgent";
     public static final String EMAGENT_NAME = "EMAgent";
     public static final String GUIAGENT_NAME = "GUIAgent";
-    public static final String RLAGENT_NAME = "ReinforcementLearningAgent";
+    public static final String RLAGENT_NAME = "RLAgent";
     public static final String X3DAGENT_NAME = "X3DAgent";
     public static final String TMAGENT_NAME = "TaskManagementAgent";
     public static final String PHYSICAL_RESOURCE_VALUE_NAME = "valueOfService";
@@ -35,8 +35,7 @@ public class GlobalVars {
     public static final String DATA_NAME = "data-name";
     public static final String DATA_VALUE = "data-value";
     public static final String CONTEXT_ELEMENT = "context-element";
-    public static final String ONTOLOGY_ENVIROMENT_FILE = "ontology/contextOntology.owl";
-    public static final String ONTOLOGY_DATACENTER_FILE = "ontology/Datacenter.owl";
+    public static final String ONTOLOGY_FILE = "./ontology/context_KAON.rdf-xml.owl";
     public static final String POLICIES_FILE = "ontology/TestPolicies.xml";
     public static final String MEMORY_SELFHEALING_FILE = "memory/memorySelfHealing.dat";
     public static final String MEMORY_SELFOPTIMIZING_FILE = "memory/memorySelfOptimizing.dat";

@@ -29,6 +29,11 @@ public class DefaultContextPolicy extends DefaultContextElement
     public DefaultContextPolicy() {
     }
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policyWeight
+
+    public float getPolicyWeight() {
+        return getPropertyValueLiteral(getPolicyWeightProperty()).getFloat();
+    }
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#evaluationCondition
 
@@ -61,7 +66,11 @@ public class DefaultContextPolicy extends DefaultContextElement
     }
 
     public boolean getIsRespected() {
-        return getPropertyValueLiteral(getIsRespectedProperty()).getBoolean();
+        if (hasIsRespected()) {
+            return getPropertyValueLiteral(getIsRespectedProperty()).getBoolean();
+        } else {
+            return false;
+        }
     }
 
     public RDFProperty getIsRespectedProperty() {
@@ -195,34 +204,22 @@ public class DefaultContextPolicy extends DefaultContextElement
     public void setTriggerEvent(Event event) {
         //To change body of implemented methods use File | Settings | File Templates.
         // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policyWeight
-
-        public float getPolicyWeight
-        ()
-        {
-            return getPropertyValueLiteral(getPolicyWeightProperty()).getFloat();
-        }
+    }
 
 
-        public RDFProperty getPolicyWeightProperty
-        ()
-        {
-            final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policyWeight";
-            final String name = getOWLModel().getResourceNameForURI(uri);
-            return getOWLModel().getRDFProperty(name);
-        }
+    public RDFProperty getPolicyWeightProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policyWeight";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
 
 
-        public boolean hasPolicyWeight
-        ()
-        {
-            return getPropertyValueCount(getPolicyWeightProperty()) > 0;
-        }
+    public boolean hasPolicyWeight() {
+        return getPropertyValueCount(getPolicyWeightProperty()) > 0;
+    }
 
 
-        public void setPolicyWeight
-        (
-        float newPolicyWeight){
-            setPropertyValue(getPolicyWeightProperty(), new java.lang.Float(newPolicyWeight));
-        }
+    public void setPolicyWeight(float newPolicyWeight) {
+        setPropertyValue(getPolicyWeightProperty(), new java.lang.Float(newPolicyWeight));
     }
 }
