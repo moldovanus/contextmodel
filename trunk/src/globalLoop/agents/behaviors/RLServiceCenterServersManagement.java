@@ -10,6 +10,7 @@ import model.interfaces.actions.DeployActivity;
 import model.interfaces.actions.MigrateActivity;
 import model.interfaces.actions.SetServerStateActivity;
 import model.interfaces.policies.GPI_KPI_Policy;
+import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.policies.QoSPolicy;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
@@ -156,10 +157,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
         }
 
-        Collection<GPI_KPI_Policy> policies = modelAccess.getAllGPI_KPI_PolicyInstances();
-        for (GPI_KPI_Policy policy : policies) {
+        Collection<ITComputingContextPolicy> policies = modelAccess.getAllITComputingContextPolicyInstances();
+        for (ITComputingContextPolicy policy : policies) {
             Collection<ContextResource> servers = policy.getPolicySubject();
-
             for (ContextResource r : servers) {
                 ServiceCenterServer server = (ServiceCenterServer) r;
                 if (server.getIsActive())
@@ -425,7 +425,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             //TODO: ce inseamna getIsActive? adik nu trebe energy states de alea?
             // sleep
             for (ServiceCenterServer serverInstance : servers) {
-                if (!serverInstance.getIsActive() && !(serverInstance.getRunningActivities()!= null)) {
+                if (!serverInstance.getIsActive() && !(serverInstance.getRunningActivities() != null)) {
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
                                     + "_to_" + 0);
@@ -481,6 +481,18 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     @Override
     protected void onTick() {
-        throw new UnsupportedOperationException("not implemented yet");
+        PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>();
+        ContextSnapshot initialContext = new ContextSnapshot(new LinkedList());
+        Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
+
+        System.out.println(entropyAndPolicy.getFirst() + " " + entropyAndPolicy.getSecond());
+
+        initialContext.setContextEntropy(entropyAndPolicy.getFirst());
+        initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));
+        queue.add(initialContext);
+
+        if (entropyAndPolicy.getSecond() != null) {
+            ContextSnapshot result = reinforcementLearning(queue);
+        }
     }
 }
