@@ -303,29 +303,30 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 // deploy actions
                 for (ServiceCenterServer serverInstance : servers) {
 
-                    for (ContextResource res : associatedTasks) {
-                        ApplicationActivity task = (ApplicationActivity) res;
-                        //TODO : make this condition work ! next -> contains task. task is running
-                        if (serverInstance.getIsActive() && serverInstance.hasResourcesFor(task)
-                                && !serverInstance.hostsActivity(task) && !task.isRunning()) {
-                            DeployActivity newAction = new DefaultDeployActivity();//(protegeFactory, serverInstance.getName(), task.getName());
-                            if (!newContext.getActions().contains(newAction)) {
-                                newAction.addResource(serverInstance);
-                                newAction.setActivity(task);
+                    //  for (ContextResource res : associatedTasks) {
+                    // TODO: punem mai multe later on cand consideram ca avem nevoie de mai multe taskuri asociate unei politici
+                    ApplicationActivity task = (ApplicationActivity) associatedTasks.iterator().next();
+                    //TODO : make this condition work ! next -> contains task. task is running
+                    if (serverInstance.getIsActive() && serverInstance.hasResourcesFor(task)
+                            && !serverInstance.hostsActivity(task) && !task.isRunning()) {
+                        DeployActivity newAction = new DefaultDeployActivity();//(protegeFactory, serverInstance.getName(), task.getName());
+                        if (!newContext.getActions().contains(newAction)) {
+                            newAction.addResource(serverInstance);
+                            newAction.setActivity(task);
 
-                                ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-                                cs.getActions().add(newAction);
-                                deployed = true;
-                                newAction.execute(modelAccess);
+                            ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                            cs.getActions().add(newAction);
+                            deployed = true;
+                            newAction.execute(modelAccess);
 
-                                Double afterExecuteEntropy = computeEntropy().getFirst();
-                                cs.setContextEntropy(afterExecuteEntropy);
-                                cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-                                newAction.undo(modelAccess);
+                            Double afterExecuteEntropy = computeEntropy().getFirst();
+                            cs.setContextEntropy(afterExecuteEntropy);
+                            cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
+                            newAction.undo(modelAccess);
 
-                                queue.add(cs);
-                            }
+                            queue.add(cs);
                         }
+
                     }
                 }
 
