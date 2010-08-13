@@ -81,6 +81,7 @@ public class OntologyModelFactory implements ModelFactory {
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction", ITFacilityResourceAdaptationAction.class, DefaultITFacilityResourceAdaptationAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#FacilityDefaultAction", FacilityDefaultAction.class, DefaultFacilityDefaultAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SetServerStateActivity", SetServerStateActivity.class, DefaultSetServerStateActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Core", Core.class, DefaultCore.class);
     }
 
     public OntologyModelFactory() {
@@ -95,6 +96,48 @@ public class OntologyModelFactory implements ModelFactory {
 //    public <X> X create(Class<? extends X> javaInterface, String name) {
 //        return ProtegeJavaMapping.create(owlModel, javaInterface, name);        //aaaa
 //    }
+
+    public RDFSNamedClass getCoreClass() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Core";
+        final String name = owlModel.getResourceNameForURI(uri);
+        return owlModel.getRDFSNamedClass(name);
+    }
+
+    public Core createCore(String name) {
+        final RDFSNamedClass cls = getCoreClass();
+        if (name == null) {
+            name = owlModel.getNextAnonymousResourceName();
+        }
+        return new DefaultCore(owlModel, cls.createInstance(name).getFrameID());
+    }
+
+    public Core getCore(String name) {
+        RDFResource res = owlModel.getRDFResource(OWLUtil.getInternalFullName(owlModel, name));
+        if (res == null) {
+            return null;
+        }
+        if (res instanceof Core) {
+            return (Core) res;
+        } else if (res.hasProtegeType(getCoreClass())) {
+            return new DefaultCore(owlModel, res.getFrameID());
+        }
+        return null;
+    }
+
+    public Collection<Core> getAllCoreInstances() {
+        return getAllCoreInstances(false);
+    }
+
+    public Collection<Core> getAllCoreInstances(boolean transitive) {
+        Collection<Core> result = new ArrayList<Core>();
+        final RDFSNamedClass cls = getCoreClass();
+        RDFResource owlIndividual;
+        for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
+            owlIndividual = (RDFResource) it.next();
+            result.add(new DefaultCore(owlModel, owlIndividual.getFrameID()));
+        }
+        return result;
+    }
 
 
     public RDFSNamedClass getSetServerStateActivityClass() {

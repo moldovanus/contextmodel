@@ -1,6 +1,7 @@
 package globalLoop.agents;
 
 import globalLoop.agents.behaviors.RLServiceCenterServersManagement;
+import gui.datacenterConfiguration.impl.ConfigurationGUI;
 import jade.core.Agent;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
@@ -29,7 +30,8 @@ public class RLAgent extends Agent {
         System.out.println("RLAgent " + getLocalName() + " started.");
 
         modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
-
+        ConfigurationGUI gui = new ConfigurationGUI(modelAccess);
+        gui.setVisible(true);
 
         FacilityDefaultAction facilityDefaultAction = modelAccess.createFacilityDefaultAction("Test_Action");
 

@@ -3,6 +3,7 @@ package model.impl.util;
 import model.interfaces.ContextElement;
 import model.interfaces.actions.FacilityDefaultAction;
 import model.interfaces.actions.SetServerStateActivity;
+import model.interfaces.resources.Core;
 
 import java.util.Collection;
 
@@ -14,6 +15,12 @@ import java.util.Collection;
  * To change this template use File | Settings | File Templates.
  */
 public interface ModelFactory {
+
+    public Core createCore(String name);
+
+    public Core getCore(String name);
+
+    public Collection<Core> getAllCoreInstances();
 
     void removeEntity(ContextElement element);
 

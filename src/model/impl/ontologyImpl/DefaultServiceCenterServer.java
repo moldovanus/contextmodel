@@ -45,8 +45,55 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         Collection<MEM> mems = this.getMemResources();
         Collection<HDD> hdds = this.getHddResources();
 
+        for (CPU cpu : cpus) {
+            if (cpu.hasResourcesFor(activity)) {
+                cpu.addRunningActivity(activity);
+                break;
+            }
+        }
 
+        for (MEM mem : mems) {
+            if (mem.hasResourcesFor(activity)) {
+                mem.addRunningActivity(activity);
+                break;
+            }
+        }
+
+        for (HDD hdd : hdds) {
+            if (hdd.hasResourcesFor(activity)) {
+                hdd.addRunningActivity(activity);
+            }
+        }
 
         super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void removeRunningActivity(ApplicationActivity activity) {
+        Collection<CPU> cpus = this.getCpuResources();
+        Collection<MEM> mems = this.getMemResources();
+        Collection<HDD> hdds = this.getHddResources();
+
+        for (CPU cpu : cpus) {
+            if (cpu.getRunningActivities().contains(activity)) {
+                cpu.removeRunningActivity(activity);
+                break;
+            }
+        }
+
+        for (MEM mem : mems) {
+            if (mem.getRunningActivities().contains(activity)) {
+                mem.removeRunningActivity(activity);
+                break;
+            }
+        }
+
+        for (HDD hdd : hdds) {
+            if (hdd.getRunningActivities().contains(activity)) {
+                hdd.removeRunningActivity(activity);
+            }
+        }
+
+        super.removeRunningActivity(activity);
     }
 }

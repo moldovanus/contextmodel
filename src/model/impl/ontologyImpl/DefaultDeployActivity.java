@@ -65,9 +65,12 @@ public class DefaultDeployActivity extends DefaultConsolidationAction
 
 
     public void setResourceTo(ServiceCenterITComputingResource newResourceTo) {
-        ContextResource resourceTo = getResourceTo();
-        removePropertyValue(getResourcesProperty(), resourceTo);
-        addPropertyValue(getResourcesProperty(), resourceTo);
+        if (hasResources()) {
+            ContextResource resourceTo = getResourceTo();
+            removePropertyValue(getResourcesProperty(), resourceTo);
+        }
+
+        addPropertyValue(getResourcesProperty(), newResourceTo);
     }
 
     @Override

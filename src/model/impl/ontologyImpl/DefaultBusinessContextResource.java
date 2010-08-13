@@ -47,7 +47,7 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     }
 
 
-    public void setCPUWeight(float newCPUWeight) {
+    public void setCpuWeight(float newCPUWeight) {
         setPropertyValue(getCPUWeightProperty(), new java.lang.Float(newCPUWeight));
     }
 
@@ -71,7 +71,7 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     }
 
 
-    public void setHDDWeight(float newHDDWeight) {
+    public void setHddWeight(float newHDDWeight) {
         setPropertyValue(getHDDWeightProperty(), new java.lang.Float(newHDDWeight));
     }
 
@@ -95,7 +95,7 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     }
 
 
-    public void setMEMWeight(float newMEMWeight) {
+    public void setMemWeight(float newMEMWeight) {
         setPropertyValue(getMEMWeightProperty(), new java.lang.Float(newMEMWeight));
     }
 

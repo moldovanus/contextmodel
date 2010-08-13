@@ -13,7 +13,7 @@ import org.mindswap.pellet.jena.PelletReasonerFactory;
 import policyconversioncore.PoliciesHandler;
 import selfoptimizing.contextaware.GlobalVars;
 import selfoptimizing.contextaware.agents.behaviours.InformCIACMAABehaviour;
-import selfoptimizing.contextaware.gui.GUIAgent;
+
 import selfoptimizing.ontologyRepresentations.greenContextOntology.DatacenterProtegeFactory;
 import selfoptimizing.ontologyRepresentations.selfHealingOntology.SelfHealingProtegeFactory;
 
@@ -97,8 +97,7 @@ public class CMAAgent extends Agent {
             cia.start();
             //this.getContainerController().createNewAgent("RMA", "jade.tools.rma.rma", null).start();
 
-            gui = container.createNewAgent(GlobalVars.GUIAGENT_NAME, GUIAgent.class.getName(), new Object[]{this.owlModelDataCenter});
-            gui.start();
+           
 
             rl = container.createNewAgent(GlobalVars.RLAGENT_NAME, ReinforcementLearningAgent.class.getName(), new Object[]{
                     this.owlModeSelfHealing, this.policyConversionModelSelfHealing,

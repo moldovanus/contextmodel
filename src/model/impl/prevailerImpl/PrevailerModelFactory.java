@@ -582,6 +582,18 @@ public class PrevailerModelFactory implements ModelFactory {
 //        return null;  //To change body of implemented methods use File | Settings | File Templates.
 //    }
 
+    public Core createCore(String name) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public Core getCore(String name) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public Collection<Core> getAllCoreInstances() {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
     public void removeEntity(ContextElement element) {
         throw new UnsupportedOperationException("not implemented yet");
     }

@@ -55,12 +55,12 @@ public class DefaultCPU extends DefaultSimpleResource
     }
 
 
-    public void addAssociatedCores(Core newAssociatedCores) {
+    public void addAssociatedCore(Core newAssociatedCores) {
         addPropertyValue(getAssociatedCoresProperty(), newAssociatedCores);
     }
 
 
-    public void removeAssociatedCores(Core oldAssociatedCores) {
+    public void removeAssociatedCore(Core oldAssociatedCores) {
         removePropertyValue(getAssociatedCoresProperty(), oldAssociatedCores);
     }
 

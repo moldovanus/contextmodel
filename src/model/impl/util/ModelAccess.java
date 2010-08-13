@@ -54,6 +54,7 @@ public class ModelAccess implements ModelFactory {
         this.accessType = accessType;
     }
 
+
     public void removeEntity(ContextElement entity) {
         switch (accessType) {
             case ONTOLOGY_ACCESS:
@@ -105,6 +106,31 @@ public class ModelAccess implements ModelFactory {
             return databaseModelFactory.getSetServerStateActivity(name);
         }
     }
+
+    public Core createCore(String name) {
+        if (accessType == ONTOLOGY_ACCESS) {
+            return ontologyModelFactory.createCore(name);
+        } else {
+            return databaseModelFactory.createCore(name);
+        }
+    }
+
+    public Core getCore(String name) {
+        if (accessType == ONTOLOGY_ACCESS) {
+            return ontologyModelFactory.getCore(name);
+        } else {
+            return databaseModelFactory.getCore(name);
+        }
+    }
+
+    public Collection<Core> getAllCoreInstances() {
+        if (accessType == ONTOLOGY_ACCESS) {
+            return ontologyModelFactory.getAllCoreInstances();
+        } else {
+            return databaseModelFactory.getAllCoreInstances();
+        }
+    }
+
 
     public Collection<SetServerStateActivity> getAllSetServerStateActivityInstances() {
         if (accessType == ONTOLOGY_ACCESS) {
