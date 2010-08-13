@@ -582,6 +582,18 @@ public class PrevaylerDatabaseContainer implements ModelFactory, Serializable {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public SetServerStateActivity createSetServerStateActivity(String name) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public SetServerStateActivity getSetServerStateActivity(String name) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Collection<SetServerStateActivity> getAllSetServerStateActivityInstances() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public FacilityDefaultAction createFacilityDefaultAction(String name) {
         throw new UnsupportedOperationException("not implemented yet");
     }

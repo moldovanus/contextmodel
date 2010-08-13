@@ -118,7 +118,12 @@ public class DefaultITFacilityPassiveResource extends DefaultServiceCenterITFaci
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#recordedValue
 
     public Double getRecordedValue() {
-        return getPropertyValueLiteral(getRecordedValueProperty()).getDouble();
+        if (hasRecordedValue()) {
+            return getPropertyValueLiteral(getRecordedValueProperty()).getDouble();
+        } else {
+            return 0.0;
+        }
+
     }
 
 

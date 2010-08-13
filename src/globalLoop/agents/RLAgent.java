@@ -1,6 +1,6 @@
 package globalLoop.agents;
 
-import globalLoop.agents.behaviors.RLFacilityManagementBehavior;
+import globalLoop.agents.behaviors.RLServiceCenterServersManagement;
 import jade.core.Agent;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
@@ -75,7 +75,8 @@ public class RLAgent extends Agent {
         System.out.println(passiveResource.getRecordedValue());
 
 
-        addBehaviour(new RLFacilityManagementBehavior(this, 1000, modelAccess));
+        //addBehaviour(new RLFacilityManagementBehavior(this, 1000, modelAccess));
+        addBehaviour(new RLServiceCenterServersManagement(this, modelAccess, 1000));
 
     }
 }
