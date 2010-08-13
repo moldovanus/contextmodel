@@ -5,14 +5,14 @@ import jade.core.Agent;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
 import model.interfaces.Goal;
-import model.interfaces.actions.ActionEffect;
-import model.interfaces.actions.ContextAction;
-import model.interfaces.actions.FacilityDefaultAction;
-import model.interfaces.actions.ITFacilityResourceAdaptationAction;
+import model.interfaces.actions.*;
 import model.interfaces.policies.EnvironmentPolicy;
+import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.resources.ITFacilityActiveResource;
 import model.interfaces.resources.ITFacilityPassiveResource;
 import model.interfaces.resources.Sensor;
+import model.interfaces.resources.ServiceCenterITComputingResource;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +27,10 @@ public class RLAgent extends Agent {
     @Override
     protected void setup() {
         System.out.println("RLAgent " + getLocalName() + " started.");
+
         modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
+
+
         FacilityDefaultAction facilityDefaultAction = modelAccess.createFacilityDefaultAction("Test_Action");
 
         facilityDefaultAction.setEffect(new ActionEffect() {
@@ -43,8 +46,24 @@ public class RLAgent extends Agent {
             }
         });
 
-        Goal goal = new Goal() {
+        DeployActivity deployActivity = modelAccess.createDeployActivity("DeployAct_1");
+        ApplicationActivity applicationActivity = modelAccess.createApplicationActivity("ApplActivity_1");
+        ServiceCenterITComputingResource resourceTo = modelAccess.createServiceCenterServer("CompResource_1");
+        resourceTo.setCurrentEnergyState(0);
+        resourceTo.setResourceID("aaa");
+        resourceTo.setCurrentWorkLoad(30.0);
+        resourceTo.setMaximumWorkLoad(59.0);
+        resourceTo.setOptimalWorkLoad(20.0);
 
+        deployActivity.setActivity(applicationActivity);
+        deployActivity.setResourceTo(resourceTo);
+
+        ITComputingContextPolicy itComputingContextPolicy = modelAccess.createITComputingContextPolicy("Policy_1");
+        itComputingContextPolicy.setRespected(true);
+        itComputingContextPolicy.addPolicySubject(resourceTo);
+
+
+        Goal goal = new Goal() {
             public boolean isAchieved(ITFacilityPassiveResource resource) {
                 double recordedValue = resource.getRecordedValue();
                 return recordedValue > 5 && recordedValue < 15;

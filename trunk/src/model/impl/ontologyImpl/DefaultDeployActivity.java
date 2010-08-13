@@ -58,6 +58,7 @@ public class DefaultDeployActivity extends DefaultConsolidationAction
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceTo
 
     public ServiceCenterITComputingResource getResourceTo() {
+
         return (ServiceCenterITComputingResource)
                 ((Collection<ContextResource>) getPropertyValueAs(getResourcesProperty(), ContextResource.class)).toArray()[0];
     }
