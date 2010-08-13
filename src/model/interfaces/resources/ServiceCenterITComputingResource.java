@@ -12,7 +12,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface ServiceCenterITComputingResource extends ContextResource {
-    //TODO: ApplicationActivity nu trebe scos din asta?
+    //TODO: ApplicationActivity nu trebe scos din asta?NU NU. k aici intra de ex pe un SCITCR daca i CPU numa partea de CPU.
+    //cumva sa poti rula partea de CPU pe un server, de mem pe alt server, de astea. Ink imposibile da cine stie
     List<Integer> getEnergyStates();
 
     void setEnergyStates(List<Integer> states);

@@ -5,6 +5,7 @@ import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.ContextElement;
 import model.interfaces.resources.HDD;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -88,5 +89,22 @@ public class DefaultHDD extends DefaultSimpleResource
 
     public void setRotationSpeed(Double newRotationSpeed) {
         setPropertyValue(getRotationSpeedProperty(), new java.lang.Float(newRotationSpeed));
+    }
+
+    @Override
+    public boolean hasResourcesFor(ApplicationActivity activity) {
+        return getMaximumWorkLoad() <= getCurrentWorkLoad() + activity.getHddRequiredMaxValue();
+    }
+
+    @Override
+    public void addRunningActivity(ApplicationActivity activity) {
+        setCurrentWorkLoad(getCurrentWorkLoad() + activity.getHddRequiredMaxValue());
+        super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void removeRunningActivity(ApplicationActivity activity) {
+        setCurrentWorkLoad(getCurrentWorkLoad() - activity.getHddRequiredMaxValue());
+        super.removeRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

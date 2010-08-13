@@ -5,8 +5,10 @@ import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.resources.CPU;
 import model.interfaces.resources.Core;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -113,5 +115,53 @@ public class DefaultCPU extends DefaultSimpleResource
         setPropertyValue(getCpuClockRateProperty(), new java.lang.Float(newClockRate));
     }
 
+    @Override
+    public boolean hasResourcesFor(ApplicationActivity activity) {
+        List<Core> cores = this.getAssociatedCores();
+        float requestedCoresNo = activity.getNumberOfCoresRequiredValue();
+        if (cores.size() < requestedCoresNo) {
+            return false;
+        }
 
+        boolean hasResources = false;
+
+        for (Core core : cores) {
+            if (core.hasResourcesFor(activity)) {
+                requestedCoresNo--;
+            }
+            if (requestedCoresNo == 0) {
+                hasResources = true;
+                break;
+            }
+        }
+
+        return hasResources;
+    }
+
+    @Override
+    public void addRunningActivity(ApplicationActivity activity) {
+        List<Core> cores = this.getAssociatedCores();
+        float requestedCoresNo = activity.getNumberOfCoresRequiredValue();
+        for (Core core : cores) {
+            if (core.hasResourcesFor(activity)) {
+                core.addRunningActivity(activity);
+                requestedCoresNo--;
+            }
+            if (requestedCoresNo == 0) {
+                break;
+            }
+        }
+        super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void removeRunningActivity(ApplicationActivity activity) {
+        List<Core> cores = this.getAssociatedCores();
+        for (Core core : cores) {
+            if (core.getRunningActivities().contains(activity)) {
+                core.removeRunningActivity(activity);
+            }
+        }
+        super.removeRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }
