@@ -32,7 +32,12 @@ public class DefaultServiceCenterITComputingResource extends DefaultContextResou
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#currentEnergyState
 
     public Integer getCurrentEnergyState() {
-        return getPropertyValueLiteral(getCurrentEnergyStateProperty()).getInt();
+        if (hasCurrentEnergyState()) {
+            return getPropertyValueLiteral(getCurrentEnergyStateProperty()).getInt();
+        } else {
+            setCurrentEnergyState(0);
+            return 0;
+        }
     }
 
 
@@ -56,7 +61,12 @@ public class DefaultServiceCenterITComputingResource extends DefaultContextResou
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#currentWorkload
 
     public Double getCurrentWorkLoad() {
-        return getPropertyValueLiteral(getCurrentWorkloadProperty()).getDouble();
+        if (hasCurrentWorkload()) {
+            return getPropertyValueLiteral(getCurrentWorkloadProperty()).getDouble();
+        } else {
+            setCurrentWorkLoad(0.0);
+            return 0.0;
+        }
     }
 
 

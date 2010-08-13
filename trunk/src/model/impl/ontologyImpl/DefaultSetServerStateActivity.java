@@ -29,7 +29,12 @@ public class DefaultSetServerStateActivity extends DefaultConsolidationAction
 
 
     public int getTargetServerState() {
-        return getPropertyValueLiteral(getTargetServerStateProperty()).getInt();
+        if (hasTargetServerState()) {
+            return getPropertyValueLiteral(getTargetServerStateProperty()).getInt();
+        } else {
+            setTargetServerState(0);
+            return 0;
+        }
     }
 
 
