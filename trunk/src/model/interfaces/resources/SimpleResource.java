@@ -1,6 +1,7 @@
 package model.interfaces.resources;
 
 import model.interfaces.ContextElement;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,5 +28,6 @@ public interface SimpleResource extends ServiceCenterITComputingResource {
 
     void setPartOf(Collection newPartOf);
 
+    boolean hasResourcesFor(ApplicationActivity activity);
 
 }

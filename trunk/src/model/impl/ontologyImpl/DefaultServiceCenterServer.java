@@ -2,9 +2,13 @@ package model.impl.ontologyImpl;
 
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import model.interfaces.resources.CPU;
+import model.interfaces.resources.HDD;
+import model.interfaces.resources.MEM;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -33,5 +37,16 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
             }
         }
         return false;
+    }
+
+    @Override
+    public void addRunningActivity(ApplicationActivity activity) {
+        Collection<CPU> cpus = this.getCpuResources();
+        Collection<MEM> mems = this.getMemResources();
+        Collection<HDD> hdds = this.getHddResources();
+
+
+
+        super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

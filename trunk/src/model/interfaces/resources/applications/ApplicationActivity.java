@@ -21,8 +21,6 @@ public interface ApplicationActivity extends BusinessContextResource {
 
     Collection getActivityPolicies();
 
-    RDFProperty getActivityPoliciesProperty();
-
     boolean hasActivityPolicies();
 
     Iterator listActivityPolicies();

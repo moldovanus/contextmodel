@@ -72,4 +72,5 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
     public boolean isRunning() {
         return getCpuAllocatedValue() > 0;
     }
+    
 }

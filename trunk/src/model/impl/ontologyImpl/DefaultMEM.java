@@ -5,6 +5,7 @@ import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.ContextElement;
 import model.interfaces.resources.MEM;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -88,5 +89,22 @@ public class DefaultMEM extends DefaultSimpleResource
 
     public void setPartOf(Collection newPartOf) {
         setPropertyValues(getPartOfProperty(), newPartOf);
+    }
+
+    @Override
+    public boolean hasResourcesFor(ApplicationActivity activity) {
+        return getMaximumWorkLoad() <= getCurrentWorkLoad() + activity.getMemRequiredMaxValue();
+    }
+
+    @Override
+    public void addRunningActivity(ApplicationActivity activity) {
+        setCurrentWorkLoad(getCurrentWorkLoad() + activity.getMemRequiredMaxValue());
+        super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void removeRunningActivity(ApplicationActivity activity) {
+        setCurrentWorkLoad(getCurrentWorkLoad() - activity.getMemRequiredMaxValue());
+        super.removeRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

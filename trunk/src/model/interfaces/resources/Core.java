@@ -2,6 +2,9 @@ package model.interfaces.resources;
 
 import model.interfaces.ContextElement;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -10,7 +13,17 @@ import model.interfaces.ContextElement;
  * To change this template use File | Settings | File Templates.
  */
 public interface Core extends SimpleResource {
-    ContextElement getPartOf();
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
 
-    void setPartOf(ContextElement newPartOf);
+    Collection getPartOf();
+
+    boolean hasPartOf();
+
+    Iterator listPartOf();
+
+    void addPartOf(ContextElement newPartOf);
+
+    void removePartOf(ContextElement oldPartOf);
+
+    void setPartOf(Collection newPartOf);
 }

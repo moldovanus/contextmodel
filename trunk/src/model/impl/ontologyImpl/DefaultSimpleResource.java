@@ -5,6 +5,7 @@ import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.ContextElement;
 import model.interfaces.resources.SimpleResource;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -64,6 +65,14 @@ public class DefaultSimpleResource extends DefaultServiceCenterITComputingResour
 
     public void setPartOf(Collection newPartOf) {
         setPropertyValues(getPartOfProperty(), newPartOf);
+    }
+
+    /**
+     * @param activity activity to be run by this resoruce
+     * @return always returns true. Override if specific behavior needed
+     */
+    public boolean hasResourcesFor(ApplicationActivity activity) {
+        return true;
     }
 
 

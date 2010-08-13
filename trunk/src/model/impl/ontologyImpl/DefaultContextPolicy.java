@@ -61,8 +61,12 @@ public class DefaultContextPolicy extends DefaultContextElement
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#isRespected
 
+    /**
+     *
+     * @return always false. Must be overridden to return other value
+     */
     public boolean isRespected() {
-        return getIsRespected();
+        return false;
     }
 
     public boolean getIsRespected() {
