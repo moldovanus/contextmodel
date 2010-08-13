@@ -1,4 +1,4 @@
-package selfoptimizing.utils.fileIO;
+package utils.fileIO;
 
 import java.io.*;
 import java.util.List;

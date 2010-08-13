@@ -125,7 +125,7 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
     }
 
 
-    public void addCpuResources(CPU newCpuResources) {
+    public void addCpuResource(CPU newCpuResources) {
         addPropertyValue(getCpuResourcesProperty(), newCpuResources);
     }
 
@@ -182,7 +182,11 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#isActive
 
     public boolean getIsActive() {
-        return getPropertyValueLiteral(getIsActiveProperty()).getBoolean();
+        if (hasIsActive()) {
+            return getPropertyValueLiteral(getIsActiveProperty()).getBoolean();
+        } else {
+            return false;
+        }
     }
 
 
@@ -227,7 +231,7 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
     }
 
 
-    public void addMemResources(MEM newMemResources) {
+    public void addMemResource(MEM newMemResources) {
         addPropertyValue(getMemResourcesProperty(), newMemResources);
     }
 

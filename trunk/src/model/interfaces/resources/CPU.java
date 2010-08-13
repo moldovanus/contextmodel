@@ -20,7 +20,9 @@ public interface CPU extends SimpleResource {
 
     void setAssociatedCores(List<Core> newAssociatedCores);
 
-    void removeAssociatedCores(Core oldAssociatedCores);
+    void addAssociatedCore(Core oldAssociatedCore);
+
+    void removeAssociatedCore(Core oldAssociatedCore);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cacheRate

@@ -17,7 +17,7 @@ public interface BusinessContextResource extends ContextResource {
 
     boolean hasCPUWeight();
 
-    void setCPUWeight(float newCPUWeight);
+    void setCpuWeight(float newCPUWeight);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDDWeight
@@ -27,7 +27,7 @@ public interface BusinessContextResource extends ContextResource {
 
     boolean hasHDDWeight();
 
-    void setHDDWeight(float newHDDWeight);
+    void setHddWeight(float newHDDWeight);
 
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEMWeight
@@ -37,7 +37,7 @@ public interface BusinessContextResource extends ContextResource {
 
     boolean hasMEMWeight();
 
-    void setMEMWeight(float newMEMWeight);
+    void setMemWeight(float newMEMWeight);
 
 
     /// Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuAllocatedValue

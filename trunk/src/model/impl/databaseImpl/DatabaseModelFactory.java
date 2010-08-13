@@ -811,6 +811,18 @@ public class DatabaseModelFactory implements ModelFactory {
 //        return getAllEntityInstances(ITFacilityResourcesAdaptationActionImpl.class);
 //    }
 
+    public Core createCore(String name) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public Core getCore(String name) {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
+    public Collection<Core> getAllCoreInstances() {
+        throw new UnsupportedOperationException("not implemented yet");
+    }
+
     public void removeEntity(ContextElement element) {
         throw new UnsupportedOperationException("not implemented yet");
     }

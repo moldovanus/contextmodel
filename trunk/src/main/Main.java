@@ -2,6 +2,7 @@ package main;
 
 import globalLoop.agents.CMAAgent;
 import globalLoop.utils.GlobalVars;
+import gui.datacenterConfiguration.impl.ConfigurationGUI;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.interfaces.resources.applications.ApplicationActivity;
 
@@ -20,6 +21,7 @@ public class Main {
     public static void main(String args[]) {
         String[] jadeArgs = new String[]{"-mtp jamr.jademtp.http.MessageTransportProtocol", "-gui", GlobalVars.CMAGENT_NAME + ":" + CMAAgent.class.getName()};
         jade.Boot.main(jadeArgs);
+      
 
 //        OntologyModelFactory ontologyModelFactory = new OntologyModelFactory();
 //        Collection<ApplicationActivity> gpi_kpi_policies = ontologyModelFactory.getAllApplicationActivityInstances(true);

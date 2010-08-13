@@ -59,7 +59,7 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
 
     Iterator listCpuResources();
 
-    void addCpuResources(CPU newCpuResources);
+    void addCpuResource(CPU newCpuResources);
 
     void removeCpuResources(CPU oldCpuResources);
 
@@ -101,7 +101,7 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
 
     Iterator listMemResources();
 
-    void addMemResources(MEM newMemResources);
+    void addMemResource(MEM newMemResources);
 
     void removeMemResources(MEM oldMemResources);
 

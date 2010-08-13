@@ -5,7 +5,7 @@ import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import selfoptimizing.contextaware.GlobalVars;
 import selfoptimizing.contextaware.agents.behaviours.ReceiveMessageTMBehaviour;
-import selfoptimizing.contextaware.gui.TaskManagement;
+//import selfoptimizing.contextaware.gui.TaskManagement;
 import selfoptimizing.contextaware.worldInterface.dtos.TaskDto;
 
 import java.io.IOException;
@@ -20,25 +20,25 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class TaskManagementAgent extends Agent {
-    private TaskManagement taskManagementWindow;
+//    private TaskManagement taskManagementWindow;
 
     protected void setup() {
         System.out.println("Task Management Agent " + getLocalName() + " started.");
         this.addBehaviour(new ReceiveMessageTMBehaviour(this));
-        taskManagementWindow = new TaskManagement(this);
-        taskManagementWindow.setVisible(true);
+//        taskManagementWindow = new TaskManagement(this);
+//        taskManagementWindow.setVisible(true);
     }
 
     public void reenableTasks() {
-        taskManagementWindow.reenableTasksList();
+//        taskManagementWindow.reenableTasksList();
     }
 
     public void clearFields() {
-        taskManagementWindow.setEmptyFields();
+//        taskManagementWindow.setEmptyFields();
     }
 
     public void populateTaskWindow(TaskDto[] tasks) {
-        taskManagementWindow.setTasks(tasks);
+//        taskManagementWindow.setTasks(tasks);
     }
 
 

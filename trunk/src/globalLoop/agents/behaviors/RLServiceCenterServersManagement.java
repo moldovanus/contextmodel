@@ -280,7 +280,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             smallestEntropyContext = newContext;
         }
 
-        System.out.println("\n" + entropyAndPolicy.getFirst() + "  " + newContext.getRewardFunction() + "  " + entropyAndPolicy.getSecond() + "\n");
+        System.out.println("\n Entropy" + entropyAndPolicy.getFirst() + "  " + newContext.getRewardFunction() + "  " + entropyAndPolicy.getSecond() + "\n");
         System.out.println("---B");
 
 
@@ -447,7 +447,6 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
             /*
 
-            //TODO : to be changed to allow allocating less than maximum also ? nush ce am vrut sa zic aici
             //negotiate allocating more resources only if all the tasks have been deployed
             //if (allDeployed &&
             //always try a negotiation in order to solve problems :P
@@ -486,7 +485,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         ContextSnapshot initialContext = new ContextSnapshot(new LinkedList());
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
-        System.out.println(entropyAndPolicy.getFirst() + " " + entropyAndPolicy.getSecond());
+        System.out.println("Initial on tick entropy: " + entropyAndPolicy.getFirst() + " " + entropyAndPolicy.getSecond());
 
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
         initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));
