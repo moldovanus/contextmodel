@@ -406,7 +406,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                     System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
-                                    + "_to_" + 1);
+                                    + "_to_" + 1 );
                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
                     //if action is not already in the actions list
                     if (!cs.getActions().contains(newActivity)) {
