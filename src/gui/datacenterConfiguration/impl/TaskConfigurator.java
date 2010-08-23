@@ -1,12 +1,13 @@
 package gui.datacenterConfiguration.impl;
 
-import model.impl.util.ModelAccess;
-import model.interfaces.policies.QoSPolicy;
-import model.interfaces.resources.applications.ApplicationActivity;
 import gui.datacenterConfiguration.AbstractConfigurator;
 import gui.datacenterConfiguration.ITaskTableModel;
 import gui.datacenterConfiguration.TableCellValueValidator;
-
+import main.PelletJena;
+import model.impl.ontologyImpl.OntologyModelFactory;
+import model.impl.util.ModelAccess;
+import model.interfaces.policies.QoSPolicy;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -202,6 +203,8 @@ public class TaskConfigurator extends AbstractConfigurator {
                 policy.addPolicyTarget(task);
                 //TODO: cumva add si policy target
             }
+
+            PelletJena.generateBussinessRules(((OntologyModelFactory) modelAccess.getOntologyModelFactory()).getOwlModel(), modelAccess);
         }
 
         public List<String[]> getTableData() {

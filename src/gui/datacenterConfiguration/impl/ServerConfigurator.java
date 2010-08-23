@@ -1,9 +1,11 @@
 package gui.datacenterConfiguration.impl;
 
-import model.impl.util.ModelAccess;
 import gui.datacenterConfiguration.AbstractConfigurator;
 import gui.datacenterConfiguration.IServerTableModel;
 import gui.datacenterConfiguration.TableCellValueValidator;
+import main.PelletJena;
+import model.impl.ontologyImpl.OntologyModelFactory;
+import model.impl.util.ModelAccess;
 import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
@@ -246,6 +248,8 @@ public class ServerConfigurator extends AbstractConfigurator {
 //                policy.setPriority(1);
 
             }
+
+            PelletJena.generateEnergyRules(((OntologyModelFactory) modelAccess.getOntologyModelFactory()).getOwlModel(), modelAccess);
         }
 
         public List<String[]> getTableData() {
