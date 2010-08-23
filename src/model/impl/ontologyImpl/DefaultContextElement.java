@@ -11,6 +11,7 @@ import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import edu.stanford.smi.protegex.owl.swrl.exceptions.SWRLFactoryException;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import model.interfaces.ContextElement;
+import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 
 /**
@@ -21,10 +22,12 @@ import model.interfaces.ContextElement;
  */
 public class DefaultContextElement extends DefaultOWLIndividual
         implements ContextElement {
+    private OWLModel owlModel;
 
 
     public DefaultContextElement(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
+        this.owlModel = owlModel;
     }
 
     public Integer getId() {
@@ -42,6 +45,20 @@ public class DefaultContextElement extends DefaultOWLIndividual
         return (o instanceof ContextElement) && (((ContextElement) o).getFrameID().equals(this.getFrameID()));
     }
 
+    @Override
+    public void setPropertyValue(RDFProperty property, Object value) {
+        OntModel ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+        ontModel.add(owlModel.getJenaModel());
+        this.setPropertyValue(property, value, ontModel);
+    }
+
+    @Override
+    public Object getPropertyValue(RDFProperty property) {
+        OntModel ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+        ontModel.add(owlModel.getJenaModel());
+        return this.getPropertyValue(property, ontModel);   //To change body of overridden methods use File | Settings | File Templates.
+    }
+
     /**
      * Sets the property value both on the OWL model and on the ONT model
      * to trigger SWRL rule evaluation
@@ -57,15 +74,19 @@ public class DefaultContextElement extends DefaultOWLIndividual
         Individual targetIndividual = ontModel.getIndividual(this.getName());
 
         Property targetProperty = ontModel.getProperty(rdfProperty.getName());
-        if (targetIndividual.getPropertyValue(targetProperty) != null) {
-            targetIndividual.removeAll(targetProperty);
-        }
+//        if (targetIndividual.getPropertyValue(targetProperty) != null) {
+//            targetIndividual.removeAll(targetProperty);
+//        }
         targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
                 targetIndividual, targetProperty, o).getLiteral().as(RDFNode.class));
     }
 
-    public Object getPropertyValue(RDFProperty property, OntModel model) {
-        return super.getPropertyValue(property);    //To change body of overridden methods use File | Settings | File Templates.
+    public Object getPropertyValue(RDFProperty rdfProperty, OntModel ontModel) {
+
+        Individual targetIndividual = ontModel.getIndividual(this.getName());
+        Property targetProperty = ontModel.getProperty(rdfProperty.getName());
+        return targetIndividual.getPropertyValue(targetProperty);
+
     }
 
     public final void deleteInstance(OntModel ontModel, SWRLFactory swrlFactory)
