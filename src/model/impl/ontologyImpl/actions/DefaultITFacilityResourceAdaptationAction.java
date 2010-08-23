@@ -101,5 +101,12 @@ public class DefaultITFacilityResourceAdaptationAction extends DefaultContextAct
         setPropertyValue(getFacilityActionProperty(), newFacilityAction);
     }
 
-
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DefaultITFacilityResourceAdaptationAction)) {
+            return false;
+        }
+        DefaultITFacilityResourceAdaptationAction activity = (DefaultITFacilityResourceAdaptationAction) o;
+        return activity.getFacilityAction().equals(this.getFacilityAction());
+    }
 }

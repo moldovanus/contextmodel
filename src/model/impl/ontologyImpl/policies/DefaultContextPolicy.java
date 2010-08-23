@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultContextPolicy extends DefaultContextElement
+public abstract class DefaultContextPolicy extends DefaultContextElement
         implements ContextPolicy {
 
     public DefaultContextPolicy(OWLModel owlModel, FrameID id) {
@@ -66,9 +66,7 @@ public class DefaultContextPolicy extends DefaultContextElement
     /**
      * @return always false. Must be overridden to return other value
      */
-    public boolean isRespected() {
-        return false;
-    }
+    public abstract boolean isRespected();
 
     public boolean getIsRespected() {
         if (hasIsRespected()) {

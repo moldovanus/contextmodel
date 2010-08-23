@@ -13,4 +13,6 @@ public interface ActionEffect {
     void execute(ITFacilityPassiveResource resource);
 
     void undo(ITFacilityPassiveResource resource);
+
+    boolean equals(Object o);
 }

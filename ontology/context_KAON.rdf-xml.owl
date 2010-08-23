@@ -16,19 +16,31 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="policyWeight"/>
+          <owl:DatatypeProperty rdf:ID="isRespected"/>
         </owl:onProperty>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
+      <owl:Class rdf:ID="ContextElement"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="policySubject"/>
+          <owl:FunctionalProperty rdf:ID="policyName"/>
         </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
         <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="policyTarget"/>
+        </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -42,31 +54,19 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="policyTarget"/>
-        </owl:onProperty>
         <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:minCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="policyName"/>
+          <owl:ObjectProperty rdf:ID="policySubject"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
-      <owl:Class rdf:ID="ContextElement"/>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
       <owl:Restriction>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="isRespected"/>
+          <owl:DatatypeProperty rdf:ID="policyWeight"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -86,30 +86,27 @@
       <owl:Class rdf:ID="ComplexResource"/>
     </rdfs:subClassOf>
   </owl:Class>
-  <owl:Class rdf:about="#ApplicationActivity">
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:someValuesFrom>
-          <owl:Class rdf:ID="Application"/>
-        </owl:someValuesFrom>
-        <owl:onProperty>
-          <owl:TransitiveProperty rdf:ID="partOf"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Class rdf:ID="BusinessContextResource"/>
-    </rdfs:subClassOf>
-  </owl:Class>
   <owl:Class rdf:ID="EnvironmentPolicy">
     <rdfs:subClassOf>
       <owl:Class rdf:ID="GPI_KPI_Policy"/>
     </rdfs:subClassOf>
   </owl:Class>
-  <owl:Class rdf:ID="DeployActivity">
+  <owl:Class rdf:about="#ApplicationActivity">
     <rdfs:subClassOf>
-      <owl:Class rdf:ID="ConsolidationAction"/>
+      <owl:Class rdf:ID="BusinessContextResource"/>
     </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="partOf"/>
+        </owl:onProperty>
+        <owl:someValuesFrom>
+          <owl:Class rdf:ID="Application"/>
+        </owl:someValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="DeployActivity">
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
@@ -119,29 +116,32 @@
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ConsolidationAction"/>
+    </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:ID="ApplicationRedesign">
     <rdfs:subClassOf>
       <owl:Class rdf:ID="ApplicationAdaptationAction"/>
     </rdfs:subClassOf>
   </owl:Class>
-  <owl:Class rdf:ID="SLAPolicy">
-    <rdfs:subClassOf>
-      <owl:Class rdf:about="#BusinessPolicy"/>
-    </rdfs:subClassOf>
-  </owl:Class>
   <owl:Class rdf:ID="MigrateActivity">
     <rdfs:subClassOf>
+      <owl:Class rdf:about="#ConsolidationAction"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
         <owl:onProperty>
           <owl:ObjectProperty rdf:about="#activity"/>
         </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="SLAPolicy">
     <rdfs:subClassOf>
-      <owl:Class rdf:about="#ConsolidationAction"/>
+      <owl:Class rdf:about="#BusinessPolicy"/>
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:about="#BusinessPolicy">
@@ -151,12 +151,18 @@
   </owl:Class>
   <owl:Class rdf:ID="ServiceCenterITComputingResource">
     <rdfs:subClassOf>
-      <owl:Class rdf:ID="ContextResource"/>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="currentWorkload"/>
+        </owl:onProperty>
+      </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:FunctionalProperty rdf:ID="currentEnergyState"/>
+          <owl:DatatypeProperty rdf:ID="maximumWorkload"/>
         </owl:onProperty>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
@@ -164,29 +170,11 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="energyStates"/>
-        </owl:onProperty>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:minCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:FunctionalProperty rdf:ID="optimalWorkload"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:minCardinality>
         <owl:onProperty>
           <owl:ObjectProperty rdf:ID="runningActivities"/>
         </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -194,7 +182,16 @@
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:FunctionalProperty rdf:ID="maximumWorkload"/>
+          <owl:DatatypeProperty rdf:ID="optimalWorkload"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="energyStates"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -203,9 +200,12 @@
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:FunctionalProperty rdf:ID="currentWorkload"/>
+          <owl:DatatypeProperty rdf:ID="currentEnergyState"/>
         </owl:onProperty>
       </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ContextResource"/>
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:ID="ITComputingContextPolicy">
@@ -214,16 +214,16 @@
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:ID="ContextAction">
-    <rdfs:subClassOf rdf:resource="#ContextElement"/>
     <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
         <owl:onProperty>
           <owl:ObjectProperty rdf:ID="resources"/>
         </owl:onProperty>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ContextElement"/>
   </owl:Class>
   <owl:Class rdf:ID="Facility">
     <rdfs:subClassOf>
@@ -238,10 +238,19 @@
   <owl:Class rdf:ID="ITFacilityPassiveResource">
     <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="associatedActiveResources"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:FunctionalProperty rdf:ID="recordedValue"/>
+          <owl:FunctionalProperty rdf:ID="maximumValue"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -253,43 +262,34 @@
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="maximumValue"/>
+          <owl:DatatypeProperty rdf:ID="recordedValue"/>
         </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="associatedActiveResources"/>
-        </owl:onProperty>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:ID="CPU">
     <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="associatedCores"/>
-        </owl:onProperty>
-        <owl:allValuesFrom>
-          <owl:Class rdf:ID="Core"/>
-        </owl:allValuesFrom>
-      </owl:Restriction>
+      <owl:Class rdf:ID="SimpleResource"/>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty>
-          <owl:TransitiveProperty rdf:about="#partOf"/>
-        </owl:onProperty>
         <owl:someValuesFrom>
           <owl:Class rdf:ID="ServiceCenterServer"/>
         </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#partOf"/>
+        </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
-      <owl:Class rdf:ID="SimpleResource"/>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="Core"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="associatedCores"/>
+        </owl:onProperty>
+      </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:ID="Sensor">
@@ -304,112 +304,122 @@
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:about="#ContextResource">
+    <rdfs:subClassOf rdf:resource="#ContextElement"/>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty>
-          <owl:FunctionalProperty rdf:ID="resourceID"/>
-        </owl:onProperty>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="resourceID"/>
+        </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="#ContextElement"/>
   </owl:Class>
   <owl:Class rdf:about="#ConsolidationAction">
     <rdfs:subClassOf>
       <owl:Class rdf:ID="ITComputingResourceAdaptationAction"/>
     </rdfs:subClassOf>
   </owl:Class>
-  <owl:Class rdf:ID="MEM">
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:someValuesFrom rdf:resource="#ServiceCenterServer"/>
-        <owl:onProperty>
-          <owl:TransitiveProperty rdf:about="#partOf"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="memClockRate"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
+  <owl:Class rdf:about="#Core">
     <rdfs:subClassOf>
       <owl:Class rdf:about="#SimpleResource"/>
     </rdfs:subClassOf>
-  </owl:Class>
-  <owl:Class rdf:about="#Core">
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:TransitiveProperty rdf:about="#partOf"/>
+          <owl:ObjectProperty rdf:about="#partOf"/>
         </owl:onProperty>
         <owl:someValuesFrom rdf:resource="#CPU"/>
       </owl:Restriction>
     </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="MEM">
     <rdfs:subClassOf>
       <owl:Class rdf:about="#SimpleResource"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="memClockRate"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#ServiceCenterServer"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#partOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:ID="HDD">
     <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:TransitiveProperty rdf:about="#partOf"/>
-        </owl:onProperty>
-        <owl:someValuesFrom rdf:resource="#ServiceCenterServer"/>
-      </owl:Restriction>
+      <owl:Class rdf:about="#SimpleResource"/>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
         <owl:onProperty>
           <owl:DatatypeProperty rdf:ID="rotationSpeed"/>
         </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
-      <owl:Class rdf:about="#SimpleResource"/>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#ServiceCenterServer"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#partOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:about="#ITComputingResourceAdaptationAction">
     <rdfs:subClassOf rdf:resource="#ContextAction"/>
   </owl:Class>
   <owl:Class rdf:about="#SimpleResource">
+    <rdfs:subClassOf rdf:resource="#ServiceCenterITComputingResource"/>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="resourceWorkloadProperty"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:TransitiveProperty rdf:about="#partOf"/>
-        </owl:onProperty>
         <owl:someValuesFrom>
           <owl:Class rdf:about="#ComplexResource"/>
         </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#partOf"/>
+        </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="#ServiceCenterITComputingResource"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="resourceWorkloadProperty"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:ID="DPMAction">
     <rdfs:subClassOf>
       <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="stateAfterAction"/>
+        </owl:onProperty>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ITComputingResourceAdaptationAction"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="stateBeforeAction"/>
+          <owl:FunctionalProperty rdf:ID="toLowOrHighState"/>
         </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -424,17 +434,7 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="toLowOrHighState"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="#ITComputingResourceAdaptationAction"/>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="stateAfterAction"/>
+          <owl:FunctionalProperty rdf:ID="stateBeforeAction"/>
         </owl:onProperty>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
@@ -442,52 +442,32 @@
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:about="#ServiceCenterITFacilityResource">
-    <rdfs:subClassOf rdf:resource="#ContextResource"/>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
         <owl:onProperty>
           <owl:DatatypeProperty rdf:ID="resourceProperty"/>
         </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ContextResource"/>
   </owl:Class>
   <owl:Class rdf:about="#Application">
     <rdfs:subClassOf>
-      <owl:Class rdf:about="#BusinessContextResource"/>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:minCardinality>
         <owl:onProperty>
           <owl:ObjectProperty rdf:ID="BP_ActivityList"/>
         </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
       </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BusinessContextResource"/>
     </rdfs:subClassOf>
   </owl:Class>
   <owl:Class rdf:ID="ITFacilityResourceAdaptationAction">
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:minCardinality>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="associatedResources"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:someValuesFrom>
-          <owl:Class rdf:about="#ITFacilityActiveResource"/>
-        </owl:someValuesFrom>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="interractsWith"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="#ContextAction"/>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
@@ -497,54 +477,64 @@
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
-  </owl:Class>
-  <owl:Class rdf:ID="SetServerStateActivity">
-    <rdfs:subClassOf rdf:resource="#ConsolidationAction"/>
+    <rdfs:subClassOf rdf:resource="#ContextAction"/>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="targetServerState"/>
+          <owl:ObjectProperty rdf:ID="interractsWith"/>
         </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-  </owl:Class>
-  <owl:Class rdf:about="#ComplexResource">
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="HDDWeight"/>
-        </owl:onProperty>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#ITFacilityActiveResource"/>
+        </owl:someValuesFrom>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="MEMWeight"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="memResources"/>
+          <owl:ObjectProperty rdf:ID="associatedResources"/>
         </owl:onProperty>
         <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="#ServiceCenterITComputingResource"/>
+  </owl:Class>
+  <owl:Class rdf:ID="SetServerStateActivity">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="targetServerState"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ConsolidationAction"/>
+  </owl:Class>
+  <owl:Class rdf:about="#ComplexResource">
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:minCardinality>
         <owl:onProperty>
           <owl:ObjectProperty rdf:ID="hddResources"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="MEMWeight"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="isActive"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -560,28 +550,38 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="HDDWeight"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="CPUWeight"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ServiceCenterITComputingResource"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="memResources"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
           <owl:ObjectProperty rdf:ID="cpuResources"/>
         </owl:onProperty>
         <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:minCardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="isActive"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="CPUWeight"/>
-        </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
   </owl:Class>
@@ -591,122 +591,28 @@
   <owl:Class rdf:ID="CPUIntensiveActivity">
     <rdfs:subClassOf rdf:resource="#ApplicationActivity"/>
   </owl:Class>
-  <owl:Class rdf:about="#GPI_KPI_Policy">
-    <rdfs:subClassOf rdf:resource="#ContextPolicy"/>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="policyAction"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-  </owl:Class>
   <owl:Class rdf:ID="FacilityDefaultAction">
     <rdfs:subClassOf rdf:resource="#ContextAction"/>
   </owl:Class>
-  <owl:Class rdf:about="#ITFacilityActiveResource">
-    <rdfs:subClassOf rdf:resource="#ServiceCenterITFacilityResource"/>
+  <owl:Class rdf:about="#GPI_KPI_Policy">
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:minCardinality>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
         <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="associatedActions"/>
+          <owl:ObjectProperty rdf:ID="policyAction"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ContextPolicy"/>
   </owl:Class>
   <owl:Class rdf:about="#BusinessContextResource">
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="performanceEstimation"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="#MEMWeight"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf rdf:resource="#ContextResource"/>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="memAllocatedValue"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="#HDDWeight"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="memRequiredMinValue"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="hddRequiredMaxValue"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="cpuRequiredMinValue"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="cpuRequiredMaxValue"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="performanceDegradation"/>
-        </owl:onProperty>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:cardinality>
-        <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="cpuAllocatedValue"/>
+          <owl:DatatypeProperty rdf:ID="numberOfCoresRequiredValue"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -722,7 +628,7 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="hddAllocatedValue"/>
+          <owl:DatatypeProperty rdf:about="#HDDWeight"/>
         </owl:onProperty>
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
@@ -733,7 +639,35 @@
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="numberOfCoresRequiredValue"/>
+          <owl:DatatypeProperty rdf:ID="cpuRequiredMinValue"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="memRequiredMinValue"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ContextResource"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="performanceDegradation"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="#MEMWeight"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -751,16 +685,7 @@
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:about="#CPUWeight"/>
-        </owl:onProperty>
-      </owl:Restriction>
-    </rdfs:subClassOf>
-    <rdfs:subClassOf>
-      <owl:Restriction>
-        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</owl:minCardinality>
-        <owl:onProperty>
-          <owl:ObjectProperty rdf:ID="activityPolicies"/>
+          <owl:DatatypeProperty rdf:ID="hddRequiredMinValue"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -769,10 +694,85 @@
         <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
         >1</owl:cardinality>
         <owl:onProperty>
-          <owl:DatatypeProperty rdf:ID="hddRequiredMinValue"/>
+          <owl:DatatypeProperty rdf:ID="hddAllocatedValue"/>
         </owl:onProperty>
       </owl:Restriction>
     </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="hddRequiredMaxValue"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:about="#CPUWeight"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="memAllocatedValue"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="performanceEstimation"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="cpuAllocatedValue"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="activityPolicies"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:DatatypeProperty rdf:ID="cpuRequiredMaxValue"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#ITFacilityActiveResource">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="associatedActions"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ServiceCenterITFacilityResource"/>
   </owl:Class>
   <owl:ObjectProperty rdf:about="#associatedActiveResources">
     <rdfs:domain rdf:resource="#ITFacilityPassiveResource"/>
@@ -789,6 +789,10 @@
   <owl:ObjectProperty rdf:about="#resourceOn">
     <rdfs:domain rdf:resource="#ITComputingResourceAdaptationAction"/>
     <rdfs:range rdf:resource="#ServiceCenterITComputingResource"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#partOf">
+    <rdfs:range rdf:resource="#ContextElement"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="#policyTarget">
     <rdfs:domain rdf:resource="#ContextPolicy"/>
@@ -826,11 +830,11 @@
     <rdfs:range rdf:resource="#ApplicationActivity"/>
     <rdfs:domain rdf:resource="#ContextAction"/>
   </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasAttached"/>
   <owl:ObjectProperty rdf:about="#runningActivities">
     <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
     <rdfs:range rdf:resource="#ApplicationActivity"/>
   </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:ID="hasAttached"/>
   <owl:ObjectProperty rdf:about="#memResources">
     <rdfs:domain rdf:resource="#ComplexResource"/>
     <rdfs:range rdf:resource="#MEM"/>
@@ -859,28 +863,37 @@
     <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
   </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="#memClockRate">
-    <rdfs:domain rdf:resource="#MEM"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#memRequiredMinValue">
     <rdfs:domain rdf:resource="#BusinessContextResource"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
   </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#memClockRate">
+    <rdfs:domain rdf:resource="#MEM"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#optimalWorkload">
+    <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#hddAllocatedValue">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
     <rdfs:domain rdf:resource="#ApplicationActivity"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="minimumValue">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdfs:domain rdf:resource="#ITFacilityPassiveResource"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#resourceWorkloadProperty">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="#ContextResource"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#numberOfCoresAllocatedValue">
+    <rdfs:domain rdf:resource="#BusinessContextResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#recordedValue">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:domain rdf:resource="#ITFacilityPassiveResource"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#hddRequiredMinValue">
     <rdfs:domain rdf:resource="#BusinessContextResource"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
   </owl:DatatypeProperty>
@@ -895,9 +908,9 @@
       </owl:Class>
     </rdfs:domain>
   </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="#hddRequiredMinValue">
-    <rdfs:domain rdf:resource="#BusinessContextResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  <owl:DatatypeProperty rdf:ID="hasAssociatedActions">
+    <rdfs:domain rdf:resource="#ServiceCenterITFacilityResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#CPUWeight">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
@@ -910,10 +923,6 @@
       </owl:Class>
     </rdfs:domain>
   </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="hasAssociatedActions">
-    <rdfs:domain rdf:resource="#ServiceCenterITFacilityResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#isRespected">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
     <rdfs:domain rdf:resource="#ContextPolicy"/>
@@ -921,11 +930,6 @@
   <owl:DatatypeProperty rdf:about="#performanceDegradation">
     <rdfs:domain rdf:resource="#ApplicationActivity"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="#policyName">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-    <rdfs:domain rdf:resource="#ContextPolicy"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#targetServerState">
     <rdfs:domain rdf:resource="#SetServerStateActivity"/>
@@ -943,11 +947,6 @@
     <rdfs:domain rdf:resource="#ComplexResource"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
   </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="#stateBeforeAction">
-    <rdfs:domain rdf:resource="#DPMAction"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="cpuClockRate">
     <rdfs:domain rdf:resource="#CPU"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
@@ -960,11 +959,6 @@
     <rdfs:domain rdf:resource="#ServiceCenterITFacilityResource"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="noStatesJump">
-    <rdfs:domain rdf:resource="#DPMAction"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#cpuRequiredMaxValue">
     <rdfs:domain rdf:resource="#BusinessContextResource"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
@@ -973,31 +967,36 @@
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
     <rdfs:domain rdf:resource="#BusinessContextResource"/>
   </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="#toLowOrHighState">
-    <rdfs:domain rdf:resource="#DPMAction"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="#maximumValue">
-    <rdfs:domain rdf:resource="#ITFacilityPassiveResource"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-  </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#memRequiredMaxValue">
     <rdfs:domain rdf:resource="#BusinessContextResource"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#resourceID">
+    <rdfs:domain rdf:resource="#ContextResource"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#performanceEstimation">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
     <rdfs:domain rdf:resource="#ApplicationActivity"/>
   </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="#stateAfterAction">
+  <owl:DatatypeProperty rdf:about="#currentWorkload">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-    <rdfs:domain rdf:resource="#DPMAction"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:ID="cacheRate">
     <rdfs:domain rdf:resource="#CPU"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#currentEnergyState">
+    <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="#maximumWorkload">
+    <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#rotationSpeed">
@@ -1007,11 +1006,6 @@
   <owl:DatatypeProperty rdf:about="#numberOfCoresRequiredValue">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
     <rdfs:domain rdf:resource="#BusinessContextResource"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:ID="capacity">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdfs:domain rdf:resource="#HDD"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
   </owl:DatatypeProperty>
   <owl:DatatypeProperty rdf:about="#MEMWeight">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
@@ -1028,39 +1022,45 @@
     <rdfs:domain rdf:resource="#ContextPolicy"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
   </owl:DatatypeProperty>
-  <owl:TransitiveProperty rdf:about="#partOf">
-    <rdfs:range rdf:resource="#ContextElement"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-  </owl:TransitiveProperty>
-  <owl:FunctionalProperty rdf:about="#currentWorkload">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-  </owl:FunctionalProperty>
-  <owl:FunctionalProperty rdf:about="#recordedValue">
+  <owl:FunctionalProperty rdf:ID="minimumValue">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
     <rdfs:domain rdf:resource="#ITFacilityPassiveResource"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </owl:FunctionalProperty>
-  <owl:FunctionalProperty rdf:about="#maximumWorkload">
-    <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-  </owl:FunctionalProperty>
-  <owl:FunctionalProperty rdf:about="#currentEnergyState">
-    <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
+  <owl:FunctionalProperty rdf:about="#stateBeforeAction">
+    <rdfs:domain rdf:resource="#DPMAction"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
   </owl:FunctionalProperty>
-  <owl:FunctionalProperty rdf:about="#resourceID">
-    <rdfs:domain rdf:resource="#ContextResource"/>
+  <owl:FunctionalProperty rdf:ID="noStatesJump">
+    <rdfs:domain rdf:resource="#DPMAction"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="capacity">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:domain rdf:resource="#HDD"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#maximumValue">
+    <rdfs:domain rdf:resource="#ITFacilityPassiveResource"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#toLowOrHighState">
+    <rdfs:domain rdf:resource="#DPMAction"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#policyName">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="#ContextPolicy"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
   </owl:FunctionalProperty>
-  <owl:FunctionalProperty rdf:about="#optimalWorkload">
-    <rdfs:domain rdf:resource="#ServiceCenterITComputingResource"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  <owl:FunctionalProperty rdf:about="#stateAfterAction">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="#DPMAction"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
   </owl:FunctionalProperty>
   <ServiceCenterITFacilityResource rdf:ID="ServiceCenterITFacilityResource_2">
     <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
@@ -1068,47 +1068,20 @@
     <resourceProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >aaa</resourceProperty>
   </ServiceCenterITFacilityResource>
-  <Actuator rdf:ID="Heater">
-    <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >heater1</resourceID>
-    <associatedActions>
-      <ITFacilityResourceAdaptationAction rdf:ID="ITFacilityResourceAdaptationAction_2">
-        <facilityAction>
-          <ITFacilityResourceAdaptationAction rdf:ID="ITFacilityResourceAdaptationAction_3"/>
-        </facilityAction>
-      </ITFacilityResourceAdaptationAction>
-    </associatedActions>
-    <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >2</resourceWorkloadProperty>
-    <resourceProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Degree Celsius</resourceProperty>
-  </Actuator>
-  <CPUIntensiveActivity rdf:ID="CPUIntensiveActivity_1">
-    <cpuRequiredMaxValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >4.0</cpuRequiredMaxValue>
-    <cpuAllocatedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >0.0</cpuAllocatedValue>
-    <hddRequiredMaxValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >7.0</hddRequiredMaxValue>
-    <performanceDegradation rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >4.0</performanceDegradation>
-    <memRequiredMaxValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >2.0</memRequiredMaxValue>
-    <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >cpuIntensiveActivity1</resourceID>
-    <performanceEstimation rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >8.0</performanceEstimation>
-    <hddAllocatedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >0.0</hddAllocatedValue>
-    <memAllocatedValue rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >0.0</memAllocatedValue>
-  </CPUIntensiveActivity>
   <ServiceCenterITFacilityResource rdf:ID="ServiceCenterITFacilityResource_1">
     <resourceProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >aaa</resourceProperty>
     <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >ITFacility1</resourceID>
   </ServiceCenterITFacilityResource>
+  <Actuator rdf:ID="Heater">
+    <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >heater1</resourceID>
+    <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >2</resourceWorkloadProperty>
+    <resourceProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Degree Celsius</resourceProperty>
+  </Actuator>
   <Sensor rdf:ID="TemperatureSensor_1">
     <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >temperature1</resourceID>
@@ -1119,186 +1092,6 @@
     <resourceProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Degree Celsius</resourceProperty>
   </Sensor>
-  <ServiceCenterServer rdf:ID="Server_2">
-    <maximumWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >70.0</maximumWorkload>
-    <optimalWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >50.0</optimalWorkload>
-    <simpleResources>
-      <CPU rdf:ID="CPU_1_Server_2">
-        <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >MHz</resourceWorkloadProperty>
-        <partOf rdf:resource="#Server_2"/>
-        <currentEnergyState rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</currentEnergyState>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >4</energyStates>
-        <maximumWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >90.0</maximumWorkload>
-        <memClockRate rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >3000.0</memClockRate>
-        <optimalWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >43.0</optimalWorkload>
-        <currentWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >34.0</currentWorkload>
-        <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >CpuServer2</resourceID>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</energyStates>
-      </CPU>
-    </simpleResources>
-    <currentEnergyState rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >1</currentEnergyState>
-    <simpleResources>
-      <MEM rdf:ID="MEM_Server_2">
-        <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >42</resourceID>
-        <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >MB</resourceWorkloadProperty>
-        <maximumWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >2048.0</maximumWorkload>
-        <currentWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >10.0</currentWorkload>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</energyStates>
-        <cacheRate rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >2300.0</cacheRate>
-        <optimalWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >1024.0</optimalWorkload>
-        <partOf rdf:resource="#Server_2"/>
-        <currentEnergyState rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</currentEnergyState>
-        <memClockRate rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >1066.0</memClockRate>
-      </MEM>
-    </simpleResources>
-    <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >8</resourceWorkloadProperty>
-    <currentWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >23.0</currentWorkload>
-    <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >2</energyStates>
-    <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >5</energyStates>
-    <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >19</resourceID>
-    <simpleResources>
-      <HDD rdf:ID="HDD_Server_2">
-        <currentWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >34.0</currentWorkload>
-        <rotationSpeed rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >400.0</rotationSpeed>
-        <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >Hdd2</resourceID>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >4</energyStates>
-        <currentEnergyState rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</currentEnergyState>
-        <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >GB</resourceWorkloadProperty>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >8</energyStates>
-        <maximumWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >80.0</maximumWorkload>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</energyStates>
-        <partOf rdf:resource="#Server_2"/>
-        <optimalWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >40.0</optimalWorkload>
-      </HDD>
-    </simpleResources>
-    <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >4</resourceWorkloadProperty>
-  </ServiceCenterServer>
-  <ServiceCenterServer rdf:ID="Server_1">
-    <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >1</energyStates>
-    <simpleResources>
-      <HDD rdf:ID="HDD_Server_1">
-        <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >Hdd1</resourceID>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >8</energyStates>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</energyStates>
-        <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >GB</resourceWorkloadProperty>
-        <optimalWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >40.0</optimalWorkload>
-        <currentEnergyState rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >1</currentEnergyState>
-        <partOf rdf:resource="#Server_2"/>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >4</energyStates>
-        <maximumWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >80.0</maximumWorkload>
-        <rotationSpeed rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >400.0</rotationSpeed>
-        <currentWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >34.0</currentWorkload>
-      </HDD>
-    </simpleResources>
-    <currentEnergyState rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >1</currentEnergyState>
-    <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >4</energyStates>
-    <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >2</resourceWorkloadProperty>
-    <maximumWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >59.0</maximumWorkload>
-    <simpleResources>
-      <CPU rdf:ID="CPU_1_Server_1">
-        <memClockRate rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >3000.0</memClockRate>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</energyStates>
-        <partOf rdf:resource="#Server_1"/>
-        <currentEnergyState rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</currentEnergyState>
-        <optimalWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >43.0</optimalWorkload>
-        <maximumWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >90.0</maximumWorkload>
-        <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >Cpu1Server1</resourceID>
-        <currentWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >34.0</currentWorkload>
-        <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >MHz</resourceWorkloadProperty>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >4</energyStates>
-      </CPU>
-    </simpleResources>
-    <simpleResources>
-      <MEM rdf:ID="MEM_Server_1">
-        <currentEnergyState rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</currentEnergyState>
-        <cacheRate rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >2300.0</cacheRate>
-        <maximumWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >2048.0</maximumWorkload>
-        <resourceWorkloadProperty rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >MB</resourceWorkloadProperty>
-        <energyStates rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-        >2</energyStates>
-        <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-        >42</resourceID>
-        <partOf rdf:resource="#Server_1"/>
-        <optimalWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >1024.0</optimalWorkload>
-        <currentWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >10.0</currentWorkload>
-        <memClockRate rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-        >1066.0</memClockRate>
-      </MEM>
-    </simpleResources>
-    <resourceID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >13</resourceID>
-    <optimalWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >23.0</optimalWorkload>
-    <currentWorkload rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
-    >0.0</currentWorkload>
-  </ServiceCenterServer>
 </rdf:RDF>
 
 <!-- Created with Protege (with OWL Plugin 3.4.4, Build 579)  http://protege.stanford.edu -->

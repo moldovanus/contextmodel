@@ -12,7 +12,7 @@ import model.interfaces.actions.ITComputingResourceAdaptationAction;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultITComputingResourceAdaptationAction extends DefaultContextAction
+public abstract class DefaultITComputingResourceAdaptationAction extends DefaultContextAction
         implements ITComputingResourceAdaptationAction {
 
     public DefaultITComputingResourceAdaptationAction(OWLModel owlModel, FrameID id) {
@@ -152,4 +152,6 @@ public class DefaultITComputingResourceAdaptationAction extends DefaultContextAc
   public void setResourcesTo(List<ServiceCenterITComputingResource> newResourceTo) {
       setPropertyValues(getResourceToProperty(), newResourceTo);
   }  */
+
+
 }

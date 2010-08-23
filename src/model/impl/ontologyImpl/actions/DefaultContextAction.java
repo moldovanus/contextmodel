@@ -141,9 +141,12 @@ public abstract class DefaultContextAction extends DefaultContextElement
         return listPropertyValuesAs(getResourcesProperty(), ContextResource.class);
     }
 
-
     public void addResource(ContextResource newResources) {
-        addPropertyValue(getResourcesProperty(), newResources);
+        if (getResourcesProperty() != null) {
+            addPropertyValue(getResourcesProperty(), newResources);
+        } else {
+            setPropertyValue(getResourcesProperty(), newResources);
+        }
     }
 
 
@@ -159,4 +162,7 @@ public abstract class DefaultContextAction extends DefaultContextElement
     public abstract void execute(ModelAccess modelAccess);
 
     public abstract void undo(ModelAccess modelAccess);
+
+    @Override
+    public abstract boolean equals(Object o);
 }

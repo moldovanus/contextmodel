@@ -12,15 +12,15 @@ import model.interfaces.actions.ApplicationRedesign;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultApplicationRedesign extends DefaultApplicationAdaptationAction
+public class DefaultApplicationRedesignAction extends DefaultApplicationAdaptationAction
         implements ApplicationRedesign {
 
-    public DefaultApplicationRedesign(OWLModel owlModel, FrameID id) {
+    public DefaultApplicationRedesignAction(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
     }
 
 
-    public DefaultApplicationRedesign() {
+    public DefaultApplicationRedesignAction() {
     }
 
     @Override

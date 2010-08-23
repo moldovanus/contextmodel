@@ -58,4 +58,13 @@ public class DefaultFacilityDefaultAction extends DefaultContextAction
     public void setEffect(ActionEffect effect) {
         this.effect = effect;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DefaultFacilityDefaultAction)) {
+            return false;
+        }
+        DefaultFacilityDefaultAction action = (DefaultFacilityDefaultAction) o;
+        return action.getName().equals(this.getName()) || action.getResources().equals(this.getResources()) && action.getEffect().equals(this.getEffect());
+    }
 }

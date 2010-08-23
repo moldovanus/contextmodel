@@ -2,7 +2,6 @@ package globalLoop.agents.behaviors;
 
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
-import model.impl.ontologyImpl.actions.DefaultDeployActivity;
 import model.impl.util.ModelAccess;
 import model.interfaces.ContextSnapshot;
 import model.interfaces.actions.ContextAction;
@@ -309,7 +308,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
                     if (serverInstance.getIsActive() && serverInstance.hasResourcesFor(task)
                             && !serverInstance.hostsActivity(task) && !task.isRunning()) {
-                        DeployActivity newAction = new DefaultDeployActivity();//(protegeFactory, serverInstance.getName(), task.getName());
+                        DeployActivity newAction = modelAccess.createDeployActivity("Deploy_"
+                                + task.getName() + "_to_" + serverInstance.getName());
                         if (!newContext.getActions().contains(newAction)) {
                             newAction.addResource(serverInstance);
                             newAction.setActivity(task);
@@ -334,7 +334,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //             move actions
                 Collection<ServiceCenterServer> servers1 = modelAccess.getAllServiceCenterServerInstances();
                 for (ServiceCenterServer sourceServer : servers) {
-                    if (!sourceServer.getIsActive()) {
+                    if (sourceServer.getIsActive()) {
                         Iterator it = sourceServer.getRunningActivities().iterator();
                         while (it.hasNext()) {
                             ApplicationActivity myTask = (ApplicationActivity) it.next();
@@ -401,12 +401,14 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //             wake up
 
             for (ServiceCenterServer serverInstance : servers) {
-                if (serverInstance.getIsActive() && (associatedTasks != null) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
+                if (!serverInstance.getIsActive() && (associatedTasks != null) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
                     System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
                                     + "_to_" + 1);
                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                    newActivity.setTargetServerState(1);
+
                     //if action is not already in the actions list
                     if (!cs.getActions().contains(newActivity)) {
                         newActivity.addResource(serverInstance);
@@ -424,11 +426,12 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
             // sleep
             for (ServiceCenterServer serverInstance : servers) {
-                if (serverInstance.getCurrentEnergyState() != 0 && (serverInstance.getRunningActivities().size() == 0)) {
+                if (serverInstance.getIsActive() && (serverInstance.getRunningActivities().size() == 0)) {
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
                                     + "_to_" + 0);
                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                    newActivity.setTargetServerState(0);
                     if (!cs.getActions().contains(newActivity)) {
                         newActivity.addResource(serverInstance);
                         cs.getActions().add(newActivity);

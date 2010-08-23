@@ -1,8 +1,7 @@
-package model.impl.ontologyImpl.actions;
+package model.impl.ontologyImpl.resources;
 
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
-import model.impl.ontologyImpl.resources.DefaultComplexResource;
 import model.interfaces.resources.CPU;
 import model.interfaces.resources.HDD;
 import model.interfaces.resources.MEM;
@@ -67,6 +66,10 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         }
 
         super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
+
+        activity.setCpuAllocatedValue(activity.getCpuRequiredMaxValue());
+        activity.setMemAllocatedValue(activity.getMemRequiredMaxValue());
+        activity.setHddAllocatedValue(activity.getHddRequiredMaxValue());
     }
 
     @Override

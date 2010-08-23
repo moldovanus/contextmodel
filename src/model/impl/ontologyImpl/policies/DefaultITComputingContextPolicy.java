@@ -21,4 +21,9 @@ public class DefaultITComputingContextPolicy extends DefaultGPI_KPI_Policy
 
     public DefaultITComputingContextPolicy() {
     }
+
+    @Override
+    public boolean isRespected() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

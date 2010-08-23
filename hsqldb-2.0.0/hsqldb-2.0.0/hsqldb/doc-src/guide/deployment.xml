@@ -485,7 +485,7 @@
                 <para>To allow new queries to be performed while a time-consuming
                     query is being performed in the background. In HyperSQL, blocking
                     depends on the transaction control model, the isolation level, and the
-                    current activity by other sessions.
+                    current activityAction by other sessions.
                 </para>
             </listitem>
 

@@ -15,17 +15,17 @@ import model.interfaces.resources.ServiceCenterServer;
  *
  * @version generated on Thu Aug 12 15:26:22 EEST 2010
  */
-public class DefaultSetServerStateActivity extends DefaultConsolidationAction
+public class DefaultSetServerStateAction extends DefaultConsolidationAction
         implements SetServerStateActivity {
 
     private Integer oldServerState;
 
-    public DefaultSetServerStateActivity(OWLModel owlModel, FrameID id) {
+    public DefaultSetServerStateAction(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
     }
 
 
-    public DefaultSetServerStateActivity() {
+    public DefaultSetServerStateAction() {
     }
 
 
@@ -60,7 +60,13 @@ public class DefaultSetServerStateActivity extends DefaultConsolidationAction
         for (ContextResource resource : getResources()) {
             ServiceCenterServer server = (ServiceCenterServer) resource;
             oldServerState = server.getCurrentEnergyState();
-            server.setCurrentEnergyState(getTargetServerState());
+            int newState = getTargetServerState();
+            server.setCurrentEnergyState(newState);
+            if (newState == 0) {
+                server.setIsActive(false);
+            } else {
+                server.setIsActive(true);
+            }
         }
     }
 
@@ -69,6 +75,11 @@ public class DefaultSetServerStateActivity extends DefaultConsolidationAction
         for (ContextResource resource : getResources()) {
             ServiceCenterServer server = (ServiceCenterServer) resource;
             server.setCurrentEnergyState(oldServerState);
+            if (oldServerState == 0) {
+                server.setIsActive(false);
+            } else {
+                server.setIsActive(true);
+            }
         }
     }
 
@@ -80,5 +91,14 @@ public class DefaultSetServerStateActivity extends DefaultConsolidationAction
             serversList += server.getLocalName() + ", ";
         }
         return this.getLocalName() + " " + serversList + " to " + this.getTargetServerState();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DefaultSetServerStateAction)) {
+            return false;
+        }
+        DefaultSetServerStateAction action = (DefaultSetServerStateAction) o;
+        return action.getName().equals(this.getName()) || action.getResources().equals(this.getResources()) && action.getTargetServerState() == this.getTargetServerState();
     }
 }

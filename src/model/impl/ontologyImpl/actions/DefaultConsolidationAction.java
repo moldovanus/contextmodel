@@ -11,7 +11,7 @@ import model.interfaces.actions.ConsolidationAction;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultConsolidationAction extends DefaultITComputingResourceAdaptationAction
+public abstract class DefaultConsolidationAction extends DefaultITComputingResourceAdaptationAction
         implements ConsolidationAction {
 
     public DefaultConsolidationAction(OWLModel owlModel, FrameID id) {
@@ -21,4 +21,6 @@ public class DefaultConsolidationAction extends DefaultITComputingResourceAdapta
 
     public DefaultConsolidationAction() {
     }
+
+
 }

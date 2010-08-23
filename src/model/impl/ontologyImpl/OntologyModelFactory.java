@@ -1,6 +1,7 @@
 package model.impl.ontologyImpl;
 
 import edu.stanford.smi.protege.exception.OntologyLoadException;
+import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
 import edu.stanford.smi.protegex.owl.javacode.ProtegeJavaMapping;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
@@ -21,6 +22,7 @@ import model.interfaces.resources.*;
 import model.interfaces.resources.applications.*;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -62,13 +64,13 @@ public class OntologyModelFactory implements ModelFactory {
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Application", Application.class, DefaultApplication.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPUIntensiveActivity", CPUIntensiveActivity.class, DefaultCPUIntensiveActivity.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationAdaptationAction", ApplicationAdaptationAction.class, DefaultApplicationAdaptationAction.class);
-        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationRedesign", ApplicationRedesign.class, DefaultApplicationRedesign.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationRedesign", ApplicationRedesign.class, DefaultApplicationRedesignAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityActiveResource", ITFacilityActiveResource.class, DefaultITFacilityActiveResource.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDD", HDD.class, DefaultHDD.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SimpleResource", SimpleResource.class, DefaultSimpleResource.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITComputingContextPolicy", ITComputingContextPolicy.class, DefaultITComputingContextPolicy.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityPassiveResource", ITFacilityPassiveResource.class, DefaultITFacilityPassiveResource.class);
-        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MigrateActivity", MigrateActivity.class, DefaultMigrateActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MigrateActivity", MigrateActivity.class, DefaultMigrateActivityAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ConsolidationAction", ConsolidationAction.class, DefaultConsolidationAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Sensor", Sensor.class, DefaultSensor.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Actuator", Actuator.class, DefaultActuator.class);
@@ -80,11 +82,11 @@ public class OntologyModelFactory implements ModelFactory {
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#MEMIntensiveActivity", MEMIntensiveActivity.class, DefaultMEMIntensiveActivity.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Facility", Facility.class, DefaultFacility.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#QoSPolicy", QoSPolicy.class, DefaultQoSPolicy.class);
-        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DeployActivity", DeployActivity.class, DefaultDeployActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DeployActivity", DeployActivity.class, DefaultDeployActivityAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#EnvironmentPolicy", EnvironmentPolicy.class, DefaultEnvironmentPolicy.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction", ITFacilityResourceAdaptationAction.class, DefaultITFacilityResourceAdaptationAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#FacilityDefaultAction", FacilityDefaultAction.class, DefaultFacilityDefaultAction.class);
-        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SetServerStateActivity", SetServerStateActivity.class, DefaultSetServerStateActivity.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#SetServerStateActivity", SetServerStateActivity.class, DefaultSetServerStateAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Core", Core.class, DefaultCore.class);
     }
 
@@ -163,7 +165,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (name == null) {
             name = owlModel.getNextAnonymousResourceName();
         }
-        return new DefaultSetServerStateActivity(owlModel, cls.createInstance(name).getFrameID());
+        return new DefaultSetServerStateAction(owlModel, cls.createInstance(name).getFrameID());
     }
 
     public SetServerStateActivity getSetServerStateActivity(String name) {
@@ -174,7 +176,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (res instanceof SetServerStateActivity) {
             return (SetServerStateActivity) res;
         } else if (res.hasProtegeType(getSetServerStateActivityClass())) {
-            return new DefaultSetServerStateActivity(owlModel, res.getFrameID());
+            return new DefaultSetServerStateAction(owlModel, res.getFrameID());
         }
         return null;
     }
@@ -189,7 +191,7 @@ public class OntologyModelFactory implements ModelFactory {
         RDFResource owlIndividual;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
             owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultSetServerStateActivity(owlModel, owlIndividual.getFrameID()));
+            result.add(new DefaultSetServerStateAction(owlModel, owlIndividual.getFrameID()));
         }
         return result;
     }
@@ -286,11 +288,12 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public ITComputingResourceAdaptationAction createITComputingResourceAdaptationAction(String name) {
-        final RDFSNamedClass cls = getITComputingResourceAdaptationActionClass();
-        if (name == null) {
-            name = owlModel.getNextAnonymousResourceName();
-        }
-        return new DefaultITComputingResourceAdaptationAction(owlModel, cls.createInstance(name).getFrameID());
+//        final RDFSNamedClass cls = getITComputingResourceAdaptationActionClass();
+//        if (name == null) {
+//            name = owlModel.getNextAnonymousResourceName();
+//        }
+//        return new DefaultITComputingResourceAdaptationAction(owlModel, cls.createInstance(name).getFrameID());
+        return null;
     }
 
     public ITComputingResourceAdaptationAction getITComputingResourceAdaptationAction(String name) {
@@ -301,7 +304,32 @@ public class OntologyModelFactory implements ModelFactory {
         if (res instanceof ITComputingResourceAdaptationAction) {
             return (ITComputingResourceAdaptationAction) res;
         } else if (res.hasProtegeType(getITComputingResourceAdaptationActionClass())) {
-            return new DefaultITComputingResourceAdaptationAction(owlModel, res.getFrameID());
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getDPMActionClass())) {
+                    individualClass = DefaultDPMAction.class;
+                } else if (res.hasRDFType(getDeployActivityClass())) {
+                    individualClass = DefaultDeployActivityAction.class;
+                } else if (res.hasRDFType(getMigrateActivityClass())) {
+                    individualClass = DefaultMigrateActivityAction.class;
+                } else if (res.hasRDFType(getSetServerStateActivityClass())) {
+                    individualClass = DefaultSetServerStateAction.class;
+                }
+                return (ITComputingResourceAdaptationAction)
+                        (Class.forName(individualClass.getName())
+                                .getConstructor(OWLModel.class, FrameID.class)
+                                .newInstance(owlModel, res.getFrameID()));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return null;
     }
@@ -313,10 +341,36 @@ public class OntologyModelFactory implements ModelFactory {
     public Collection<ITComputingResourceAdaptationAction> getAllITComputingResourceAdaptationActionInstances(boolean transitive) {
         Collection<ITComputingResourceAdaptationAction> result = new ArrayList<ITComputingResourceAdaptationAction>();
         final RDFSNamedClass cls = getITComputingResourceAdaptationActionClass();
-        RDFResource owlIndividual;
+        RDFResource res;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
-            owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultITComputingResourceAdaptationAction(owlModel, owlIndividual.getFrameID()));
+            res = (RDFResource) it.next();
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getDPMActionClass())) {
+                    individualClass = DefaultDPMAction.class;
+                } else if (res.hasRDFType(getDeployActivityClass())) {
+                    individualClass = DefaultDeployActivityAction.class;
+                } else if (res.hasRDFType(getMigrateActivityClass())) {
+                    individualClass = DefaultMigrateActivityAction.class;
+                } else if (res.hasRDFType(getSetServerStateActivityClass())) {
+                    individualClass = DefaultSetServerStateAction.class;
+                }
+                result.add(
+                        (ITComputingResourceAdaptationAction)
+                                (Class.forName(individualClass.getName())
+                                        .getConstructor(OWLModel.class, FrameID.class)
+                                        .newInstance(owlModel, res.getFrameID())));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return result;
     }
@@ -462,7 +516,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (name == null) {
             name = owlModel.getNextAnonymousResourceName();
         }
-        return new DefaultGPI_KPI_Policy(owlModel, cls.createInstance(name).getFrameID());
+        return null;
     }
 
     public GPI_KPI_Policy getGPI_KPI_Policy(String name) {
@@ -473,7 +527,32 @@ public class OntologyModelFactory implements ModelFactory {
         if (res instanceof GPI_KPI_Policy) {
             return (GPI_KPI_Policy) res;
         } else if (res.hasProtegeType(getGPI_KPI_PolicyClass())) {
-            return new DefaultGPI_KPI_Policy(owlModel, res.getFrameID());
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getEnvironmentPolicyClass())) {
+                    individualClass = DefaultEnvironmentPolicy.class;
+                } else if (res.hasRDFType(getITComputingContextPolicyClass())) {
+                    individualClass = DefaultITComputingContextPolicy.class;
+                } else if (res.hasRDFType(getQoSPolicyClass())) {
+                    individualClass = DefaultQoSPolicy.class;
+                } else if (res.hasRDFType(getSLAPolicyClass())) {
+                    individualClass = DefaultSLAPolicy.class;
+                }
+                return (GPI_KPI_Policy)
+                        (Class.forName(individualClass.getName())
+                                .getConstructor(OWLModel.class, FrameID.class)
+                                .newInstance(owlModel, res.getFrameID()));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return null;
     }
@@ -485,10 +564,35 @@ public class OntologyModelFactory implements ModelFactory {
     public Collection<GPI_KPI_Policy> getAllGPI_KPI_PolicyInstances(boolean transitive) {
         Collection<GPI_KPI_Policy> result = new ArrayList<GPI_KPI_Policy>();
         final RDFSNamedClass cls = getGPI_KPI_PolicyClass();
-        RDFResource owlIndividual;
+        RDFResource res;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
-            owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultGPI_KPI_Policy(owlModel, owlIndividual.getFrameID()));
+            res = (RDFResource) it.next();
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getEnvironmentPolicyClass())) {
+                    individualClass = DefaultEnvironmentPolicy.class;
+                } else if (res.hasRDFType(getITComputingContextPolicyClass())) {
+                    individualClass = DefaultITComputingContextPolicy.class;
+                } else if (res.hasRDFType(getQoSPolicyClass())) {
+                    individualClass = DefaultQoSPolicy.class;
+                } else if (res.hasRDFType(getSLAPolicyClass())) {
+                    individualClass = DefaultSLAPolicy.class;
+                }
+                result.add((GPI_KPI_Policy)
+                        (Class.forName(individualClass.getName())
+                                .getConstructor(OWLModel.class, FrameID.class)
+                                .newInstance(owlModel, res.getFrameID())));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return result;
     }
@@ -505,20 +609,11 @@ public class OntologyModelFactory implements ModelFactory {
         if (name == null) {
             name = owlModel.getNextAnonymousResourceName();
         }
-        return new DefaultContextPolicy(owlModel, cls.createInstance(name).getFrameID());
+        return null;
     }
 
     public ContextPolicy getContextPolicy(String name) {
-        RDFResource res = owlModel.getRDFResource(OWLUtil.getInternalFullName(owlModel, name));
-        if (res == null) {
-            return null;
-        }
-        if (res instanceof ContextPolicy) {
-            return (ContextPolicy) res;
-        } else if (res.hasProtegeType(getContextPolicyClass())) {
-            return new DefaultContextPolicy(owlModel, res.getFrameID());
-        }
-        return null;
+        return getGPI_KPI_Policy(name);
     }
 
     public Collection<ContextPolicy> getAllContextPolicyInstances() {
@@ -527,11 +622,36 @@ public class OntologyModelFactory implements ModelFactory {
 
     public Collection<ContextPolicy> getAllContextPolicyInstances(boolean transitive) {
         Collection<ContextPolicy> result = new ArrayList<ContextPolicy>();
-        final RDFSNamedClass cls = getContextPolicyClass();
-        RDFResource owlIndividual;
+        final RDFSNamedClass cls = getGPI_KPI_PolicyClass();
+        RDFResource res;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
-            owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultContextPolicy(owlModel, owlIndividual.getFrameID()));
+            res = (RDFResource) it.next();
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getEnvironmentPolicyClass())) {
+                    individualClass = DefaultEnvironmentPolicy.class;
+                } else if (res.hasRDFType(getITComputingContextPolicyClass())) {
+                    individualClass = DefaultITComputingContextPolicy.class;
+                } else if (res.hasRDFType(getQoSPolicyClass())) {
+                    individualClass = DefaultQoSPolicy.class;
+                } else if (res.hasRDFType(getSLAPolicyClass())) {
+                    individualClass = DefaultSLAPolicy.class;
+                }
+                result.add((ContextPolicy)
+                        (Class.forName(individualClass.getName())
+                                .getConstructor(OWLModel.class, FrameID.class)
+                                .newInstance(owlModel, res.getFrameID())));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return result;
     }
@@ -978,7 +1098,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (name == null) {
             name = owlModel.getNextAnonymousResourceName();
         }
-        return new DefaultApplicationRedesign(owlModel, cls.createInstance(name).getFrameID());
+        return new DefaultApplicationRedesignAction(owlModel, cls.createInstance(name).getFrameID());
     }
 
     public ApplicationRedesign getApplicationRedesign(String name) {
@@ -989,7 +1109,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (res instanceof ApplicationRedesign) {
             return (ApplicationRedesign) res;
         } else if (res.hasProtegeType(getApplicationRedesignClass())) {
-            return new DefaultApplicationRedesign(owlModel, res.getFrameID());
+            return new DefaultApplicationRedesignAction(owlModel, res.getFrameID());
         }
         return null;
     }
@@ -1004,7 +1124,7 @@ public class OntologyModelFactory implements ModelFactory {
         RDFResource owlIndividual;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
             owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultApplicationRedesign(owlModel, owlIndividual.getFrameID()));
+            result.add(new DefaultApplicationRedesignAction(owlModel, owlIndividual.getFrameID()));
         }
         return result;
     }
@@ -1236,7 +1356,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (name == null) {
             name = owlModel.getNextAnonymousResourceName();
         }
-        return new DefaultMigrateActivity(owlModel, cls.createInstance(name).getFrameID());
+        return new DefaultMigrateActivityAction(owlModel, cls.createInstance(name).getFrameID());
     }
 
     public MigrateActivity getMigrateActivity(String name) {
@@ -1247,7 +1367,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (res instanceof MigrateActivity) {
             return (MigrateActivity) res;
         } else if (res.hasProtegeType(getMigrateActivityClass())) {
-            return new DefaultMigrateActivity(owlModel, res.getFrameID());
+            return new DefaultMigrateActivityAction(owlModel, res.getFrameID());
         }
         return null;
     }
@@ -1262,7 +1382,7 @@ public class OntologyModelFactory implements ModelFactory {
         RDFResource owlIndividual;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
             owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultMigrateActivity(owlModel, owlIndividual.getFrameID()));
+            result.add(new DefaultMigrateActivityAction(owlModel, owlIndividual.getFrameID()));
         }
         return result;
     }
@@ -1279,7 +1399,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (name == null) {
             name = owlModel.getNextAnonymousResourceName();
         }
-        return new DefaultConsolidationAction(owlModel, cls.createInstance(name).getFrameID());
+        return null;
     }
 
     public ConsolidationAction getConsolidationAction(String name) {
@@ -1290,7 +1410,30 @@ public class OntologyModelFactory implements ModelFactory {
         if (res instanceof ConsolidationAction) {
             return (ConsolidationAction) res;
         } else if (res.hasProtegeType(getConsolidationActionClass())) {
-            return new DefaultConsolidationAction(owlModel, res.getFrameID());
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getDeployActivityClass())) {
+                    individualClass = DefaultDeployActivityAction.class;
+                } else if (res.hasRDFType(getConsolidationActionClass())) {
+                    individualClass = DefaultConsolidationAction.class;
+                } else if (res.hasRDFType(getSetServerStateActivityClass())) {
+                    individualClass = DefaultSetServerStateAction.class;
+                }
+                return (DefaultConsolidationAction)
+                        (Class.forName(individualClass.getName())
+                                .getConstructor(OWLModel.class, FrameID.class)
+                                .newInstance(owlModel, res.getFrameID()));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return null;
     }
@@ -1302,10 +1445,33 @@ public class OntologyModelFactory implements ModelFactory {
     public Collection<ConsolidationAction> getAllConsolidationActionInstances(boolean transitive) {
         Collection<ConsolidationAction> result = new ArrayList<ConsolidationAction>();
         final RDFSNamedClass cls = getConsolidationActionClass();
-        RDFResource owlIndividual;
+        RDFResource res;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
-            owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultConsolidationAction(owlModel, owlIndividual.getFrameID()));
+            res = (RDFResource) it.next();
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getDeployActivityClass())) {
+                    individualClass = DefaultDeployActivityAction.class;
+                } else if (res.hasRDFType(getConsolidationActionClass())) {
+                    individualClass = DefaultConsolidationAction.class;
+                } else if (res.hasRDFType(getSetServerStateActivityClass())) {
+                    individualClass = DefaultSetServerStateAction.class;
+                }
+                result.add((DefaultConsolidationAction)
+                        (Class.forName(individualClass.getName())
+                                .getConstructor(OWLModel.class, FrameID.class)
+                                .newInstance(owlModel, res.getFrameID())));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return result;
     }
@@ -1408,7 +1574,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (name == null) {
             name = owlModel.getNextAnonymousResourceName();
         }
-        return new DefaultBusinessPolicy(owlModel, cls.createInstance(name).getFrameID());
+        return null;
     }
 
     public BusinessPolicy getBusinessPolicy(String name) {
@@ -1419,7 +1585,28 @@ public class OntologyModelFactory implements ModelFactory {
         if (res instanceof BusinessPolicy) {
             return (BusinessPolicy) res;
         } else if (res.hasProtegeType(getBusinessPolicyClass())) {
-            return new DefaultBusinessPolicy(owlModel, res.getFrameID());
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getQoSPolicyClass())) {
+                    individualClass = DefaultQoSPolicy.class;
+                } else if (res.hasRDFType(getSLAPolicyClass())) {
+                    individualClass = DefaultSLAPolicy.class;
+                }
+                return (BusinessPolicy)
+                        (Class.forName(individualClass.getName())
+                                .getConstructor(OWLModel.class, FrameID.class)
+                                .newInstance(owlModel, res.getFrameID()));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return null;
     }
@@ -1431,10 +1618,31 @@ public class OntologyModelFactory implements ModelFactory {
     public Collection<BusinessPolicy> getAllBusinessPolicyInstances(boolean transitive) {
         Collection<BusinessPolicy> result = new ArrayList<BusinessPolicy>();
         final RDFSNamedClass cls = getBusinessPolicyClass();
-        RDFResource owlIndividual;
+        RDFResource res;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
-            owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultBusinessPolicy(owlModel, owlIndividual.getFrameID()));
+            res = (RDFResource) it.next();
+            try {
+                Class individualClass = null;
+                if (res.hasRDFType(getQoSPolicyClass())) {
+                    individualClass = DefaultQoSPolicy.class;
+                } else if (res.hasRDFType(getSLAPolicyClass())) {
+                    individualClass = DefaultSLAPolicy.class;
+                }
+                result.add((DefaultBusinessPolicy)
+                        (Class.forName(individualClass.getName())
+                                .getConstructor(OWLModel.class, FrameID.class)
+                                .newInstance(owlModel, res.getFrameID())));
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return result;
     }
@@ -1752,7 +1960,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (name == null) {
             name = owlModel.getNextAnonymousResourceName();
         }
-        return new DefaultDeployActivity(owlModel, cls.createInstance(name).getFrameID());
+        return new DefaultDeployActivityAction(owlModel, cls.createInstance(name).getFrameID());
     }
 
     public DeployActivity getDeployActivity(String name) {
@@ -1763,7 +1971,7 @@ public class OntologyModelFactory implements ModelFactory {
         if (res instanceof DeployActivity) {
             return (DeployActivity) res;
         } else if (res.hasProtegeType(getDeployActivityClass())) {
-            return new DefaultDeployActivity(owlModel, res.getFrameID());
+            return new DefaultDeployActivityAction(owlModel, res.getFrameID());
         }
         return null;
     }
@@ -1778,7 +1986,7 @@ public class OntologyModelFactory implements ModelFactory {
         RDFResource owlIndividual;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
             owlIndividual = (RDFResource) it.next();
-            result.add(new DefaultDeployActivity(owlModel, owlIndividual.getFrameID()));
+            result.add(new DefaultDeployActivityAction(owlModel, owlIndividual.getFrameID()));
         }
         return result;
     }
