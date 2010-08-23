@@ -162,7 +162,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Collection<ContextResource> servers = policy.getPolicySubject();
             for (ContextResource r : servers) {
                 ServiceCenterServer server = (ServiceCenterServer) r;
-                if (server.getIsActive())
+                if (server.getCurrentEnergyState() != 0)
                     if (!policy.isRespected()) {
                         System.out.println("Broken server : " + server);
                         if (brokenPolicy == null) {
@@ -424,7 +424,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
             // sleep
             for (ServiceCenterServer serverInstance : servers) {
-                if (!serverInstance.getIsActive() && !(serverInstance.getRunningActivities() != null)) {
+                if (serverInstance.getCurrentEnergyState() != 0 && (serverInstance.getRunningActivities().size() == 0)) {
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
                                     + "_to_" + 0);
