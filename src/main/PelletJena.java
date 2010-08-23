@@ -90,15 +90,15 @@ public class PelletJena {
                 int a = 0;
                 for (Iterator simpleIter = assocResource.iterator(); simpleIter.hasNext();) {
                     SimpleResource simpleResource = (SimpleResource) simpleIter.next();
-                    swrlRule += "ContextModel:SimpleResource(?a" + a + ") ^ ContextModel:resourceID(?a" + a + ",\"" + simpleResource.getResourceID() + "\") ^ ContextModel:currentWorkload(?a" + a + ",?currentWorkload" + a + ") ^ ContextModel:maximumWorkload(?a" + a + ",?maxWorkload" + a + ") ^ swrlb:lessThanOrEqual(?currentWorkload" + a + ",?maximumWorkload" + a + ")^ swrlb:multiply(?optimalWorkload0,0.33,?downDif" + a + ") ^  \n" +
+                    swrlRule += "SimpleResource(?a" + a + ") ^ resourceID(?a" + a + ",\"" + simpleResource.getResourceID() + "\") ^ currentWorkload(?a" + a + ",?cWorkload" + a + ") ^ maximumWorkload(?a" + a + ",?maxWorkload" + a + ") ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maximumWorkload" + a + ")^ swrlb:multiply(?optimalWorkload0,0.33,?downDif" + a + ") ^  \n" +
                             "sqwrl:difference(?maxWorkload" + a + ", ?optimalWorkload" + a + ",?sumOf" + a + ")  ^  " +
                             "sqwrl:difference(?optimalWorkload" + a + ",?downDif" + a + ",?minThreshold" + a + ")  ^  " +
                             " swrlb:divide(?sumOf" + a + ", 2,?upDif" + a + ") ^ \n" +
-                            "sqwrl:sum(?optimalWorkload" + a + ",?upDif" + a + ",?maxThreshold" + a + " )   ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?currentWorkload" + a + ")^ swrlb:lessThanOrEqual(?currentWorkload" + a + ",?maxThreshold" + a + ") ^ ";
+                            "sqwrl:sum(?optimalWorkload" + a + ",?upDif" + a + ",?maxThreshold" + a + " )   ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?ckload" + a + ")^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxThreshold" + a + ") ^ ";
                     a++;
                 }
-                System.out.println(swrlRule + "ContextModel:ComplexResource(?x) ^ ContextModel:ResourceID(?x," + compResource.getResourceID() + ") ^  ContextModel:currentWorkload(?x, ?currentWorkload) ^  ContextModel:maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?currentWorkload, ?maximumWorkload) -> isRespected(ContextModel:" + currentPolicy.getPolicyName() + ", true)");
-                SWRLImp imp = factory.createImp(swrlRule + "ContextModel:ComplexResource(?x) ^  ContextModel:currentWorkload(?x, ?currentWorkload) ^  ContextModel:maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?currentWorkload, ?maximumWorkload) -> ContextModel:isRespected(ContextModel:" + currentPolicy.getPolicyName() + ", true)");
+                System.out.println(swrlRule + "ComplexResource(?x) ^ ResourceID(?x," + compResource.getResourceID() + ") ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maximumWorkload) -> isRespected(" + currentPolicy.getPolicyName() + ", true)");
+                SWRLImp imp = factory.createImp(swrlRule + "ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getPolicyName() + ", true)");
 
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
