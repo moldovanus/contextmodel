@@ -17,15 +17,15 @@ import java.util.Collection;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultMigrateActivity extends DefaultConsolidationAction
+public class DefaultMigrateActivityAction extends DefaultConsolidationAction
         implements MigrateActivity {
 
-    public DefaultMigrateActivity(OWLModel owlModel, FrameID id) {
+    public DefaultMigrateActivityAction(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
     }
 
 
-    public DefaultMigrateActivity() {
+    public DefaultMigrateActivityAction() {
     }
 
 
@@ -101,5 +101,18 @@ public class DefaultMigrateActivity extends DefaultConsolidationAction
     public String toString() {
         return this.getLocalName() + " " + this.getActivity().getLocalName() + " from "
                 + this.getResourceFrom().getLocalName() + " to " + this.getResourceTo().getLocalName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DefaultMigrateActivityAction)) {
+            return false;
+        }
+        DefaultMigrateActivityAction activityAction = (DefaultMigrateActivityAction) o;
+        return activityAction.getName().equals(this.getName())
+                || activityAction.getResourceFrom().equals(this.getResourceFrom())
+                && activityAction.getResourceTo().equals(this.getResourceTo())
+                && activityAction.getActivity().equals(this.getActivity());
+
     }
 }

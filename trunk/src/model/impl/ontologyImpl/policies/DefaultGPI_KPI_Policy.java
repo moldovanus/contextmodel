@@ -6,8 +6,6 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.Goal;
 import model.interfaces.actions.ContextAction;
 import model.interfaces.policies.GPI_KPI_Policy;
-import model.interfaces.resources.ContextResource;
-import model.interfaces.resources.ITFacilityPassiveResource;
 
 
 /**
@@ -16,7 +14,7 @@ import model.interfaces.resources.ITFacilityPassiveResource;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultGPI_KPI_Policy extends DefaultContextPolicy
+public abstract class DefaultGPI_KPI_Policy extends DefaultContextPolicy
         implements GPI_KPI_Policy {
 
     private Goal policyGoal;
@@ -28,6 +26,12 @@ public class DefaultGPI_KPI_Policy extends DefaultContextPolicy
 
     public DefaultGPI_KPI_Policy() {
     }
+
+
+    public abstract boolean isRespected();
+//    {
+//       throw new UnsupportedOperationException("Not implemented yet");
+//    }
 
     public Goal getPolicyGoal() {
         return policyGoal;
@@ -60,18 +64,18 @@ public class DefaultGPI_KPI_Policy extends DefaultContextPolicy
         setPropertyValue(getPolicyActionProperty(), newPolicyAction);
     }
 
-    @Override
-    public boolean isRespected() {
-        Goal goal = getPolicyGoal();
-        if (goal == null) {
-            System.err.println("No goal specified for policy:" + this.getLocalName() + ". Returning isRespected = false");
-            return false;
-        }
-        for (ContextResource resource : getPolicySubject()) {
-            if (!goal.isAchieved((ITFacilityPassiveResource) resource)) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    @Override
+//    public boolean isRespected() {
+//        Goal goal = getPolicyGoal();
+//        if (goal == null) {
+//            System.err.println("No goal specified for policy:" + this.getLocalName() + ". Returning isRespected = false");
+//            return false;
+//        }
+//        for (ContextResource resource : getPolicySubject()) {
+//            if (!goal.isAchieved((ITFacilityPassiveResource) resource)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 }

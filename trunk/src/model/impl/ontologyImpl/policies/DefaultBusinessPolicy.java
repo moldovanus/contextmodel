@@ -11,7 +11,7 @@ import model.interfaces.policies.BusinessPolicy;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultBusinessPolicy extends DefaultGPI_KPI_Policy
+public abstract class DefaultBusinessPolicy extends DefaultGPI_KPI_Policy
         implements BusinessPolicy {
 
     public DefaultBusinessPolicy(OWLModel owlModel, FrameID id) {
@@ -21,4 +21,5 @@ public class DefaultBusinessPolicy extends DefaultGPI_KPI_Policy
 
     public DefaultBusinessPolicy() {
     }
+
 }

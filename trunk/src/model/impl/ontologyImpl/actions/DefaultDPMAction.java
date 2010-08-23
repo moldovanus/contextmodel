@@ -143,4 +143,10 @@ public class DefaultDPMAction extends DefaultITComputingResourceAdaptationAction
     public void setToLowOrHighState(boolean newToLowOrHighState) {
         setPropertyValue(getToLowOrHighStateProperty(), new java.lang.Boolean(newToLowOrHighState));
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

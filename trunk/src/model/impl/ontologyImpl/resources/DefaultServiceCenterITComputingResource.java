@@ -54,7 +54,11 @@ public class DefaultServiceCenterITComputingResource extends DefaultContextResou
 
 
     public void setCurrentEnergyState(Integer newCurrentEnergyState) {
-        setPropertyValue(getCurrentEnergyStateProperty(), new java.lang.Integer(newCurrentEnergyState));
+        if (getCurrentEnergyStateProperty() != null) {
+            setPropertyValue(getCurrentEnergyStateProperty(), new java.lang.Integer(newCurrentEnergyState));
+        } else {
+            addPropertyValue(getCurrentEnergyStateProperty(), newCurrentEnergyState);
+        }
     }
 
 

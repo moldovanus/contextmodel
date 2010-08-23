@@ -21,4 +21,9 @@ public class DefaultEnvironmentPolicy extends DefaultGPI_KPI_Policy
 
     public DefaultEnvironmentPolicy() {
     }
+
+    @Override
+    public boolean isRespected() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

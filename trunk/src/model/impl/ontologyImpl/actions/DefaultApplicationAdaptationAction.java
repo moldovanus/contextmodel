@@ -31,4 +31,13 @@ public class DefaultApplicationAdaptationAction extends DefaultContextAction
     public void undo(ModelAccess modelAccess) {
         throw new UnsupportedOperationException("not implemented yet");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DefaultApplicationAdaptationAction)) {
+            return false;
+        }
+
+        throw new UnsupportedOperationException("not implemented yet");
+    }
 }

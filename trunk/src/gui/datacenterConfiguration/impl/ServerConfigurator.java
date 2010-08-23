@@ -208,7 +208,7 @@ public class ServerConfigurator extends AbstractConfigurator {
 //                Collection virtualMachinesPath = new ArrayList();
 //                virtualMachinesPath.add(data[3].trim());
 //                server.setVirtualMachinesPath(virtualMachinesPath);
-                server.setIsActive(true);
+                server.setIsActive(false);
 
                 CPU cpu = modelAccess.createCPU(serverName + "_CPU");
                 server.setCPUWeight(0.5f);
@@ -245,6 +245,7 @@ public class ServerConfigurator extends AbstractConfigurator {
                 policy.addPolicySubject(server);
                 //TODO: de facut ceva cu subject target asta
                 policy.addPolicyTarget(server);
+                policy.setPolicyWeight(1.0f);
 //                policy.setPriority(1);
             }
 

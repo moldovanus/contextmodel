@@ -21,4 +21,9 @@ public class DefaultQoSPolicy extends DefaultBusinessPolicy
 
     public DefaultQoSPolicy() {
     }
+
+    @Override
+    public boolean isRespected() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

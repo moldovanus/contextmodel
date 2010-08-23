@@ -21,4 +21,9 @@ public class DefaultSLAPolicy extends DefaultBusinessPolicy
 
     public DefaultSLAPolicy() {
     }
+
+    @Override
+    public boolean isRespected() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
 }

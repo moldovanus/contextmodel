@@ -1,8 +1,15 @@
 package model.impl.ontologyImpl;
 
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import edu.stanford.smi.protege.model.FrameID;
-import edu.stanford.smi.protegex.owl.javacode.AbstractCodeGeneratorIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
+import edu.stanford.smi.protegex.owl.swrl.exceptions.SWRLFactoryException;
+import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import model.interfaces.ContextElement;
 
 
@@ -12,7 +19,7 @@ import model.interfaces.ContextElement;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
-public class DefaultContextElement extends AbstractCodeGeneratorIndividual
+public class DefaultContextElement extends DefaultOWLIndividual
         implements ContextElement {
 
 
@@ -32,7 +39,48 @@ public class DefaultContextElement extends AbstractCodeGeneratorIndividual
     }
 
     public boolean equals(Object o) {
-        return (o instanceof ContextElement) && (((ContextElement) o).getName().equals(this.getName()));
+        return (o instanceof ContextElement) && (((ContextElement) o).getFrameID().equals(this.getFrameID()));
     }
 
+    /**
+     * Sets the property value both on the OWL model and on the ONT model
+     * to trigger SWRL rule evaluation
+     *
+     * @param rdfProperty the slot of the entity
+     * @param o           the value of the property to be inserted in slot rdfProperty
+     * @param ontModel    the ont model on which this property will also be set
+     */
+    public void setPropertyValue(RDFProperty rdfProperty, Object o, OntModel ontModel) {
+        super.setPropertyValue(rdfProperty, o);
+
+//        to be commented to avoid SWRL rule evaluation
+        Individual targetIndividual = ontModel.getIndividual(this.getName());
+
+        Property targetProperty = ontModel.getProperty(rdfProperty.getName());
+        if (targetIndividual.getPropertyValue(targetProperty) != null) {
+            targetIndividual.removeAll(targetProperty);
+        }
+        targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
+                targetIndividual, targetProperty, o).getLiteral().as(RDFNode.class));
+    }
+
+    public Object getPropertyValue(RDFProperty property, OntModel model) {
+        return super.getPropertyValue(property);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public final void deleteInstance(OntModel ontModel, SWRLFactory swrlFactory)
+            throws SWRLFactoryException {
+        super.delete();
+
+        //to be commented to avoid SWRL rule evaluation
+        //remove instance from underlying Ont model
+//        Individual i = ontModel.getIndividual(getName());
+//        i.remove();
+//
+//        //remove swrl rule associated to task
+//        SWRLImp rule = swrlFactory
+//                .getImp("http://www.owl-ontologies.com/Datacenter.owl#QoS_Policy_"
+//                + this.getName().split("_")[1] + "_swrl_rule");
+//        rule.delete();
+    }
 }
