@@ -35,6 +35,7 @@ public class OntologyModelFactory implements ModelFactory {
     }
 
     public void persistEntity(ContextElement entity) {
+
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -88,9 +89,12 @@ public class OntologyModelFactory implements ModelFactory {
         File file = new File(ontologyFile);
         try {
             this.owlModel = ProtegeOWL.createJenaOWLModelFromURI(file.toURI().toString());
+
+
         } catch (OntologyLoadException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+
     }
 
 //    public <X> X create(Class<? extends X> javaInterface, String name) {

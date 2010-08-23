@@ -306,7 +306,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                     //  for (ContextResource res : associatedTasks) {
                     // TODO: punem mai multe later on cand consideram ca avem nevoie de mai multe taskuri asociate unei politici
                     ApplicationActivity task = (ApplicationActivity) associatedTasks.iterator().next();
-                    //TODO : make this condition work ! next -> contains task. task is running
+
                     if (serverInstance.getIsActive() && serverInstance.hasResourcesFor(task)
                             && !serverInstance.hostsActivity(task) && !task.isRunning()) {
                         DeployActivity newAction = new DefaultDeployActivity();//(protegeFactory, serverInstance.getName(), task.getName());
@@ -402,11 +402,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //             wake up
 
             for (ServiceCenterServer serverInstance : servers) {
-                if (serverInstance.getIsActive()) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
+                if (serverInstance.getIsActive() && (associatedTasks != null) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
                     System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
-                                    + "_to_" + 1 );
+                                    + "_to_" + 1);
                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
                     //if action is not already in the actions list
                     if (!cs.getActions().contains(newActivity)) {
