@@ -118,9 +118,9 @@ public class PelletJena {
             ApplicationActivity applicationActivity = (ApplicationActivity) businessPolicy.getPolicySubject().get(0);
             try {
 
-                swrlRule = "ApplicationActivity(?x) ^ resourceID(?x,\"" + applicationActivity.getResourceID() + "\") ^ memAllocatedValue(?x,?memAllocated) ^ memRequiredValue(?x, ?memRequiredValue) ^ swrlb:lessThanOrEqual(?memAllocatedValue,?memRequiredValue) \n " +
-                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredValue(?x, ?hddRequiredValue) ^ swrlb:lessThanOrEqual(?hddAllocatedValue,?hddRequiredValue)  \n" +
-                        " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredValue(?x, ?cpuRequiredValue) ^ swrlb:lessThanOrEqual(?cpuAllocatedValue,?cpuRequiredValue) ";
+                swrlRule = "ApplicationActivity(?x) ^ resourceID(?x,\"" + applicationActivity.getResourceID() + "\") ^ memAllocatedValue(?x,?memAllocated) ^ memRequiredMaxValue(?x, ?memMax) ^ memRequiredMinValue(?x,?memMin) ^ swrlb:lessThanOrEqual(?memMin,?memAllocated) ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
+                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
+                        " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuRequired) -> isRespected(" + businessPolicy.getName() + ", true)";
                 System.out.println(swrlRule);
                 SWRLImp imp = factory.createImp(swrlRule);
 
