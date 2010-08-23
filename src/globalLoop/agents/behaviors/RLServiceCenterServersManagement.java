@@ -2,7 +2,7 @@ package globalLoop.agents.behaviors;
 
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
-import model.impl.ontologyImpl.DefaultDeployActivity;
+import model.impl.ontologyImpl.actions.DefaultDeployActivity;
 import model.impl.util.ModelAccess;
 import model.interfaces.ContextSnapshot;
 import model.interfaces.actions.ContextAction;
@@ -371,7 +371,6 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             if (server != null) {
                 Iterator it = server.getRunningActivities().iterator();
                 // move tasks from server
-                //TODO: aici ce se intampla? :P
                 while (it.hasNext()) {
                     ApplicationActivity myTask = (ApplicationActivity) it.next();
                     for (ServiceCenterServer destinationServer : servers) {
@@ -423,7 +422,6 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 }
             }
 
-            //TODO: ce inseamna getIsActive? adik nu trebe energy states de alea?
             // sleep
             for (ServiceCenterServer serverInstance : servers) {
                 if (!serverInstance.getIsActive() && !(serverInstance.getRunningActivities() != null)) {
