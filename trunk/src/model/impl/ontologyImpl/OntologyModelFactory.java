@@ -1,6 +1,5 @@
 package model.impl.ontologyImpl;
 
-
 import edu.stanford.smi.protege.exception.OntologyLoadException;
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
 import edu.stanford.smi.protegex.owl.javacode.ProtegeJavaMapping;
