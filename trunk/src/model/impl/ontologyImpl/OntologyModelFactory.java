@@ -104,6 +104,11 @@ public class OntologyModelFactory implements ModelFactory {
 //        return ProtegeJavaMapping.create(owlModel, javaInterface, name);        //aaaa
 //    }
 
+
+    public OWLModel getOwlModel() {
+        return owlModel;
+    }
+
     public RDFSNamedClass getCoreClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Core";
         final String name = owlModel.getResourceNameForURI(uri);

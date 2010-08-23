@@ -11,12 +11,14 @@ import edu.stanford.smi.protege.exception.OntologyLoadException;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
 import edu.stanford.smi.protegex.owl.jena.JenaOWLModel;
+import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.RDFSNamedClass;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
 import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
 import model.impl.ontologyImpl.OntologyModelFactory;
+import model.impl.util.ModelAccess;
 import model.interfaces.ContextElement;
 import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.policies.ITComputingContextPolicy;
@@ -73,10 +75,11 @@ public class PelletJena {
         model.add(owlModel.getJenaModel());
     }
 
-    public void addRules() {
-        Collection<ITComputingContextPolicy> energyPolicies = protegeFactory.getAllITComputingContextPolicyInstances();
 
-        SWRLFactory factory = new SWRLFactory(owlModel);
+    public static void generateEnergyRules(OWLModel model, ModelAccess modelAccess) {
+        Collection<ITComputingContextPolicy> energyPolicies = modelAccess.getAllITComputingContextPolicyInstances();
+
+        SWRLFactory factory = new SWRLFactory(model);
         String swrlRule = "";
         for (Iterator it = energyPolicies.iterator(); it.hasNext();) {
             try {
@@ -102,8 +105,14 @@ public class PelletJena {
             }
         }
 
+    }
 
-        Collection<BusinessPolicy> businessPolicies = protegeFactory.getAllBusinessPolicyInstances();
+    public static void generateBussinessRules(OWLModel model, ModelAccess modelAccess) {
+        Collection<ITComputingContextPolicy> energyPolicies = modelAccess.getAllITComputingContextPolicyInstances();
+
+        SWRLFactory factory = new SWRLFactory(model);
+        String swrlRule = "";
+        Collection<BusinessPolicy> businessPolicies = modelAccess.getAllBusinessPolicyInstances();
         for (Iterator it = businessPolicies.iterator(); it.hasNext();) {
             BusinessPolicy businessPolicy = (BusinessPolicy) it.next();
             ApplicationActivity applicationActivity = (ApplicationActivity) businessPolicy.getPolicySubject().get(0);
