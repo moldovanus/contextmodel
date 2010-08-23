@@ -246,7 +246,6 @@ public class ServerConfigurator extends AbstractConfigurator {
                 //TODO: de facut ceva cu subject target asta
                 policy.addPolicyTarget(server);
 //                policy.setPriority(1);
-
             }
 
             PelletJena.generateEnergyRules(((OntologyModelFactory) modelAccess.getOntologyModelFactory()).getOwlModel(), modelAccess);
