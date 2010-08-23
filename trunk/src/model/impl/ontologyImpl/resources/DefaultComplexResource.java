@@ -364,7 +364,7 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
                 return false;
             }
         }
-        Collection<HDD> hdds = this.getMemResources();
+        Collection<HDD> hdds = this.getHddResources();
         for (HDD hdd : hdds) {
 
             if (hdd.getCurrentWorkLoad() + task.getHddRequiredMaxValue() > hdd.getMaximumWorkLoad()) {
