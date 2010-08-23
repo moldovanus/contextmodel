@@ -118,9 +118,9 @@ public class PelletJena {
             ApplicationActivity applicationActivity = (ApplicationActivity) businessPolicy.getPolicySubject().get(0);
             try {
 
-                swrlRule = "ContextModel:ApplicationActivity(?x) ^ ContextModel:resourceID(?x,\"" + applicationActivity.getResourceID() + "\") ^ ContextModel:memAllocatedValue(?x,?memAllocated) ^ ContextModel:memRequiredValue(?x, ?memRequiredValue) ^ swrlb:lessThanOrEqual(?memAllocatedValue,?memRequiredValue) \n " +
-                        " ^ ContextModel:hddAllocatedValue(?x,?hddAllocated) ^ ContextModel:hddRequiredValue(?x, ?hddRequiredValue) ^ swrlb:lessThanOrEqual(?hddAllocatedValue,?hddRequiredValue)  \n" +
-                        " ^ ContextModel:cpuAllocatedValue(?x,?cpuAllocated) ^ ContextModel:cpuRequiredValue(?x, ?cpuRequiredValue) ^ swrlb:lessThanOrEqual(?cpuAllocatedValue,?cpuRequiredValue) ";
+                swrlRule = "ApplicationActivity(?x) ^ resourceID(?x,\"" + applicationActivity.getResourceID() + "\") ^ memAllocatedValue(?x,?memAllocated) ^ memRequiredValue(?x, ?memRequiredValue) ^ swrlb:lessThanOrEqual(?memAllocatedValue,?memRequiredValue) \n " +
+                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredValue(?x, ?hddRequiredValue) ^ swrlb:lessThanOrEqual(?hddAllocatedValue,?hddRequiredValue)  \n" +
+                        " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredValue(?x, ?cpuRequiredValue) ^ swrlb:lessThanOrEqual(?cpuAllocatedValue,?cpuRequiredValue) ";
                 System.out.println(swrlRule);
                 SWRLImp imp = factory.createImp(swrlRule);
 
