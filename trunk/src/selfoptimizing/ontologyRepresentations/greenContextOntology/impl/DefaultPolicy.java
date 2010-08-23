@@ -1,5 +1,9 @@
 package selfoptimizing.ontologyRepresentations.greenContextOntology.impl;
 
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
@@ -96,6 +100,28 @@ public abstract class DefaultPolicy extends DefaultContextElement
 //    }
 
     // Property http://www.owl-ontologies.com/Datacenter.owl#respected
+
+
+    public boolean getRespected(OntModel ontModel) {
+
+        Individual ind = ontModel.getIndividual(getName());
+        Property isOK = ontModel.getProperty(getRespectedProperty().getName());
+        RDFNode ok = null;
+        try {
+            ok = ind.getPropertyValue(isOK);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Do not initialize the respected property of the policy. Because when SWRL rule triggers it will add another value not override the last one so the exactly one restriction is broken.");
+            System.err.println(e.getMessage());
+            System.err.println(e.getCause());
+            e.printStackTrace();
+        }
+        if (ok == null) {
+            return false;
+        } else {
+            return ok.toString().contains("true");
+        }
+
+    }
 
     public boolean getRespected() {
         System.err.println("Warning: call to getRespected() in DefaultPolicy. Use getRespected(OntModel model) if valid result expected.\n First does not return correct value( SWRL rules trigger only on OntModel  ");

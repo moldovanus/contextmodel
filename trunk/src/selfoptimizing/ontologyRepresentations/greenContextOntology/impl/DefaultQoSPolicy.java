@@ -1,12 +1,9 @@
 package selfoptimizing.ontologyRepresentations.greenContextOntology.impl;
 
-import com.hp.hpl.jena.ontology.OntModel;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.QoSPolicy;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.ReceivedTaskInfo;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.RequestedTaskInfo;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.Task;
 
 /**
@@ -27,24 +24,25 @@ public class DefaultQoSPolicy extends DefaultPolicy
     }
 
 
-    public boolean getRespected(OntModel ontModel) {
-        Task task = this.getReferenced();
-        ReceivedTaskInfo receivedInfo = task.getReceivedInfo();
-        RequestedTaskInfo requestedInfo = task.getRequestedInfo();
-        if (receivedInfo.getCores() < requestedInfo.getCores()) {
-            return false;
-        }
-        if (receivedInfo.getCpuReceived() < requestedInfo.getCpuMinAcceptableValue()) {
-            return false;
-        }
-        if (receivedInfo.getMemoryReceived() < requestedInfo.getMemoryMinAcceptableValue()) {
-            return false;
-        }
-        if (receivedInfo.getStorageReceived() < requestedInfo.getStorageMinAcceptableValue()) {
-            return false;
-        }
-        return true;
-    }
+//    public boolean getRespected(OntModel ontModel) {
+//        Task task = this.getReferenced();
+//        ReceivedTaskInfo receivedInfo = task.getReceivedInfo();
+//        RequestedTaskInfo requestedInfo = task.getRequestedInfo();
+//        if (receivedInfo.getCores() < requestedInfo.getCores()) {
+//            return false;
+//        }
+//        if (receivedInfo.getCpuReceived() < requestedInfo.getCpuMinAcceptableValue()) {
+//            return false;
+//        }
+//        if (receivedInfo.getMemoryReceived() < requestedInfo.getMemoryMinAcceptableValue()) {
+//            return false;
+//        }
+//        if (receivedInfo.getStorageReceived() < requestedInfo.getStorageMinAcceptableValue()) {
+//            return false;
+//        }
+//        return true;
+//    }
+
 
 // Property http://www.owl-ontologies.com/Datacenter.owl#referenced
 

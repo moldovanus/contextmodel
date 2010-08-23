@@ -1,6 +1,9 @@
 package selfoptimizing.ontologyRepresentations.greenContextOntology.impl;
 
+import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
@@ -23,6 +26,7 @@ public class DefaultContextElement extends DefaultOWLIndividual
     public DefaultContextElement() {
     }
 
+
     /**
      * Sets the property value both on the OWL model and on the ONT model
      * to trigger SWRL rule evaluation
@@ -34,15 +38,15 @@ public class DefaultContextElement extends DefaultOWLIndividual
     public void setPropertyValue(RDFProperty rdfProperty, Object o, OntModel ontModel) {
         super.setPropertyValue(rdfProperty, o);
 
-        //to be commented to avoid SWRL rule evaluation
-//        Individual targetIndividual = ontModel.getIndividual(this.getName());
-//
-//        Property targetProperty = ontModel.getProperty(rdfProperty.getName());
-//        if (targetIndividual.getPropertyValue(targetProperty) != null) {
-//            targetIndividual.removeAll(targetProperty);
-//        }
-//        targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
-//                targetIndividual, targetProperty, o).getLiteral().as(RDFNode.class));
+//        to be commented to avoid SWRL rule evaluation
+        Individual targetIndividual = ontModel.getIndividual(this.getName());
+
+        Property targetProperty = ontModel.getProperty(rdfProperty.getName());
+        if (targetIndividual.getPropertyValue(targetProperty) != null) {
+            targetIndividual.removeAll(targetProperty);
+        }
+        targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
+                targetIndividual, targetProperty, o).getLiteral().as(RDFNode.class));
     }
 
     public final void deleteInstance(OntModel ontModel, SWRLFactory swrlFactory)
