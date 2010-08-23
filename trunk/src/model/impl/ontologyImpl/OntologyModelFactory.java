@@ -46,6 +46,7 @@ public class OntologyModelFactory implements ModelFactory {
 
     private OWLModel owlModel;
 
+
     static {
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DPMAction", DPMAction.class, DefaultDPMAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITComputingResourceAdaptationAction", ITComputingResourceAdaptationAction.class, DefaultITComputingResourceAdaptationAction.class);
@@ -94,7 +95,6 @@ public class OntologyModelFactory implements ModelFactory {
         File file = new File(ontologyFile);
         try {
             this.owlModel = ProtegeOWL.createJenaOWLModelFromURI(file.toURI().toString());
-
 
         } catch (OntologyLoadException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -1948,7 +1948,6 @@ public class OntologyModelFactory implements ModelFactory {
         return result;
     }
 
-
     public RDFSNamedClass getDeployActivityClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#DeployActivity";
         final String name = owlModel.getResourceNameForURI(uri);
@@ -1990,7 +1989,6 @@ public class OntologyModelFactory implements ModelFactory {
         }
         return result;
     }
-
 
     public RDFSNamedClass getEnvironmentPolicyClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#EnvironmentPolicy";
@@ -2034,7 +2032,6 @@ public class OntologyModelFactory implements ModelFactory {
         return result;
     }
 
-
     public RDFSNamedClass getITFacilityResourceAdaptationActionClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityResourceAdaptationAction";
         final String name = owlModel.getResourceNameForURI(uri);
@@ -2077,13 +2074,11 @@ public class OntologyModelFactory implements ModelFactory {
         return result;
     }
 
-
     public RDFProperty getToLowOrHighStateProperty() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#toLowOrHighState";
         final String name = owlModel.getResourceNameForURI(uri);
         return owlModel.getRDFProperty(name);
     }
-
 
     public RDFProperty getStateAfterActionProperty() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#stateAfterAction";
