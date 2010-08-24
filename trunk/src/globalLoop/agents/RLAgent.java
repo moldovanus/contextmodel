@@ -121,6 +121,7 @@ public class RLAgent extends Agent {
         ontModel.add(owlModel.getJenaModel());
 
         test.setTestValue(3, ontModel);
+        test.setTestValue(4, ontModel);
         System.out.println(test.hasTestValue());
 
         System.out.println(test.getTestValue(ontModel));
