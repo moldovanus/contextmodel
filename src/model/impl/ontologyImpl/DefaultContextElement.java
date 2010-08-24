@@ -61,29 +61,42 @@ public class DefaultContextElement extends DefaultOWLIndividual
      * to trigger SWRL rule evaluation
      *
      * @param rdfProperty the slot of the entity
-     * @param o           the value of the property to be inserted in slot rdfProperty
+     * @param value       the value of the property to be inserted in slot rdfProperty
      * @param ontModel    the ont model on which this property will also be set
      */
-    public void setPropertyValue(RDFProperty rdfProperty, Object o, OntModel ontModel) {
-        super.setPropertyValue(rdfProperty, o);
+    public void setPropertyValue(RDFProperty rdfProperty, Object value, OntModel ontModel) {
 
-//        to be commented to avoid SWRL rule evaluation
+        super.setPropertyValue(rdfProperty, value);
         Individual targetIndividual = ontModel.getIndividual(this.getName());
-
+        if (targetIndividual == null) {
+            System.out.println("It is null");
+            System.exit(1);
+        }
         Property targetProperty = ontModel.getProperty(rdfProperty.getName());
         if (targetIndividual.hasProperty(targetProperty)) {
             targetIndividual.removeAll(targetProperty);
         }
         targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
-                targetIndividual, targetProperty, o).getLiteral().as(RDFNode.class));
+                targetIndividual, targetProperty, value).getLiteral().as(RDFNode.class));
     }
 
     public Object getPropertyValue(RDFProperty rdfProperty, OntModel ontModel) {
+        
         Individual targetIndividual = ontModel.getIndividual(this.getName());
+//        ExtendedIterator<Individual> iterator = ontModel.listIndividuals();
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next().getURI());
+//        }
+
         Property targetProperty = ontModel.getProperty(rdfProperty.getName());
+        if (targetIndividual.hasProperty(targetProperty)) {
+            targetIndividual.removeAll(targetProperty);
+        }
+
         System.out.print("ONT val: " + targetIndividual.getPropertyValue(targetProperty));
-        System.out.println("      OWL val: " + super.getPropertyValue(rdfProperty));
-        return super.getPropertyValue(rdfProperty);
+        System.out.println("OWL val: " + super.getPropertyValue(rdfProperty));
+        return targetIndividual.getPropertyValue(targetProperty).asLiteral().getInt();
+
     }
 
     public final void deleteInstance(OntModel ontModel, SWRLFactory swrlFactory)

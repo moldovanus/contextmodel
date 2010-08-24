@@ -109,19 +109,20 @@ public class RLAgent extends Agent {
         TestFactory testFactory = new TestFactory(owlModel);
         SWRLFactory factory = new SWRLFactory(owlModel);
 
-        try {
-            SWRLImp swrlImp = factory.createImp("Test(?x) ->  testValue(?x, 20)");
-            swrlImp.enable();
-        } catch (SWRLParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+//        try {
+//            SWRLImp swrlImp = factory.createImp("Test(?x) ->  testValue(?x, 20)");
+//            swrlImp.enable();
+//        } catch (SWRLParseException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
 
         Test test = testFactory.createTest("TEST_B");
+
+        test.setTestValue(3, ontModel);
+
         ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
         ontModel.add(owlModel.getJenaModel());
 
-        test.setTestValue(3, ontModel);
-        test.setTestValue(4, ontModel);
         System.out.println(test.hasTestValue());
 
         System.out.println(test.getTestValue(ontModel));
