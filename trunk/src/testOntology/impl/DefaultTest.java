@@ -39,12 +39,12 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
 //        }
 
         Property targetProperty = ontModel.getProperty(rdfProperty.getName());
-        if (targetIndividual.hasProperty(targetProperty)) {
-            targetIndividual.removeAll(targetProperty);
-        }
+//        if (targetIndividual.hasProperty(targetProperty)) {
+//            targetIndividual.removeAll(targetProperty);
+//        }
 
         System.out.print("ONT val: " + targetIndividual.getPropertyValue(targetProperty));
-        System.out.println("      OWL val: " + super.getPropertyValue(rdfProperty));
+        System.out.println("  OWL val: " + super.getPropertyValue(rdfProperty));
         return targetIndividual.getPropertyValue(targetProperty).asLiteral().getInt();
     }
 
@@ -64,17 +64,22 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
     public void setTestValue(int newTestValue, OntModel ontModel) {
         //super.setPropertyValue(rdfProperty, o);
         super.setPropertyValue(getTestValueProperty(), new java.lang.Integer(newTestValue));
-        Individual targetIndividual = ontModel.getIndividual(this.getName());
-        if (targetIndividual == null) {
-            System.out.println("It is null");
-            System.exit(1);
-        }
-        Property targetProperty = ontModel.getProperty(getTestValueProperty().getName());
-        if (targetIndividual.hasProperty(targetProperty)) {
-            targetIndividual.removeAll(targetProperty);
-        }
-        targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
-                targetIndividual, targetProperty, newTestValue).getLiteral().as(RDFNode.class));
+//        Individual targetIndividual = ontModel.getIndividual(this.getName());
+//        if (targetIndividual == null) {
+//            System.out.println("It is null");
+//            System.exit(1);
+//        }
+//        Property targetProperty = ontModel.getProperty(getTestValueProperty().getName());
+//        if (targetIndividual.hasProperty(targetProperty)) {
+//            targetIndividual.removeAll(targetProperty);
+//        }
+//        targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
+//                targetIndividual, targetProperty, newTestValue).getLiteral().as(RDFNode.class));
+//
+//        System.out.println("----" + getTestValue(ontModel));
+
+
     }
     //TODO; eventual o metoda de evaluate swrl rule si dai argumente sa nu stric direct ce i pe owlModel :P da vedem noi
+    //TODO; ca raman ontModel si owlModel desincronizate
 }
