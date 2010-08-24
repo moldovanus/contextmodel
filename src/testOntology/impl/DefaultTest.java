@@ -37,10 +37,13 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
 //        while (iterator.hasNext()) {
 //            System.out.println(iterator.next().getURI());
 //        }
+
         Property targetProperty = ontModel.getProperty(rdfProperty.getName());
+        targetIndividual.removeAll(targetProperty);
+
         System.out.print("ONT val: " + targetIndividual.getPropertyValue(targetProperty));
         System.out.println("      OWL val: " + super.getPropertyValue(rdfProperty));
-        return getPropertyValueLiteral(getTestValueProperty()).getInt();
+        return targetIndividual.getPropertyValue(targetProperty).asLiteral().getInt();
     }
 
 
