@@ -4,7 +4,6 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.javacode.AbstractCodeGeneratorIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
@@ -34,10 +33,10 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
     public int getTestValue(OntModel ontModel) {
         RDFProperty rdfProperty = getTestValueProperty();
         Individual targetIndividual = ontModel.getIndividual(this.getName());
-        ExtendedIterator<Individual> iterator = ontModel.listIndividuals();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next().getURI());
-        }
+//        ExtendedIterator<Individual> iterator = ontModel.listIndividuals();
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next().getURI());
+//        }
         Property targetProperty = ontModel.getProperty(rdfProperty.getName());
         System.out.print("ONT val: " + targetIndividual.getPropertyValue(targetProperty));
         System.out.println("      OWL val: " + super.getPropertyValue(rdfProperty));
@@ -58,7 +57,6 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
 
 
     public void setTestValue(int newTestValue, OntModel ontModel) {
-
         //super.setPropertyValue(rdfProperty, o);
         super.setPropertyValue(getTestValueProperty(), new java.lang.Integer(newTestValue));
         Individual targetIndividual = ontModel.getIndividual(this.getName());
@@ -69,7 +67,5 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
         targetIndividual.removeAll(targetProperty);
         targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
                 targetIndividual, targetProperty, newTestValue).getLiteral().as(RDFNode.class));
-
-
     }
 }
