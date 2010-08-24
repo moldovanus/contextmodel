@@ -119,7 +119,7 @@ public class DefaultITFacilityPassiveResource extends DefaultServiceCenterITFaci
 
     public Double getRecordedValue() {
         if (hasRecordedValue()) {
-            return getPropertyValueLiteral(getRecordedValueProperty()).getDouble();
+            return new Double(((Float) (getPropertyValue(getRecordedValueProperty()))));
         } else {
             return 0.0;
         }
