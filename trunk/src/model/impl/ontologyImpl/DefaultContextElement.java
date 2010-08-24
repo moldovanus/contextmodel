@@ -47,8 +47,7 @@ public class DefaultContextElement extends DefaultOWLIndividual
 
     @Override
     public void setPropertyValue(RDFProperty property, Object value) {
-        OntModel ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-        ontModel.add(owlModel.getJenaModel());
+        OntModel ontModel = getOWLModel().getOntModel();
         this.setPropertyValue(property, value, ontModel);
     }
 
@@ -85,8 +84,9 @@ public class DefaultContextElement extends DefaultOWLIndividual
 
         Individual targetIndividual = ontModel.getIndividual(this.getName());
         Property targetProperty = ontModel.getProperty(rdfProperty.getName());
-        return targetIndividual.getPropertyValue(targetProperty);
-
+        System.out.print("ONT val: " + targetIndividual.getPropertyValue(targetProperty));
+        System.out.println("      OWL val: " + super.getPropertyValue(rdfProperty));
+        return super.getPropertyValue(rdfProperty);
     }
 
     public final void deleteInstance(OntModel ontModel, SWRLFactory swrlFactory)

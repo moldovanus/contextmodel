@@ -1,10 +1,12 @@
 package globalLoop.agents;
 
-import globalLoop.agents.behaviors.RLServiceCenterServersManagement;
+import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
+import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
 import gui.datacenterConfiguration.impl.ConfigurationGUI;
 import jade.core.Agent;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
+import model.interfaces.resources.Sensor;
 
 /**
  * Created by IntelliJ IDEA.
@@ -85,10 +87,18 @@ public class RLAgent extends Agent {
 //        System.out.println(passiveResource.getRecordedValue());
 //        action.undo(modelAccess);
 //        System.out.println(passiveResource.getRecordedValue());
-
-
+        Sensor sensor = modelAccess.getSensor("TemperatureSensor_1");
+        sensor.setRecordedValue(3.0);
+        sensor.setMinimumValue(2.0);
+        System.out.println(sensor.getRecordedValue());
+        SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
+        try {
+            factory.createImp("Sensor(?x) ^ minimumValue(?x, ?y) ^ swrlb:lessThan(?y, 5) ->  recordedValue(?x, 20)");
+        } catch (SWRLParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         //addBehaviour(new RLFacilityManagementBehavior(this, 1000, modelAccess));
-        addBehaviour(new RLServiceCenterServersManagement(this, modelAccess, 1000));
+//        addBehaviour(new RLServiceCenterServersManagement(this, modelAccess, 1000));
 
     }
 }
