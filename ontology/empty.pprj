@@ -1,4 +1,4 @@
-; Tue Aug 24 12:20:24 EEST 2010
+; Tue Aug 24 12:47:48 EEST 2010
 ; 
 ;+ (version "3.4.4")
 ;+ (build "Build 579")
@@ -6,11 +6,11 @@
 ([BROWSER_SLOT_NAMES] of  Property_List
 
 	(properties
-		[empty_ProjectKB_Class462]
-		[empty_ProjectKB_Class463]
-		[empty_ProjectKB_Class464]
-		[empty_ProjectKB_Class465]
-		[empty_ProjectKB_Class466]))
+		[empty_ProjectKB_Class467]
+		[empty_ProjectKB_Class468]
+		[empty_ProjectKB_Class469]
+		[empty_ProjectKB_Class470]
+		[empty_ProjectKB_Class471]))
 
 ([CLSES_TAB] of  Widget
 
@@ -79,27 +79,27 @@
 ([empty_ProjectKB_Class108] of  Property_List
 )
 
-([empty_ProjectKB_Class462] of  String
+([empty_ProjectKB_Class467] of  String
 
 	(name ":INSTANCE-ANNOTATION")
 	(string_value "%3AANNOTATION-TEXT"))
 
-([empty_ProjectKB_Class463] of  String
+([empty_ProjectKB_Class468] of  String
 
 	(name "http://www.w3.org/2002/07/owl#Class")
 	(string_value "%3ANAME"))
 
-([empty_ProjectKB_Class464] of  String
+([empty_ProjectKB_Class469] of  String
 
 	(name ":PAL-CONSTRAINT")
 	(string_value "%3APAL-NAME"))
 
-([empty_ProjectKB_Class465] of  String
+([empty_ProjectKB_Class470] of  String
 
 	(name ":META-CLASS")
 	(string_value "%3ANAME"))
 
-([empty_ProjectKB_Class466] of  String
+([empty_ProjectKB_Class471] of  String
 
 	(name "http://www.w3.org/2002/07/owl#Thing")
 	(string_value "%3ANAME"))

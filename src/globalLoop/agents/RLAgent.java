@@ -102,6 +102,7 @@ public class RLAgent extends Agent {
             owlModel = ProtegeOWL.createJenaOWLModelFromURI(file.toURI().toString());
             ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
             ontModel.add(owlModel.getJenaModel());
+            ontModel.add(owlModel.getOntModel());
         } catch (OntologyLoadException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -109,7 +110,7 @@ public class RLAgent extends Agent {
         SWRLFactory factory = new SWRLFactory(owlModel);
 
         try {
-            SWRLImp swrlImp = factory.createImp("Test(?x) ^ testValue(?x,?y) ^ swrlb:equal(?y,1) ->  testValue(?x, 20)");
+            SWRLImp swrlImp = factory.createImp("Test(?x) ^ testValue(?x,?y) ^ swrlb:equal(?y,1)->  testValue(?x, 20)");
             swrlImp.enable();
         } catch (SWRLParseException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -120,7 +121,6 @@ public class RLAgent extends Agent {
         ontModel.add(owlModel.getJenaModel());
 
         test.setTestValue(1, ontModel);
-
         System.out.println(test.hasTestValue());
 
         System.out.println(test.getTestValue(ontModel));
