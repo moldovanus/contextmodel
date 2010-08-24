@@ -61,6 +61,7 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
         super.setPropertyValue(getTestValueProperty(), new java.lang.Integer(newTestValue));
         Individual targetIndividual = ontModel.getIndividual(this.getName());
         if (targetIndividual == null) {
+            System.out.println("It is null");
             System.exit(1);
         }
         Property targetProperty = ontModel.getProperty(getTestValueProperty().getName());
