@@ -39,7 +39,9 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
 //        }
 
         Property targetProperty = ontModel.getProperty(rdfProperty.getName());
-        targetIndividual.removeAll(targetProperty);
+        if (targetIndividual.hasProperty(targetProperty)) {
+            targetIndividual.removeAll(targetProperty);
+        }
 
         System.out.print("ONT val: " + targetIndividual.getPropertyValue(targetProperty));
         System.out.println("      OWL val: " + super.getPropertyValue(rdfProperty));
@@ -68,8 +70,11 @@ public class DefaultTest extends AbstractCodeGeneratorIndividual
             System.exit(1);
         }
         Property targetProperty = ontModel.getProperty(getTestValueProperty().getName());
-        targetIndividual.removeAll(targetProperty);
+        if (targetIndividual.hasProperty(targetProperty)) {
+            targetIndividual.removeAll(targetProperty);
+        }
         targetIndividual.setPropertyValue(targetProperty, ontModel.createLiteralStatement(
                 targetIndividual, targetProperty, newTestValue).getLiteral().as(RDFNode.class));
     }
+    //TODO; eventual o metoda de evaluate swrl rule si dai argumente sa nu stric direct ce i pe owlModel :P da vedem noi
 }
