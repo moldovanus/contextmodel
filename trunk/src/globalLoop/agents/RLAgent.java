@@ -1,12 +1,20 @@
 package globalLoop.agents;
 
+import com.hp.hpl.jena.ontology.OntModel;
+import edu.stanford.smi.protege.exception.OntologyLoadException;
+import edu.stanford.smi.protegex.owl.ProtegeOWL;
+import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
+import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
 import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
-import gui.datacenterConfiguration.impl.ConfigurationGUI;
+import globalLoop.utils.GlobalVars;
 import jade.core.Agent;
-import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
-import model.interfaces.resources.Sensor;
+import org.mindswap.pellet.jena.PelletReasonerFactory;
+import testOntology.Test;
+import testOntology.TestFactory;
+
+import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,9 +30,9 @@ public class RLAgent extends Agent {
     protected void setup() {
         System.out.println("RLAgent " + getLocalName() + " started.");
 
-        modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
-        ConfigurationGUI gui = new ConfigurationGUI(modelAccess);
-        gui.setVisible(true);
+//        modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
+//        ConfigurationGUI gui = new ConfigurationGUI(modelAccess);
+//        gui.setVisible(true);
 
 //        FacilityDefaultAction facilityDefaultAction = modelAccess.createFacilityDefaultAction("Test_Action");
 //
@@ -87,16 +95,34 @@ public class RLAgent extends Agent {
 //        System.out.println(passiveResource.getRecordedValue());
 //        action.undo(modelAccess);
 //        System.out.println(passiveResource.getRecordedValue());
-        Sensor sensor = modelAccess.getSensor("TemperatureSensor_1");
-        sensor.setRecordedValue(3.0);
-        sensor.setMinimumValue(2.0);
-        System.out.println(sensor.getRecordedValue());
-        SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
+        OWLModel owlModel = null;
+        OntModel ontModel = null;
+        File file = new File(GlobalVars.ONTOLOGY_FILE);
         try {
-            factory.createImp("Sensor(?x) ^ minimumValue(?x, ?y) ^ swrlb:lessThan(?y, 5) ->  recordedValue(?x, 20)");
+            owlModel = ProtegeOWL.createJenaOWLModelFromURI(file.toURI().toString());
+            ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+            ontModel.add(owlModel.getJenaModel());
+        } catch (OntologyLoadException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        TestFactory testFactory = new TestFactory(owlModel);
+        SWRLFactory factory = new SWRLFactory(owlModel);
+        try {
+            SWRLImp swrlImp = factory.createImp("Test(?x) ^ testValue(?x,?y) ^ swrlb:equal(testValue,1) -> testValue(?x, 20)");
+            swrlImp.enable();
         } catch (SWRLParseException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+
+        Test test = testFactory.createTest("TEST_A");
+        ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+        ontModel.add(owlModel.getJenaModel());
+
+        test.setTestValue(1, ontModel);
+        System.out.println(test.hasTestValue());
+
+        System.out.println(test.getTestValue(ontModel));
+
         //addBehaviour(new RLFacilityManagementBehavior(this, 1000, modelAccess));
 //        addBehaviour(new RLServiceCenterServersManagement(this, modelAccess, 1000));
 
