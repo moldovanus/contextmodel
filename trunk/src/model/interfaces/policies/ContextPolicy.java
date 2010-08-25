@@ -42,11 +42,11 @@ public interface ContextPolicy extends ContextElement {
 
     void setEvaluationCondition(String condition);
 
-    boolean isRespected();
-
-    void setRespected(boolean value);
-
-
+//    boolean isRespected();
+//
+//    void setRespected(boolean value);
+//
+    public String getIsRespectedPropertyName();
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#policyWeight
 
     float getPolicyWeight();

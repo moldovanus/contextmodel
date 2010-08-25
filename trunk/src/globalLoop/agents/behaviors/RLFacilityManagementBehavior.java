@@ -15,7 +15,10 @@ import model.interfaces.policies.EnvironmentPolicy;
 import model.interfaces.resources.ContextResource;
 import model.interfaces.resources.ITFacilityActiveResource;
 import model.interfaces.resources.Sensor;
+import reasoning.Evaluator;
+import reasoning.impl.PelletEvaluator;
 import selfoptimizing.utils.Pair;
+import utils.exceptions.IndividualNotFoundException;
 
 import java.util.*;
 
@@ -42,13 +45,17 @@ public class RLFacilityManagementBehavior extends TickerBehaviour {
         EnvironmentPolicy brokenPolicy = null;
         double entropy = 0.0;
         Collection<EnvironmentPolicy> policies = modelAccess.getAllEnvironmentPolicyInstances();
-
+        Evaluator evaluator = new PelletEvaluator(modelAccess.getOntologyModelFactory().getOwlModel());
         for (EnvironmentPolicy policy : policies) {
-            if (!policy.isRespected()) {
-                if (brokenPolicy == null) {
-                    brokenPolicy = policy;
+            try {
+                if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
+                    if (brokenPolicy == null) {
+                        brokenPolicy = policy;
+                    }
+                    entropy++;
                 }
-                entropy++;
+            } catch (IndividualNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
 
@@ -158,23 +165,27 @@ public class RLFacilityManagementBehavior extends TickerBehaviour {
         //set for printing
         ArrayList<String> brokenPoliciesNames = new ArrayList<String>();
         Collection<EnvironmentPolicy> policies = modelAccess.getAllEnvironmentPolicyInstances();
-
+       Evaluator evaluator = new PelletEvaluator(modelAccess.getOntologyModelFactory().getOwlModel());
         for (ContextPolicy policy : policies) {
             Collection<ContextResource> sensors = policy.getPolicySubject();
 
-            if (!policy.isRespected()) {
+            try {
+                if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
 
-                brokenPoliciesNames.add(policy.getName());
+                    brokenPoliciesNames.add(policy.getName());
 
-                for (ContextResource s : sensors) {
-                    Sensor sensor = (Sensor) s;
-                    if (!sensor.hasAcceptableValue(modelAccess)) {
-                        brokenResources.put(sensor.getLocalName(), sensor.getLocalName());
-                    } else {
-                        //validResources.put(sensor.getLocalName(), sensor.getLocalName());
+                    for (ContextResource s : sensors) {
+                        Sensor sensor = (Sensor) s;
+                        if (!sensor.hasAcceptableValue(modelAccess)) {
+                            brokenResources.put(sensor.getLocalName(), sensor.getLocalName());
+                        } else {
+                            //validResources.put(sensor.getLocalName(), sensor.getLocalName());
+                        }
                     }
-                }
 
+                }
+            } catch (IndividualNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
 

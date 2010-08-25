@@ -23,7 +23,7 @@ public interface IModelAPI {
 
     boolean isPUEMetricFulfilled(ModelFactory modelFactory);
 
-    List<ContextPolicy> brokenContextPolicies(List<ContextPolicy> allPolicies, ModelFactory modelFactory);
+//    List<ContextPolicy> brokenContextPolicies(List<ContextPolicy> allPolicies, ModelFactory modelFactory);
 
     Event signalStorageController(ModelFactory modelFactory);
 }

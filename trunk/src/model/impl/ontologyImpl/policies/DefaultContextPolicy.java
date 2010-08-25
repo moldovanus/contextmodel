@@ -76,6 +76,10 @@ public abstract class DefaultContextPolicy extends DefaultContextElement
         }
     }
 
+    public String getIsRespectedPropertyName() {
+        return "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#isRespected";
+    }
+
     public RDFProperty getIsRespectedProperty() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#isRespected";
         final String name = getOWLModel().getResourceNameForURI(uri);
