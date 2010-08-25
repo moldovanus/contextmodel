@@ -198,7 +198,7 @@ public class TaskConfigurator extends AbstractConfigurator {
                 task.setHddAllocatedValue(0);
 
                 QoSPolicy policy = modelAccess.createQoSPolicy(task.getLocalName() + "_QoSPolicy_");
-                policy.setRespected(false);
+//                policy.setRespected(false);
                 policy.addPolicySubject(task);
                 policy.addPolicyTarget(task);
                 policy.setPolicyWeight(1.0f);

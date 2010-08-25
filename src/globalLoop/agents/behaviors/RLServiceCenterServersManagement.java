@@ -13,7 +13,10 @@ import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.policies.QoSPolicy;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
+import reasoning.Evaluator;
+import reasoning.impl.PelletEvaluator;
 import selfoptimizing.utils.Pair;
+import utils.exceptions.IndividualNotFoundException;
 
 import java.util.*;
 
@@ -136,7 +139,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         GPI_KPI_Policy brokenPolicy = null;
         double entropy = 0.0;
         Collection<QoSPolicy> qosPolicies = modelAccess.getAllQoSPolicyInstances();
-
+        Evaluator evaluator = new PelletEvaluator(modelAccess.getOntologyModelFactory().getOwlModel());
         for (QoSPolicy policy : qosPolicies) {
 
             Collection<ContextResource> task = policy.getPolicySubject();
@@ -144,15 +147,19 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             if (task == null) {
                 continue;
             }
-            if (!policy.isRespected()) {
-                if (brokenPolicy == null) {
-                    brokenPolicy = policy;
-                }
-                if (policy.hasPolicyWeight()) {
-                    for (ContextResource app : task) {
-                        entropy += policy.getPolicyWeight() * taskRespectanceDegree((ApplicationActivity) app);
+            try {
+                if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
+                    if (brokenPolicy == null) {
+                        brokenPolicy = policy;
+                    }
+                    if (policy.hasPolicyWeight()) {
+                        for (ContextResource app : task) {
+                            entropy += policy.getPolicyWeight() * taskRespectanceDegree((ApplicationActivity) app);
+                        }
                     }
                 }
+            } catch (IndividualNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
 
@@ -162,15 +169,19 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             for (ContextResource r : servers) {
                 ServiceCenterServer server = (ServiceCenterServer) r;
                 if (server.getCurrentEnergyState() != 0)
-                    if (!policy.isRespected()) {
-                        System.out.println("Broken server : " + server);
-                        if (brokenPolicy == null) {
-                            brokenPolicy = policy;
+                    try {
+                        if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
+                            System.out.println("Broken server : " + server);
+                            if (brokenPolicy == null) {
+                                brokenPolicy = policy;
+                            }
+                            if (policy.hasPolicyWeight()) {
+                                entropy += policy.getPolicyWeight() * energyRespectanceDegree(server);
+                            } else
+                                entropy += energyRespectanceDegree((ServiceCenterServer) r);
                         }
-                        if (policy.hasPolicyWeight()) {
-                            entropy += policy.getPolicyWeight() * energyRespectanceDegree(server);
-                        } else
-                            entropy += energyRespectanceDegree((ServiceCenterServer) r);
+                    } catch (IndividualNotFoundException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                     }
             }
         }

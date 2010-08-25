@@ -35,7 +35,7 @@ public final class GlobalVars {
     public static final String DATA_NAME = "data-name";
     public static final String DATA_VALUE = "data-value";
     public static final String CONTEXT_ELEMENT = "context-element";
-    public static final String ONTOLOGY_FILE = "./ontology/empty.owl";
+    public static final String ONTOLOGY_FILE = "./ontology/context_KAON.rdf-xml.owl";
     public static final String POLICIES_FILE = "ontology/TestPolicies.xml";
     public static final String MEMORY_SELFHEALING_FILE = "memory/memorySelfHealing.dat";
     public static final String MEMORY_SELFOPTIMIZING_FILE = "memory/memorySelfOptimizing.dat";

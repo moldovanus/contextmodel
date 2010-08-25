@@ -7,6 +7,9 @@ import model.interfaces.policies.ContextPolicy;
 import model.interfaces.resources.ComplexResource;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.SimpleResource;
+import reasoning.Evaluator;
+import reasoning.impl.PelletEvaluator;
+import utils.exceptions.IndividualNotFoundException;
 
 import java.util.*;
 
@@ -42,16 +45,21 @@ public class ModelAPI implements IModelAPI {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public List<ContextPolicy> brokenContextPolicies(List<ContextPolicy> allPolicies, ModelFactory modelFactory) {
-        Collection<ContextPolicy> policies = modelFactory.getAllContextPolicyInstances();
-        List<ContextPolicy> brokenPolicies = new ArrayList<ContextPolicy>();
-        for (ContextPolicy policy : policies) {
-            if (!policy.isRespected()) {
-                brokenPolicies.add(policy);
-            }
-        }
-        return brokenPolicies;
-    }
+//    public List<ContextPolicy> brokenContextPolicies(List<ContextPolicy> allPolicies, ModelFactory modelFactory) {
+//        Collection<ContextPolicy> policies = modelFactory.getAllContextPolicyInstances();
+//        List<ContextPolicy> brokenPolicies = new ArrayList<ContextPolicy>();
+//        Evaluator evaluator = new PelletEvaluator(modelFactory.getOntologyModelFactory().getOwlModel());
+//        for (ContextPolicy policy : policies) {
+//            try {
+//                if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
+//                    brokenPolicies.add(policy);
+//                }
+//            } catch (IndividualNotFoundException e) {
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            }
+//        }
+//        return brokenPolicies;
+//    }
 
     public Event signalStorageController(ModelFactory modelFactory) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.

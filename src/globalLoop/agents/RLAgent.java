@@ -7,8 +7,11 @@ import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
 import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
+import globalLoop.agents.behaviors.RLServiceCenterServersManagement;
 import globalLoop.utils.GlobalVars;
+import gui.datacenterConfiguration.impl.ConfigurationGUI;
 import jade.core.Agent;
+import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 import testOntology.Test;
@@ -30,9 +33,9 @@ public class RLAgent extends Agent {
     protected void setup() {
         System.out.println("RLAgent " + getLocalName() + " started.");
 
-//        modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
-//        ConfigurationGUI gui = new ConfigurationGUI(modelAccess);
-//        gui.setVisible(true);
+        modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
+        ConfigurationGUI gui = new ConfigurationGUI(modelAccess);
+        gui.setVisible(true);
 
 //        FacilityDefaultAction facilityDefaultAction = modelAccess.createFacilityDefaultAction("Test_Action");
 //
@@ -95,40 +98,40 @@ public class RLAgent extends Agent {
 //        System.out.println(passiveResource.getRecordedValue());
 //        action.undo(modelAccess);
 //        System.out.println(passiveResource.getRecordedValue());
-        OWLModel owlModel = null;
-        OntModel ontModel = null;
-        File file = new File(GlobalVars.ONTOLOGY_FILE);
-        try {
-            owlModel = ProtegeOWL.createJenaOWLModelFromURI(file.toURI().toString());
-            ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-            ontModel.add(owlModel.getJenaModel());
-            ontModel.add(owlModel.getOntModel());
-        } catch (OntologyLoadException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        TestFactory testFactory = new TestFactory(owlModel);
-        SWRLFactory factory = new SWRLFactory(owlModel);
-
+//        OWLModel owlModel = null;
+//        OntModel ontModel = null;
+//        File file = new File(GlobalVars.ONTOLOGY_FILE);
+//        try {
+//            owlModel = ProtegeOWL.createJenaOWLModelFromURI(file.toURI().toString());
+//            ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+//            ontModel.add(owlModel.getJenaModel());
+//            ontModel.add(owlModel.getOntModel());
+//        } catch (OntologyLoadException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+//        TestFactory testFactory = new TestFactory(owlModel);
+//        SWRLFactory factory = new SWRLFactory(owlModel);
+//
 //        try {
 //            SWRLImp swrlImp = factory.createImp("Test(?x) ->  testValue(?x, 20)");
 //            swrlImp.enable();
 //        } catch (SWRLParseException e) {
 //            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 //        }
-
-        Test test = testFactory.createTest("TEST_B");
-
-        test.setTestValue(3, ontModel);
-
-        ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-        ontModel.add(owlModel.getJenaModel());
-
-        System.out.println(test.hasTestValue());
-
-        System.out.println(test.getTestValue(ontModel));
+//
+//        Test test = testFactory.createTest("TEST_B");
+//
+////        test.setTestValue(3, ontModel);
+//
+//        ontModel = com.hp.hpl.jena.rdf.model.ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+//        ontModel.add(owlModel.getJenaModel());
+//
+//        System.out.println(test.hasTestValue());
+//
+//        System.out.println(test.getTestValue(ontModel));
 
         //addBehaviour(new RLFacilityManagementBehavior(this, 1000, modelAccess));
-//        addBehaviour(new RLServiceCenterServersManagement(this, modelAccess, 1000));
+        addBehaviour(new RLServiceCenterServersManagement(this, modelAccess, 1000));
 
     }
 }
