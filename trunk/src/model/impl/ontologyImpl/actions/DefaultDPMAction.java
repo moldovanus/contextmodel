@@ -149,4 +149,9 @@ public class DefaultDPMAction extends DefaultITComputingResourceAdaptationAction
     public boolean equals(Object o) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
+
+     @Override
+    public String toString() {
+        return this.getName();
+    }
 }

@@ -109,4 +109,9 @@ public class DefaultITFacilityResourceAdaptationAction extends DefaultContextAct
         DefaultITFacilityResourceAdaptationAction activity = (DefaultITFacilityResourceAdaptationAction) o;
         return activity.getFacilityAction().equals(this.getFacilityAction());
     }
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }

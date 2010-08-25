@@ -1,5 +1,7 @@
 package model.interfaces.resources;
 
+import model.interfaces.policies.BusinessPolicy;
+
 import java.util.Collection;
 
 /**
@@ -166,4 +168,17 @@ public interface BusinessContextResource extends ContextResource {
     boolean hasPerformanceEstimation();
 
     void setPerformanceEstimation(float newPerformanceEstimation);
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies
+
+    Collection getActivityPolicies();
+
+    boolean hasActivityPolicies();
+
+    void addActivityPolicies(BusinessPolicy newActivityPolicies);
+
+    void removeActivityPolicies(BusinessPolicy oldActivityPolicies);
+
+    void setActivityPolicies(Collection newActivityPolicies);
+
 }

@@ -165,4 +165,6 @@ public abstract class DefaultContextAction extends DefaultContextElement
 
     @Override
     public abstract boolean equals(Object o);
+
+    public abstract String toString();
 }

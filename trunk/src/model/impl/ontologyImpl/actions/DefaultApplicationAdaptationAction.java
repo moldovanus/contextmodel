@@ -40,4 +40,9 @@ public class DefaultApplicationAdaptationAction extends DefaultContextAction
 
         throw new UnsupportedOperationException("not implemented yet");
     }
+
+     @Override
+    public String toString() {
+        return this.getName();
+    }
 }

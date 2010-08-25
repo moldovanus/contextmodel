@@ -4,6 +4,7 @@ import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.impl.ontologyImpl.resources.DefaultBusinessContextResource;
+import model.interfaces.ContextElement;
 import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.resources.applications.ApplicationActivity;
 
@@ -72,5 +73,44 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
     public boolean isRunning() {
         return getCpuAllocatedValue() > 0;
     }
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
+
+       public Collection getPartOf() {
+           return getPropertyValuesAs(getPartOfProperty(), ContextElement.class);
+       }
+
+
+       public RDFProperty getPartOfProperty() {
+           final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf";
+           final String name = getOWLModel().getResourceNameForURI(uri);
+           return getOWLModel().getRDFProperty(name);
+       }
+
+
+       public boolean hasPartOf() {
+           return getPropertyValueCount(getPartOfProperty()) > 0;
+       }
+
+
+       public Iterator listPartOf() {
+           return listPropertyValuesAs(getPartOfProperty(), ContextElement.class);
+       }
+
+
+       public void addPartOf(ContextElement newPartOf) {
+           addPropertyValue(getPartOfProperty(), newPartOf);
+       }
+
+
+       public void removePartOf(ContextElement oldPartOf) {
+           removePropertyValue(getPartOfProperty(), oldPartOf);
+       }
+
+
+       public void setPartOf(Collection newPartOf) {
+           setPropertyValues(getPartOfProperty(), newPartOf);
+       }
+    
 
 }

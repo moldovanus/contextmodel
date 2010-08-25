@@ -33,4 +33,20 @@ public interface ApplicationActivity extends BusinessContextResource {
 
     boolean isRunning();
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
+
+    Collection getPartOf();
+
+    RDFProperty getPartOfProperty();
+
+    boolean hasPartOf();
+
+    Iterator listPartOf();
+
+    void addPartOf(ContextElement newPartOf);
+
+    void removePartOf(ContextElement oldPartOf);
+
+    void setPartOf(Collection newPartOf);
+
 }
