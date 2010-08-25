@@ -3,7 +3,11 @@ package model.impl.ontologyImpl.resources;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.resources.BusinessContextResource;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
@@ -405,4 +409,46 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     public void setPerformanceEstimation(float newPerformanceEstimation) {
         setPropertyValue(getPerformanceEstimationProperty(), new java.lang.Float(newPerformanceEstimation));
     }
+
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies
+
+    public Collection getActivityPolicies() {
+        return getPropertyValuesAs(getActivityPoliciesProperty(), BusinessPolicy.class);
+    }
+
+
+    public RDFProperty getActivityPoliciesProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasActivityPolicies() {
+        return getPropertyValueCount(getActivityPoliciesProperty()) > 0;
+    }
+
+
+    public Iterator listActivityPolicies() {
+        return listPropertyValuesAs(getActivityPoliciesProperty(), BusinessPolicy.class);
+    }
+
+
+    public void addActivityPolicies(BusinessPolicy newActivityPolicies) {
+        addPropertyValue(getActivityPoliciesProperty(), newActivityPolicies);
+    }
+
+
+    public void removeActivityPolicies(BusinessPolicy oldActivityPolicies) {
+        removePropertyValue(getActivityPoliciesProperty(), oldActivityPolicies);
+    }
+
+
+    public void setActivityPolicies(Collection newActivityPolicies) {
+        setPropertyValues(getActivityPoliciesProperty(), newActivityPolicies);
+    }
+
+    
 }

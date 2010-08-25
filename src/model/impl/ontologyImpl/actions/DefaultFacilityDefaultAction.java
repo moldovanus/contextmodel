@@ -67,4 +67,9 @@ public class DefaultFacilityDefaultAction extends DefaultContextAction
         DefaultFacilityDefaultAction action = (DefaultFacilityDefaultAction) o;
         return action.getName().equals(this.getName()) || action.getResources().equals(this.getResources()) && action.getEffect().equals(this.getEffect());
     }
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }

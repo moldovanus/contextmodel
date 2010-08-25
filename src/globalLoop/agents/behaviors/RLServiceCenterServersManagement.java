@@ -168,7 +168,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Collection<ContextResource> servers = policy.getPolicySubject();
             for (ContextResource r : servers) {
                 ServiceCenterServer server = (ServiceCenterServer) r;
-                if (server.getCurrentEnergyState() != 0)
+                if (server.getIsActive())
                     try {
                         if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
                             System.out.println("Broken server : " + server);
