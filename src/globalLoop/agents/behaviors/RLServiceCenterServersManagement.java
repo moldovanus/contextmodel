@@ -1,5 +1,7 @@
 package globalLoop.agents.behaviors;
 
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import model.impl.util.ModelAccess;
@@ -18,6 +20,10 @@ import reasoning.impl.PelletEvaluator;
 import selfoptimizing.utils.Pair;
 import utils.exceptions.IndividualNotFoundException;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -330,7 +336,15 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                             cs.getActions().add(newAction);
                             deployed = true;
                             newAction.execute(modelAccess);
-
+//                            OntModel ontModel = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
+//                            ontModel.add(modelAccess.getOntologyModelFactory().getOwlModel().getJenaModel());
+//                            try {
+//                                ontModel.write(new BufferedWriter(new FileWriter(new File("./ontology/context_KAON_1.rdf-xml.owl"))));
+//                            } catch (IOException e) {
+//                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//                            }
+//
+//                            System.exit(1);
                             Double afterExecuteEntropy = computeEntropy().getFirst();
                             cs.setContextEntropy(afterExecuteEntropy);
                             cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));

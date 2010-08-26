@@ -198,6 +198,9 @@ public class ServerConfigurator extends AbstractConfigurator {
             for (ITComputingContextPolicy policy : modelAccess.getAllITComputingContextPolicyInstances()) {
                 policy.delete();
             }
+            ArrayList<Integer> energyStates = new ArrayList<Integer>();
+            energyStates.add(0);
+            energyStates.add(1);
 
             for (String[] data : rowsData) {
                 String serverName = data[0].trim();
@@ -210,9 +213,16 @@ public class ServerConfigurator extends AbstractConfigurator {
 //                server.setVirtualMachinesPath(virtualMachinesPath);
                 server.setIsActive(false);
                 server.setResourceID(server.getName());
+                server.setEnergyStates(energyStates);
+                server.setCurrentEnergyState(0);
+       
+                server.addResourceWorkloadProperty("Workload_Property");
 
-                CPU cpu = modelAccess.createCPU(serverName + "_CPU");
+                CPU cpu = modelAccess.createCPU(serverName + "_CPU_");
                 cpu.setResourceID(cpu.getName());
+                cpu.setCurrentEnergyState(0);
+                
+
                 server.setCPUWeight(0.5f);
                 int coreCount = Integer.parseInt(data[4].trim());
 
@@ -223,9 +233,12 @@ public class ServerConfigurator extends AbstractConfigurator {
                     //TODO: daca bagam max si min workload. 
 //                    core.setMaxAcceptableValue(Integer.parseInt(data[7].trim()));
                     cpu.addAssociatedCore(core);
-
+                    core.setEnergyStates(energyStates);
+                    core.setResourceID(core.getName());
+                    core.addPartOf(cpu);
+                    core.setCurrentEnergyState(0);
                 }
-
+                cpu.setEnergyStates(energyStates);
                 server.addCpuResource(cpu);
 
                 MEM memory = modelAccess.createMEM(serverName + "_Memory");
@@ -233,6 +246,9 @@ public class ServerConfigurator extends AbstractConfigurator {
                 memory.setMaximumWorkLoad(Double.parseDouble(data[8].trim()));
                 memory.setOptimalWorkLoad(Double.parseDouble(data[9].trim()));
 //                memory.setMaxAcceptableValue(Integer.parseInt(data[10].trim()));
+                memory.setEnergyStates(energyStates);
+                memory.setCurrentEnergyState(0);
+
                 server.setMEMWeight(0.25f);
 
                 server.addMemResource(memory);
@@ -241,16 +257,21 @@ public class ServerConfigurator extends AbstractConfigurator {
                 storage.setResourceID(storage.getName());
                 storage.setMaximumWorkLoad(Double.parseDouble(data[11].trim()));
                 storage.setOptimalWorkLoad(Double.parseDouble(data[12].trim()));
+                storage.setEnergyStates(energyStates);
 //                storage.setMaxAcceptableValue(Integer.parseInt(data[13].trim()));
                 server.setHDDWeight(0.25f);
-
                 server.addHddResources(storage);
+                storage.setCurrentEnergyState(0);
 
                 ITComputingContextPolicy policy = modelAccess.createITComputingContextPolicy(server.getLocalName() + "_EnergyPolicy");
                 policy.addPolicySubject(server);
                 //TODO: de facut ceva cu subject target asta
                 policy.addPolicyTarget(server);
                 policy.setPolicyWeight(1.0f);
+
+                cpu.addPartOf(server);
+                memory.addPartOf(server);
+                storage.addPartOf(server);
 //                policy.setPriority(1);
             }
 

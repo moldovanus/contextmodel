@@ -22,9 +22,7 @@ import model.impl.util.ModelAccess;
 import model.interfaces.ContextElement;
 import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.policies.ITComputingContextPolicy;
-import model.interfaces.resources.ComplexResource;
-import model.interfaces.resources.ServiceCenterITComputingResource;
-import model.interfaces.resources.SimpleResource;
+import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
@@ -94,7 +92,13 @@ public class PelletJena {
                 int a = 0;
                 //am trecut sqwrl builtins pe swrlb ca primele nu-s suportate de pellet
                 for (Object assocResource : assocResources) {
+                    if (assocResource instanceof CPU) {
+                        continue;
+                    }
                     SimpleResource simpleResource = (SimpleResource) assocResource;
+                    if (a != 0) {
+                        swrlRule += " ^ ";
+                    }
                     swrlRule += "SimpleResource(?a" + a + ") ^ resourceID(?a" + a + ",\"" + simpleResource.getResourceID() + "\")" +
                             " ^ currentWorkload(?a" + a + ",?cWorkload" + a + ")" +
                             " ^ maximumWorkload(?a" + a + ",?maxWorkload" + a + ")" +
@@ -105,10 +109,32 @@ public class PelletJena {
                             // " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
                             // " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
                             // " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
-                            " ^ swrlb:lessThanOrEqual(0" + a + ",?cWorkload" + a + ")" +
-                            " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")"
+                            " ^ swrlb:lessThanOrEqual(0" + ",?cWorkload" + a + ")" +
+                            " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ") \n"
                             ;
                     a++;
+                }
+
+                for (Object assocResource : compResource.getCpuResources()) {
+                    for (SimpleResource simpleResource : ((CPU) assocResource).getAssociatedCores()) {
+                        if (a != 0) {
+                            swrlRule += " ^ ";
+                        }
+                        swrlRule += "SimpleResource(?core_" + a + ") ^ resourceID(?a" + a + ",\"" + simpleResource.getResourceID() + "\")" +
+                                " ^ currentWorkload(?core_" + a + ",?cWorkload" + a + ")" +
+                                " ^ maximumWorkload(?core_" + a + ",?maxWorkload" + a + ")" +
+                                " ^ optimalWorkload(?core_" + a + ",?optWorkload" + a + ")" +
+                                //" ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")" +
+                                //  " ^ swrlb:multiply(?downDif" + a + ",0.5 , ?optWorkload" + a + ")" +
+                                // " ^ swrlb:subtract(?sumOf" + a + ", ?maxWorkload" + a + ",?optWorkload" + a + ")" +
+                                // " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
+                                // " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
+                                // " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
+                                " ^ swrlb:lessThanOrEqual(0" + ",?cWorkload" + a + ")" +
+                                " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ") \n"
+                                ;
+                        a++;
+                    }
                 }
 
                 System.out.println(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");

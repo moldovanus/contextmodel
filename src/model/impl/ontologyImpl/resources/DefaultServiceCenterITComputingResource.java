@@ -17,6 +17,7 @@ import java.util.List;
  *
  * @version generated on Tue Jul 06 17:49:10 GMT 2010
  */
+//TODO: de facut abstracta
 public class DefaultServiceCenterITComputingResource extends DefaultContextResource
         implements ServiceCenterITComputingResource {
 
