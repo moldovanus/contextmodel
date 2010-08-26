@@ -245,7 +245,7 @@ public class ServerConfigurator extends AbstractConfigurator {
 
                 server.addHddResources(storage);
 
-                ITComputingContextPolicy policy = modelAccess.createITComputingContextPolicy(server.getName() + "_EnergyPolicy");
+                ITComputingContextPolicy policy = modelAccess.createITComputingContextPolicy(server.getLocalName() + "_EnergyPolicy");
                 policy.addPolicySubject(server);
                 //TODO: de facut ceva cu subject target asta
                 policy.addPolicyTarget(server);
