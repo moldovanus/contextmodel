@@ -23,17 +23,6 @@ public abstract class DefaultITComputingResourceAdaptationAction extends Default
     public DefaultITComputingResourceAdaptationAction() {
     }
 
-    @Override
-    public void execute(ModelAccess modelAccess) {
-        throw new UnsupportedOperationException("not implemented yet");
-    }
-
-    @Override
-    public void undo(ModelAccess modelAccess) {
-        throw new UnsupportedOperationException("not implemented yet");
-    }
-
-
     /*
   // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceFrom
 

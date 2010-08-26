@@ -359,7 +359,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                         while (it.hasNext()) {
                             ApplicationActivity myTask = (ApplicationActivity) it.next();
                             for (ServiceCenterServer destinationServer : servers1) {
-                                if (!destinationServer.getIsActive() && destinationServer.hasResourcesFor(myTask)
+                                if (destinationServer.getIsActive() && destinationServer.hasResourcesFor(myTask)
                                         && !destinationServer.hostsActivity(myTask)) {
                                     MigrateActivity newAction =
                                             modelAccess.createMigrateActivity("Migrate_from_"
@@ -395,7 +395,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 while (it.hasNext()) {
                     ApplicationActivity myTask = (ApplicationActivity) it.next();
                     for (ServiceCenterServer destinationServer : servers) {
-                        if (!destinationServer.getIsActive() && !destinationServer.hostsActivity(myTask)
+                        if (destinationServer.getIsActive() && !destinationServer.hostsActivity(myTask)
                                 && destinationServer.hasResourcesFor(myTask)) {
                             MigrateActivity newAction = modelAccess.createMigrateActivity("Migrate_from_"
                                     + server.getName()
@@ -422,7 +422,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //             wake up
 
             for (ServiceCenterServer serverInstance : servers) {
-                if ((serverInstance.getCurrentEnergyState() == 0) && (associatedTasks.size() != 0) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
+                if ((!serverInstance.getIsActive()) && (associatedTasks.size() != 0) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
                     System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
@@ -532,6 +532,5 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             ContextSnapshot result = reinforcementLearning(queue);
             result.executeActions(modelAccess);
         }
-        //TODO: execute result.getActions()!!!
     }
 }
