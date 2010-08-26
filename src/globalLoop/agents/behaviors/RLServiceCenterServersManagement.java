@@ -1,7 +1,5 @@
 package globalLoop.agents.behaviors;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import model.impl.util.ModelAccess;
@@ -20,10 +18,6 @@ import reasoning.impl.PelletEvaluator;
 import selfoptimizing.utils.Pair;
 import utils.exceptions.IndividualNotFoundException;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -534,9 +528,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));
         queue.add(initialContext);
 
-        if (entropyAndPolicy.getSecond() != null) {
+        if (entropyAndPolicy.getFirst() > 0) {
             ContextSnapshot result = reinforcementLearning(queue);
             result.executeActions(modelAccess);
         }
+        //TODO: execute result.getActions()!!!
     }
 }

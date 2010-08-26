@@ -22,7 +22,10 @@ import model.impl.util.ModelAccess;
 import model.interfaces.ContextElement;
 import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.policies.ITComputingContextPolicy;
-import model.interfaces.resources.*;
+import model.interfaces.resources.CPU;
+import model.interfaces.resources.ComplexResource;
+import model.interfaces.resources.ServiceCenterITComputingResource;
+import model.interfaces.resources.SimpleResource;
 import model.interfaces.resources.applications.ApplicationActivity;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
@@ -103,14 +106,14 @@ public class PelletJena {
                             " ^ currentWorkload(?a" + a + ",?cWorkload" + a + ")" +
                             " ^ maximumWorkload(?a" + a + ",?maxWorkload" + a + ")" +
                             " ^ optimalWorkload(?a" + a + ",?optWorkload" + a + ")" +
-                            //" ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")" +
-                            //  " ^ swrlb:multiply(?downDif" + a + ",0.5 , ?optWorkload" + a + ")" +
-                            // " ^ swrlb:subtract(?sumOf" + a + ", ?maxWorkload" + a + ",?optWorkload" + a + ")" +
-                            // " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
-                            // " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
-                            // " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
-                            " ^ swrlb:lessThanOrEqual(0" + ",?cWorkload" + a + ")" +
-                            " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ") \n"
+                            " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")" +
+                            " ^ swrlb:multiply(?downDif" + a + ",0.5 , ?optWorkload" + a + ")" +
+                            " ^ swrlb:subtract(?sumOf" + a + ", ?maxWorkload" + a + ",?optWorkload" + a + ")" +
+                            " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
+                            " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
+                            " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
+                            " ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?cWorkload" + a + ")" +
+                            " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxThreshold" + a + ") \n"
                             ;
                     a++;
                 }
@@ -124,14 +127,14 @@ public class PelletJena {
                                 " ^ currentWorkload(?core_" + a + ",?cWorkload" + a + ")" +
                                 " ^ maximumWorkload(?core_" + a + ",?maxWorkload" + a + ")" +
                                 " ^ optimalWorkload(?core_" + a + ",?optWorkload" + a + ")" +
-                                //" ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")" +
-                                //  " ^ swrlb:multiply(?downDif" + a + ",0.5 , ?optWorkload" + a + ")" +
-                                // " ^ swrlb:subtract(?sumOf" + a + ", ?maxWorkload" + a + ",?optWorkload" + a + ")" +
-                                // " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
-                                // " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
-                                // " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
-                                " ^ swrlb:lessThanOrEqual(0" + ",?cWorkload" + a + ")" +
-                                " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ") \n"
+                                " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")" +
+                                " ^ swrlb:multiply(?downDif" + a + ",0.5 , ?optWorkload" + a + ")" +
+                                " ^ swrlb:subtract(?sumOf" + a + ", ?maxWorkload" + a + ",?optWorkload" + a + ")" +
+                                " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
+                                " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
+                                " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
+                                " ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?cWorkload" + a + ")" +
+                                " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxThreshold" + a + ") \n"
                                 ;
                         a++;
                     }
