@@ -69,11 +69,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 diff = 0.0;
                 Double usedCore = core.getCurrentWorkLoad();
                 Double coreMaxAcceptableValue = core.getOptimalWorkLoad() + (core.getMaximumWorkLoad() - core.getOptimalWorkLoad()) / 2.0;
-
+                Double coreMinAcceptableValue = core.getOptimalWorkLoad() / 2.0;
                 if (usedCore > coreMaxAcceptableValue) {
                     diff = usedCore - coreMaxAcceptableValue;
-                } else if (usedCore < coreMaxAcceptableValue) {
-                    diff = coreMaxAcceptableValue - usedCore;
+                } else if (usedCore < coreMinAcceptableValue) {
+                    diff = usedCore - coreMinAcceptableValue;
                 }
                 cpuCores += diff;
             }
@@ -102,7 +102,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             if (usedMemory > memoryMaxAcceptableValue) {
                 diff = usedMemory - memoryMaxAcceptableValue;
             } else if (usedMemory < memoryMinAcceptableValue) {
-                diff = usedMemory - memoryMinAcceptableValue;
+                diff = memoryMinAcceptableValue - usedMemory;
             }
             if (server.hasMEMWeight())
                 respectance += server.getMEMWeight() * diff;
@@ -168,7 +168,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Collection<ContextResource> servers = policy.getPolicySubject();
             for (ContextResource r : servers) {
                 ServiceCenterServer server = (ServiceCenterServer) r;
-                if (server.getIsActive())
+                if (server.getCurrentEnergyState() != 0)
                     try {
                         if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
                             System.out.println("Broken server : " + server);
@@ -284,7 +284,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
         if (smallestEntropyContext != null) {
-            if (entropyAndPolicy.getFirst() < smallestEntropyContext.getContextEntropy())
+            if (newContext.getContextEntropy() < smallestEntropyContext.getContextEntropy())
                 smallestEntropyContext = newContext;
         } else {
             smallestEntropyContext = newContext;
@@ -317,7 +317,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                     // TODO: punem mai multe later on cand consideram ca avem nevoie de mai multe taskuri asociate unei politici
                     ApplicationActivity task = (ApplicationActivity) associatedTasks.iterator().next();
 
-                    if (serverInstance.getIsActive() && serverInstance.hasResourcesFor(task)
+                    if ((serverInstance.getCurrentEnergyState() != 0) && serverInstance.hasResourcesFor(task)
                             && !serverInstance.hostsActivity(task) && !task.isRunning()) {
                         DeployActivity newAction = modelAccess.createDeployActivity("Deploy_"
                                 + task.getName() + "_to_" + serverInstance.getName());
@@ -414,7 +414,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //             wake up
 
             for (ServiceCenterServer serverInstance : servers) {
-                if (!serverInstance.getIsActive() && (associatedTasks != null) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
+                if ((serverInstance.getCurrentEnergyState() == 0) && (associatedTasks.size() != 0) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
                     System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()

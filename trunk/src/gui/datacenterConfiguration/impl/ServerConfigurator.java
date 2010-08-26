@@ -223,6 +223,7 @@ public class ServerConfigurator extends AbstractConfigurator {
                     //TODO: daca bagam max si min workload. 
 //                    core.setMaxAcceptableValue(Integer.parseInt(data[7].trim()));
                     cpu.addAssociatedCore(core);
+
                 }
 
                 server.addCpuResource(cpu);
