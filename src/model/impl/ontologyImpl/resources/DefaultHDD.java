@@ -93,7 +93,7 @@ public class DefaultHDD extends DefaultSimpleResource
 
     @Override
     public boolean hasResourcesFor(ApplicationActivity activity) {
-        return getMaximumWorkLoad() <= getCurrentWorkLoad() + activity.getHddRequiredMaxValue();
+        return getMaximumWorkLoad() >= getCurrentWorkLoad() + activity.getHddRequiredMaxValue();
     }
 
     @Override
