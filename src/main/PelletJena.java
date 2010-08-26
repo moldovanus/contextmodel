@@ -98,14 +98,15 @@ public class PelletJena {
                     swrlRule += "SimpleResource(?a" + a + ") ^ resourceID(?a" + a + ",\"" + simpleResource.getResourceID() + "\")" +
                             " ^ currentWorkload(?a" + a + ",?cWorkload" + a + ")" +
                             " ^ maximumWorkload(?a" + a + ",?maxWorkload" + a + ")" +
-                            " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maximumWorkload" + a + ")" +
-                            " ^ swrlb:multiply(?optimalWorkload0,0.33,?downDif" + a + ")" +
-                            " ^ swrlb:subtract(?maxWorkload" + a + ", ?optimalWorkload" + a + ",?sumOf" + a + ")" +
-                            " ^ swrlb:subtract(?optimalWorkload" + a + ",?downDif" + a + ",?minThreshold" + a + ")" +
-                            " ^ swrlb:divide(?sumOf" + a + ", 2,?upDif" + a + ")" +
-                            " ^ swrlb:add(?optimalWorkload" + a + ",?upDif" + a + ",?maxThreshold" + a + " )" +
-                            " ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?cWorkload" + a + ")" +
-                            " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxThreshold" + a + ")"
+                            " ^ optimalWorkload(?a" + a + ",?optWorkload" + a + ")" +
+                            //" ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")" +
+                            //  " ^ swrlb:multiply(?downDif" + a + ",0.5 , ?optWorkload" + a + ")" +
+                            // " ^ swrlb:subtract(?sumOf" + a + ", ?maxWorkload" + a + ",?optWorkload" + a + ")" +
+                            // " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
+                            // " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
+                            // " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
+                            " ^ swrlb:lessThanOrEqual(0" + a + ",?cWorkload" + a + ")" +
+                            " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")"
                             ;
                     a++;
                 }
