@@ -93,7 +93,7 @@ public class DefaultMEM extends DefaultSimpleResource
 
     @Override
     public boolean hasResourcesFor(ApplicationActivity activity) {
-        return getMaximumWorkLoad() <= getCurrentWorkLoad() + activity.getMemRequiredMaxValue();
+        return getMaximumWorkLoad() >= getCurrentWorkLoad() + activity.getMemRequiredMaxValue();
     }
 
     @Override
