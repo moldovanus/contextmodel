@@ -291,7 +291,11 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#simpleResources
 
     public List<ServiceCenterITComputingResource> getResources() {
-        return new ArrayList<ServiceCenterITComputingResource>(getSimpleResources());
+        ArrayList<ServiceCenterITComputingResource> resources = new ArrayList<ServiceCenterITComputingResource>();
+        resources.addAll(getCpuResources());
+        resources.addAll(getMemResources());
+        resources.addAll(getHddResources());
+        return resources;
     }
 
     public Collection getSimpleResources() {

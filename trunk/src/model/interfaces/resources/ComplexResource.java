@@ -50,14 +50,13 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
     boolean hasMEMWeight();
 
     void setMEMWeight(float newMEMWeight);
+
+
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuResources
 
     Collection<CPU> getCpuResources();
 
-
     boolean hasCpuResources();
-
-    Iterator listCpuResources();
 
     void addCpuResource(CPU newCpuResources);
 

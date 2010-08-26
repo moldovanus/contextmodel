@@ -437,7 +437,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
             // sleep
             for (ServiceCenterServer serverInstance : servers) {
-                if (serverInstance.getIsActive() && (serverInstance.getRunningActivities().size() == 0)) {
+                if (serverInstance.getIsActive() && (!serverInstance.hasRunningActivities())) {
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
                                     + "_to_" + 0);
