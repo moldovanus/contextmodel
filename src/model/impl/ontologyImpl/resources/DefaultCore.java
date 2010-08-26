@@ -75,4 +75,10 @@ public class DefaultCore extends DefaultSimpleResource
         setCurrentWorkLoad(getCurrentWorkLoad() + activity.getCpuRequiredMaxValue());
         super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
     }
+
+    @Override
+    public void removeRunningActivity(ApplicationActivity activity) {
+        setCurrentWorkLoad(getCurrentWorkLoad() - activity.getCpuRequiredMaxValue());
+        super.removeRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }
