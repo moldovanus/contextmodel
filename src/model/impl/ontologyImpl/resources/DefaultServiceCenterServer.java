@@ -99,5 +99,8 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         }
 
         super.removeRunningActivity(activity);
+        activity.setCpuAllocatedValue(0);
+        activity.setMemAllocatedValue(0);
+        activity.setHddAllocatedValue(0);
     }
 }

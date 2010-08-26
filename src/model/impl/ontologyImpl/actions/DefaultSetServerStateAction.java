@@ -99,6 +99,6 @@ public class DefaultSetServerStateAction extends DefaultConsolidationAction
             return false;
         }
         DefaultSetServerStateAction action = (DefaultSetServerStateAction) o;
-        return action.getName().equals(this.getName()) || action.getResources().equals(this.getResources()) && action.getTargetServerState() == this.getTargetServerState();
+        return (action.getName().equals(this.getName())) || (action.getResources().equals(this.getResources()) && action.getTargetServerState() == this.getTargetServerState());
     }
 }

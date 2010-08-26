@@ -21,6 +21,7 @@ public interface ServiceCenterITComputingResource extends ContextResource {
     List<ApplicationActivity> getRunningActivities();
 
     void setRunningActivities(List<ApplicationActivity> states);
+    boolean hasRunningActivities();
 
     void addRunningActivity(ApplicationActivity applicationActivity);
 

@@ -82,33 +82,37 @@ public class PelletJena {
         SWRLFactory factory = new SWRLFactory(model);
         String swrlRule = "";
 
-        for (Iterator it = energyPolicies.iterator(); it.hasNext();) {
+        for (Object energyPolicy : energyPolicies) {
             try {
-                ITComputingContextPolicy currentPolicy = (ITComputingContextPolicy) it.next();
+                ITComputingContextPolicy currentPolicy = (ITComputingContextPolicy) energyPolicy;
                 ComplexResource compResource = (ComplexResource) currentPolicy.getPolicySubject().get(0);
                 swrlRule = "";
-                List<ServiceCenterITComputingResource> assocResource = compResource.getResources();
+                List<ServiceCenterITComputingResource> assocResources = compResource.getResources();
+                if (assocResources.size() == 0) {
+                    System.err.println("No simple resource associated to: " + compResource.getName());
+                }
                 int a = 0;
-                for (Iterator simpleIter = assocResource.iterator(); simpleIter.hasNext();) {
-                    SimpleResource simpleResource = (SimpleResource) simpleIter.next();
+                //am trecut sqwrl builtins pe swrlb ca primele nu-s suportate de pellet
+                for (Object assocResource : assocResources) {
+                    SimpleResource simpleResource = (SimpleResource) assocResource;
                     swrlRule += "SimpleResource(?a" + a + ") ^ resourceID(?a" + a + ",\"" + simpleResource.getResourceID() + "\")" +
                             " ^ currentWorkload(?a" + a + ",?cWorkload" + a + ")" +
                             " ^ maximumWorkload(?a" + a + ",?maxWorkload" + a + ")" +
                             " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maximumWorkload" + a + ")" +
                             " ^ swrlb:multiply(?optimalWorkload0,0.33,?downDif" + a + ")" +
-                            " ^ sqwrl:difference(?maxWorkload" + a + ", ?optimalWorkload" + a + ",?sumOf" + a + ")" +
-                            " ^ sqwrl:difference(?optimalWorkload" + a + ",?downDif" + a + ",?minThreshold" + a + ")" +
+                            " ^ swrlb:subtract(?maxWorkload" + a + ", ?optimalWorkload" + a + ",?sumOf" + a + ")" +
+                            " ^ swrlb:subtract(?optimalWorkload" + a + ",?downDif" + a + ",?minThreshold" + a + ")" +
                             " ^ swrlb:divide(?sumOf" + a + ", 2,?upDif" + a + ")" +
-                            " ^ sqwrl:sum(?optimalWorkload" + a + ",?upDif" + a + ",?maxThreshold" + a + " )" +
-                            " ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?ckload" + a + ")" +
+                            " ^ swrlb:add(?optimalWorkload" + a + ",?upDif" + a + ",?maxThreshold" + a + " )" +
+                            " ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?cWorkload" + a + ")" +
                             " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxThreshold" + a + ")"
                             ;
                     a++;
                 }
-                System.err.println("Nu uita sa vezi ce i cu regula  swrl pt ENERGIE k deocamdata da exceptie aiurea");
-                //TODO: de revazut asta cu regulile swrl pe server. Am incercat cu comment la COmplexResource k deocamdata nu am quantificat workLoad pe complexResource  asa k nu se activeaza regula
-                System.out.println(swrlRule+ " ^ ComplexResource(?x) ^ ResourceID(?x," + compResource.getResourceID() + ") ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maximumWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
-                SWRLImp imp = factory.createImp(swrlRule +    " ^ ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
+
+                System.out.println(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");
+                ;//+ " ^ ComplexResource(?x) ^ ResourceID(?x," + compResource.getResourceID() + ") ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maximumWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
+                SWRLImp imp = factory.createImp(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");//  " ^ ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
                 imp.enable();
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -134,8 +138,8 @@ public class PelletJena {
                         " ^ memRequiredMinValue(?x,?memMin)" +
                         " ^ swrlb:lessThanOrEqual(?memMin,?memAllocated)" +
                         " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
-//                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
-//                        " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
+                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
+                        " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
                         " -> isRespected(" + businessPolicy.getName() + ", true)";
                 System.out.println(swrlRule);
                 SWRLImp imp = factory.createImp(swrlRule);
