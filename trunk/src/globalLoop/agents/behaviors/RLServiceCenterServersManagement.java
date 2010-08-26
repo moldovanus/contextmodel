@@ -536,6 +536,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
         if (entropyAndPolicy.getSecond() != null) {
             ContextSnapshot result = reinforcementLearning(queue);
+            result.executeActions(modelAccess);
         }
     }
 }
