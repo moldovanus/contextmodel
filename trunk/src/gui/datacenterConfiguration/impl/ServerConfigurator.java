@@ -209,8 +209,10 @@ public class ServerConfigurator extends AbstractConfigurator {
 //                virtualMachinesPath.add(data[3].trim());
 //                server.setVirtualMachinesPath(virtualMachinesPath);
                 server.setIsActive(false);
+                server.setResourceID(server.getName());
 
                 CPU cpu = modelAccess.createCPU(serverName + "_CPU");
+                cpu.setResourceID(cpu.getName());
                 server.setCPUWeight(0.5f);
                 int coreCount = Integer.parseInt(data[4].trim());
 
@@ -226,6 +228,7 @@ public class ServerConfigurator extends AbstractConfigurator {
                 server.addCpuResource(cpu);
 
                 MEM memory = modelAccess.createMEM(serverName + "_Memory");
+                memory.setResourceID(memory.getName());
                 memory.setMaximumWorkLoad(Double.parseDouble(data[8].trim()));
                 memory.setOptimalWorkLoad(Double.parseDouble(data[9].trim()));
 //                memory.setMaxAcceptableValue(Integer.parseInt(data[10].trim()));
@@ -234,6 +237,7 @@ public class ServerConfigurator extends AbstractConfigurator {
                 server.addMemResource(memory);
 
                 HDD storage = modelAccess.createHDD(serverName + "_Storage");
+                storage.setResourceID(storage.getName());
                 storage.setMaximumWorkLoad(Double.parseDouble(data[11].trim()));
                 storage.setOptimalWorkLoad(Double.parseDouble(data[12].trim()));
 //                storage.setMaxAcceptableValue(Integer.parseInt(data[13].trim()));
