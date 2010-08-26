@@ -18,7 +18,7 @@ import model.interfaces.resources.ServiceCenterServer;
 public class DefaultSetServerStateAction extends DefaultConsolidationAction
         implements SetServerStateActivity {
 
-    private Integer oldServerState;
+    private Integer oldServerState = 0;
 
     public DefaultSetServerStateAction(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
@@ -99,6 +99,6 @@ public class DefaultSetServerStateAction extends DefaultConsolidationAction
             return false;
         }
         DefaultSetServerStateAction action = (DefaultSetServerStateAction) o;
-        return (action.getName().equals(this.getName())) || (action.getResources().equals(this.getResources()) && action.getTargetServerState() == this.getTargetServerState());
+        return (action.getName().equals(this.getName())) || (action.getResources().equals(this.getResources()));// && ((action.getTargetServerState() == this.getTargetServerState()) || (action.getTargetServerState() == this.oldServerState)));
     }
 }
