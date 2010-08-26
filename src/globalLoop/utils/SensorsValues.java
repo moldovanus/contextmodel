@@ -27,7 +27,7 @@ public class SensorsValues implements Serializable {
         myMap = new HashMap<String, Double>();
         Collection<Sensor> sensors = modelAccess.getAllSensorInstances();
         for (Sensor sensor : sensors) {
-            myMap.put(sensor.getLocalName(), new Double(sensor.getRecordedValue()));
+            myMap.put(sensor.getName(), new Double(sensor.getRecordedValue()));
         }
     }
 
