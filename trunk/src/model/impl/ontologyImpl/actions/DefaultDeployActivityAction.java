@@ -84,7 +84,7 @@ public class DefaultDeployActivityAction extends DefaultConsolidationAction
 
     @Override
     public String toString() {
-        return this.getName() + " " + this.getActivity().getLocalName() + " to " + this.getResourceTo().getLocalName();
+        return this.getName() + " " + this.getActivity().getName() + " to " + this.getResourceTo().getName();
     }
 
     @Override

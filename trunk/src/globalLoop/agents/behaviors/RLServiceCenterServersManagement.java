@@ -321,9 +321,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                             && !serverInstance.hostsActivity(task) && !task.isRunning()) {
                         DeployActivity newAction = modelAccess.createDeployActivity("Deploy_"
                                 + task.getName() + "_to_" + serverInstance.getName());
+                        newAction.addResource(serverInstance);
+                        newAction.setActivity(task);
+
                         if (!newContext.getActions().contains(newAction)) {
-                            newAction.addResource(serverInstance);
-                            newAction.setActivity(task);
 
                             ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
                             cs.getActions().add(newAction);
@@ -358,11 +359,12 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                                                     + "_to_" + myTask.getName() + "_Activity");
 
                                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                                    newAction.setResourceFrom(sourceServer);
+                                    newAction.setResourceTo(destinationServer);
+                                    newAction.setActivity(myTask);
+
                                     //if action is not already in the actions list
                                     if (!cs.getActions().contains(newAction)) {
-                                        newAction.setResourceFrom(sourceServer);
-                                        newAction.setResourceTo(destinationServer);
-                                        newAction.setActivity(myTask);
 
                                         cs.getActions().add(newAction);
                                         newAction.execute(modelAccess);
@@ -390,10 +392,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                             MigrateActivity newAction = modelAccess.createMigrateActivity("Migrate_from_"
                                     + server.getName()
                                     + "_to_" + myTask.getName() + "_Activity");
+                            newAction.setResourceFrom(server);
+                            newAction.setResourceTo(destinationServer);
+                            newAction.setActivity(myTask);
                             if (!newContext.getActions().contains(newAction)) {
-                                newAction.setResourceFrom(server);
-                                newAction.setResourceTo(destinationServer);
-                                newAction.setActivity(myTask);
 
                                 ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
                                 cs.getActions().add(newAction);
@@ -419,10 +421,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                                     + "_to_" + 1);
                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
                     newActivity.setTargetServerState(1);
+                    newActivity.addResource(serverInstance);
 
                     //if action is not already in the actions list
                     if (!cs.getActions().contains(newActivity)) {
-                        newActivity.addResource(serverInstance);
                         cs.getActions().add(newActivity);
 
                         newActivity.execute(modelAccess);
@@ -443,8 +445,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                                     + "_to_" + 0);
                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
                     newActivity.setTargetServerState(0);
+                    newActivity.addResource(serverInstance);
+
                     if (!cs.getActions().contains(newActivity)) {
-                        newActivity.addResource(serverInstance);
+
                         cs.getActions().add(newActivity);
 
                         newActivity.execute(modelAccess);
@@ -493,7 +497,20 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     @Override
     protected void onTick() {
-        PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>();
+        PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>(1, new Comparator() {
+
+            public int compare(Object o1, Object o2) {
+                ContextSnapshot snapshot_1 = (ContextSnapshot) o1;
+                ContextSnapshot snapshot_2 = (ContextSnapshot) o2;
+                if (snapshot_1.getContextEntropy() < snapshot_2.getContextEntropy()) {
+                    return -1;
+                } else if (snapshot_1.getContextEntropy() == snapshot_2.getContextEntropy()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
         ContextSnapshot initialContext = new ContextSnapshot(new LinkedList());
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
