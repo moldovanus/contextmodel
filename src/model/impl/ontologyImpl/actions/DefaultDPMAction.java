@@ -3,6 +3,7 @@ package model.impl.ontologyImpl.actions;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import model.impl.util.ModelAccess;
 import model.interfaces.actions.DPMAction;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 
@@ -22,6 +23,16 @@ public class DefaultDPMAction extends DefaultITComputingResourceAdaptationAction
 
 
     public DefaultDPMAction() {
+    }
+
+    @Override
+    public void execute(ModelAccess modelAccess) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    @Override
+    public void undo(ModelAccess modelAccess) {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 

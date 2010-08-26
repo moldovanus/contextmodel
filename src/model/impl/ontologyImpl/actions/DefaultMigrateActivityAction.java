@@ -3,10 +3,12 @@ package model.impl.ontologyImpl.actions;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import model.impl.util.ModelAccess;
 import model.interfaces.actions.MigrateActivity;
 import model.interfaces.resources.ContextResource;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.applications.ApplicationActivity;
+import selfoptimizing.ontologyRepresentations.greenContextOntology.Server;
 
 import java.util.Collection;
 
@@ -26,6 +28,24 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
 
 
     public DefaultMigrateActivityAction() {
+    }
+
+    @Override
+    public void execute(ModelAccess modelAccess) {
+        ServiceCenterITComputingResource from = getResourceFrom();
+        ServiceCenterITComputingResource to = getResourceTo();
+        ApplicationActivity activity = getActivity();
+        from.removeRunningActivity(activity);
+        to.addRunningActivity(activity);
+    }
+
+    @Override
+    public void undo(ModelAccess modelAccess) {
+        ServiceCenterITComputingResource from = getResourceFrom();
+        ServiceCenterITComputingResource to = getResourceTo();
+        ApplicationActivity activity = getActivity();
+        to.removeRunningActivity(activity);
+        from.addRunningActivity(activity);
     }
 
 
@@ -55,11 +75,9 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#resourceFrom
 
-    //FACUT JMECHELIE :D
-
     public ServiceCenterITComputingResource getResourceFrom() {
         return (ServiceCenterITComputingResource)
-                ((Collection<ContextResource>) getPropertyValueAs(getResourcesProperty(), ContextResource.class)).toArray()[0];
+                ((Collection<ContextResource>) getPropertyValuesAs(getResourcesProperty(), ContextResource.class)).toArray()[0];
     }
 
     public boolean hasResourceFrom() {
@@ -68,11 +86,11 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
 
 
     public void setResourceFrom(ServiceCenterITComputingResource newResourceFrom) {
-        ContextResource resourceTo = getResourceTo();
-        removePropertyValue(getResourcesProperty(), getResourceFrom());
-        removePropertyValue(getResourcesProperty(), resourceTo);
+//        ContextResource resourceTo = getResourceTo();
+//        removePropertyValue(getResourcesProperty(), getResourceFrom());
+//        removePropertyValue(getResourcesProperty(), resourceTo);
         addPropertyValue(getResourcesProperty(), newResourceFrom);
-        setPropertyValue(getResourcesProperty(), resourceTo);
+//        setPropertyValue(getResourcesProperty(), resourceTo);
     }
 
 
@@ -80,7 +98,7 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
 
     public ServiceCenterITComputingResource getResourceTo() {
         return (ServiceCenterITComputingResource)
-                ((Collection<ContextResource>) getPropertyValueAs(getResourcesProperty(), ContextResource.class)).toArray()[1];
+                ((Collection<ContextResource>) getPropertyValuesAs(getResourcesProperty(), ContextResource.class)).toArray()[1];
     }
 
 
@@ -90,11 +108,11 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
 
 
     public void setResourceTo(ServiceCenterITComputingResource newResourceTo) {
-        ContextResource resourceFrom = getResourceFrom();
-        removePropertyValue(getResourcesProperty(), resourceFrom);
-        removePropertyValue(getResourcesProperty(), getResourceTo());
-        addPropertyValue(getResourcesProperty(), resourceFrom);
-        setPropertyValue(getResourcesProperty(), newResourceTo);
+//        ContextResource resourceFrom = getResourceFrom();
+//        removePropertyValue(getResourcesProperty(), resourceFrom);
+//        removePropertyValue(getResourcesProperty(), getResourceTo());
+//        addPropertyValue(getResourcesProperty(), resourceFrom);
+        addPropertyValue(getResourcesProperty(), newResourceTo);
     }
 
     @Override
