@@ -73,7 +73,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 if (usedCore > coreMaxAcceptableValue) {
                     diff = usedCore - coreMaxAcceptableValue;
                 } else if (usedCore < coreMinAcceptableValue) {
-                    diff = usedCore - coreMinAcceptableValue;
+                    diff = coreMinAcceptableValue - usedCore;
                 }
                 cpuCores += diff;
             }
