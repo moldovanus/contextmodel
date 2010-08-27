@@ -93,7 +93,7 @@ public class PelletJena {
                     System.err.println("No simple resource associated to: " + compResource.getName());
                 }
                 int a = 0;
-                //am trecut sqwrl builtins pe swrlb ca primele nu-s suportate de pellet
+                //am trecut sqwrl builtinsd pe swrlb ca primele nu-s suportate de pellet
                 for (Object assocResource : assocResources) {
                     if (assocResource instanceof CPU) {
                         continue;
@@ -123,7 +123,7 @@ public class PelletJena {
                         if (a != 0) {
                             swrlRule += " ^ ";
                         }
-                        swrlRule += "SimpleResource(?core_" + a + ") ^ resourceID(?a" + a + ",\"" + simpleResource.getResourceID() + "\")" +
+                        swrlRule += "SimpleResource(?core_" + a + ") ^ resourceID(?core_" + a + ",\"" + simpleResource.getResourceID() + "\")" +
                                 " ^ currentWorkload(?core_" + a + ",?cWorkload" + a + ")" +
                                 " ^ maximumWorkload(?core_" + a + ",?maxWorkload" + a + ")" +
                                 " ^ optimalWorkload(?core_" + a + ",?optWorkload" + a + ")" +
