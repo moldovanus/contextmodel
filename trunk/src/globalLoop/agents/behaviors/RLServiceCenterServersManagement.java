@@ -1,5 +1,7 @@
 package globalLoop.agents.behaviors;
 
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import model.impl.util.ModelAccess;
@@ -18,6 +20,10 @@ import reasoning.impl.PelletEvaluator;
 import selfoptimizing.utils.Pair;
 import utils.exceptions.IndividualNotFoundException;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -168,10 +174,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Collection<ContextResource> servers = policy.getPolicySubject();
             for (ContextResource r : servers) {
                 ServiceCenterServer server = (ServiceCenterServer) r;
-                if (server.getCurrentEnergyState() != 0)
+                if (server.getIsActive())
                     try {
                         if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
-                            System.out.println("Broken server : " + server);
+                            System.out.println("Broken server : " + server.getLocalName());
                             if (brokenPolicy == null) {
                                 brokenPolicy = policy;
                             }
@@ -330,15 +336,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                             cs.getActions().add(newAction);
                             deployed = true;
                             newAction.execute(modelAccess);
-//                            OntModel ontModel = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
-//                            ontModel.add(modelAccess.getOntologyModelFactory().getOwlModel().getJenaModel());
-//                            try {
-//                                ontModel.write(new BufferedWriter(new FileWriter(new File("./ontology/context_KAON_1.rdf-xml.owl"))));
-//                            } catch (IOException e) {
-//                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//                            }
-//
-//                            System.exit(1);
+
                             Double afterExecuteEntropy = computeEntropy().getFirst();
                             cs.setContextEntropy(afterExecuteEntropy);
                             cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
@@ -420,9 +418,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 }
             }
 //             wake up
-
             for (ServiceCenterServer serverInstance : servers) {
-                if ((!serverInstance.getIsActive()) && (associatedTasks.size() != 0) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
+                if ((!serverInstance.getIsActive()) && (associatedTasks != null) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
                     System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
@@ -505,11 +502,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     @Override
     protected void onTick() {
-        PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>(1, new Comparator() {
+        PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>(1, new Comparator<ContextSnapshot>() {
 
-            public int compare(Object o1, Object o2) {
-                ContextSnapshot snapshot_1 = (ContextSnapshot) o1;
-                ContextSnapshot snapshot_2 = (ContextSnapshot) o2;
+            public int compare(ContextSnapshot snapshot_1, ContextSnapshot snapshot_2) {
                 if (snapshot_1.getContextEntropy() < snapshot_2.getContextEntropy()) {
                     return -1;
                 } else if (snapshot_1.getContextEntropy() == snapshot_2.getContextEntropy()) {
@@ -519,6 +514,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 }
             }
         });
+
         ContextSnapshot initialContext = new ContextSnapshot(new LinkedList());
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
@@ -531,6 +527,16 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         if (entropyAndPolicy.getFirst() > 0) {
             ContextSnapshot result = reinforcementLearning(queue);
             result.executeActions(modelAccess);
+//            OntModel ontModel = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
+//            ontModel.add(modelAccess.getOntologyModelFactory().getOwlModel().getJenaModel());
+//            try {
+//                ontModel.write(new BufferedWriter(new FileWriter(new File("./ontology/context_KAON_1.rdf-xml.owl"))));
+//            } catch (IOException e) {
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            }
+//
+//            System.exit(1);
         }
+
     }
 }
