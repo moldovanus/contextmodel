@@ -58,13 +58,13 @@ public class PelletEvaluator implements Evaluator {
         
         RDFNode propertyValue = individual.getPropertyValue(property);
         boolean value = (propertyValue != null) && propertyValue.asLiteral().getBoolean();
-        if (propertyValue == null) {
-            System.out.println("Property null");
+//        if (propertyValue == null) {
+//            System.out.println("Property null");
 //            DefaultApplicationActivity activity = (DefaultApplicationActivity) policy.getPolicySubject().get(0);
 //            System.out.println(activity.getMemRequiredMinValue() + " " + activity.getMemAllocatedValue() + " " + activity.getMemRequiredMaxValue());
-        }
-        evaluator.markAfter();
-        evaluator.printResult();
+//        }
+//        evaluator.markAfter();
+//        evaluator.printResult();
         return value;
     }
 }
