@@ -67,7 +67,7 @@ public class DefaultCore extends DefaultSimpleResource
 
     @Override
     public boolean hasResourcesFor(ApplicationActivity activity) {
-        return getMaximumWorkLoad() >= getCurrentWorkLoad() + activity.getCpuRequiredMaxValue();
+        return getOptimalWorkLoad() + (getMaximumWorkLoad() - getOptimalWorkLoad()) / 2.0 >= getCurrentWorkLoad() + activity.getCpuRequiredMaxValue();
     }
 
     @Override
