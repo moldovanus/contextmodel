@@ -134,7 +134,11 @@ public class DefaultServiceCenterITComputingResource extends DefaultContextResou
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#maximumWorkload
 
     public Double getMaximumWorkLoad() {
-        return getPropertyValueLiteral(getMaximumWorkloadProperty()).getDouble();
+        if (hasMaximumWorkload()) {
+            return getPropertyValueLiteral(getMaximumWorkloadProperty()).getDouble();
+        } else {
+            return 0.0;
+        }
     }
 
 

@@ -177,7 +177,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 if (server.getIsActive())
                     try {
                         if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
-                            System.out.println("Broken server : " + server.getLocalName());
+//                            System.out.println("Broken server : " + server.getLocalName());
                             if (brokenPolicy == null) {
                                 brokenPolicy = policy;
                             }
@@ -201,7 +201,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         if (previous != null) {
             function += previous.getRewardFunction();
             //TODO: de bagat cost pe actiune
-            double temp = previous.getRewardFunction() - current.getContextEntropy(); //- c.getCost() - current.getActions().size() * 100;
+            double temp = previous.getRewardFunction() - current.getContextEntropy()-current.getActions().size()*100; //- c.getCost() - current.getActions().size() * 100;
             function = ContextSnapshot.gamma * temp;
         } else {
             function = -current.getContextEntropy();
@@ -244,7 +244,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 optimal = hdd.getOptimalWorkLoad();
                 total = hdd.getMaximumWorkLoad();
                 difference += Math.pow(total - (total - optimal) / 2.0 - hdd.getCurrentWorkLoad()
-                        - optimal / 2.0, 2);  // Aceeasi problema pentru ca nu este minim
+                        - optimal / 2.0, 2);
             }
             difference = Math.sqrt(difference);
 
@@ -258,7 +258,6 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         return retServer;
     }
 
-    //TODO: metoda de reinforcementLearning
 
     private ContextSnapshot reinforcementLearning(PriorityQueue<ContextSnapshot> queue) {
 
@@ -420,7 +419,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //             wake up
             for (ServiceCenterServer serverInstance : servers) {
                 if ((!serverInstance.getIsActive()) && (associatedTasks != null) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
-                    System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
+//                    System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
                                     + "_to_" + 1);

@@ -215,13 +215,13 @@ public class ServerConfigurator extends AbstractConfigurator {
                 server.setResourceID(server.getName());
                 server.setEnergyStates(energyStates);
                 server.setCurrentEnergyState(0);
-       
+
                 server.addResourceWorkloadProperty("Workload_Property");
 
                 CPU cpu = modelAccess.createCPU(serverName + "_CPU_");
                 cpu.setResourceID(cpu.getName());
                 cpu.setCurrentEnergyState(0);
-                
+
 
                 server.setCPUWeight(0.5f);
                 int coreCount = Integer.parseInt(data[4].trim());
@@ -268,6 +268,8 @@ public class ServerConfigurator extends AbstractConfigurator {
                 //TODO: de facut ceva cu subject target asta
                 policy.addPolicyTarget(server);
                 policy.setPolicyWeight(1.0f);
+                policy.setPolicyName(policy.getName());
+                policy.setEvaluationCondition("Evaluation_condition");
 
                 cpu.addPartOf(server);
                 memory.addPartOf(server);
@@ -275,7 +277,7 @@ public class ServerConfigurator extends AbstractConfigurator {
 //                policy.setPriority(1);
             }
 
-            PelletJena.generateEnergyRules(((OntologyModelFactory) modelAccess.getOntologyModelFactory()).getOwlModel(), modelAccess);
+            PelletJena.generateEnergyRules((modelAccess.getOntologyModelFactory()).getOwlModel(), modelAccess);
         }
 
         public List<String[]> getTableData() {

@@ -2,10 +2,7 @@ package model.impl.ontologyImpl.resources;
 
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
-import model.interfaces.resources.CPU;
-import model.interfaces.resources.HDD;
-import model.interfaces.resources.MEM;
-import model.interfaces.resources.ServiceCenterServer;
+import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.Collection;
@@ -102,5 +99,33 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         activity.setCpuAllocatedValue(0);
         activity.setMemAllocatedValue(0);
         activity.setHddAllocatedValue(0);
+    }
+
+    @Override
+    public String toString() {
+        String description = "";
+        description += this.getLocalName() + "\n";
+        description += "Active:" + this.getIsActive() + "\n";
+        Collection<ServiceCenterITComputingResource> resources = this.getMemResources();
+        for (ServiceCenterITComputingResource resource : resources) {
+            description += " " + resource.getLocalName();
+            description += " maxWorkload: " + resource.getMaximumWorkLoad();
+            description += " currentWorkload: " + resource.getCurrentWorkLoad() + "\n";
+        }
+
+        resources = this.getHddResources();
+        for (ServiceCenterITComputingResource resource : resources) {
+            description += " " + resource.getLocalName();
+            description += " maxWorkload: " + resource.getMaximumWorkLoad();
+            description += " currentWorkload: " + resource.getCurrentWorkLoad() + "\n";
+        }
+
+        List<Core> cores = ((CPU) this.getCpuResources().iterator().next()).getAssociatedCores();
+        for (Core resource : cores) {
+            description += " " + resource.getLocalName();
+            description += " maxWorkload: " + resource.getMaximumWorkLoad();
+            description += " currentWorkload: " + resource.getCurrentWorkLoad() + "\n";
+        }
+        return description;
     }
 }
