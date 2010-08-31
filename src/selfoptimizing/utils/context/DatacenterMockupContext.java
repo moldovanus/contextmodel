@@ -1,8 +1,8 @@
 package selfoptimizing.utils.context;
 
-import selfoptimizing.contextaware.worldInterface.dtos.ServerDto;
-import selfoptimizing.contextaware.worldInterface.dtos.StorageDto;
-import selfoptimizing.contextaware.worldInterface.dtos.TaskDto;
+import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.StorageDto;
+import utils.worldInterface.dtos.TaskDto;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.*;
 
 import java.io.Serializable;

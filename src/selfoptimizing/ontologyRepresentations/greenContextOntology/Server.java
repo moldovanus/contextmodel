@@ -2,7 +2,7 @@ package selfoptimizing.ontologyRepresentations.greenContextOntology;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 
 import java.util.Collection;
 import java.util.Iterator;

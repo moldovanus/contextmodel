@@ -14,7 +14,14 @@ import model.interfaces.actions.ApplicationRedesign;
  */
 public class DefaultApplicationRedesignAction extends DefaultApplicationAdaptationAction
         implements ApplicationRedesign {
+       private int cost = 0;
+    public int getCost() {
+        return cost;
+    }
 
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
     public DefaultApplicationRedesignAction(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
     }

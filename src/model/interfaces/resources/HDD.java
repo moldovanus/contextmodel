@@ -29,7 +29,6 @@ public interface HDD extends SimpleResource {
 
     void setPartOf(Collection newPartOf);
 
-
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#rotationSpeed
 
     Double getRotationSpeed();
@@ -37,4 +36,10 @@ public interface HDD extends SimpleResource {
     boolean hasRotationSpeed();
 
     void setRotationSpeed(Double newRotationSpeed);
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#physicalPath
+
+    String getPhysicalPath();
+
+    void setPhysicalPath(String newPhysicalPath);
 }

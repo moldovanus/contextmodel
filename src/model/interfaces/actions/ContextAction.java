@@ -26,5 +26,7 @@ public interface ContextAction extends ContextElement {
 
     void undo(ModelAccess modelAccess);
 
+    void setCost(int cost);
 
+    int getCost();
 }

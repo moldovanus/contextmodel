@@ -1,4 +1,4 @@
-package selfoptimizing.contextaware.worldInterface.dtos;
+package utils.worldInterface.dtos;
 
 import selfoptimizing.ontologyRepresentations.greenContextOntology.ReceivedTaskInfo;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.RequestedTaskInfo;

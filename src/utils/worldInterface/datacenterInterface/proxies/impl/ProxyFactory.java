@@ -1,6 +1,6 @@
-package selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.impl;
+package utils.worldInterface.datacenterInterface.proxies.impl;
 
-import selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 
 /**
  * Created by IntelliJ IDEA.

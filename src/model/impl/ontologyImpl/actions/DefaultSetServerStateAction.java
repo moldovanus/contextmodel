@@ -3,10 +3,13 @@ package model.impl.ontologyImpl.actions;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import globalLoop.utils.GlobalVars;
 import model.impl.util.ModelAccess;
 import model.interfaces.actions.SetServerStateActivity;
 import model.interfaces.resources.ContextResource;
 import model.interfaces.resources.ServiceCenterServer;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 
 
 /**
@@ -17,6 +20,7 @@ import model.interfaces.resources.ServiceCenterServer;
  */
 public class DefaultSetServerStateAction extends DefaultConsolidationAction
         implements SetServerStateActivity {
+
 
     private Integer oldServerState = 0;
 
@@ -70,6 +74,19 @@ public class DefaultSetServerStateAction extends DefaultConsolidationAction
         }
     }
 
+    public void executeOnServiceCenter(ModelAccess modelAccess) {
+        for (ContextResource resource : getResources()) {
+            ServiceCenterServer server = (ServiceCenterServer) resource;
+            if (getTargetServerState() == 0) {
+                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+                proxy.sendServerToSleep();
+            } else {
+                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(GlobalVars.GLOBAL_LOOP_CONTROLLER_IP);
+                proxy.wakeUpServer(server.getMacAddress(), server.getIpAddress(), 9);
+            }
+        }
+    }
+
     @Override
     public void undo(ModelAccess modelAccess) {
         for (ContextResource resource : getResources()) {
@@ -81,6 +98,15 @@ public class DefaultSetServerStateAction extends DefaultConsolidationAction
                 server.setIsActive(true);
             }
         }
+    }
+
+    public void setCost(int cost) {
+
+    }
+
+    public int getCost() {
+            if (oldServerState==0) return 1000;
+                else return 400;
     }
 
     @Override

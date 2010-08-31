@@ -12,4 +12,13 @@ import model.interfaces.resources.applications.ApplicationActivity;
 public interface ServiceCenterServer extends ComplexResource {
     //TODO: quantificare de currentWorkload pt server
     boolean hostsActivity(ApplicationActivity activity);
+
+    String getIpAddress();
+
+     void setIpAddress(String newIpAddress);
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#macAddress
+
+    String getMacAddress();
+    void setMacAddress(String newMacAddress);
 }

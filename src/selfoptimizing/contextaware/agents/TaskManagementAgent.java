@@ -6,7 +6,7 @@ import jade.lang.acl.ACLMessage;
 import selfoptimizing.contextaware.GlobalVars;
 import selfoptimizing.contextaware.agents.behaviours.ReceiveMessageTMBehaviour;
 //import selfoptimizing.contextaware.gui.TaskManagement;
-import selfoptimizing.contextaware.worldInterface.dtos.TaskDto;
+import utils.worldInterface.dtos.TaskDto;
 
 import java.io.IOException;
 import java.io.Serializable;

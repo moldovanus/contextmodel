@@ -15,7 +15,7 @@ import selfoptimizing.contextaware.agents.behaviours.ReceiveMessageRLBehaviour;
 import selfoptimizing.contextaware.agents.behaviours.ReinforcementLearningDataCenterManagementBehavior;
 import selfoptimizing.contextaware.agents.behaviours.ReinforcementLearningEnvironmentManagementBehaviour;
 import selfoptimizing.contextaware.agents.behaviours.StoreMemoryBehaviour;
-import selfoptimizing.contextaware.worldInterface.dtos.TaskDto;
+import utils.worldInterface.dtos.TaskDto;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.DatacenterProtegeFactory;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.ReceivedTaskInfo;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.RequestedTaskInfo;

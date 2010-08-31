@@ -3,12 +3,16 @@ package model.impl.ontologyImpl.actions;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
+import globalLoop.utils.GlobalVars;
 import model.impl.util.ModelAccess;
 import model.interfaces.actions.DeployActivity;
 import model.interfaces.resources.ContextResource;
+import model.interfaces.resources.Core;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 
 
 /**
@@ -19,6 +23,7 @@ import model.interfaces.resources.applications.ApplicationActivity;
  */
 public class DefaultDeployActivityAction extends DefaultConsolidationAction
         implements DeployActivity {
+    private int cost = 100;
 
     public DefaultDeployActivityAction(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
@@ -94,5 +99,30 @@ public class DefaultDeployActivityAction extends DefaultConsolidationAction
         }
         DefaultDeployActivityAction activityAction = (DefaultDeployActivityAction) o;
         return activityAction.getName().equals(this.getName()) || activityAction.getResourceTo().equals(this.getResourceTo()) && activityAction.getActivity().equals(this.getActivity());
+    }
+
+    public void executeOnServiceCenter(ModelAccess modelAccess) {
+        ServiceCenterServer server = (ServiceCenterServer) getResourceTo();
+        ApplicationActivity task = getActivity();
+        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+        if (proxy != null) {
+            int procTime = ((int) task.getCpuRequiredMaxValue() * 100) / ((Core) server.getCpuResources()).getMaximumWorkLoad().intValue();
+            String path = server.getHddResources().iterator().next().getPhysicalPath();
+            System.out.println("Deploying ...");
+            proxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
+                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + server.getLocalName(),
+                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
+                    procTime, (int) task.getHddRequiredMaxValue());
+        } else {
+            System.err.println("Proxy is null");
+        }
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }

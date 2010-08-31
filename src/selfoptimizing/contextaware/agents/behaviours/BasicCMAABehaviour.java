@@ -8,8 +8,8 @@ import edu.stanford.smi.protegex.owl.model.RDFResource;
 import jade.core.behaviours.TickerBehaviour;
 import selfoptimizing.contextaware.GlobalVars;
 import selfoptimizing.contextaware.agents.CMAAgent;
-import selfoptimizing.contextaware.worldInterface.WorldElement;
-import selfoptimizing.contextaware.worldInterface.WorldFileParser;
+import utils.worldInterface.WorldElement;
+import utils.worldInterface.WorldFileParser;
 
 import java.util.HashMap;
 

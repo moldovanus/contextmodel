@@ -1,4 +1,4 @@
-package selfoptimizing.contextaware.worldInterface.dtos;
+package utils.worldInterface.dtos;
 
 import selfoptimizing.ontologyRepresentations.greenContextOntology.CPU;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.Core;

@@ -9,5 +9,4 @@ package model.interfaces.actions;
  */
 public interface ITComputingResourceAdaptationAction extends ContextAction {
 
-
 }

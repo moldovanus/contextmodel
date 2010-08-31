@@ -1,7 +1,7 @@
 package selfoptimizing.utils.context;
 
-import selfoptimizing.contextaware.worldInterface.dtos.ServerDto;
-import selfoptimizing.contextaware.worldInterface.dtos.TaskDto;
+import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.TaskDto;
 
 import java.io.Serializable;
 import java.util.List;

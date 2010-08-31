@@ -1,10 +1,10 @@
-package selfoptimizing.contextaware.worldInterface.datacenterInterface.xmlParsers;
+package utils.worldInterface.datacenterInterface.xmlParsers;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import selfoptimizing.contextaware.worldInterface.dtos.ServerDto;
-import selfoptimizing.contextaware.worldInterface.dtos.StorageDto;
+import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.StorageDto;
 
 import java.text.NumberFormat;
 import java.text.ParseException;

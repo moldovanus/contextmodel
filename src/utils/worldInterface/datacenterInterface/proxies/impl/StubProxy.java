@@ -1,6 +1,6 @@
-package selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.impl;
+package utils.worldInterface.datacenterInterface.proxies.impl;
 
-import selfoptimizing.contextaware.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.ServerDto;
 
 /**
  * Created by IntelliJ IDEA.

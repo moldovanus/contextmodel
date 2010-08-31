@@ -1,10 +1,12 @@
-package selfoptimizing.contextaware.sensorapi.impl;
+package utils.worldInterface.sensorapi.impl;
 
-import selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
-import selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
-import selfoptimizing.contextaware.worldInterface.dtos.ServerDto;
-import selfoptimizing.contextaware.worldInterface.dtos.StorageDto;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.*;
+import model.impl.util.ModelAccess;
+import model.interfaces.resources.*;
+import selfoptimizing.ontologyRepresentations.greenContextOntology.Storage;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
+import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.StorageDto;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -21,15 +23,15 @@ import java.util.List;
  */
 public class ServerInfoReader {
 
-    private Server server;
-    private DatacenterProtegeFactory protegeFactory;
+    private ServiceCenterServer server;
+    private ModelAccess modelAccess;
     private int refreshInterval = 1000;
 
     private Timer timer;
 
-    public ServerInfoReader(Server server, DatacenterProtegeFactory factory, int refreshInterval) {
+    public ServerInfoReader(ServiceCenterServer server, ModelAccess modelAccess, int refreshInterval) {
         this.server = server;
-        this.protegeFactory = factory;
+        this.modelAccess = modelAccess;
         this.refreshInterval = refreshInterval;
         timer = new Timer(refreshInterval, new ActionListener() {
 
@@ -46,15 +48,15 @@ public class ServerInfoReader {
 
 
     private void refreshServerInfo() {
-        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getServerIPAddress());
-        server.setProxy(proxy);
+        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+        //server.setProxy(proxy);
         ServerDto serverInfo = proxy.getServerInfo();
 
-        CPU cpu = server.getAssociatedCPU();
+        CPU cpu = server.getCpuResources().iterator().next();
         int coreCount = serverInfo.getCoreCount();
-        Collection cores = cpu.getAssociatedCore();
+        List<Core> cores = cpu.getAssociatedCores();
         /*for (int i = 0; i < coreCount; i++) {
-            cores.add(protegeFactory.createCore(server.getLocalName() + "_Core_" + i));
+            cores.add(modelAccess.createCore(server.getLocalName() + "_Core_" + i));
         }*/
         //cpu.setAssociatedCore(cores);
 
@@ -66,20 +68,20 @@ public class ServerInfoReader {
             Core core = (Core) item;
             // core.setMaxAcceptableValue(totalCPU);
             //core.setMinAcceptableValue(1);
-            core.setTotal(totalCPU);
-            core.setUsed(freeCPU);
+            core.setMaximumWorkLoad((double) totalCPU);
+            core.setCurrentWorkLoad((double) freeCPU);
         }
 
-        selfoptimizing.ontologyRepresentations.greenContextOntology.Memory serverMemory = server.getAssociatedMemory();
+        MEM serverMemory = server.getMemResources().iterator().next();
         int totalMemory = serverInfo.getTotalMemory();
         //serverMemory.setMaxAcceptableValue(totalMemory);
-        serverMemory.setTotal(totalMemory);
-        serverMemory.setUsed(totalMemory - serverInfo.getFreeMemory());
+        serverMemory.setMaximumWorkLoad((double) totalMemory);
+        serverMemory.setCurrentWorkLoad((double) totalMemory - serverInfo.getFreeMemory());
 
-        Storage storage = server.getAssociatedStorage();
+        HDD storage = server.getHddResources().iterator().next();
         List<StorageDto> storageList = serverInfo.getStorage();
         StorageDto targetStorage = null;
-        String storagePath = (String) server.getVirtualMachinesPath().iterator().next();
+        String storagePath = storage.getPhysicalPath();
         for (StorageDto storageDto : storageList) {
             if (storageDto.getName().charAt(0) == storagePath.charAt(0)) {
                 targetStorage = storageDto;
@@ -89,8 +91,8 @@ public class ServerInfoReader {
 
         int storageSize = targetStorage.getSize();
         // storage.setMaxAcceptableValue(storageSize);
-        storage.setTotal(storageSize);
-        storage.setUsed(storageSize - targetStorage.getFreeSpace());
+        storage.setMaximumWorkLoad((double) storageSize);
+        storage.setCurrentWorkLoad((double) storageSize - targetStorage.getFreeSpace());
     }
 
 

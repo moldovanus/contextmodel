@@ -2,8 +2,8 @@ package selfoptimizing.utils.context;
 
 import selfoptimizing.actionEnforcement.command.Command;
 import selfoptimizing.actionEnforcement.command.selfOptimizingCommand.*;
-import selfoptimizing.contextaware.worldInterface.dtos.ServerDto;
-import selfoptimizing.contextaware.worldInterface.dtos.TaskDto;
+import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.TaskDto;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.DatacenterProtegeFactory;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.Server;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.Task;

@@ -1,4 +1,4 @@
-package selfoptimizing.contextaware.worldInterface.dtos;
+package utils.worldInterface.dtos;
 
 import java.io.Serializable;
 

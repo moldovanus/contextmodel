@@ -18,9 +18,9 @@ import jade.lang.acl.ACLMessage;
 import selfoptimizing.actionEnforcement.command.selfOptimizingCommand.RemoveTaskFromServerCommand;
 import selfoptimizing.contextaware.GlobalVars;
 import selfoptimizing.contextaware.agents.ReinforcementLearningAgent;
-import selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
-import selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
-import selfoptimizing.contextaware.worldInterface.dtos.TaskDto;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
+import utils.worldInterface.dtos.TaskDto;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.*;
 
 /**

@@ -1,8 +1,8 @@
-package selfoptimizing.contextaware.sensorapi.impl;
+package utils.worldInterface.sensorapi.impl;
 
-import selfoptimizing.contextaware.sensorapi.SensorListener;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.DatacenterProtegeFactory;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.Server;
+import model.impl.util.ModelAccess;
+import model.interfaces.resources.ServiceCenterServer;
+import utils.worldInterface.sensorapi.SensorListener;
 
 import java.util.Hashtable;
 
@@ -29,18 +29,18 @@ public class SensorAPI {
         }
     }
 
-    public static void addServerListener(Server server, DatacenterProtegeFactory protegeFactory, int interval) {
-        ServerInfoReader reader = new ServerInfoReader(server, protegeFactory, interval);
-        serverReaders.put(server.getServerIPAddress(), reader);
+    public static void addServerListener(ServiceCenterServer server, ModelAccess modelAccess, int interval) {
+        ServerInfoReader reader = new ServerInfoReader(server, modelAccess, interval);
+        serverReaders.put(server.getIpAddress(), reader);
     }
 
     public static void addSensorListener(String url, SensorListener listener) {
         addSensorListener(url, listener, 3000);
     }
 
-    public static void addServerListener(Server server, DatacenterProtegeFactory protegeFactory) {
-        ServerInfoReader reader = new ServerInfoReader(server, protegeFactory, 3000);
-        serverReaders.put(server.getServerIPAddress(), reader);
+    public static void addServerListener(ServiceCenterServer server, ModelAccess modelAccess) {
+        ServerInfoReader reader = new ServerInfoReader(server, modelAccess, 3000);
+        serverReaders.put(server.getIpAddress(), reader);
     }
 
 }
