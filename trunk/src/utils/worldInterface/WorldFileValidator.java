@@ -1,4 +1,4 @@
-package selfoptimizing.contextaware.worldInterface;
+package utils.worldInterface;
 
 import org.xml.sax.InputSource;
 import selfoptimizing.contextaware.WorldFileValidationException;

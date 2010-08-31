@@ -4,7 +4,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.*;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package selfoptimizing.contextaware.worldInterface;
+package utils.worldInterface;
 
 import java.util.HashMap;
 

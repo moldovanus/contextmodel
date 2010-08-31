@@ -16,6 +16,7 @@ import model.interfaces.resources.ITFacilityPassiveResource;
  */
 public class DefaultFacilityDefaultAction extends DefaultContextAction
         implements FacilityDefaultAction {
+    private int cost = 0;
 
     private ActionEffect effect;
 
@@ -71,5 +72,12 @@ public class DefaultFacilityDefaultAction extends DefaultContextAction
     @Override
     public String toString() {
         return this.getName();
+    }
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }

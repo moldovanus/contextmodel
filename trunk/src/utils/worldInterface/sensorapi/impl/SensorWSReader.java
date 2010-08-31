@@ -1,6 +1,6 @@
-package selfoptimizing.contextaware.sensorapi.impl;
+package utils.worldInterface.sensorapi.impl;
 
-import selfoptimizing.contextaware.sensorapi.SensorListener;
+import utils.worldInterface.sensorapi.SensorListener;
 
 import java.util.Iterator;
 import java.util.LinkedList;

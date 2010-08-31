@@ -6,7 +6,7 @@ import jade.core.Agent;
 import jade.domain.FIPANames;
 import jade.domain.mobility.MobilityOntology;
 import selfoptimizing.contextaware.agents.behaviours.ReceiveMessagesCIABehaviour;
-import selfoptimizing.contextaware.sensorapi.impl.SensorAPI;
+import utils.worldInterface.sensorapi.impl.SensorAPI;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.DatacenterProtegeFactory;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.Server;
 
@@ -38,7 +38,7 @@ public class CIAgent extends Agent {
             DatacenterProtegeFactory protegeFactory = new DatacenterProtegeFactory(datacenterOwlModel);
             Collection<Server> servers = protegeFactory.getAllServerInstances();
             for (Server server : servers) {
-                SensorAPI.addServerListener(server, protegeFactory);
+//                SensorAPI.addServerListener(server, protegeFactory);
             }
 
             getContentManager().registerLanguage(new SLCodec(), FIPANames.ContentLanguage.FIPA_SL0);

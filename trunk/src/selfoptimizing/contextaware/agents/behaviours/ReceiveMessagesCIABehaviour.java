@@ -10,8 +10,8 @@ import jade.lang.acl.ACLMessage;
 import selfoptimizing.actionEnforcement.x3dCommand.X3DOnOffCommand;
 import selfoptimizing.actionEnforcement.x3dCommand.X3DStringCommand;
 import selfoptimizing.contextaware.GlobalVars;
-import selfoptimizing.contextaware.sensorapi.SensorListener;
-import selfoptimizing.contextaware.sensorapi.impl.SensorAPI;
+import utils.worldInterface.sensorapi.SensorListener;
+import utils.worldInterface.sensorapi.impl.SensorAPI;
 
 import java.io.IOException;
 import java.util.logging.Level;

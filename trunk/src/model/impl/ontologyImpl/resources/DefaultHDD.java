@@ -82,6 +82,29 @@ public class DefaultHDD extends DefaultSimpleResource
     }
 
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#physicalPath
+
+    public String getPhysicalPath() {
+        return (String) getPropertyValue(getPhysicalPathProperty());
+    }
+
+
+    public RDFProperty getPhysicalPathProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#physicalPath";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasPhysicalPath() {
+        return getPropertyValueCount(getPhysicalPathProperty()) > 0;
+    }
+
+
+    public void setPhysicalPath(String newPhysicalPath) {
+        setPropertyValue(getPhysicalPathProperty(), newPhysicalPath);
+    }
+
     public boolean hasRotationSpeed() {
         return getPropertyValueCount(getRotationSpeedProperty()) > 0;
     }

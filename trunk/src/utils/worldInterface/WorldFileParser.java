@@ -1,4 +1,4 @@
-package selfoptimizing.contextaware.worldInterface;
+package utils.worldInterface;
 
 import org.w3c.dom.*;
 import selfoptimizing.contextaware.GlobalVars;

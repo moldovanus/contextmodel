@@ -206,8 +206,8 @@ public class ServerConfigurator extends AbstractConfigurator {
                 String serverName = data[0].trim();
                 ServiceCenterServer server = modelAccess.createServiceCenterServer(serverName);
 //TODO; insert field pt MAC si IP  si VIRTUAL MACHINES PATH DACA NE TREBE
-//                server.setServerIPAddress(data[1].trim());
-//                server.setServerMacAddress(data[2].trim());
+                server.setIpAddress(data[1].trim());
+                server.setMacAddress(data[2].trim());
 //                Collection virtualMachinesPath = new ArrayList();
 //                virtualMachinesPath.add(data[3].trim());
 //                server.setVirtualMachinesPath(virtualMachinesPath);
@@ -221,7 +221,6 @@ public class ServerConfigurator extends AbstractConfigurator {
                 CPU cpu = modelAccess.createCPU(serverName + "_CPU_");
                 cpu.setResourceID(cpu.getName());
                 cpu.setCurrentEnergyState(0);
-
 
                 server.setCPUWeight(0.5f);
                 int coreCount = Integer.parseInt(data[4].trim());

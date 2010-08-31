@@ -2,6 +2,7 @@ package model.impl.ontologyImpl.resources;
 
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
 
@@ -127,5 +128,52 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
             description += " currentWorkload: " + resource.getCurrentWorkLoad() + "\n";
         }
         return description;
+    }
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ipAddress
+
+    public String getIpAddress() {
+        return (String) getPropertyValue(getIpAddressProperty());
+    }
+
+
+    public RDFProperty getIpAddressProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ipAddress";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasIpAddress() {
+        return getPropertyValueCount(getIpAddressProperty()) > 0;
+    }
+
+
+    public void setIpAddress(String newIpAddress) {
+        setPropertyValue(getIpAddressProperty(), newIpAddress);
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#macAddress
+
+    public String getMacAddress() {
+        return (String) getPropertyValue(getMacAddressProperty());
+    }
+
+
+    public RDFProperty getMacAddressProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#macAddress";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasMacAddress() {
+        return getPropertyValueCount(getMacAddressProperty()) > 0;
+    }
+
+
+    public void setMacAddress(String newMacAddress) {
+        setPropertyValue(getMacAddressProperty(), newMacAddress);
     }
 }

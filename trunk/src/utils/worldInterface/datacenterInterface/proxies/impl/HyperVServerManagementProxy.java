@@ -1,10 +1,10 @@
-package selfoptimizing.contextaware.worldInterface.datacenterInterface.proxies.impl;
+package utils.worldInterface.datacenterInterface.proxies.impl;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-import selfoptimizing.contextaware.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
-import selfoptimizing.contextaware.worldInterface.dtos.ServerDto;
+import utils.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
+import utils.worldInterface.dtos.ServerDto;
 
 import java.io.*;
 import java.net.URL;

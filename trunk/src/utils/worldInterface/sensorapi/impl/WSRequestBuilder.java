@@ -1,4 +1,4 @@
-package selfoptimizing.contextaware.sensorapi.impl;
+package utils.worldInterface.sensorapi.impl;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;

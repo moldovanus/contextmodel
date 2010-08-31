@@ -40,6 +40,8 @@ public final class GlobalVars {
     public static final String MEMORY_SELFHEALING_FILE = "memory/memorySelfHealing.dat";
     public static final String MEMORY_SELFOPTIMIZING_FILE = "memory/memorySelfOptimizing.dat";
     public static final String FUZZY_LOGIC_CONTROL_FILE = "fuzzy/negotiator.fcl";
+    public static final String VIRTUAL_MACHINES_NETWORK_PATH = "";
+    public static final String GLOBAL_LOOP_CONTROLLER_IP = "";
 
     public static final int MAX_NAME_LENGTH = 10;
     public static final int MAX_TASK_LIFE_IN_MINUTES = 5;
@@ -53,5 +55,6 @@ public final class GlobalVars {
     public static Map<String, Map<String, String>> valueMapping = new HashMap<String, Map<String, String>>();
     private static String x3DPlatformName = "acasa-25f3f1aa5:1099/JADE";
     private static String x3DPlatformAddress = "http://acasa-25f3f1aa5:7778/acc";
+
 
 }

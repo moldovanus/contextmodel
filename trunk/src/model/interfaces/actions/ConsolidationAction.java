@@ -1,5 +1,7 @@
 package model.interfaces.actions;
 
+import model.impl.util.ModelAccess;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -8,4 +10,5 @@ package model.interfaces.actions;
  * To change this template use File | Settings | File Templates.
  */
 public interface ConsolidationAction extends ITComputingResourceAdaptationAction {
+    void executeOnServiceCenter(ModelAccess modelAccess);
 }
