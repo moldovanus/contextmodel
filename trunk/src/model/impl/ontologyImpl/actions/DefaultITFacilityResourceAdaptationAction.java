@@ -40,6 +40,10 @@ public class DefaultITFacilityResourceAdaptationAction extends DefaultContextAct
         getFacilityAction().execute(modelAccess);
     }
 
+    public void executeOnServiceCenter(ModelAccess modelAccess) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     @Override
     public void undo(ModelAccess modelAccess) {
         getFacilityAction().undo(modelAccess);

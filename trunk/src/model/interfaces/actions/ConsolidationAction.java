@@ -10,5 +10,4 @@ import model.impl.util.ModelAccess;
  * To change this template use File | Settings | File Templates.
  */
 public interface ConsolidationAction extends ITComputingResourceAdaptationAction {
-    void executeOnServiceCenter(ModelAccess modelAccess);
 }

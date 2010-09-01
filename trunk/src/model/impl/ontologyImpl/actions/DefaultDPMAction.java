@@ -37,6 +37,10 @@ public class DefaultDPMAction extends DefaultITComputingResourceAdaptationAction
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
+    public void executeOnServiceCenter(ModelAccess modelAccess) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     @Override
     public void undo(ModelAccess modelAccess) {
         throw new UnsupportedOperationException("Not implemented yet");

@@ -526,6 +526,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         if (entropyAndPolicy.getFirst() > 0) {
             ContextSnapshot result = reinforcementLearning(queue);
             result.executeActions(modelAccess);
+            result.executeOnServiceCenter(modelAccess);
 //            OntModel ontModel = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
 //            ontModel.add(modelAccess.getOntologyModelFactory().getOwlModel().getJenaModel());
 //            try {
