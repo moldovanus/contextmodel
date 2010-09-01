@@ -106,7 +106,8 @@ public class DefaultDeployActivityAction extends DefaultConsolidationAction
         ApplicationActivity task = getActivity();
         ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
         if (proxy != null) {
-            int procTime = ((int) task.getCpuRequiredMaxValue() * 100) / ((Core) server.getCpuResources()).getMaximumWorkLoad().intValue();
+            int procTime = ((int) task.getCpuRequiredMaxValue() * 100) /
+                    ((Core) server.getCpuResources().iterator().next().getAssociatedCores().iterator().next()).getMaximumWorkLoad().intValue();
             String path = server.getHddResources().iterator().next().getPhysicalPath();
             System.out.println("Deploying ...");
             proxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
