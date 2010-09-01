@@ -48,6 +48,7 @@ public class GlobalVars {
     public static Map<String, Map<String, String>> valueMapping = new HashMap<String, Map<String, String>>();
     private static String x3DPlatformName = "acasa-25f3f1aa5:1099/JADE";
     private static String x3DPlatformAddress = "http://acasa-25f3f1aa5:7778/acc";
+    public static final String BASE_VM_NAME = "Windows";
 
     //ok because the x3DPlatformAddress will be  changed only once per run
     public static String getX3DPlatformAddress() {
