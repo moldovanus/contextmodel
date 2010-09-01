@@ -129,7 +129,11 @@ public class ContextSnapshot implements Comparable {
 //            ContextAction.executeOnX3D(agent);
         }
     }
-
+    public void executeOnServiceCenter(ModelAccess modelAccess){
+        for (ContextAction contextAction : actions){
+              contextAction.executeOnServiceCenter(modelAccess);
+        }
+    }
 
 //    public void rewindOnX3D(ReinforcementLearningAgent agent) {
 //        Object[] ContextActions = actions.toArray();

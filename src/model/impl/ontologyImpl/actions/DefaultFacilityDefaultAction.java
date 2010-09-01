@@ -41,6 +41,14 @@ public class DefaultFacilityDefaultAction extends DefaultContextAction
         }
     }
 
+    public void executeOnServiceCenter(ModelAccess modelAccess) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void executeOnWebService(ModelAccess modelAccess) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     @Override
     public void undo(ModelAccess modelAccess) {
         if (effect == null) {

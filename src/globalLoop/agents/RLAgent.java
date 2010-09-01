@@ -13,9 +13,6 @@ import gui.datacenterConfiguration.impl.ConfigurationGUI;
 import jade.core.Agent;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
-import org.mindswap.pellet.jena.PelletReasonerFactory;
-import testOntology.Test;
-import testOntology.TestFactory;
 
 import java.io.File;
 

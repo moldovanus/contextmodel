@@ -56,7 +56,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
         ServerDto serverDto = null;
         try {
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/GetServerInfo");
+            URL url = new URL("http://" + hostName + "/Service1.asmx/GetServerInfo");
 
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
@@ -99,7 +99,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     public void moveDestinationActions(String path1, String path2, String vmName) {
         try {
             //Socket sock = new Socket(hostName, 80);
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/MoveDestinationActions");
+            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions");
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
@@ -107,7 +107,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
             //Send header
             String data = "path1=" + path1 + "&path2=" + path2 + "&vmName=" + vmName;
             BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "utf-8"));
-            wr.write("POST /ServerManagement/Service1.asmx/MoveDestinationActions HTTP/1.1\r\n");
+            wr.write("POST /Service1.asmx/MoveDestinationActions HTTP/1.1\r\n");
             wr.write("Host: " + hostName + "\r\n");
             wr.write("Content-Type: application/x-www-form-urlencoded\r\n");
             wr.write("Content-Length: " + data.length() + "\r\n");
@@ -173,7 +173,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     public void deployVirtualMachine(String from, String to, String vmName, String newName) {
         try {
             //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/DeployVirtualMachine?from="
+            URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachine?from="
                     + from + "&to=" + to + "&vmName=" + "VM_1" + "&vmCopyName=" + newName + "");
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
@@ -198,7 +198,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
     public void startVirtualMachine(String vmName) {
         try {
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/StartVirtualMachine?vmName=" + vmName);
+            URL url = new URL("http://" + hostName + "/Service1.asmx/StartVirtualMachine?vmName=" + vmName);
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
 
@@ -220,7 +220,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
     public void stopVirtualMachine(String vmName) {
         try {
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/StopVirtualMachine?vmName=" + vmName);
+            URL url = new URL("http://" + hostName + "/Service1.asmx/StopVirtualMachine?vmName=" + vmName);
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
 
@@ -242,7 +242,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
     public void deleteVirtualMachine(String vmName) {
         try {
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/DeleteVirtualMachine?vmName=" + vmName);
+            URL url = new URL("http://" + hostName + "/Service1.asmx/DeleteVirtualMachine?vmName=" + vmName);
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
 
@@ -264,7 +264,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
     public void modifyVirtualMachine(String vmName, int memory, int processorPercentage, int cores) {
         try {
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/WakeUpServer?"
+            URL url = new URL("http://" + hostName + "/Service1.asmx/WakeUpServer?"
                     + "vmName=" + vmName + "&memory=" + memory + "&procSpeed=" + processorPercentage +
                     "&cores=" + cores);
             URLConnection connection = url.openConnection();
@@ -289,7 +289,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
                                                         int memory, int processorPercentage, int nrCores) {
         try {
             //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/DeployVirtualMachineWithModify?from="
+            URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachineWithModify?from="
                     + from + "&to=" + to + "&vmName=" + "VM_1" + "&vmCopyName=" + vmCopyName
                     + "&memory=" + memory + "&procSpeed=" + processorPercentage + "&nrCores=" + nrCores);
             URLConnection connection = url.openConnection();
@@ -314,7 +314,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     public void wakeUpServer(String mac, String ipAddress, int port) {
 
         try {
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/WakeUpServer?"
+            URL url = new URL("http://" + hostName + "/Service1.asmx/WakeUpServer?"
                     + "mac=" + mac + "&ipAddress=" + ipAddress + "&port=" + port);
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
@@ -338,7 +338,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     public void sendServerToSleep() {
 
         try {
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/SendServerToSleep");
+            URL url = new URL("http://" + hostName + "/Service1.asmx/SendServerToSleep");
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
 

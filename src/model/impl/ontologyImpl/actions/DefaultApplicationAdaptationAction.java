@@ -34,6 +34,9 @@ public class DefaultApplicationAdaptationAction extends DefaultContextAction
         throw new UnsupportedOperationException("not implemented yet");
     }
 
+    public void executeOnServiceCenter(ModelAccess modelAccess) {
+        throw new UnsupportedOperationException("not implemented yet");    }
+
     @Override
     public void undo(ModelAccess modelAccess) {
         throw new UnsupportedOperationException("not implemented yet");

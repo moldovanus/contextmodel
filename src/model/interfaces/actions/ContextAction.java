@@ -23,6 +23,8 @@ public interface ContextAction extends ContextElement {
     void removeResource(ContextResource resource);
 
     void execute(ModelAccess modelAccess);
+    
+    void executeOnServiceCenter(ModelAccess modelAccess);
 
     void undo(ModelAccess modelAccess);
 
