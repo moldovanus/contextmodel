@@ -3,10 +3,12 @@ package utils.worldInterface.datacenterInterface.proxies.impl;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+import selfoptimizing.contextaware.GlobalVars;
 import utils.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
 import utils.worldInterface.dtos.ServerDto;
 
 import java.io.*;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -174,7 +176,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         try {
             //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
             URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachine?from="
-                    + from + "&to=" + to + "&vmName=" + "VM_1" + "&vmCopyName=" + newName + "");
+                    + from + "&to=" + to + "&vmName=" + GlobalVars.BASE_VM_NAME + "&vmCopyName=" + newName + "");
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
 
@@ -288,19 +290,58 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
                                                         String vmName, String vmCopyName,
                                                         int memory, int processorPercentage, int nrCores) {
         try {
-            //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
+
+//            String content = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+//                    "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+//                    "  <soap:Body>\n" +
+//                    "    <DeployVirtualMachineWithModify xmlns=\"http://www.SelfOptimizingDatacenter.edu/\">\n" +
+//                    "      <from>" + from + "</from>\n" +
+//                    "      <to>" + to + "</to>\n" +
+//                    "      <vmName>" + GlobalVars.BASE_VM_NAME + "</vmName>\n" +
+//                    "      <vmCopyName>" + vmCopyName + "</vmCopyName>\n" +
+//                    "      <memory>" + memory + "</memory>\n" +
+//                    "      <procSpeed>" + processorPercentage + "</procSpeed>\n" +
+//                    "      <nrCores>" + nrCores + "</nrCores>\n" +
+//                    "    </DeployVirtualMachineWithModify>\n" +
+//                    "  </soap:Body>\n" +
+//                    "</soap:Envelope>";
+//
+//            String header = " POST /Service1.asmx HTTP/1.1\n" +
+//                    "Host: server1\n" +
+//                    "Content-Type: text/xml; charset=utf-8\n" +
+//                    "Content-Length: " + content.length() + "\n" +
+//                    "SOAPAction: \"http://www.SelfOptimizingDatacenter.edu/DeployVirtualMachineWithModify\"";
+//            String content = "from="
+//                    + from + "&to=" + to + "&vmName=" + GlobalVars.BASE_VM_NAME + "&vmCopyName=" + vmCopyName
+//                    + "&memory=" + memory + "&procSpeed=" + processorPercentage + "&nrCores=" + nrCores + "\n";
+//            String header = "POST /Service1.asmx/DeployVirtualMachineWithModify HTTP/1.1\n" +
+//                    "Host: server1\n" +
+//                    "Content-Type: application/x-www-form-urlencoded\n" +
+//                    "Content-Length: " + content.length() + "\n\n";
+//
+//            Socket socket = new Socket(hostName, 80);
+//            socket.getOutputStream().write(header.getBytes());
+//            socket.getOutputStream().write(content.getBytes());
+//            System.out.println(header);
+//            System.out.println(content);
+
+//            //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
             URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachineWithModify?from="
-                    + from + "&to=" + to + "&vmName=" + "VM_1" + "&vmCopyName=" + vmCopyName
+                    + from + "&to=" + to + "&vmName=" + GlobalVars.BASE_VM_NAME + "&vmCopyName=" + vmCopyName
                     + "&memory=" + memory + "&procSpeed=" + processorPercentage + "&nrCores=" + nrCores);
             URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
+            System.out.println(url.toString());
+//            connection.setDoInput(false);
+//            connection.setDoOutput(false);
+            connection.setReadTimeout(0);
+            connection.setConnectTimeout(0);
+//            connection.connect();
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             if (DEBUG) {
                 // Response
                 String line;
                 while ((line = rd.readLine()) != null) {
-
                     System.out.println(line);
                 }
             }
@@ -312,49 +353,49 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     }
 
     public void wakeUpServer(String mac, String ipAddress, int port) {
-
-        try {
-            URL url = new URL("http://" + hostName + "/Service1.asmx/WakeUpServer?"
-                    + "mac=" + mac + "&ipAddress=" + ipAddress + "&port=" + port);
-            URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            if (DEBUG) {
-                // Response
-                String line;
-                while ((line = rd.readLine()) != null) {
-
-                    System.out.println(line);
-                }
-            }
-            waitUntilTargetIsAlive(ipAddress);
-            //Thread.sleep(60000);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.err.println("Wake up disabled from Hyper-V Management Proxy");
+//        try {
+//            URL url = new URL("http://" + hostName + "/Service1.asmx/WakeUpServer?"
+//                    + "mac=" + mac + "&ipAddress=" + ipAddress + "&port=" + port);
+//            URLConnection connection = url.openConnection();
+//            connection.setDoInput(true);
+//            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            if (DEBUG) {
+//                // Response
+//                String line;
+//                while ((line = rd.readLine()) != null) {
+//
+//                    System.out.println(line);
+//                }
+//            }
+//            waitUntilTargetIsAlive(ipAddress);
+//            //Thread.sleep(60000);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void sendServerToSleep() {
-
-        try {
-            URL url = new URL("http://" + hostName + "/Service1.asmx/SendServerToSleep");
-            URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
-
-            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            if (DEBUG) {
-                // Response
-                String line;
-                while ((line = rd.readLine()) != null) {
-
-                    System.out.println(line);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.err.println("Sleep disabled from Hyper-V Management Proxy");
+//        try {
+//            URL url = new URL("http://" + hostName + "/Service1.asmx/SendServerToSleep");
+//            URLConnection connection = url.openConnection();
+//            connection.setDoInput(true);
+//
+//            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            if (DEBUG) {
+//                // Response
+//                String line;
+//                while ((line = rd.readLine()) != null) {
+//
+//                    System.out.println(line);
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
