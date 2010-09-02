@@ -1,6 +1,6 @@
-package contextaware.gui.resourceMonitor.resourceMonitorPlotter.impl;
+package gui.resourceMonitor.resourceMonitorPlotter.impl;
 
-import contextaware.gui.resourceMonitor.resourceMonitorPlotter.ResourceMonitorPlotter;
+import gui.resourceMonitor.resourceMonitorPlotter.ResourceMonitorPlotter;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
