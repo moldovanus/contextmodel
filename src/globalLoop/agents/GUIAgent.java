@@ -86,9 +86,6 @@ public class GUIAgent extends Agent {
 
     private AgentController x3DController;
     private AgentContainer container;
-
-    private OWLModel datacenterOwlModel;
-
     private ModelAccess modelAccess;
     private java.util.List<IMonitor> serverMonitors;
     private IMonitor tasksQueueMonitor;
@@ -111,15 +108,8 @@ public class GUIAgent extends Agent {
 
         System.out.println("[GUIAgent] Hello!");
 
-        Object[] args = getArguments();
-        if (args != null && args.length > 0) {
-            datacenterOwlModel = (OWLModel) args[0];
-           modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
-        } else {
-            System.out.println("[GUIAgent] No OWLModel provided.");
-            this.doDelete();
-            return;
-        }
+        modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
+
         serverMonitors = new ArrayList<IMonitor>();
         tasksQueueMonitor = new TasksQueueMonitor(modelAccess);
         container = getContainerController();
