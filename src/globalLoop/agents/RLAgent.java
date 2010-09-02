@@ -8,6 +8,7 @@ import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
 import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
 import globalLoop.agents.behaviors.RLServiceCenterServersManagement;
+import globalLoop.agents.behaviors.ReceiveMessageRLBehaviour;
 import globalLoop.utils.GlobalVars;
 import gui.datacenterConfiguration.impl.ConfigurationGUI;
 import jade.core.Agent;
@@ -129,6 +130,6 @@ public class RLAgent extends Agent {
 
         //addBehaviour(new RLFacilityManagementBehavior(this, 1000, modelAccess));
         addBehaviour(new RLServiceCenterServersManagement(this, modelAccess, 1000));
-
+        addBehaviour(new ReceiveMessageRLBehaviour(this,modelAccess));
     }
 }

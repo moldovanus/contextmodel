@@ -1,7 +1,5 @@
 package globalLoop.agents;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import edu.stanford.smi.protegex.owl.jena.JenaOWLModel;
 import globalLoop.utils.GlobalVars;
 import jade.core.Agent;
 import jade.wrapper.AgentContainer;
@@ -17,6 +15,7 @@ import jade.wrapper.StaleProxyException;
  */
 public class CMAAgent extends Agent {
     private AgentController rlAgentController;
+    private AgentController tmAgentController;
 
     @Override
     protected void setup() {
@@ -26,6 +25,12 @@ public class CMAAgent extends Agent {
         try {
             rlAgentController = container.createNewAgent(GlobalVars.RLAGENT_NAME, RLAgent.class.getName(), new Object[]{});
             rlAgentController.start();
+        } catch (StaleProxyException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        try {
+            tmAgentController = container.createNewAgent(GlobalVars.TMAGENT_NAME, TMAgent.class.getName(), new Object[]{});
+            tmAgentController.start();
         } catch (StaleProxyException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

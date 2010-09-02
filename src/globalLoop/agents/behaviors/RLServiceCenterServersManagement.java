@@ -19,6 +19,11 @@ import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
 import selfoptimizing.utils.Pair;
 import utils.exceptions.IndividualNotFoundException;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
+import utils.worldInterface.datacenterInterface.proxies.impl.ServerManagementProxy;
+import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.StorageDto;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -201,7 +206,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         if (previous != null) {
             function += previous.getRewardFunction();
             //TODO: de bagat cost pe actiune
-            double temp = previous.getRewardFunction() - current.getContextEntropy()-current.getActions().size()*100; //- c.getCost() - current.getActions().size() * 100;
+            double temp = previous.getRewardFunction() - current.getContextEntropy() - current.getActions().size() * 100; //- c.getCost() - current.getActions().size() * 100;
             function = ContextSnapshot.gamma * temp;
         } else {
             function = -current.getContextEntropy();
@@ -501,6 +506,40 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     @Override
     protected void onTick() {
+
+        //refresh server information
+        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+        for (ServiceCenterServer server : servers) {
+            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+            ServerDto dto = proxy.getServerInfo();
+            int coreCount = dto.getCoreCount();
+            int totalCPU = dto.getTotalCPU();
+
+            //read info only about the number of cores wanted for test 
+            List<Integer> integers = dto.getFreeCPU();
+            List<Core> cores = server.getCpuResources().iterator().next().getAssociatedCores();
+            for (int i = 0; i < cores.size(); i++) {
+                Core core = cores.get(i);
+                core.setCurrentWorkLoad(totalCPU - integers.get(i).doubleValue());
+                core.setMaximumWorkLoad((double)totalCPU);
+            }
+
+            List<StorageDto> storageDtos = dto.getStorage();
+            for(StorageDto storageDto : storageDtos){
+                HDD  hdd = server.getHddResources().iterator().next();
+                if ( storageDto.getName().equals(hdd.getPhysicalPath())){
+                    hdd.setCurrentWorkLoad((double)storageDto.getSize() - storageDto.getFreeSpace());
+                    hdd.setMaximumWorkLoad((double)storageDto.getSize());
+                    break;
+                }
+            }
+
+            MEM memory = server.getMemResources().iterator().next();
+            memory.setCurrentWorkLoad((double)dto.getTotalMemory() - dto.getFreeMemory());
+            memory.setMaximumWorkLoad((double)dto.getTotalMemory());
+
+        }
+        
         PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>(1, new Comparator<ContextSnapshot>() {
 
             public int compare(ContextSnapshot snapshot_1, ContextSnapshot snapshot_2) {

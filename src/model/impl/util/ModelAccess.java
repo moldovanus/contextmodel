@@ -989,6 +989,7 @@ public class ModelAccess implements ModelFactory {
             //ontologyModelFactory.createBusinessPolicy(name);
             object = databaseModelFactory.createBusinessPolicy(generateUniqueName(name));
         }
+        System.out.println("BussinessPolicy" + object+ name);
         return object;
     }
 

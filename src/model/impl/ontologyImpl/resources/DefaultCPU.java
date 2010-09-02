@@ -141,9 +141,12 @@ public class DefaultCPU extends DefaultSimpleResource
     public void addRunningActivity(ApplicationActivity activity) {
         List<Core> cores = this.getAssociatedCores();
         float requestedCoresNo = activity.getNumberOfCoresRequiredValue();
-        for (Core core : cores) {
+        int coreCount = cores.size();
+        for (int i = 0; i < coreCount; i++) {
+            Core core = cores.get(i);
             if (core.hasResourcesFor(activity)) {
                 core.addRunningActivity(activity);
+                activity.addReceivedCoreIndex(i);
                 requestedCoresNo--;
             }
             if (requestedCoresNo == 0) {
@@ -156,9 +159,12 @@ public class DefaultCPU extends DefaultSimpleResource
     @Override
     public void removeRunningActivity(ApplicationActivity activity) {
         List<Core> cores = this.getAssociatedCores();
-        for (Core core : cores) {
+        int coreCount = cores.size();
+        for (int i = 0; i < coreCount; i++) {
+            Core core = cores.get(i);
             if (core.getRunningActivities().contains(activity)) {
                 core.removeRunningActivity(activity);
+                activity.removeReceivedCoreIndex(i);
             }
         }
         super.removeRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
