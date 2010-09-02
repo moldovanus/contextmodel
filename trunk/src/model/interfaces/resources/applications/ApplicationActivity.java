@@ -7,6 +7,7 @@ import model.interfaces.resources.BusinessContextResource;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,4 +50,8 @@ public interface ApplicationActivity extends BusinessContextResource {
 
     void setPartOf(Collection newPartOf);
 
+    void addReceivedCoreIndex(int i);
+    void removeReceivedCoreIndex(int i);
+    void removeAllReceivedCoreIndex();
+    List<Integer> getReceivedCoreIndexes();
 }

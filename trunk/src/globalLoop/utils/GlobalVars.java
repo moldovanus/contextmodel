@@ -23,7 +23,7 @@ public final class GlobalVars {
     public static final String GUIAGENT_NAME = "GUIAgent";
     public static final String RLAGENT_NAME = "RLAgent";
     public static final String X3DAGENT_NAME = "X3DAgent";
-    public static final String TMAGENT_NAME = "TaskManagementAgent";
+    public static final String TMAGENT_NAME = "TMAgent";
     public static final String PHYSICAL_RESOURCE_VALUE_NAME = "valueOfService";
     public static final String PHYSICAL_RESOURCE_NAME_NAME = "nameOfService";
     public static final String AGENT_REQUEST = "request";

@@ -8,8 +8,10 @@ import model.interfaces.ContextElement;
 import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.resources.applications.ApplicationActivity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -20,6 +22,12 @@ import java.util.Iterator;
  */
 public class DefaultApplicationActivity extends DefaultBusinessContextResource
         implements ApplicationActivity {
+
+    private List<Integer> receivedCoresIndex;
+
+    {
+        receivedCoresIndex = new ArrayList<Integer>();
+    }
 
     public DefaultApplicationActivity(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
@@ -111,6 +119,20 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
        public void setPartOf(Collection newPartOf) {
            setPropertyValues(getPartOfProperty(), newPartOf);
        }
-    
 
+    public void addReceivedCoreIndex(int i) {
+        receivedCoresIndex.add(i);
+    }
+
+    public void removeReceivedCoreIndex(int i) {
+        receivedCoresIndex.remove(i);
+    }
+
+    public void removeAllReceivedCoreIndex() {
+        receivedCoresIndex.clear();;
+    }
+
+    public List<Integer> getReceivedCoreIndexes() {
+       return receivedCoresIndex;
+    }
 }
