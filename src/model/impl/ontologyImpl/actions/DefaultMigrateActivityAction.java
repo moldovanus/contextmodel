@@ -150,7 +150,7 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
             oldServerProxy.moveSourceActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
                     task.getLocalName());
             newServerProxy.moveDestinationActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
-                    "//" + newServer.getIpAddress() + "/" + path.split(":")[1].substring(1),
+                    "//"+ GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH+newServer.getLocalName() ,
                     task.getLocalName());
 
         } else {
