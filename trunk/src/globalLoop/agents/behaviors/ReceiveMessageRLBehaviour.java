@@ -113,6 +113,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                         task.setMemWeight(0.3f);
                         task.setHddWeight(0.3f);
                         task.setResourceID("Task_" + taskDto.getTaskName());
+
                         SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
                         String swrlRule = "";
                         try {
