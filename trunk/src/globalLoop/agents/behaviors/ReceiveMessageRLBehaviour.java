@@ -125,7 +125,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                     " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
                                     " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
                                     " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
-                                    " -> isRespected(" + task.getName() + ", true)";
+                                    " -> isRespected(" + policy.getName() + ", true)";
                             SWRLImp imp = factory.createImp(swrlRule);
                             imp.enable();
                         } catch (SWRLParseException e) {
