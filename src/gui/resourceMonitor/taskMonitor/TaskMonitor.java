@@ -70,7 +70,6 @@ public class TaskMonitor implements IMonitor {
         taskPanel.setLayout(new BorderLayout());
 
 
-
         taskCPUMonitor = new TaskResourceMonitor("CPU", (int)task.getCpuRequiredMinValue(),(int) task.getCpuRequiredMaxValue());
         taskMemoryMonitor = new TaskResourceMonitor("Memory", (int)task.getMemRequiredMinValue(),(int) task.getMemRequiredMaxValue());
         taskStorageMonitor = new TaskResourceMonitor("Storage", (int)task.getHddRequiredMinValue(),(int) task.getHddRequiredMaxValue());

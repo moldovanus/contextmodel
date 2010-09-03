@@ -12,6 +12,8 @@ import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
+import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
+import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
 import globalLoop.agents.RLAgent;
 import globalLoop.utils.GlobalVars;
 import jade.core.Agent;
@@ -32,6 +34,8 @@ import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.TaskDto;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,7 +47,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
     private SWRLFactory swrlFactory;
     private ModelAccess modelAccess;
 
-    public ReceiveMessageRLBehaviour(Agent agent,ModelAccess modelAccess){
+    public ReceiveMessageRLBehaviour(Agent agent, ModelAccess modelAccess) {
         super(agent);
         this.modelAccess = modelAccess;
         this.agent = (RLAgent) agent;
@@ -79,20 +83,20 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                 case ACLMessage.INFORM:
                     String content = (String) message.getContent();
                     if (content.equals("BROKEN")) {
-                       // agent.setContextIsOK(false);
+                        // agent.setContextIsOK(false);
                     } else if (content.equals("OK")) {
-                       // agent.setContextIsOK(true);
+                        // agent.setContextIsOK(true);
                     } else {
                         TaskDto taskDto = (TaskDto) message.getContentObject();
                         ApplicationActivity task = modelAccess.createApplicationActivity(taskDto.getTaskName());
                         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa          " + taskDto.getTaskName());
-                        QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName()+"_QoSPolicy");
+                        QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
                         System.out.println(policy);
                         List<ContextResource> subjects = new ArrayList<ContextResource>(1);
                         subjects.add(task);
                         policy.setPolicySubject(subjects);
                         policy.setPolicyTarget(subjects);
-                        policy.setPolicyName(taskDto.getTaskName()+"_QoSPolicy");
+                        policy.setPolicyName(taskDto.getTaskName() + "_QoSPolicy");
                         policy.setPolicyWeight(1);
                         task.setCpuAllocatedValue(0);
                         task.setCpuRequiredMaxValue(taskDto.getRequestedCPUMax());
@@ -108,8 +112,24 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                         task.setCpuWeight(0.3f);
                         task.setMemWeight(0.3f);
                         task.setHddWeight(0.3f);
-                        task.setResourceID("Task_"+taskDto.getTaskName());
-
+                        task.setResourceID("Task_" + taskDto.getTaskName());
+                        SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
+                        String swrlRule = "";
+                        try {
+                            swrlRule = "ApplicationActivity(?x) ^ resourceID(?x,\"" + task.getResourceID() + "\") " +
+                                    " ^ memAllocatedValue(?x,?memAllocated)" +
+                                    " ^ memRequiredMaxValue(?x, ?memMax)" +
+                                    " ^ memRequiredMinValue(?x,?memMin)" +
+                                    " ^ swrlb:lessThanOrEqual(?memMin,?memAllocated)" +
+                                    " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
+                                    " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
+                                    " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
+                                    " -> isRespected(" + task.getName() + ", true)";
+                            SWRLImp imp = factory.createImp(swrlRule);
+                            imp.enable();
+                        } catch (SWRLParseException e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
                     }
                     break;
                 case ACLMessage.INFORM_IF:
@@ -143,7 +163,8 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                     break;
                 //http://www.owl-ontologies.com/Datacenter.owl#Task_1
             }
-        } catch (Exception ex) {
+        } catch (Exception
+                ex) {
             ex.printStackTrace(System.err);
         }
     }

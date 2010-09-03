@@ -69,10 +69,10 @@ public class StubProxy extends ServerManagementProxy {
     }
 
     public void wakeUpServer(String mac, String ipAddress, int port) {
-        //new HyperVServerManagementProxy(hostName).wakeUpServer(mac,ipAddress,port);
+        new HyperVServerManagementProxy(hostName).wakeUpServer(mac,ipAddress,port);
     }
 
     public void sendServerToSleep() {
-        //new HyperVServerManagementProxy(hostName).sendServerToSleep();
+        new HyperVServerManagementProxy(hostName).sendServerToSleep();
     }
 }

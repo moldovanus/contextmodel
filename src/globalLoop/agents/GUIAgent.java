@@ -1,7 +1,6 @@
 package globalLoop.agents;
 
 
-import edu.stanford.smi.protegex.owl.model.OWLModel;
 import globalLoop.agents.behaviors.ReceiveChangesGUIBehaviour;
 import gui.ActionsOutputFrame;
 import gui.datacenterConfiguration.impl.ConfigurationGUI;
@@ -108,8 +107,14 @@ public class GUIAgent extends Agent {
 
         System.out.println("[GUIAgent] Hello!");
 
-        modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
-
+        Object[] args = getArguments();
+        if (args != null && args.length > 0) {
+            modelAccess = (ModelAccess) args[0];
+        } else {
+            System.out.println("[GUIAgent] No Model Access provided.");
+            this.doDelete();
+            return;
+        }
         serverMonitors = new ArrayList<IMonitor>();
         tasksQueueMonitor = new TasksQueueMonitor(modelAccess);
         container = getContainerController();

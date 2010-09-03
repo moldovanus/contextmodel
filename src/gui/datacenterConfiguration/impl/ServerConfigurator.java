@@ -261,6 +261,7 @@ public class ServerConfigurator extends AbstractConfigurator {
                 server.setHDDWeight(0.25f);
                 server.addHddResources(storage);
                 storage.setCurrentEnergyState(0);
+                storage.setPhysicalPath(data[3]);
 
                 ITComputingContextPolicy policy = modelAccess.createITComputingContextPolicy(server.getLocalName() + "_EnergyPolicy");
                 policy.addPolicySubject(server);

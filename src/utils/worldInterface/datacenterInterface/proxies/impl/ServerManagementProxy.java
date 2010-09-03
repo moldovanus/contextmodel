@@ -10,7 +10,7 @@ import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInt
  * To change this template use File | Settings | File Templates.
  */
 public abstract class ServerManagementProxy implements ServerManagementProxyInterface {
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     protected String hostName;
 
     public ServerManagementProxy(String hostName) {

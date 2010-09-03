@@ -41,7 +41,10 @@ public final class GlobalVars {
     public static final String MEMORY_SELFOPTIMIZING_FILE = "memory/memorySelfOptimizing.dat";
     public static final String FUZZY_LOGIC_CONTROL_FILE = "fuzzy/negotiator.fcl";
     public static final String VIRTUAL_MACHINES_NETWORK_PATH = "\\\\WINDOWSSS2008\\VirtualMachines\\";
-    public static final String GLOBAL_LOOP_CONTROLLER_IP = "192.168.1.10";
+    public static final String GLOBAL_LOOP_CONTROLLER_IP = "192.168.2.10";
+    public static final String BASE_VM_NAME = "Windows";
+    public static final String BROADCAST_IP_ADDRESS = "192.168.2.255";
+    public static final String WAKE_UP_PORT = "0";
 
     public static final int MAX_NAME_LENGTH = 10;
     public static final int MAX_TASK_LIFE_IN_MINUTES = 5;
@@ -50,9 +53,7 @@ public final class GlobalVars {
     public static final int INDIVIDUAL_DELETED = 0;
     public static final int INDIVIDUAL_CREATED = 1;
     public static final int INDIVIDUAL_MODIFIED = 2;
-    public static final Map<String, String> brokenResources = new HashMap<String, String>();
-    //public static final Map<String, String> validResources = new HashMap<String, String>();
-    public static Map<String, Map<String, String>> valueMapping = new HashMap<String, Map<String, String>>();
+   
     private static String x3DPlatformName = "acasa-25f3f1aa5:1099/JADE";
     private static String x3DPlatformAddress = "http://acasa-25f3f1aa5:7778/acc";
 

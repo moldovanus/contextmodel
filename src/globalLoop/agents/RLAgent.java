@@ -30,8 +30,14 @@ public class RLAgent extends Agent {
     @Override
     protected void setup() {
         System.out.println("RLAgent " + getLocalName() + " started.");
-
-        modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
+        Object[] args = getArguments();
+        if (args != null && args.length > 0) {
+            modelAccess = (ModelAccess) args[0];
+        } else {
+            System.out.println("[RLAgent] No Model Access provided.");
+            this.doDelete();
+            return;
+        }
 //        ConfigurationGUI gui = new ConfigurationGUI(modelAccess);
 //        gui.setVisible(true);
 
@@ -130,6 +136,6 @@ public class RLAgent extends Agent {
 
         //addBehaviour(new RLFacilityManagementBehavior(this, 1000, modelAccess));
         addBehaviour(new RLServiceCenterServersManagement(this, modelAccess, 1000));
-        addBehaviour(new ReceiveMessageRLBehaviour(this,modelAccess));
+        addBehaviour(new ReceiveMessageRLBehaviour(this, modelAccess));
     }
 }

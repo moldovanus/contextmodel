@@ -5,6 +5,8 @@ import jade.core.Agent;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import model.impl.ontologyImpl.OntologyModelFactory;
+import model.impl.util.ModelAccess;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,13 +24,16 @@ public class CMAAgent extends Agent {
     protected void setup() {
         System.out.println("CMA Agent " + getLocalName() + " started.");
 
+        ModelAccess modelAccess = new ModelAccess(new OntologyModelFactory(), null, null);
+
         AgentContainer container = (AgentContainer) getContainerController();
         try {
-            rlAgentController = container.createNewAgent(GlobalVars.RLAGENT_NAME, RLAgent.class.getName(), new Object[]{});
+            rlAgentController = container.createNewAgent(GlobalVars.RLAGENT_NAME, RLAgent.class.getName(), new Object[]{modelAccess});
             rlAgentController.start();
         } catch (StaleProxyException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        
         try {
             tmAgentController = container.createNewAgent(GlobalVars.TMAGENT_NAME, TMAgent.class.getName(), new Object[]{});
             tmAgentController.start();
@@ -38,7 +43,7 @@ public class CMAAgent extends Agent {
 
 
         try {
-            guiAgentController = container.createNewAgent(GlobalVars.GUIAGENT_NAME, GUIAgent.class.getName(), new Object[]{});
+            guiAgentController = container.createNewAgent(GlobalVars.GUIAGENT_NAME, GUIAgent.class.getName(), new Object[]{modelAccess});
             guiAgentController.start();
         } catch (StaleProxyException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

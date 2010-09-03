@@ -64,7 +64,7 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         }
 
         super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
-
+        activity.setNumberOfCoresAllocatedValue(activity.getNumberOfCoresRequiredValue());
         activity.setCpuAllocatedValue(activity.getCpuRequiredMaxValue());
         activity.setMemAllocatedValue(activity.getMemRequiredMaxValue());
         activity.setHddAllocatedValue(activity.getHddRequiredMaxValue());
@@ -79,6 +79,7 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         for (CPU cpu : cpus) {
             if (cpu.getRunningActivities().contains(activity)) {
                 cpu.removeRunningActivity(activity);
+                activity.removeAllReceivedCoreIndex();
                 break;
             }
         }
