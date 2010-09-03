@@ -102,7 +102,12 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#cpuAllocatedValue
 
     public float getCpuAllocatedValue() {
-        return getPropertyValueLiteral(getCpuAllocatedValueProperty()).getFloat();
+        if (hasCpuAllocatedValue()) {
+            return getPropertyValueLiteral(getCpuAllocatedValueProperty()).getFloat();
+        } else {
+            return 0;
+        }
+
     }
 
 
@@ -174,7 +179,11 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#hddAllocatedValue
 
     public float getHddAllocatedValue() {
-        return getPropertyValueLiteral(getHddAllocatedValueProperty()).getFloat();
+        if (hasHddAllocatedValue()) {
+            return getPropertyValueLiteral(getHddAllocatedValueProperty()).getFloat();
+        } else {
+            return 0;
+        }
     }
 
 
@@ -246,7 +255,11 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#memAllocatedValue
 
     public float getMemAllocatedValue() {
-        return getPropertyValueLiteral(getMemAllocatedValueProperty()).getFloat();
+        if (hasMemAllocatedValue()) {
+            return getPropertyValueLiteral(getMemAllocatedValueProperty()).getFloat();
+        } else {
+            return 0;
+        }
     }
 
 
@@ -411,7 +424,6 @@ public class DefaultBusinessContextResource extends DefaultContextResource
     }
 
 
-
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#activityPolicies
 
     public Collection getActivityPolicies() {
@@ -450,5 +462,5 @@ public class DefaultBusinessContextResource extends DefaultContextResource
         setPropertyValues(getActivityPoliciesProperty(), newActivityPolicies);
     }
 
-    
+
 }

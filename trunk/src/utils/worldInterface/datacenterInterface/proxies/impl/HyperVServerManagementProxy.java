@@ -1,9 +1,10 @@
 package utils.worldInterface.datacenterInterface.proxies.impl;
 
+import globalLoop.utils.GlobalVars;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-import selfoptimizing.contextaware.GlobalVars;
+
 import utils.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
 import utils.worldInterface.dtos.ServerDto;
 
@@ -353,49 +354,47 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     }
 
     public void wakeUpServer(String mac, String ipAddress, int port) {
-        System.err.println("Wake up disabled from Hyper-V Management Proxy");
-//        try {
-//            URL url = new URL("http://" + hostName + "/Service1.asmx/WakeUpServer?"
-//                    + "mac=" + mac + "&ipAddress=" + ipAddress + "&port=" + port);
-//            URLConnection connection = url.openConnection();
+//        System.err.println("Wake up disabled from Hyper-V Management Proxy");
+        try {
+            URL url = new URL("http://" + GlobalVars.GLOBAL_LOOP_CONTROLLER_IP + "/Service1.asmx/WakeUpServer?"
+                    + "mac=" + mac + "&ipAddress=" + GlobalVars.BROADCAST_IP_ADDRESS + "&port=" + GlobalVars.WAKE_UP_PORT);
+            URLConnection connection = url.openConnection();
 //            connection.setDoInput(true);
-//            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            if (DEBUG) {
-//                // Response
-//                String line;
-//                while ((line = rd.readLine()) != null) {
-//
-//                    System.out.println(line);
-//                }
-//            }
-//            waitUntilTargetIsAlive(ipAddress);
-//            //Thread.sleep(60000);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            if (DEBUG) {
+                // Response
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+            waitUntilTargetIsAlive(ipAddress);
+            //Thread.sleep(60000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendServerToSleep() {
-        System.err.println("Sleep disabled from Hyper-V Management Proxy");
-//        try {
-//            URL url = new URL("http://" + hostName + "/Service1.asmx/SendServerToSleep");
-//            URLConnection connection = url.openConnection();
-//            connection.setDoInput(true);
-//
-//            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            if (DEBUG) {
-//                // Response
-//                String line;
-//                while ((line = rd.readLine()) != null) {
-//
-//                    System.out.println(line);
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+//        System.err.println("Sleep disabled from Hyper-V Management Proxy");
+        try {
+            URL url = new URL("http://" + hostName + "/Service1.asmx/SendServerToSleep");
+            URLConnection connection = url.openConnection();
+            connection.setDoInput(true);
+
+            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            if (DEBUG) {
+                // Response
+                String line;
+                while ((line = rd.readLine()) != null) {
+
+                    System.out.println(line);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

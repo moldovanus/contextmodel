@@ -53,8 +53,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     private double taskRespectanceDegree(ApplicationActivity applicationActivity) {
         double respectance =
                 applicationActivity.getCPUWeight() *
-                        (applicationActivity.getNumberOfCoresAllocatedValue()
-                                - applicationActivity.getNumberOfCoresRequiredValue()
+                        (applicationActivity.getNumberOfCoresRequiredValue()
+                                - applicationActivity.getNumberOfCoresAllocatedValue()
                                 + applicationActivity.getCpuRequiredMaxValue()
                                 - applicationActivity.getCpuAllocatedValue())
                         + applicationActivity.getMEMWeight() *
@@ -204,9 +204,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     private double computeRewardFunction(ContextSnapshot previous, ContextSnapshot current, ContextAction c) {
         double function = 0.0d;
         if (previous != null) {
-            function += previous.getRewardFunction();
-            //TODO: de bagat cost pe actiune
-            double temp = previous.getRewardFunction() - current.getContextEntropy() - current.getActions().size() * 100; //- c.getCost() - current.getActions().size() * 100;
+            double temp = - current.getContextEntropy() - current.getActions().size() * 100 -c.getCost(); //- c.getCost() - current.getActions().size() * 100;
             function = ContextSnapshot.gamma * temp;
         } else {
             function = -current.getContextEntropy();
@@ -507,38 +505,41 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     @Override
     protected void onTick() {
 
-        //refresh server information
-        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
-        for (ServiceCenterServer server : servers) {
-            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
-            ServerDto dto = proxy.getServerInfo();
-            int coreCount = dto.getCoreCount();
-            int totalCPU = dto.getTotalCPU();
-
-            //read info only about the number of cores wanted for test 
-            List<Integer> integers = dto.getFreeCPU();
-            List<Core> cores = server.getCpuResources().iterator().next().getAssociatedCores();
-            for (int i = 0; i < cores.size(); i++) {
-                Core core = cores.get(i);
-                core.setCurrentWorkLoad(totalCPU - integers.get(i).doubleValue());
-                core.setMaximumWorkLoad((double)totalCPU);
-            }
-
-            List<StorageDto> storageDtos = dto.getStorage();
-            for(StorageDto storageDto : storageDtos){
-                HDD  hdd = server.getHddResources().iterator().next();
-                if ( storageDto.getName().equals(hdd.getPhysicalPath())){
-                    hdd.setCurrentWorkLoad((double)storageDto.getSize() - storageDto.getFreeSpace());
-                    hdd.setMaximumWorkLoad((double)storageDto.getSize());
-                    break;
-                }
-            }
-
-            MEM memory = server.getMemResources().iterator().next();
-            memory.setCurrentWorkLoad((double)dto.getTotalMemory() - dto.getFreeMemory());
-            memory.setMaximumWorkLoad((double)dto.getTotalMemory());
-
-        }
+//        refresh server information
+//        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+//        for (ServiceCenterServer server : servers) {
+//            if ( !server.getIsActive()){
+//                continue;
+//            }
+//            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+//            ServerDto dto = proxy.getServerInfo();
+//            int coreCount = dto.getCoreCount();
+//            int totalCPU = dto.getTotalCPU();
+//
+//            //read info only about the number of cores wanted for test
+//            List<Integer> integers = dto.getFreeCPU();
+//            List<Core> cores = server.getCpuResources().iterator().next().getAssociatedCores();
+//            for (int i = 0; i < cores.size(); i++) {
+//                Core core = cores.get(i);
+//                core.setCurrentWorkLoad(totalCPU - integers.get(i).doubleValue());
+//                core.setMaximumWorkLoad((double)totalCPU);
+//            }
+//
+//            List<StorageDto> storageDtos = dto.getStorage();
+//            for(StorageDto storageDto : storageDtos){
+//                HDD  hdd = server.getHddResources().iterator().next();
+//                if ( storageDto.getName().charAt(0) == hdd.getPhysicalPath().charAt(0)){
+//                    hdd.setCurrentWorkLoad((double)storageDto.getSize() - storageDto.getFreeSpace());
+//                    hdd.setMaximumWorkLoad((double)storageDto.getSize());
+//                    break;
+//                }
+//            }
+//
+//            MEM memory = server.getMemResources().iterator().next();
+//            memory.setCurrentWorkLoad((double)dto.getTotalMemory() - dto.getFreeMemory());
+//            memory.setMaximumWorkLoad((double)dto.getTotalMemory());
+//
+//        }
         
         PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>(1, new Comparator<ContextSnapshot>() {
 
@@ -576,6 +577,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //
 //            System.exit(1);
         }
+        smallestEntropyContext = null;
 
     }
 }
