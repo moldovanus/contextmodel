@@ -42,7 +42,7 @@ public final class GlobalVars {
     public static final String FUZZY_LOGIC_CONTROL_FILE = "fuzzy/negotiator.fcl";
     public static final String VIRTUAL_MACHINES_NETWORK_PATH = "\\\\WINDOWSSS2008\\VirtualMachines\\";
     public static final String GLOBAL_LOOP_CONTROLLER_IP = "192.168.2.10";
-    public static final String BASE_VM_NAME = "Windows";
+    public static final String BASE_VM_NAME = "Empty";
     public static final String BROADCAST_IP_ADDRESS = "192.168.2.255";
     public static final String WAKE_UP_PORT = "0";
 

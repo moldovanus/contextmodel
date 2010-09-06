@@ -5,6 +5,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
 import utils.worldInterface.dtos.ServerDto;
 
@@ -102,10 +103,33 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     public void moveDestinationActions(String path1, String path2, String vmName) {
         try {
             //Socket sock = new Socket(hostName, 80);
+
+//             String content = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+//                    "<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\n" +
+//                    "  <soap12:Body>\n" +
+//                    "    <MoveDestinationActions  xmlns=\"http://www.SelfOptimizingDatacenter.edu/\">\n" +
+//                    "      <path1>" + path1 + "</path1>\n" +
+//                    "      <path2>" + path2 + "</path2>\n" +
+//                    "      <vmName>" + vmName + "</vmName>\n" +
+//                    "    </MoveDestinationActions >\n" +
+//                    "  </soap12:Body>\n" +
+//                    "</soap12:Envelope>";
+//
+//            String header = "POST /Service1.asmx HTTP/1.1\n" +
+//                    "Host: server1\n" +
+//                    "Content-Type: application/soap+xml; charset=utf-8\n" +
+//                    "Content-Length: " + content.length() + "\n\n";
+//
+//            Socket socket = new Socket(hostName, 80);
+//            socket.getOutputStream().write(header.getBytes());
+//            socket.getOutputStream().write(content.getBytes());
+//            System.out.println(header);
+//            System.out.println(content);
+
             URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions?path1="
                     + path1 + "&path2=" + path2 + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
-
+            System.out.println(url);
 //            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions");
 //            URLConnection connection = url.openConnection();
 //            connection.setDoInput(true);
@@ -142,14 +166,33 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
     public void moveSourceActions(String path, String vmName) {
         try {
-            //Socket sock = new Socket(hostName, 80);
+
+//            String content = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+//                    "<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\n" +
+//                    "  <soap12:Body>\n" +
+//                    "    <MoveSourceActions xmlns=\"http://www.SelfOptimizingDatacenter.edu/\">\n" +
+//                    "      <path>" + path + "</path>\n" +
+//                    "      <vmName>" + vmName + "</vmName>\n" +
+//                    "    </MoveSourceActions>\n" +
+//                    "  </soap12:Body>\n" +
+//                    "</soap12:Envelope>";
+//
+//            String header = "POST /Service1.asmx HTTP/1.1\n" +
+//                    "Host: server1\n" +
+//                    "Content-Type: application/soap+xml; charset=utf-8\n" +
+//                    "Content-Length: " + content.length() + "\n\n";
+//
+//            Socket socket = new Socket(hostName, 80);
+//            socket.getOutputStream().write(header.getBytes());
+//            socket.getOutputStream().write(content.getBytes());
+//            System.out.println(header);
+//            System.out.println(content);
             URL url = new URL("http://" + hostName + "/Service1.asmx/MoveSourceActions?path="
                     + path + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
-//            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveSourceActions");
-//            URLConnection connection = url.openConnection();
-//            connection.setDoInput(true);
-//            connection.setDoOutput(true);
+
+            System.out.println(url);
+
 //
 //            //Send header
 //            String data = "path=" + path + "&vmName=" + vmName;
@@ -164,6 +207,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            wr.write("\r\n");
 //
 //            wr.flush();
+
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             if (DEBUG) {
 
@@ -402,6 +446,12 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String [] args){
+        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.2.13");
+       // proxy.moveSourceActions("\\\\192.168.2.10\\VirtualMachines\\Source","Empty");
+        proxy.moveDestinationActions("\\\\192.168.2.10\\VirtualMachines\\Source","\\\\192.168.2.10\\VirtualMachines\\Dest","Empty");
     }
 
 }
