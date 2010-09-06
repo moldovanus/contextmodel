@@ -41,7 +41,7 @@ public class StubProxy extends ServerManagementProxy {
     }
 
     public void moveSourceActions(String path, String vmName) {
-        //To change body of implemented methods use File | Settings | File Templates.
+//        new HyperVServerManagementProxy(hostName).moveSourceActions(path,vmName);
     }
 
     public void deployVirtualMachine(String from, String to, String vmName, String newName) {

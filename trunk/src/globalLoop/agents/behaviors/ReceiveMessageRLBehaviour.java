@@ -112,8 +112,9 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                         task.setCpuWeight(0.3f);
                         task.setMemWeight(0.3f);
                         task.setHddWeight(0.3f);
-                        task.setResourceID("Task_" + taskDto.getTaskName());
-
+                        //task.setResourceID("Task_" + taskDto.getTaskName());
+                        task.setResourceID(task.getFrameID().getName());
+                        task.addActivityPolicies(policy);
                         SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
                         String swrlRule = "";
                         try {
@@ -126,8 +127,9 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                     " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
                                     " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
                                     " -> isRespected(" + policy.getName() + ", true)";
-                            SWRLImp imp = factory.createImp(swrlRule);
-                            imp.enable();
+                            SWRLImp imp = factory.createImp(policy.getName()+"_Rule",  swrlRule);
+
+                            //imp.enable();
                         } catch (SWRLParseException e) {
                             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }

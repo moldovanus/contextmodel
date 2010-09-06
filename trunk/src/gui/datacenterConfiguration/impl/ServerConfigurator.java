@@ -224,7 +224,8 @@ public class ServerConfigurator extends AbstractConfigurator {
 
                 server.setCPUWeight(0.5f);
                 int coreCount = Integer.parseInt(data[4].trim());
-
+//                cpu.setMaximumWorkLoad(coreCount * Double.parseDouble(data[5].trim()));
+//                cpu.setOptimalWorkLoad(Double.parseDouble(data[6].trim()));
                 for (int i = 0; i < coreCount; i++) {
                     Core core = modelAccess.createCore(serverName + "_Core_" + i);
                     core.setMaximumWorkLoad(Double.parseDouble(data[5].trim()));
