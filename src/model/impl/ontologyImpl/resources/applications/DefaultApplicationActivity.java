@@ -6,6 +6,7 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.impl.ontologyImpl.resources.DefaultBusinessContextResource;
 import model.interfaces.ContextElement;
 import model.interfaces.policies.BusinessPolicy;
+import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.util.ArrayList;
@@ -134,5 +135,33 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
 
     public List<Integer> getReceivedCoreIndexes() {
        return receivedCoresIndex;
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#associatedServer
+
+    public ServiceCenterServer getAssociatedServer() {
+        return (ServiceCenterServer) getPropertyValueAs(getAssociatedServerProperty(), ServiceCenterServer.class);
+    }
+
+
+    public RDFProperty getAssociatedServerProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#associatedServer";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasAssociatedServer() {
+        return getPropertyValueCount(getAssociatedServerProperty()) > 0;
+    }
+
+
+    public void setAssociatedServer(ServiceCenterServer newAssociatedServer) {
+        setPropertyValue(getAssociatedServerProperty(), newAssociatedServer);
+    }
+
+    public void removeAssociatedServer(ServiceCenterServer newAssociatedServer) {
+        removePropertyValue(getAssociatedServerProperty(),newAssociatedServer);
     }
 }
