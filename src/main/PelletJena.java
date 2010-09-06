@@ -22,10 +22,7 @@ import model.impl.util.ModelAccess;
 import model.interfaces.ContextElement;
 import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.policies.ITComputingContextPolicy;
-import model.interfaces.resources.CPU;
-import model.interfaces.resources.ComplexResource;
-import model.interfaces.resources.ServiceCenterITComputingResource;
-import model.interfaces.resources.SimpleResource;
+import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
@@ -95,7 +92,7 @@ public class PelletJena {
                 int a = 0;
                 //am trecut sqwrl builtinsd pe swrlb ca primele nu-s suportate de pellet
                 for (Object assocResource : assocResources) {
-                    if (assocResource instanceof CPU) {
+                    if (assocResource instanceof CPU || assocResource instanceof HDD) {
                         continue;
                     }
                     SimpleResource simpleResource = (SimpleResource) assocResource;
@@ -168,7 +165,7 @@ public class PelletJena {
                         " ^ memRequiredMinValue(?x,?memMin)" +
                         " ^ swrlb:lessThanOrEqual(?memMin,?memAllocated)" +
                         " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
-                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
+                //        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
                         " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
                         " -> isRespected(" + businessPolicy.getName() + ", true)";
                 System.out.println(swrlRule);

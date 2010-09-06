@@ -164,7 +164,7 @@ public class DefaultCPU extends DefaultSimpleResource
             Core core = cores.get(i);
             if (core.getRunningActivities().contains(activity)) {
                 core.removeRunningActivity(activity);
-                 
+
             }
         }
         super.removeRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.

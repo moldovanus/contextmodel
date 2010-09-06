@@ -102,24 +102,28 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     public void moveDestinationActions(String path1, String path2, String vmName) {
         try {
             //Socket sock = new Socket(hostName, 80);
-            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions");
+            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions?path1="
+                    + path1 + "&path2=" + path2 + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
 
-            //Send header
-            String data = "path1=" + path1 + "&path2=" + path2 + "&vmName=" + vmName;
-            BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "utf-8"));
-            wr.write("POST /Service1.asmx/MoveDestinationActions HTTP/1.1\r\n");
-            wr.write("Host: " + hostName + "\r\n");
-            wr.write("Content-Type: application/x-www-form-urlencoded\r\n");
-            wr.write("Content-Length: " + data.length() + "\r\n");
-            wr.write("\r\n");
-            wr.write(data);
-            wr.write("\r\n");
-
-
-            wr.flush();
+//            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions");
+//            URLConnection connection = url.openConnection();
+//            connection.setDoInput(true);
+//            connection.setDoOutput(true);
+//
+//            //Send header
+//            String data = "path1=" + path1 + "&path2=" + path2 + "&vmName=" + vmName;
+//            BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "utf-8"));
+//            wr.write("POST /Service1.asmx/MoveDestinationActions HTTP/1.1\r\n");
+//            wr.write("Host: " + hostName + "\r\n");
+//            wr.write("Content-Type: application/x-www-form-urlencoded\r\n");
+//            wr.write("Content-Length: " + data.length() + "\r\n");
+//            wr.write("\r\n");
+//            wr.write(data);
+//            wr.write("\r\n");
+//
+//
+//            wr.flush();
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             if (DEBUG) {
 
@@ -139,24 +143,27 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     public void moveSourceActions(String path, String vmName) {
         try {
             //Socket sock = new Socket(hostName, 80);
-            URL url = new URL("http://" + hostName + "/ServerManagement/Service1.asmx/MoveSourceActions");
+            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveSourceActions?path="
+                    + path + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-
-            //Send header
-            String data = "path=" + path + "&vmName=" + vmName;
-            BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "utf-8"));
-
-            wr.write("POST /ServerManagement/Service1.asmx/MoveSourceActions HTTP/1.1\r\n");
-            wr.write("Host: " + hostName + "\r\n");
-            wr.write("Content-Type: application/x-www-form-urlencoded\r\n");
-            wr.write("Content-Length: " + data.length() + "\r\n");
-            wr.write(data);
-            wr.write("\r\n");
-            wr.write("\r\n");
-
-            wr.flush();
+//            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveSourceActions");
+//            URLConnection connection = url.openConnection();
+//            connection.setDoInput(true);
+//            connection.setDoOutput(true);
+//
+//            //Send header
+//            String data = "path=" + path + "&vmName=" + vmName;
+//            BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "utf-8"));
+//
+//            wr.write("POST /Service1.asmx/MoveSourceActions HTTP/1.1\r\n");
+//            wr.write("Host: " + hostName + "\r\n");
+//            wr.write("Content-Type: application/x-www-form-urlencoded\r\n");
+//            wr.write("Content-Length: " + data.length() + "\r\n");
+//            wr.write(data);
+//            wr.write("\r\n");
+//            wr.write("\r\n");
+//
+//            wr.flush();
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             if (DEBUG) {
 
@@ -334,8 +341,8 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
             System.out.println(url.toString());
 //            connection.setDoInput(false);
 //            connection.setDoOutput(false);
-            connection.setReadTimeout(0);
-            connection.setConnectTimeout(0);
+//            connection.setReadTimeout(0);
+//            connection.setConnectTimeout(0);
 //            connection.connect();
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
