@@ -2,6 +2,7 @@ package globalLoop.agents.behaviors;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import globalLoop.agents.RLAgent;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import model.impl.util.ModelAccess;
@@ -39,13 +40,13 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class RLServiceCenterServersManagement extends TickerBehaviour {
-    private Agent agent;
+    private RLAgent agent;
     ModelAccess modelAccess;
     private ContextSnapshot smallestEntropyContext;
 
     public RLServiceCenterServersManagement(Agent a, ModelAccess modelAccess, long period) {
         super(a, period);
-        agent = a;
+        agent = (RLAgent) a;
         this.modelAccess = modelAccess;
     }
 
@@ -204,7 +205,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     private double computeRewardFunction(ContextSnapshot previous, ContextSnapshot current, ContextAction c) {
         double function = 0.0d;
         if (previous != null) {
-            double temp = - current.getContextEntropy() - current.getActions().size() * 100 -c.getCost(); //- c.getCost() - current.getActions().size() * 100;
+            double temp = -current.getContextEntropy() - current.getActions().size() * 100 - c.getCost(); //- c.getCost() - current.getActions().size() * 100;
             function = ContextSnapshot.gamma * temp;
         } else {
             function = -current.getContextEntropy();
@@ -505,6 +506,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     @Override
     protected void onTick() {
 
+        agent.sendAllTasksToClient();
 //        refresh server information
 //        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
 //        for (ServiceCenterServer server : servers) {
@@ -540,7 +542,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //            memory.setMaximumWorkLoad((double)dto.getTotalMemory());
 //
 //        }
-        
+
         PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>(1, new Comparator<ContextSnapshot>() {
 
             public int compare(ContextSnapshot snapshot_1, ContextSnapshot snapshot_2) {

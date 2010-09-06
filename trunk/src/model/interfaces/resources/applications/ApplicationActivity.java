@@ -4,6 +4,7 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import model.interfaces.ContextElement;
 import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.resources.BusinessContextResource;
+import model.interfaces.resources.ServiceCenterServer;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -54,4 +55,15 @@ public interface ApplicationActivity extends BusinessContextResource {
     void removeReceivedCoreIndex(int i);
     void removeAllReceivedCoreIndex();
     List<Integer> getReceivedCoreIndexes();
+
+
+     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#associatedServer
+
+    ServiceCenterServer getAssociatedServer();
+
+    boolean hasAssociatedServer();
+
+    void setAssociatedServer(ServiceCenterServer newAssociatedServer);
+    void removeAssociatedServer(ServiceCenterServer newAssociatedServer);
+
 }

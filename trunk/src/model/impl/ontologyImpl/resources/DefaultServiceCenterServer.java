@@ -68,6 +68,7 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         activity.setCpuAllocatedValue(activity.getCpuRequiredMaxValue());
         activity.setMemAllocatedValue(activity.getMemRequiredMaxValue());
         activity.setHddAllocatedValue(activity.getHddRequiredMaxValue());
+        activity.setAssociatedServer(this);
     }
 
     @Override
@@ -101,6 +102,7 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         activity.setCpuAllocatedValue(0);
         activity.setMemAllocatedValue(0);
         activity.setHddAllocatedValue(0);
+        activity.removeAssociatedServer(this);
     }
 
     @Override

@@ -89,7 +89,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                     } else {
                         TaskDto taskDto = (TaskDto) message.getContentObject();
                         ApplicationActivity task = modelAccess.createApplicationActivity(taskDto.getTaskName());
-                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa          " + taskDto.getTaskName());
+//                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa          " + taskDto.getTaskName());
                         QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
                         System.out.println(policy);
                         List<ContextResource> subjects = new ArrayList<ContextResource>(1);
@@ -136,26 +136,15 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                 case ACLMessage.INFORM_IF:
 //                    System.out.println("http://www.owl-ontologies.com/Datacenter.owl#" + message.getContent().split("-")[0]);
 //
-//                    Task selectedTask = protegeFactory.getTask("http://www.owl-ontologies.com/Datacenter.owl#" + message.getContent().split("-")[0]);
-//                    if (selectedTask.getAssociatedServer() != null) {
-//                        RemoveTaskFromServerCommand command = new RemoveTaskFromServerCommand(protegeFactory, selectedTask.getName(), selectedTask.getAssociatedServer().getName());
-//                        command.execute(jenaModel);
-//                        command.executeOnX3D(agent);
-//                        command.executeOnWebService();
-//                        ServerManagementProxyInterface management;
-//
-//                        if (selectedTask.getAssociatedServer() != null) {
-//                            management = ProxyFactory.createServerManagementProxy(selectedTask.getAssociatedServer().getServerIPAddress());
-//                            management.deleteVirtualMachine(selectedTask.getTaskName());
-//                        }
-//
-//                        selectedTask.delete();
-//
-//
-//                        agent.sendAllTasksToClient();
-//                    } else {
-//                        agent.sendRefuseMessage();
-//                    }
+                    ApplicationActivity selectedTask = modelAccess.getApplicationActivity("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#" + message.getContent());
+                    if (selectedTask.hasAssociatedServer()) {
+                        selectedTask.getAssociatedServer().removeRunningActivity(selectedTask);
+                        ServerManagementProxyInterface management = ProxyFactory.createServerManagementProxy(selectedTask.getAssociatedServer().getIpAddress());
+                        management.deleteVirtualMachine(selectedTask.getLocalName());
+                        agent.sendAllTasksToClient();
+                    } else {
+                        agent.sendRefuseMessage();
+                    }
                     break;
                 case ACLMessage.SUBSCRIBE:
                     Boolean value = (Boolean) message.getContentObject();

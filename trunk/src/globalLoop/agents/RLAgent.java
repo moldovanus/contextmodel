@@ -11,11 +11,17 @@ import globalLoop.agents.behaviors.RLServiceCenterServersManagement;
 import globalLoop.agents.behaviors.ReceiveMessageRLBehaviour;
 import globalLoop.utils.GlobalVars;
 import gui.datacenterConfiguration.impl.ConfigurationGUI;
+import jade.core.AID;
 import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
+import model.interfaces.resources.applications.ApplicationActivity;
+import utils.worldInterface.dtos.TaskDto;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,6 +32,64 @@ import java.io.File;
  */
 public class RLAgent extends Agent {
     private ModelAccess modelAccess;
+
+    public void sendAllTasksToClient() {
+        Collection<ApplicationActivity> tasks = modelAccess.getAllApplicationActivityInstances();
+
+        TaskDto[] t = new TaskDto[tasks.size()];
+        int i = 0;
+        for (ApplicationActivity task : tasks) {
+            /*  receivedInfo = task.getReceivedInfo();
+            requestedInfo = task.getRequestedInfo();
+            s += task.getLocalName() + "-" + task.isRunning() + "=" + requestedInfo.getCores() + "=" + requestedInfo.getCpuMinAcceptableValue() + "=" + requestedInfo.getCpuMaxAcceptableValue() + "=" + requestedInfo.getMemoryMinAcceptableValue() + "=" + requestedInfo.getMemoryMaxAcceptableValue() + "=" + requestedInfo.getStorageMinAcceptableValue() + "=" + requestedInfo.getStorageMaxAcceptableValue();
+            s += "=" + receivedInfo.getCores() + "=" + receivedInfo.getCpuReceived() + "=" + receivedInfo.getMemoryReceived() + "=" + receivedInfo.getStorageReceived() + "<";
+            */
+            t[i] = new TaskDto();
+            t[i].setTaskName(task.getLocalName());
+            t[i].setRunning(task.isRunning());
+
+            t[i].setRequestedCores((int) task.getNumberOfCoresRequiredValue());
+            t[i].setRequestedCPUMax((int) task.getCpuRequiredMaxValue());
+            t[i].setRequestedCPUMin((int) task.getCpuRequiredMinValue());
+            t[i].setRequestedMemoryMax((int) task.getMemRequiredMaxValue());
+            t[i].setRequestedMemoryMin((int) task.getMemRequiredMinValue());
+            t[i].setRequestedStorageMax((int) task.getHddRequiredMaxValue());
+            t[i].setRequestedStorageMin((int) task.getHddRequiredMinValue());
+
+            t[i].setReceivedCores((int) task.getNumberOfCoresAllocatedValue());
+            t[i].setReceivedCPU((int) task.getCpuAllocatedValue());
+            t[i].setReceivedMemory((int) task.getMemAllocatedValue());
+            t[i].setReceivedStorage((int) task.getHddAllocatedValue());
+
+            i++;
+        }
+        ACLMessage msg = new ACLMessage(ACLMessage.INFORM_REF);
+        if (msg != null) {
+            try {
+                msg.setContentObject(t);
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            msg.addReceiver(new AID(GlobalVars.TMAGENT_NAME + "@" + this.getContainerController().getPlatformName()));
+            /*
+            try {
+                msg.setContentObject(indvName);
+                msg.setLanguage("JavaSerialization");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }   */
+            this.send(msg);
+        }
+    }
+
+    public void sendRefuseMessage() {
+        ACLMessage msg = new ACLMessage(ACLMessage.REFUSE);
+        msg.setContent("Server not found.");
+        msg.addReceiver(new AID(GlobalVars.TMAGENT_NAME + "@" + this.getContainerController().getPlatformName()));
+
+        this.send(msg);
+
+    }
 
     @Override
     protected void setup() {
