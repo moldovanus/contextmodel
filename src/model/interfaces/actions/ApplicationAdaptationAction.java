@@ -1,5 +1,7 @@
 package model.interfaces.actions;
 
+import model.interfaces.resources.applications.ApplicationActivity;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -9,4 +11,21 @@ package model.interfaces.actions;
  */
 public interface ApplicationAdaptationAction extends ContextAction {
 
+    public int getCpuMin();
+
+    public void setCpuMin(int cpuMin) ;
+
+    public int getCpuMax() ;
+
+    public void setCpuMax(int cpuMax) ;
+
+    public int getMemMin() ;
+
+    public void setMemMin(int memMin);
+
+    public int getMemMax() ;
+
+    public void setMemMax(int memMax) ;
+
+    public void setActivity (ApplicationActivity activity);
 }

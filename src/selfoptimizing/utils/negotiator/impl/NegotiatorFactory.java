@@ -1,7 +1,8 @@
-package selfoptimizing.utils.negotiator.impl;
+package utils.negotiator.impl;
 
-import selfoptimizing.contextaware.GlobalVars;
-import selfoptimizing.utils.negotiator.Negotiator;
+import globalLoop.utils.GlobalVars;
+import utils.negotiator.Negotiator;
+
 
 /**
  * Class which implements Factory Method design pattern.

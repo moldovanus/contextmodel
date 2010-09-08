@@ -4,12 +4,13 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
+import model.impl.ontologyImpl.actions.DefaultApplicationAdaptationAction;
+import model.impl.ontologyImpl.actions.DefaultDeployActivityAction;
+import model.impl.ontologyImpl.actions.DefaultServerAdaptationAction;
+import model.impl.ontologyImpl.actions.DefaultSetServerStateAction;
 import model.impl.util.ModelAccess;
 import model.interfaces.ContextSnapshot;
-import model.interfaces.actions.ContextAction;
-import model.interfaces.actions.DeployActivity;
-import model.interfaces.actions.MigrateActivity;
-import model.interfaces.actions.SetServerStateActivity;
+import model.interfaces.actions.*;
 import model.interfaces.policies.GPI_KPI_Policy;
 import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.policies.QoSPolicy;
@@ -19,6 +20,8 @@ import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
 import selfoptimizing.utils.Pair;
 import utils.exceptions.IndividualNotFoundException;
+import utils.negotiator.Negotiator;
+import utils.negotiator.impl.NegotiatorFactory;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.datacenterInterface.proxies.impl.ServerManagementProxy;
@@ -204,7 +207,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     private double computeRewardFunction(ContextSnapshot previous, ContextSnapshot current, ContextAction c) {
         double function = 0.0d;
         if (previous != null) {
-            double temp = previous.getContextEntropy()- current.getContextEntropy() - current.getActions().size() * 100 -c.getCost(); //- c.getCost() - current.getActions().size() * 100;
+            double temp = previous.getContextEntropy() - current.getContextEntropy() - current.getActions().size() * 100 - c.getCost(); //- c.getCost() - current.getActions().size() * 100;
             function += ContextSnapshot.gamma * temp;
         } else {
             function = -current.getContextEntropy();
@@ -213,7 +216,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         return function;
     }
 
-    protected ServiceCenterServer getMinDistanceServer(ContextAction task) {
+    protected ServiceCenterServer getMinDistanceServer(ApplicationActivity task) {
         ServiceCenterServer retServer = null;
         double difference;
         double minDif = 10000000.0d;
@@ -251,12 +254,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
             difference = Math.sqrt(difference);
 
-            //TODO; pentru cand bagam negociere sa facem si metodele astea
-//            if (server.hasResourcesToBeNegotiatedFor(task))
-//                if (difference < minDif) {
-//                    minDif = difference;
-//                    retServer = server;
-//                }
+            if (server.hasResourcesToBeNegotiatedFor(task))
+                if (difference < minDif) {
+                    minDif = difference;
+                    retServer = server;
+                }
         }
         return retServer;
     }
@@ -540,7 +542,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //            memory.setMaximumWorkLoad((double)dto.getTotalMemory());
 //
 //        }
-        
+
         PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>(1, new Comparator<ContextSnapshot>() {
 
             public int compare(ContextSnapshot snapshot_1, ContextSnapshot snapshot_2) {
@@ -567,6 +569,64 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             ContextSnapshot result = reinforcementLearning(queue);
             result.executeActions(modelAccess);
             result.executeOnServiceCenter(modelAccess);
+
+            if (result.getContextEntropy() > 0) {
+                entropyAndPolicy= computeEntropy();
+                ApplicationActivity activity= (ApplicationActivity) entropyAndPolicy.getSecond().getPolicySubject().get(0);
+                Negotiator negotiator = (Negotiator) NegotiatorFactory.getNashNegotiator();
+                ServiceCenterServer server = getMinDistanceServer(activity);
+                if (server != null){
+                CPU cpu = server.getCpuResources().iterator().next();
+                MEM mem = server.getMemResources().iterator().next();
+                Map<String, Double> negotiatedValues =  negotiator.negotiate(server,activity);
+                 double optimalCpu =cpu.getAssociatedCores().get(0).getOptimalWorkLoad();
+                 double totalCpu = cpu.getAssociatedCores().get(0).getMaximumWorkLoad();
+                    double currentCpu = cpu.getAssociatedCores().get(0).getCurrentWorkLoad();
+                double optimalMem = mem.getOptimalWorkLoad();
+
+                if (negotiatedValues.get(Negotiator.NEGOTIATED_CPU)+currentCpu>(optimalCpu+totalCpu)/2.0){
+                    double current = negotiatedValues.get(Negotiator.NEGOTIATED_CPU)+currentCpu;
+                    optimalCpu = 2*current-cpu.getMaximumWorkLoad();
+                }
+                if (negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY)+mem.getCurrentWorkLoad()>(mem.getOptimalWorkLoad()+mem.getMaximumWorkLoad())/2.0){
+                    double current = negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY)+mem.getCurrentWorkLoad();
+                    optimalMem = 2*current-mem.getMaximumWorkLoad();
+                }
+                 SetServerStateActivity newActivity =
+                            modelAccess.createSetServerStateActivity("Set_state_for_" + server.getName()
+                                    + "_to_" + 1);
+                newActivity.execute(modelAccess);
+                newActivity.executeOnServiceCenter(modelAccess);
+                result.getActions().add(newActivity);
+
+                ServerAdaptationAction defaultServerAdaptationAction= modelAccess.createServerAdaptationAction("ServerAdaptationAction_"+server);
+                        //new DefaultServerAdaptationAction(server,(int)optimalCpu,(int)optimalMem);
+                defaultServerAdaptationAction.setNewOptimalValueForCpu((int) optimalCpu);
+                defaultServerAdaptationAction.setNewOptimalValueForMem((int) optimalMem);
+                    defaultServerAdaptationAction.setServer(server);
+                defaultServerAdaptationAction.execute(modelAccess);
+                result.getActions().add(defaultServerAdaptationAction);
+                ApplicationAdaptationAction applicationAdaptationAction = modelAccess.createApplicationAdaptationAction("ApplicationAdaptationAction_"+activity.getLocalName());
+                applicationAdaptationAction.setActivity(activity);
+                applicationAdaptationAction.setCpuMin((int) activity.getCpuRequiredMinValue());
+                applicationAdaptationAction.setCpuMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
+                applicationAdaptationAction.setMemMin((int)activity.getMemRequiredMinValue());
+                applicationAdaptationAction.setMemMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
+
+                applicationAdaptationAction.execute(modelAccess);
+                result.getActions().add(applicationAdaptationAction);
+                DeployActivity deployActivityAction = modelAccess.createDeployActivity("Deploy_"
+                                + activity.getName() + "_to_" + server.getName());
+                deployActivityAction.setActivity(activity);
+                deployActivityAction.setResourceTo(server);
+                deployActivityAction.execute(modelAccess);
+                deployActivityAction.executeOnServiceCenter(modelAccess);
+               result.getActions().add(deployActivityAction);
+                entropyAndPolicy=computeEntropy();
+                result.setContextEntropy(entropyAndPolicy.getFirst());
+                }
+               
+            }
 //            OntModel ontModel = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
 //            ontModel.add(modelAccess.getOntologyModelFactory().getOwlModel().getJenaModel());
 //            try {

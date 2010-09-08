@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package selfoptimizing.utils.negotiator.impl;
+package utils.negotiator.impl;
 
+import model.interfaces.resources.*;
+import model.interfaces.resources.applications.ApplicationActivity;
 import net.sourceforge.jFuzzyLogic.FIS;
 import net.sourceforge.jFuzzyLogic.FunctionBlock;
 import net.sourceforge.jFuzzyLogic.membership.MembershipFunction;
@@ -12,8 +14,8 @@ import net.sourceforge.jFuzzyLogic.membership.Value;
 import net.sourceforge.jFuzzyLogic.rule.LinguisticTerm;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
 import org.antlr.runtime.RecognitionException;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.*;
-import selfoptimizing.utils.negotiator.Negotiator;
+
+import utils.negotiator.Negotiator;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,7 +41,7 @@ public class FuzzyLogicNegotiator implements Negotiator {
      *         CPU, memory and storage
      */
 
-    public synchronized Map<String, Double> negotiate(Server server, Task task) {
+    public synchronized Map<String, Double> negotiate(ServiceCenterServer server, ApplicationActivity task) {
 
         FIS fis = null;
         try {
@@ -78,33 +80,33 @@ public class FuzzyLogicNegotiator implements Negotiator {
 
         Map<String, Double> negotiatedValues = new HashMap<String, Double>();
         //TODO: eventually to reintroduce variables for each of the 3 elements in the file and evaluate all of them at the same time.
-        Collection<Core> cores = server.getAssociatedCPU().getAssociatedCore();
-        Memory memory = server.getAssociatedMemory();
-        Storage storage = server.getAssociatedStorage();
-        RequestedTaskInfo requestedTaskInfo = task.getRequestedInfo();
+        Collection<Core> cores = ((CPU)server.getCpuResources().iterator().next()).getAssociatedCores();
 
-        int requestedCores = requestedTaskInfo.getCores();
+        MEM memory = server.getMemResources().iterator().next();
+        HDD storage = server.getHddResources().iterator().next();
+
+        int requestedCores = (int) task.getNumberOfCoresRequiredValue();
 
         for (Core core : cores) {
 
-            int maxCPU = core.getMaxAcceptableValue();
-            int usedCPU = core.getUsed();
-            int totalCPU = core.getTotal();
-            int minRequestedCPU = requestedTaskInfo.getCpuMinAcceptableValue();
-            int maxRequestedCPU = requestedTaskInfo.getCpuMaxAcceptableValue();
+            double maxCPU = (core.getMaximumWorkLoad()-core.getOptimalWorkLoad())/2+core.getOptimalWorkLoad();
+            double usedCPU = core.getCurrentWorkLoad();
+            double totalCPU = core.getMaximumWorkLoad();
+            double minRequestedCPU = task.getCpuRequiredMinValue();
+            double maxRequestedCPU = task.getCpuRequiredMaxValue();
 
             //TODO: if needed on the else branch the requested values can be negotiated in order to give more resources than needed to the task
             //negotiate CPU max optimum value
             if ((maxCPU - usedCPU < maxRequestedCPU && minRequestedCPU < totalCPU - usedCPU) && (maxCPU < totalCPU)) {
 
-                int[] values;
+                double[] values;
                 int[] membership = new int[]{1, 0};
                 int count = 0;
                 Value[] serverValues;
                 Value[] membershipValues;
 
                 //convert available CPU ranges in Value type
-                values = new int[]{maxCPU, totalCPU};
+                values = new double[]{maxCPU, totalCPU};
                 count = values.length;
                 serverValues = new Value[count];
                 membershipValues = new Value[count];
@@ -164,11 +166,11 @@ public class FuzzyLogicNegotiator implements Negotiator {
                 finalFuzzyInferenceSystem.evaluate();
 
                 double negotiatedCPU = finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue();
-                negotiatedValues.put(NEGOTIATED_CPU, negotiatedCPU - core.getUsed());
-                System.out.println("Negotiated for " + core.getLocalName() + " from " + core.getMaxAcceptableValue() +
+                negotiatedValues.put(NEGOTIATED_CPU, negotiatedCPU - usedCPU);
+                System.out.println("Negotiated for " + core.getLocalName() + " from " + maxCPU +
                         " to " + negotiatedCPU);
-
-                core.setMaxAcceptableValue((int) finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue());
+                core.setOptimalWorkLoad(2*(int) finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue() - core.getMaximumWorkLoad());
+//                core.setMaxAcceptableValue((int) finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue());
 
                 //only negotiate for requested number of cores
                 requestedCores--;
@@ -179,25 +181,25 @@ public class FuzzyLogicNegotiator implements Negotiator {
         }
 
 
-        int maxMemory = memory.getMaxAcceptableValue();
-        int usedMemory = memory.getUsed();
-        int totalMemory = memory.getTotal();
-        int maxRequestedMemory = requestedTaskInfo.getMemoryMaxAcceptableValue();
-        int minRequestedMemory = requestedTaskInfo.getMemoryMinAcceptableValue();
+        double maxMemory = (memory.getOptimalWorkLoad()+memory.getMaximumWorkLoad())/2.0;
+        double usedMemory = memory.getCurrentWorkLoad();
+        double totalMemory = memory.getMaximumWorkLoad();
+        double maxRequestedMemory = task.getMemRequiredMaxValue();
+        double minRequestedMemory = task.getMemRequiredMinValue();
 
         //negotiate Memory max optimum value
         if ((maxMemory - usedMemory < maxRequestedMemory && minRequestedMemory < totalMemory - usedMemory) && (maxMemory < totalMemory)) {
 
-            int[] values;
+            double[] values;
             int[] membership = new int[]{1, 0};
             int count = 0;
             Value[] serverValues;
             Value[] membershipValues;
 
-            int negotiatedMemoryMaxRange = (totalMemory > usedMemory + maxRequestedMemory) ? usedMemory + maxRequestedMemory : totalMemory;
+            double negotiatedMemoryMaxRange = (totalMemory > usedMemory + maxRequestedMemory) ? usedMemory + maxRequestedMemory : totalMemory;
 
             //convert available memory ranges in Value type
-            values = new int[]{maxMemory, negotiatedMemoryMaxRange};
+            values = new double[]{maxMemory, negotiatedMemoryMaxRange};
             count = values.length;
             serverValues = new Value[count];
             membershipValues = new Value[count];
@@ -248,84 +250,84 @@ public class FuzzyLogicNegotiator implements Negotiator {
             finalFuzzyInferenceSystem.evaluate();
 
             double negotiatedMemory = finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue();
-            negotiatedValues.put(NEGOTIATED_MEMORY, negotiatedMemory - memory.getUsed());
-            System.out.println("Negotiated for " + memory.getLocalName() + " from " + memory.getMaxAcceptableValue() +
+            negotiatedValues.put(NEGOTIATED_MEMORY, negotiatedMemory - memory.getCurrentWorkLoad());
+            System.out.println("Negotiated for " + memory.getLocalName() + " from " + maxMemory +
                     " to " + negotiatedMemory);
-
-            memory.setMaxAcceptableValue((int) finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue());
+            memory.setOptimalWorkLoad((int) finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue()*2 - memory.getMaximumWorkLoad());
+//            memory.setMaxAcceptableValue((int) finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue());
 
         }
 
-        int maxStorage = storage.getMaxAcceptableValue();
-        int usedStorage = storage.getUsed();
-        int totalStorage = storage.getTotal();
-        int minRequestedStorage = requestedTaskInfo.getStorageMinAcceptableValue();
-        int maxRequestedStorage = requestedTaskInfo.getStorageMaxAcceptableValue();
-
-        //negotiate Storage max optimum value
-
-        if ((maxStorage - usedStorage < maxRequestedStorage && minRequestedStorage < totalStorage - usedStorage) && (maxStorage < totalStorage)) {
-
-            int[] values;
-            int[] membership = new int[]{1, 0};
-            int count = 0;
-            Value[] serverValues;
-            Value[] membershipValues;
-
-            int negotiatedStorageMaxRange = (totalStorage > usedStorage + maxRequestedStorage) ? usedStorage + maxRequestedStorage : totalStorage;
-
-            //convert available Storage ranges in Value type
-            values = new int[]{maxStorage, negotiatedStorageMaxRange};
-            count = values.length;
-            serverValues = new Value[count];
-            membershipValues = new Value[count];
-            for (int i = 0; i < count; i++) {
-                serverValues[i] = new Value(values[i]);
-                membershipValues[i] = new Value(membership[i]);
-            }
-
-            //create a new membership function
-
-            MembershipFunction serverStorageMembershipFunction = new MembershipFunctionPieceWiseLinear(serverValues, membershipValues);
-
-            //set the new membership function for the server_storage variable
-            serverRangeValue.setMembershipFunction(serverStorageMembershipFunction);
-            negotiatedRangeValue.setMembershipFunction(serverStorageMembershipFunction);
-
-            requestedRangeMembershipFunction.setParameter(0, usedStorage + minRequestedStorage);
-            requestedRangeMembershipFunction.setParameter(2, usedStorage + maxRequestedStorage);
-
-            negotiatedRange.setUniverseMin(maxStorage);
-            negotiatedRange.setUniverseMax(totalStorage);
-
-            serverAndRequested.setValue(totalStorage - 1);
-            serverAndRequested.setUniverseMin(maxStorage);
-            serverAndRequested.setUniverseMax(totalStorage);
-
-            //After modifying the output variable's membership function a new FIS has to be created in order to evaluate the rules properly
-            //Otherwise the value from the FIS creation time is used for deffuzification of the output variable
-            FIS finalFuzzyInferenceSystem = null;
-            try {
-                finalFuzzyInferenceSystem = FIS.createFromString(fis.toString(), true);
-            } catch (RecognitionException e) {
-                System.err.println(e.getMessage());
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                return null;
-            }
-
-
-            finalFuzzyInferenceSystem.setVariable("server_range", usedStorage + 1);
-            finalFuzzyInferenceSystem.setVariable("requested_range", usedStorage + minRequestedStorage + 1);
-            finalFuzzyInferenceSystem.setVariable("server_and_requested", totalMemory - 1);
-
-            finalFuzzyInferenceSystem.evaluate();
-
-            double negotiatedStorage = finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue();
-            negotiatedValues.put(NEGOTIATED_STORAGE, negotiatedStorage - storage.getUsed());
-            System.out.println("Negotiated for " + storage.getLocalName() + " from " + storage.getMaxAcceptableValue() +
-                    " to " + negotiatedStorage);
-            storage.setMaxAcceptableValue((int) finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue());
-        }
+//        int maxStorage = storage.getMaxAcceptableValue();
+//        int usedStorage = storage.getUsed();
+//        int totalStorage = storage.getTotal();
+//        int minRequestedStorage = requestedTaskInfo.getStorageMinAcceptableValue();
+//        int maxRequestedStorage = requestedTaskInfo.getStorageMaxAcceptableValue();
+//
+//        //negotiate Storage max optimum value
+//
+//        if ((maxStorage - usedStorage < maxRequestedStorage && minRequestedStorage < totalStorage - usedStorage) && (maxStorage < totalStorage)) {
+//
+//            int[] values;
+//            int[] membership = new int[]{1, 0};
+//            int count = 0;
+//            Value[] serverValues;
+//            Value[] membershipValues;
+//
+//            int negotiatedStorageMaxRange = (totalStorage > usedStorage + maxRequestedStorage) ? usedStorage + maxRequestedStorage : totalStorage;
+//
+//            //convert available Storage ranges in Value type
+//            values = new int[]{maxStorage, negotiatedStorageMaxRange};
+//            count = values.length;
+//            serverValues = new Value[count];
+//            membershipValues = new Value[count];
+//            for (int i = 0; i < count; i++) {
+//                serverValues[i] = new Value(values[i]);
+//                membershipValues[i] = new Value(membership[i]);
+//            }
+//
+//            //create a new membership function
+//
+//            MembershipFunction serverStorageMembershipFunction = new MembershipFunctionPieceWiseLinear(serverValues, membershipValues);
+//
+//            //set the new membership function for the server_storage variable
+//            serverRangeValue.setMembershipFunction(serverStorageMembershipFunction);
+//            negotiatedRangeValue.setMembershipFunction(serverStorageMembershipFunction);
+//
+//            requestedRangeMembershipFunction.setParameter(0, usedStorage + minRequestedStorage);
+//            requestedRangeMembershipFunction.setParameter(2, usedStorage + maxRequestedStorage);
+//
+//            negotiatedRange.setUniverseMin(maxStorage);
+//            negotiatedRange.setUniverseMax(totalStorage);
+//
+//            serverAndRequested.setValue(totalStorage - 1);
+//            serverAndRequested.setUniverseMin(maxStorage);
+//            serverAndRequested.setUniverseMax(totalStorage);
+//
+//            //After modifying the output variable's membership function a new FIS has to be created in order to evaluate the rules properly
+//            //Otherwise the value from the FIS creation time is used for deffuzification of the output variable
+//            FIS finalFuzzyInferenceSystem = null;
+//            try {
+//                finalFuzzyInferenceSystem = FIS.createFromString(fis.toString(), true);
+//            } catch (RecognitionException e) {
+//                System.err.println(e.getMessage());
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//                return null;
+//            }
+//
+//
+//            finalFuzzyInferenceSystem.setVariable("server_range", usedStorage + 1);
+//            finalFuzzyInferenceSystem.setVariable("requested_range", usedStorage + minRequestedStorage + 1);
+//            finalFuzzyInferenceSystem.setVariable("server_and_requested", totalMemory - 1);
+//
+//            finalFuzzyInferenceSystem.evaluate();
+//
+//            double negotiatedStorage = finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue();
+//            negotiatedValues.put(NEGOTIATED_STORAGE, negotiatedStorage - storage.getUsed());
+//            System.out.println("Negotiated for " + storage.getLocalName() + " from " + storage.getMaxAcceptableValue() +
+//                    " to " + negotiatedStorage);
+//            storage.setMaxAcceptableValue((int) finalFuzzyInferenceSystem.getFunctionBlock("negotiator").getVariable("negotiated_range").getValue());
+//        }
 
         return negotiatedValues;
     }

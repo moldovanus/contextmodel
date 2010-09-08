@@ -1,4 +1,4 @@
-; Mon Sep 06 09:51:29 EEST 2010
+; Wed Sep 08 09:52:28 PDT 2010
 ; 
 ;+ (version "3.4.4")
 ;+ (build "Build 579")
@@ -6,11 +6,11 @@
 ([BROWSER_SLOT_NAMES] of  Property_List
 
 	(properties
-		[context_KAON.rdf-xml_ProjectKB_Class10092]
-		[context_KAON.rdf-xml_ProjectKB_Class10093]
-		[context_KAON.rdf-xml_ProjectKB_Class10094]
-		[context_KAON.rdf-xml_ProjectKB_Class10095]
-		[context_KAON.rdf-xml_ProjectKB_Class10096]))
+		[context_KAON.rdf-xml_ProjectKB_Class92]
+		[context_KAON.rdf-xml_ProjectKB_Class93]
+		[context_KAON.rdf-xml_ProjectKB_Class94]
+		[context_KAON.rdf-xml_ProjectKB_Class95]
+		[context_KAON.rdf-xml_ProjectKB_Class96]))
 
 ([CLSES_TAB] of  Widget
 
@@ -19,470 +19,448 @@
 	(property_list [Instance_47])
 	(widget_class_name "edu.stanford.smi.protege.widget.ClsesTab"))
 
-([context_KAON.rdf-xml_ProjectKB_Class10] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class11])
-	(widget_class_name "edu.stanford.smi.protegex.server_changes.prompt.UsersTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class10061] of  Property_List
+([context_KAON.rdf-xml_ProjectKB_Class0] of  Map
 )
 
-([context_KAON.rdf-xml_ProjectKB_Class10062] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class10063])
-	(widget_class_name "edu.stanford.smi.protegex.prompt.PromptTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class10063] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class10064] of  Widget
+([context_KAON.rdf-xml_ProjectKB_Class1] of  Widget
 
 	(is_hidden FALSE)
-	(label "Name")
-	(name ":NAME")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class10066])
-	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
+	(name "http://www.w3.org/2003/11/swrl#Imp")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class4])
+	(widget_class_name "edu.stanford.smi.protegex.owl.ui.widget.OWLFormWidget"))
 
-([context_KAON.rdf-xml_ProjectKB_Class10065] of  Widget
+([context_KAON.rdf-xml_ProjectKB_Class10] of  String
 
+	(name "vertical_stretcher")
+	(string_value "http://www.w3.org/2003/11/swrl#body"))
+
+([context_KAON.rdf-xml_ProjectKB_Class11] of  Widget
+
+	(height 0)
 	(is_hidden FALSE)
-	(label "Comment")
-	(name "http://www.w3.org/2000/01/rdf-schema#comment")
-	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
+	(name "http://protege.stanford.edu/plugins/owl/protege#inferredType")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class12])
+	(width 0)
+	(x 0)
+	(y 0))
 
-([context_KAON.rdf-xml_ProjectKB_Class10066] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class10092] of  String
-
-	(name ":INSTANCE-ANNOTATION")
-	(string_value "%3AANNOTATION-TEXT"))
-
-([context_KAON.rdf-xml_ProjectKB_Class10093] of  String
-
-	(name "http://www.w3.org/2002/07/owl#Class")
-	(string_value "%3ANAME"))
-
-([context_KAON.rdf-xml_ProjectKB_Class10094] of  String
-
-	(name ":PAL-CONSTRAINT")
-	(string_value "%3APAL-NAME"))
-
-([context_KAON.rdf-xml_ProjectKB_Class10095] of  String
-
-	(name ":META-CLASS")
-	(string_value "%3ANAME"))
-
-([context_KAON.rdf-xml_ProjectKB_Class10096] of  String
-
-	(name "http://www.w3.org/2002/07/owl#Thing")
-	(string_value "%3ANAME"))
-
-([context_KAON.rdf-xml_ProjectKB_Class11] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class12] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class13])
-	(widget_class_name "ca.uvic.csr.shrimp.jambalaya.JambalayaTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class13] of  Property_List
+([context_KAON.rdf-xml_ProjectKB_Class12] of  Property_List
 )
 
 ([context_KAON.rdf-xml_ProjectKB_Class14] of  Widget
 
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class15])
-	(widget_class_name "edu.stanford.smi.protege.widget.instance_tree.InstanceTreeTab"))
+	(is_hidden FALSE)
+	(name "http://www.w3.org/2002/07/owl#versionInfo")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class15]))
 
 ([context_KAON.rdf-xml_ProjectKB_Class15] of  Property_List
 )
 
 ([context_KAON.rdf-xml_ProjectKB_Class16] of  Widget
 
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class17])
-	(widget_class_name "edu.stanford.smi.protegex.widget.pal.PalConstraintsTab"))
+	(is_hidden FALSE)
+	(name "http://www.w3.org/2000/01/rdf-schema#isDefinedBy")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class17]))
 
 ([context_KAON.rdf-xml_ProjectKB_Class17] of  Property_List
 )
 
 ([context_KAON.rdf-xml_ProjectKB_Class18] of  Widget
 
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class19])
-	(widget_class_name "edu.stanford.smi.RemoteKBTab.WordNetTab"))
+	(is_hidden FALSE)
+	(name "http://www.w3.org/2000/01/rdf-schema#comment")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class19]))
 
 ([context_KAON.rdf-xml_ProjectKB_Class19] of  Property_List
 )
 
 ([context_KAON.rdf-xml_ProjectKB_Class20] of  Widget
 
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class21])
-	(widget_class_name "edu.stanford.smi.protegex.evaluation.MetaAnalysis"))
-
-([context_KAON.rdf-xml_ProjectKB_Class20142] of  String
-
-	(name "JavaCodeFileName")
-	(string_value "C:\\Users\\Administrator\\Desktop\\ontologyCode"))
-
-([context_KAON.rdf-xml_ProjectKB_Class20143] of  Boolean
-
-	(boolean_value FALSE)
-	(name "JavaCodeAbstract"))
-
-([context_KAON.rdf-xml_ProjectKB_Class20144] of  Boolean
-
-	(boolean_value FALSE)
-	(name "JavaCodeSet"))
-
-([context_KAON.rdf-xml_ProjectKB_Class20145] of  Boolean
-
-	(boolean_value FALSE)
-	(name "JavaCodeUsePrefix"))
-
-([context_KAON.rdf-xml_ProjectKB_Class20146] of  String
-
-	(name "JavaCodeFactoryClassName")
-	(string_value "MyFactory"))
+	(is_hidden FALSE)
+	(name "http://www.w3.org/2000/01/rdf-schema#seeAlso")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class21]))
 
 ([context_KAON.rdf-xml_ProjectKB_Class21] of  Property_List
 )
 
 ([context_KAON.rdf-xml_ProjectKB_Class22] of  Widget
 
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class23])
-	(widget_class_name "uk.ac.man.cs.mig.coode.owlviz.ui.OWLVizTab"))
+	(is_hidden FALSE)
+	(name "http://www.w3.org/2000/01/rdf-schema#label")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class23]))
 
 ([context_KAON.rdf-xml_ProjectKB_Class23] of  Property_List
 )
 
-([context_KAON.rdf-xml_ProjectKB_Class24] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class25])
-	(widget_class_name "org.protege.owl.mm.ssm.ui.MappingMasterTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class25] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class26] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class27])
-	(widget_class_name "edu.stanford.smi.protege.query.LuceneQueryPlugin"))
-
-([context_KAON.rdf-xml_ProjectKB_Class27] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class28] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class29])
-	(widget_class_name "edu.stanford.smi.RemoteKBTab.UMLSTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class29] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class30] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class31])
-	(widget_class_name "edu.stanford.smi.protegex.changeanalysis.ChangeAnalysisTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class31] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class32] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class33])
-	(widget_class_name "TGViztab.TGVizTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class33] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class34] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class35])
-	(widget_class_name "org.algernon.kb.okbc.protege.plugins.AlgernonTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class35] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class36] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class37])
-	(widget_class_name "edu.stanford.smi.protegex.changes.changesKBViewTab.ChangesKBViewTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class37] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class38] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class39])
-	(widget_class_name "edu.stanford.smi.protegex.xml.tab.XMLTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class39] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class4] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class5])
-	(widget_class_name "se.liu.ida.JessTab.JessTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class40] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class41])
-	(widget_class_name "edu.stanford.smi.protegex.widget.pal.PalQueriesTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class41] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class42] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class43])
-	(widget_class_name "edu.stanford.smi.protegex.chatPlugin.ChatTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class43] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class44] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class45])
-	(widget_class_name "org.protege.owl.axiome.ui.AxiomeTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class45] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class46] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class47])
-	(widget_class_name "edu.stanford.smi.protege.keywordsearch.StringSearch"))
-
-([context_KAON.rdf-xml_ProjectKB_Class47] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class48] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class49])
-	(widget_class_name "script.ProtegeScriptTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class49] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class5] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class50] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class51])
-	(widget_class_name "edu.stanford.smi.protegex.changes.ChangesTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class51] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class52] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class53])
-	(widget_class_name "edu.stanford.smi.protegex.fctab.FacetConstraintsTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class53] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class54] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class55])
-	(widget_class_name "edu.stanford.smi.protege.widget.instance_tree.KnowledgeTreeTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class55] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class56] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class57])
-	(widget_class_name "edu.stanford.smi.protegex.datamaster.DataMasterTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class57] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class58] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class59])
-	(widget_class_name "dfki.protege.ontoviz_tab.OntovizTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class59] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class6] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class7])
-	(widget_class_name "edu.stanford.smi.protege.widget.ProtegePropertiesTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class60] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class10061])
-	(widget_class_name "edu.stanford.smi.protegex.changes.stats.ChangeStatisticsTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class61] of  Widget
-
-	(is_hidden FALSE)
-	(name "http://www.w3.org/2003/11/swrl#Imp")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class64])
-	(widget_class_name "edu.stanford.smi.protegex.owl.ui.widget.OWLFormWidget"))
-
-([context_KAON.rdf-xml_ProjectKB_Class64] of  Property_List
-
-	(properties
-		[context_KAON.rdf-xml_ProjectKB_Class65]
-		[context_KAON.rdf-xml_ProjectKB_Class68]
-		[context_KAON.rdf-xml_ProjectKB_Class71]
-		[context_KAON.rdf-xml_ProjectKB_Class74]
-		[context_KAON.rdf-xml_ProjectKB_Class76]
-		[context_KAON.rdf-xml_ProjectKB_Class78]
-		[context_KAON.rdf-xml_ProjectKB_Class80]
-		[context_KAON.rdf-xml_ProjectKB_Class82]
-		[context_KAON.rdf-xml_ProjectKB_Class91]))
-
-([context_KAON.rdf-xml_ProjectKB_Class65] of  Widget
-
-	(height 120)
-	(is_hidden FALSE)
-	(label "Name")
-	(name ":NAME")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class66])
-	(widget_class_name "edu.stanford.smi.protegex.owl.ui.metadata.NameDocumentationWidget")
-	(width 200)
-	(x 0)
-	(y 0))
-
-([context_KAON.rdf-xml_ProjectKB_Class66] of  Property_List
-
-	(properties
-		[context_KAON.rdf-xml_ProjectKB_Class10064]
-		[context_KAON.rdf-xml_ProjectKB_Class10065]))
-
-([context_KAON.rdf-xml_ProjectKB_Class68] of  Property_List
-
-	(name "layout properties")
-	(properties
-		[context_KAON.rdf-xml_ProjectKB_Class69]
-		[context_KAON.rdf-xml_ProjectKB_Class70]))
-
-([context_KAON.rdf-xml_ProjectKB_Class69] of  String
-
-	(name "horizontal_stretcher")
-	(string_value "<<all>>"))
-
-([context_KAON.rdf-xml_ProjectKB_Class7] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class70] of  String
-
-	(name "vertical_stretcher")
-	(string_value "http://www.w3.org/2003/11/swrl#body"))
-
-([context_KAON.rdf-xml_ProjectKB_Class71] of  Widget
-
-	(height 0)
-	(is_hidden FALSE)
-	(name "http://protege.stanford.edu/plugins/owl/protege#inferredType")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class72])
-	(width 0)
-	(x 0)
-	(y 0))
-
-([context_KAON.rdf-xml_ProjectKB_Class72] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class74] of  Widget
-
-	(is_hidden FALSE)
-	(name "http://www.w3.org/2002/07/owl#versionInfo")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class75]))
-
-([context_KAON.rdf-xml_ProjectKB_Class75] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class76] of  Widget
-
-	(is_hidden FALSE)
-	(name "http://www.w3.org/2000/01/rdf-schema#isDefinedBy")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class77]))
-
-([context_KAON.rdf-xml_ProjectKB_Class77] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class78] of  Widget
-
-	(is_hidden FALSE)
-	(name "http://www.w3.org/2000/01/rdf-schema#comment")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class79]))
-
-([context_KAON.rdf-xml_ProjectKB_Class79] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class8] of  Widget
-
-	(is_hidden TRUE)
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class9])
-	(widget_class_name "ezpal.EZPalTab"))
-
-([context_KAON.rdf-xml_ProjectKB_Class80] of  Widget
-
-	(is_hidden FALSE)
-	(name "http://www.w3.org/2000/01/rdf-schema#seeAlso")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class81]))
-
-([context_KAON.rdf-xml_ProjectKB_Class81] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class82] of  Widget
-
-	(is_hidden FALSE)
-	(name "http://www.w3.org/2000/01/rdf-schema#label")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class83]))
-
-([context_KAON.rdf-xml_ProjectKB_Class83] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class9] of  Property_List
-)
-
-([context_KAON.rdf-xml_ProjectKB_Class91] of  Widget
+([context_KAON.rdf-xml_ProjectKB_Class27] of  Widget
 
 	(height 300)
 	(is_hidden FALSE)
 	(name "http://www.w3.org/2003/11/swrl#body")
-	(property_list [context_KAON.rdf-xml_ProjectKB_Class92])
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class28])
 	(widget_class_name "edu.stanford.smi.protegex.owl.swrl.ui.widget.SWRLRuleSlotWidget")
 	(width 200)
 	(x 0)
 	(y 120))
 
-([context_KAON.rdf-xml_ProjectKB_Class92] of  Property_List
+([context_KAON.rdf-xml_ProjectKB_Class28] of  Property_List
 )
+
+([context_KAON.rdf-xml_ProjectKB_Class29] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class30])
+	(widget_class_name "se.liu.ida.JessTab.JessTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class30] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class31] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class32])
+	(widget_class_name "edu.stanford.smi.protege.widget.ProtegePropertiesTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class32] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class33] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class34])
+	(widget_class_name "ezpal.EZPalTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class34] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class35] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class36])
+	(widget_class_name "edu.stanford.smi.protegex.server_changes.prompt.UsersTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class36] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class37] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class38])
+	(widget_class_name "ca.uvic.csr.shrimp.jambalaya.JambalayaTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class38] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class39] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class40])
+	(widget_class_name "edu.stanford.smi.protege.widget.instance_tree.InstanceTreeTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class4] of  Property_List
+
+	(properties
+		[context_KAON.rdf-xml_ProjectKB_Class5]
+		[context_KAON.rdf-xml_ProjectKB_Class8]
+		[context_KAON.rdf-xml_ProjectKB_Class11]
+		[context_KAON.rdf-xml_ProjectKB_Class14]
+		[context_KAON.rdf-xml_ProjectKB_Class16]
+		[context_KAON.rdf-xml_ProjectKB_Class18]
+		[context_KAON.rdf-xml_ProjectKB_Class20]
+		[context_KAON.rdf-xml_ProjectKB_Class22]
+		[context_KAON.rdf-xml_ProjectKB_Class27]))
+
+([context_KAON.rdf-xml_ProjectKB_Class40] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class41] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class42])
+	(widget_class_name "edu.stanford.smi.protegex.widget.pal.PalConstraintsTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class42] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class43] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class44])
+	(widget_class_name "edu.stanford.smi.RemoteKBTab.WordNetTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class44] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class45] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class46])
+	(widget_class_name "edu.stanford.smi.protegex.evaluation.MetaAnalysis"))
+
+([context_KAON.rdf-xml_ProjectKB_Class46] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class47] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class48])
+	(widget_class_name "uk.ac.man.cs.mig.coode.owlviz.ui.OWLVizTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class48] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class49] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class50])
+	(widget_class_name "org.protege.owl.mm.ssm.ui.MappingMasterTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class5] of  Widget
+
+	(height 120)
+	(is_hidden FALSE)
+	(label "Name")
+	(name ":NAME")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class6])
+	(widget_class_name "edu.stanford.smi.protegex.owl.ui.metadata.NameDocumentationWidget")
+	(width 200)
+	(x 0)
+	(y 0))
+
+([context_KAON.rdf-xml_ProjectKB_Class50] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class51] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class52])
+	(widget_class_name "edu.stanford.smi.protege.query.LuceneQueryPlugin"))
+
+([context_KAON.rdf-xml_ProjectKB_Class52] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class53] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class54])
+	(widget_class_name "edu.stanford.smi.RemoteKBTab.UMLSTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class54] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class55] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class56])
+	(widget_class_name "edu.stanford.smi.protegex.changeanalysis.ChangeAnalysisTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class56] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class57] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class58])
+	(widget_class_name "TGViztab.TGVizTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class58] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class59] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class60])
+	(widget_class_name "org.algernon.kb.okbc.protege.plugins.AlgernonTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class6] of  Property_List
+
+	(properties
+		[context_KAON.rdf-xml_ProjectKB_Class89]
+		[context_KAON.rdf-xml_ProjectKB_Class90]))
+
+([context_KAON.rdf-xml_ProjectKB_Class60] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class61] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class62])
+	(widget_class_name "edu.stanford.smi.protegex.changes.changesKBViewTab.ChangesKBViewTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class62] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class63] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class64])
+	(widget_class_name "edu.stanford.smi.protegex.xml.tab.XMLTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class64] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class65] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class66])
+	(widget_class_name "edu.stanford.smi.protegex.widget.pal.PalQueriesTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class66] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class67] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class68])
+	(widget_class_name "edu.stanford.smi.protegex.chatPlugin.ChatTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class68] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class69] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class70])
+	(widget_class_name "org.protege.owl.axiome.ui.AxiomeTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class70] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class71] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class72])
+	(widget_class_name "edu.stanford.smi.protege.keywordsearch.StringSearch"))
+
+([context_KAON.rdf-xml_ProjectKB_Class72] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class73] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class74])
+	(widget_class_name "script.ProtegeScriptTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class74] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class75] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class76])
+	(widget_class_name "edu.stanford.smi.protegex.changes.ChangesTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class76] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class77] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class78])
+	(widget_class_name "edu.stanford.smi.protegex.fctab.FacetConstraintsTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class78] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class79] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class80])
+	(widget_class_name "edu.stanford.smi.protege.widget.instance_tree.KnowledgeTreeTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class8] of  Property_List
+
+	(name "layout properties")
+	(properties
+		[context_KAON.rdf-xml_ProjectKB_Class9]
+		[context_KAON.rdf-xml_ProjectKB_Class10]))
+
+([context_KAON.rdf-xml_ProjectKB_Class80] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class81] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class82])
+	(widget_class_name "edu.stanford.smi.protegex.datamaster.DataMasterTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class82] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class83] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class84])
+	(widget_class_name "dfki.protege.ontoviz_tab.OntovizTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class84] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class85] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class86])
+	(widget_class_name "edu.stanford.smi.protegex.changes.stats.ChangeStatisticsTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class86] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class87] of  Widget
+
+	(is_hidden TRUE)
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class88])
+	(widget_class_name "edu.stanford.smi.protegex.prompt.PromptTab"))
+
+([context_KAON.rdf-xml_ProjectKB_Class88] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class89] of  Widget
+
+	(is_hidden FALSE)
+	(label "Name")
+	(name ":NAME")
+	(property_list [context_KAON.rdf-xml_ProjectKB_Class91])
+	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
+
+([context_KAON.rdf-xml_ProjectKB_Class9] of  String
+
+	(name "horizontal_stretcher")
+	(string_value "<<all>>"))
+
+([context_KAON.rdf-xml_ProjectKB_Class90] of  Widget
+
+	(is_hidden FALSE)
+	(label "Comment")
+	(name "http://www.w3.org/2000/01/rdf-schema#comment")
+	(widget_class_name "edu.stanford.smi.protege.widget.FormWidget"))
+
+([context_KAON.rdf-xml_ProjectKB_Class91] of  Property_List
+)
+
+([context_KAON.rdf-xml_ProjectKB_Class92] of  String
+
+	(name ":INSTANCE-ANNOTATION")
+	(string_value "%3AANNOTATION-TEXT"))
+
+([context_KAON.rdf-xml_ProjectKB_Class93] of  String
+
+	(name "http://www.w3.org/2002/07/owl#Class")
+	(string_value "%3ANAME"))
+
+([context_KAON.rdf-xml_ProjectKB_Class94] of  String
+
+	(name ":PAL-CONSTRAINT")
+	(string_value "%3APAL-NAME"))
+
+([context_KAON.rdf-xml_ProjectKB_Class95] of  String
+
+	(name ":META-CLASS")
+	(string_value "%3ANAME"))
+
+([context_KAON.rdf-xml_ProjectKB_Class96] of  String
+
+	(name "http://www.w3.org/2002/07/owl#Thing")
+	(string_value "%3ANAME"))
 
 ([empty.owl_ProjectKB_Class5] of  String
 
@@ -3478,9 +3456,6 @@
 	(property_list [XY_Instance_195])
 	(widget_class_name "edu.stanford.smi.protegex.owl.ui.widget.OWLFormWidget"))
 
-([KB_778053_Class0] of  Map
-)
-
 ([KB_865583_Instance_10] of  Widget
 
 	(is_hidden FALSE)
@@ -5817,7 +5792,7 @@
 		[PAL_FORM_WIDGET]
 		[Instance_581]
 		[KB_713803_Instance_693]
-		[context_KAON.rdf-xml_ProjectKB_Class61]
+		[context_KAON.rdf-xml_ProjectKB_Class1]
 		[INSTANCE_ANNOTATION_FORM_WIDGET]
 		[KB_938545_Instance_166]
 		[STANDARD_SLOT_FORM_WIDGET]
@@ -5850,10 +5825,10 @@
 		"http://www.w3.org/2001/XMLSchema#anySimpleType"
 		"http://www.w3.org/2001/XMLSchema#NOTATION"
 		":MODIFIER"
-		"http://www.w3.org/2000/01/rdf-schema#Container"
 		"http://protege.stanford.edu/plugins/owl/protege#SLOT-CONSTRAINTS"
-		"http://www.w3.org/2001/XMLSchema#integer"
+		"http://www.w3.org/2000/01/rdf-schema#Container"
 		":SLOT-NUMERIC-MINIMUM"
+		"http://www.w3.org/2001/XMLSchema#integer"
 		"http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"
 		"http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
 		":NUMERIC-MAXIMUM"
@@ -5864,8 +5839,8 @@
 		"http://www.w3.org/2002/07/owl#InverseFunctionalProperty"
 		":ANNOTATED-INSTANCE"
 		"http://www.w3.org/2003/11/swrl#BuiltinAtom"
-		":OWL-ONTOLOGY-POINTER-CLASS"
 		"http://www.w3.org/2002/07/owl#Ontology"
+		":OWL-ONTOLOGY-POINTER-CLASS"
 		"http://www.w3.org/1999/02/22-rdf-syntax-ns#object"
 		"http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
 		":VALUE-TYPE"
@@ -5887,14 +5862,14 @@
 		"http://www.w3.org/2002/07/owl#UnionClass"
 		"http://www.w3.org/2002/07/owl#sameAs"
 		":DIRECT-TYPE"
-		"http://www.w3.org/2002/07/owl#equivalentClass"
 		":NAME"
+		"http://www.w3.org/2002/07/owl#equivalentClass"
 		"http://www.w3.org/2002/07/owl#FunctionalProperty"
 		"http://protege.stanford.edu/plugins/owl/protege#inferredSubclassOf"
-		"http://www.w3.org/2003/11/swrl#SameIndividualAtom"
 		":PAL-DESCRIPTION"
-		"http://www.w3.org/2002/07/owl#AnonymousClass"
+		"http://www.w3.org/2003/11/swrl#SameIndividualAtom"
 		"http://www.w3.org/2001/XMLSchema#anyURI"
+		"http://www.w3.org/2002/07/owl#AnonymousClass"
 		"http://www.w3.org/2002/07/owl#MinCardinalityRestriction"
 		"http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
 		":CLASS"
@@ -5905,8 +5880,8 @@
 		"http://www.w3.org/2002/07/owl#TransitiveProperty"
 		"http://www.w3.org/2000/01/rdf-schema#range"
 		"http://www.w3.org/2001/XMLSchema#gYearMonth"
-		"http://www.w3.org/2002/07/owl#ComplementClass"
 		":CREATOR"
+		"http://www.w3.org/2002/07/owl#ComplementClass"
 		":ASSOCIATED-FACET"
 		":DOCUMENTATION"
 		":DIRECT-SUPERCLASSES"
@@ -5918,11 +5893,11 @@
 		":MODIFICATION-TIMESTAMP"
 		"http://www.w3.org/2001/XMLSchema#gYear"
 		"http://www.w3.org/2001/XMLSchema#gMonthDay"
-		"http://www.w3.org/2001/XMLSchema#normalizedString"
 		"http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+		"http://www.w3.org/2001/XMLSchema#normalizedString"
 		"http://www.w3.org/2001/XMLSchema#nonPositiveInteger"
-		"http://www.w3.org/2002/07/owl#someValuesFrom"
 		"http://protege.stanford.edu/plugins/owl/protege#classificationStatus"
+		"http://www.w3.org/2002/07/owl#someValuesFrom"
 		"http://protege.stanford.edu/plugins/owl/protege#inferredSuperclassOf"
 		"http://www.w3.org/2000/01/rdf-schema#subPropertyOf"
 		"http://www.w3.org/1999/02/22-rdf-syntax-ns#List"
@@ -5932,15 +5907,15 @@
 		"http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
 		"http://www.w3.org/2003/11/swrl#Variable"
 		":DIRECT-INSTANCES"
-		"http://protege.stanford.edu/plugins/owl/protege#DIRECTED-BINARY-RELATION"
 		"http://www.w3.org/2002/07/owl#unionOf"
+		"http://protege.stanford.edu/plugins/owl/protege#DIRECTED-BINARY-RELATION"
 		":SLOT"
 		"http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"
 		"http://www.w3.org/2002/07/owl#minCardinality"
 		"http://www.w3.org/2002/07/owl#allValuesFrom"
 		":INVERSE"
-		"http://www.w3.org/2003/11/swrl#DataRangeAtom"
 		"http://www.w3.org/2002/07/owl#priorVersion"
+		"http://www.w3.org/2003/11/swrl#DataRangeAtom"
 		"http://www.w3.org/2001/XMLSchema#token"
 		"http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"
 		":DIRECT-TEMPLATE-SLOTS"
@@ -5958,15 +5933,15 @@
 		"http://protege.stanford.edu/plugins/owl/protege#PAL-NAME"
 		"http://www.w3.org/2001/XMLSchema#gMonth"
 		"http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"
-		"http://www.w3.org/2001/XMLSchema#unsignedShort"
 		":OWL-CLASS"
+		"http://www.w3.org/2001/XMLSchema#unsignedShort"
 		"http://www.w3.org/2001/XMLSchema#unsignedInt"
 		":STANDARD-FACET"
 		":STANDARD-CLASS"
 		"http://www.w3.org/2002/07/owl#Restriction"
 		"http://www.w3.org/2002/07/owl#MaxCardinalityRestriction"
-		"http://www.w3.org/2002/07/owl#Class"
 		"http://www.w3.org/2001/XMLSchema#NCName"
+		"http://www.w3.org/2002/07/owl#Class"
 		"http://www.w3.org/2001/XMLSchema#ID"
 		"http://www.w3.org/2003/11/swrlb#maxArgs"
 		"http://www.w3.org/2002/07/owl#imports"
@@ -5978,16 +5953,16 @@
 		"http://www.w3.org/2003/11/swrl#builtin"
 		"http://www.w3.org/2001/XMLSchema#decimal"
 		"http://www.w3.org/2003/11/swrl#AtomList"
-		"http://www.w3.org/2003/11/swrl#classPredicate"
-		"http://www.w3.org/2002/07/owl#equivalentProperty"
 		"http://www.w3.org/2000/01/rdf-schema#Literal"
-		"http://www.w3.org/2002/07/owl#SomeValuesFromRestriction"
+		"http://www.w3.org/2002/07/owl#equivalentProperty"
+		"http://www.w3.org/2003/11/swrl#classPredicate"
 		"http://www.w3.org/2001/XMLSchema#long"
-		"http://www.w3.org/2002/07/owl#HasValueRestriction"
+		"http://www.w3.org/2002/07/owl#SomeValuesFromRestriction"
 		":SLOT-VALUE-TYPE"
+		"http://www.w3.org/2002/07/owl#HasValueRestriction"
 		"http://www.w3.org/2003/11/swrlb#minArgs"
-		"http://www.w3.org/2001/XMLSchema#positiveInteger"
 		"http://www.w3.org/2001/XMLSchema#duration"
+		"http://www.w3.org/2001/XMLSchema#positiveInteger"
 		"http://www.w3.org/2002/07/owl#oneOf"
 		":VALUES"
 		":ASSOCIATED-SLOT"
@@ -6022,14 +5997,14 @@
 		"http://www.w3.org/2002/07/owl#backwardCompatibleWith"
 		":RELATION"
 		"http://www.w3.org/2000/01/rdf-schema#Datatype"
-		"http://www.w3.org/2003/11/swrl#Atom"
 		"http://www.w3.org/2001/XMLSchema#QName"
+		"http://www.w3.org/2003/11/swrl#Atom"
 		"http://www.w3.org/2002/07/owl#EnumeratedClass"
 		"http://www.w3.org/2002/07/owl#disjointWith"
 		"http://www.w3.org/2001/XMLSchema#unsignedLong"
 		":MINIMUM-CARDINALITY"
-		":SLOT-DEFAULTS"
 		":TO"
+		":SLOT-DEFAULTS"
 		":SYSTEM-CLASS"
 		":SLOT-MAXIMUM-CARDINALITY"
 		":DEFAULTS"
@@ -6037,8 +6012,8 @@
 		"http://www.w3.org/2003/11/swrl#argument2"
 		"http://www.w3.org/2003/11/swrl#argument1"
 		":FACET"
-		"http://www.w3.org/2002/07/owl#intersectionOf"
 		":SLOT-VALUES"
+		"http://www.w3.org/2002/07/owl#intersectionOf"
 		"http://www.w3.org/2002/07/owl#Nothing"
 		"http://www.w3.org/2002/07/owl#hasValue")
 	(journaling_enabled FALSE)
@@ -6083,12 +6058,7 @@
 		[KB_632156_Instance_0]
 		[KB_325529_Class4]
 		[empty.owl_ProjectKB_Class5]
-		[empty.owl_ProjectKB_Class6]
-		[context_KAON.rdf-xml_ProjectKB_Class20142]
-		[context_KAON.rdf-xml_ProjectKB_Class20143]
-		[context_KAON.rdf-xml_ProjectKB_Class20144]
-		[context_KAON.rdf-xml_ProjectKB_Class20145]
-		[context_KAON.rdf-xml_ProjectKB_Class20146]))
+		[empty.owl_ProjectKB_Class6]))
 
 ([STANDARD_CLASS_FORM_WIDGET] of  Widget
 
@@ -6474,6 +6444,19 @@
 
 	(name "vertical_stretcher")
 	(string_value "http://www.w3.org/2002/07/owl#imports"))
+
+([XY_Instance_217] of  Widget
+
+	(height 0)
+	(is_hidden FALSE)
+	(name ":OWL-ONTOLOGY-PREFIXES")
+	(property_list [XY_Instance_218])
+	(width 0)
+	(x 0)
+	(y 0))
+
+([XY_Instance_218] of  Property_List
+)
 
 ([XY_Instance_235] of  Widget
 
