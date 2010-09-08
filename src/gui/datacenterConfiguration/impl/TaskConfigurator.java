@@ -1,20 +1,27 @@
 package gui.datacenterConfiguration.impl;
 
+import globalLoop.utils.GlobalVars;
 import gui.datacenterConfiguration.AbstractConfigurator;
 import gui.datacenterConfiguration.ITaskTableModel;
 import gui.datacenterConfiguration.TableCellValueValidator;
+import jade.core.AID;
+import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import main.PelletJena;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
 import model.interfaces.policies.QoSPolicy;
 import model.interfaces.resources.applications.Application;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.worldInterface.dtos.ExtendedTaskDto;
+import utils.worldInterface.dtos.TaskDto;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -143,7 +150,7 @@ public class TaskConfigurator extends AbstractConfigurator {
             }
         }
 
-        public void createTaskEntities(ModelAccess modelAccess) {
+        public void createTaskEntities(Agent agent) {
 
             int rowsCount = rowsData.size();
             for (int j = 0; j < rowsCount; j++) {
@@ -157,93 +164,37 @@ public class TaskConfigurator extends AbstractConfigurator {
                 }
             }
 
-            //TODO: de scos si de pe servere
-            for (ApplicationActivity task : modelAccess.getAllApplicationActivityInstances()) {
 
-//                Server server = task.getAssociatedServer();
-//                if (server != null) {
-//                    ServerManagementProxyInterface serverManagementProxyInterface = ProxyFactory.createServerManagementProxy(server.getServerIPAddress());
-//                    serverManagementProxyInterface.deleteVirtualMachine(task.getLocalName());
-//                    server.removeRunningTasks(task);
-//                }
-//
-                task.delete();
-//                requestedTaskInfo.delete();
-//                receivedTaskInfo.delete();
-
-            }
-
-            for (QoSPolicy policy : modelAccess.getAllQoSPolicyInstances()) {
-                policy.delete();
-            }
-
-            for (Application application : modelAccess.getAllApplicationInstances()) {
-                application.delete();
-            }
-
-            Application application = modelAccess.createApplication("Application");
-            application.setCpuWeight(0);
-            application.setMemWeight(0);
-            application.setHddWeight(0);
-            application.setNumberOfCoresRequiredValue(0);
-
-            application.setCpuRequiredMinValue(0);
-            application.setCpuRequiredMaxValue(0);
-            application.setMemRequiredMaxValue(0);
-            application.setMemRequiredMinValue(0);
-            application.setHddRequiredMaxValue(0);
-            application.setHddRequiredMinValue(0);
-
-            application.setNumberOfCoresAllocatedValue(0);
-            application.setCpuAllocatedValue(0);
-            application.setMemAllocatedValue(0);
-            application.setHddAllocatedValue(0);
-            application.setPerformanceDegradation(0);
-            application.setPerformanceEstimation(0);
-            application.setResourceID(application.getFrameID().getName());
-
+            List<ExtendedTaskDto> taskDtos = new ArrayList<ExtendedTaskDto>();
 
             for (String[] data : rowsData) {
 
-                ApplicationActivity task = modelAccess.createApplicationActivity(data[0].trim());
+                ExtendedTaskDto task = new ExtendedTaskDto();
 
                 task.setCpuWeight(Float.parseFloat(data[2].trim()));
                 task.setMemWeight(Float.parseFloat(data[3].trim()));
                 task.setHddWeight(Float.parseFloat(data[4].trim()));
-                task.setNumberOfCoresRequiredValue(Integer.parseInt(data[1].trim()));
+                task.setRequestedCores(Integer.parseInt(data[1].trim()));
+                task.setRequestedCPUMin(Integer.parseInt(data[5].trim()));
+                task.setRequestedCPUMax(Integer.parseInt(data[6].trim()));
+                task.setRequestedMemoryMin(Integer.parseInt(data[7].trim()));
+                task.setRequestedMemoryMax(Integer.parseInt(data[8].trim()));
+                task.setRequestedStorageMin(Integer.parseInt(data[9].trim()));
+                task.setRequestedStorageMax(Integer.parseInt(data[10].trim()));
 
-                task.setCpuRequiredMinValue(Integer.parseInt(data[5].trim()));
-                task.setCpuRequiredMaxValue(Integer.parseInt(data[6].trim()));
-                task.setMemRequiredMinValue(Integer.parseInt(data[7].trim()));
-                task.setMemRequiredMaxValue(Integer.parseInt(data[8].trim()));
-                task.setHddRequiredMinValue(Integer.parseInt(data[9].trim()));
-                task.setHddRequiredMaxValue(Integer.parseInt(data[10].trim()));
-
-                task.setNumberOfCoresAllocatedValue(0);
-                task.setCpuAllocatedValue(0);
-                task.setMemAllocatedValue(0);
-                task.setHddAllocatedValue(0);
-                task.setPerformanceDegradation(0);
-                task.setPerformanceEstimation(0);
-
-                QoSPolicy policy = modelAccess.createQoSPolicy(task.getLocalName() + "_QoSPolicy_");
-                //           policy.setRespected(false);
-                policy.addPolicySubject(task);
-                policy.addPolicyTarget(task);
-                policy.setPolicyWeight(1.0f);
-                policy.setPolicyName(policy.getName());
-                policy.setEvaluationCondition("Condition");
-
-                task.setResourceID(task.getFrameID().getName());
-                task.addActivityPolicies(policy);
-
-                task.addPartOf(application);
-                application.addBP_ActivityList(task);
-                application.addActivityPolicies(policy);
-                //TODO: cumva add si policy target
+                taskDtos.add(task);
+                
             }
 
-            PelletJena.generateBussinessRules(((OntologyModelFactory) modelAccess.getOntologyModelFactory()).getOwlModel(), modelAccess);
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            try {
+                msg.setContentObject(new Object[]{"Tasks added", taskDtos});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+            agent.send(msg);
+
         }
 
         public List<String[]> getTableData() {
@@ -261,7 +212,8 @@ public class TaskConfigurator extends AbstractConfigurator {
         }
     }
 
-    public TaskConfigurator() {
+    public TaskConfigurator( ) {
+
         configurationTable = new JTable();
         tableModel = new TaskInfoTableModel();
         configurationTable.setModel(tableModel);
@@ -313,13 +265,13 @@ public class TaskConfigurator extends AbstractConfigurator {
         tableModel.setTableData(data);
     }
 
-    public void createEntities(ModelAccess modelAccess) {
-        tableModel.createTaskEntities(modelAccess);
+    public void createEntities(Agent agent) {
+        tableModel.createTaskEntities(agent);
     }
 
-    public static void main(String[] main) {
-        new TaskConfigurator();
-    }
+//    public static void main(String[] main) {
+//        new TaskConfigurator();
+//    }
 
 
 }

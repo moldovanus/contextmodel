@@ -8,6 +8,7 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.data.Range;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -23,14 +24,17 @@ import java.awt.*;
  */
 public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
 
-    private int minTimeRange = 0;
-    private int maxTimeRange = 60;
-
-    private XYSeries series = new XYSeries("Used");
+    private XYSeries series;
     private XYPlot plot;
+    private String xAxisLabel;
+    private String yAxisLabel;
 
-    public ResourceMonitorXYChartPlotter(String resourceName, int minimumValue, int maximumValue) {
+    public ResourceMonitorXYChartPlotter(String resourceName, String xAxisLabel, String yAxisLabel, int minimumValue, int maximumValue) {
         super(resourceName);
+
+        this.xAxisLabel = xAxisLabel;
+        this.yAxisLabel = yAxisLabel;
+        series = new XYSeries(xAxisLabel);
         setup(minimumValue, maximumValue);
     }
 
@@ -40,9 +44,9 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
         XYDataset xyDataset = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart(
                 resourceName,  // Title
-                "Time(s)",          // X-Axis label
-                "Usage(%)",           // Y-Axis label
-                xyDataset,          // Dataset
+                xAxisLabel,    // X-Axis label
+                yAxisLabel,    // Y-Axis label
+                xyDataset,     // Dataset
                 PlotOrientation.VERTICAL,
                 false,                // Show legend
                 false, false
@@ -62,12 +66,17 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
         xAxis.setLabelFont(LABEL_FONT);
         xAxis.setRange(minTimeRange, maxTimeRange);
 
-
         ChartPanel panel = new ChartPanel(chart);
         graphPanel = panel;
 
     }
 
+    @Override
+    public void setMaxTimeRange(int maxTimeRange) {
+        super.setMaxTimeRange(maxTimeRange);
+        ValueAxis domain = plot.getDomainAxis();
+        domain.setRange(minTimeRange, minTimeRange + maxTimeRange);
+    }
 
     public void setCurrentValue(Object currentValue) {
         if (snapshotCount > maxTimeRange - 1) {
@@ -76,6 +85,11 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
             minTimeRange += snapshotIncrement;
             // domain.setAutoRange(false);
             domain.setRange(minTimeRange, minTimeRange + maxTimeRange);
+        }
+        ValueAxis value = plot.getRangeAxis();
+        Range valueRange = value.getRange();
+        if (valueRange.getUpperBound() <= (Integer) currentValue) {
+            value.setRange(valueRange.getLowerBound(), (Integer) currentValue + 10);
         }
         series.add(snapshotCount, (Integer) currentValue);
         snapshotCount += snapshotIncrement;

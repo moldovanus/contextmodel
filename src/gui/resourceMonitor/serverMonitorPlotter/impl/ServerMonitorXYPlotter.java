@@ -57,7 +57,7 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
 
         for (Object o : cores) {
             Core core = (Core) o;
-            ResourceMonitorPlotter plotter = new ResourceMonitorXYChartPlotter(core.getLocalName(), 0, core.getMaximumWorkLoad().intValue());
+            ResourceMonitorPlotter plotter = new ResourceMonitorXYChartPlotter(core.getLocalName(), "Time","Usage",0, core.getMaximumWorkLoad().intValue());
             plotter.setSnapshotIncrement(refreshRate / 1000);
             JPanel graphPanel = plotter.getGraphPanel();
             graphPanel.setSize(250, 150);
@@ -66,12 +66,12 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
         }
 
         MEM memory = server.getMemResources().iterator().next();
-        memoryMonitor = new ResourceMonitorXYChartPlotter("Memory", 0, memory.getMaximumWorkLoad().intValue());
+        memoryMonitor = new ResourceMonitorXYChartPlotter("Memory",  "Time","Usage", 0, memory.getMaximumWorkLoad().intValue());
         memoryMonitor.setSnapshotIncrement(refreshRate / 1000);
         monitorPanel.add(memoryMonitor.getGraphPanel());
 
         HDD storage = server.getHddResources().iterator().next();
-        storageMonitor = new ResourceMonitorXYChartPlotter("Storage", 0, storage.getMaximumWorkLoad().intValue());
+        storageMonitor = new ResourceMonitorXYChartPlotter("Storage","Time","Usage", 0, storage.getMaximumWorkLoad().intValue());
         storageMonitor.setSnapshotIncrement(refreshRate / 1000);
         monitorPanel.add(storageMonitor.getGraphPanel());
 

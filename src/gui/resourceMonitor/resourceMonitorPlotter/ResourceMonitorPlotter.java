@@ -12,7 +12,6 @@ import java.awt.*;
  */
 public abstract class ResourceMonitorPlotter {
 
-
     protected String resourceName;
 
     protected int snapshotCount = 0;
@@ -28,7 +27,6 @@ public abstract class ResourceMonitorPlotter {
         this.resourceName = resourceName;
         graphPanel = new JPanel();
     }
-
 
     public abstract void setCurrentValue(Object currentValue);
 
@@ -60,6 +58,7 @@ public abstract class ResourceMonitorPlotter {
 
     public void setSnapshotIncrement(int snapshotIncrement) {
         this.snapshotIncrement = snapshotIncrement;
+        this.setMaxTimeRange(60*snapshotIncrement);
     }
 
     public void setDisplayTimeRange(int minim, int max) {

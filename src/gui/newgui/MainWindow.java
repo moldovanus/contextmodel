@@ -11,9 +11,11 @@
 
 package gui.newgui;
 
+import globalLoop.agents.GUIAgent;
 import utils.worldInterface.dtos.ServerDto;
 import utils.worldInterface.dtos.TaskDto;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
@@ -25,7 +27,7 @@ import java.util.*;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-
+    private GUIAgent agent;
     private List<ServerDto> computingResourcesList;
     private Map<TaskDto, String> applicationActivitiesList;
 
@@ -146,10 +148,40 @@ public class MainWindow extends javax.swing.JFrame {
 
     /**
      * Creates new form MainWindow
+     * @param agent
      */
-    public MainWindow() {
+    public MainWindow(GUIAgent agent) {
+        this.agent = agent;
         initComponents();
+        initComponents_2();
+    }
 
+    private void initComponents_2() {
+        showLogButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (logTextArea.isVisible()) {
+                    logTextArea.setVisible(false);
+                } else {
+                    logTextArea.setVisible(true);
+                }
+            }
+        });
+
+        showLogButton.setText("Hide Log");
+        showExpertConfigMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ExpertConfigurationGUI gui = new  ExpertConfigurationGUI();
+                ExpertConfigurationGUIController controller = new ExpertConfigurationGUIController(agent,gui);
+                gui.setVisible(true);
+            }
+        });
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.setTitle("GAMES Initial Window");
+
+    }
+
+    public void addFileMenuAction(AbstractAction abstractAction){
+         fileMenuItem.add(abstractAction);
     }
 
     private boolean isSimulationChosen() {
@@ -189,7 +221,6 @@ public class MainWindow extends javax.swing.JFrame {
         logTextArea = new javax.swing.JTextArea();
         menuBar = new javax.swing.JMenuBar();
         fileMenuItem = new javax.swing.JMenu();
-        exitMenuItem = new javax.swing.JMenuItem();
         configurationMenuItem = new javax.swing.JMenu();
         loadConfigMenuItem = new javax.swing.JMenuItem();
         showExpertConfigMenuItem = new javax.swing.JMenuItem();
@@ -199,15 +230,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("frame"); // NOI18N
-        showLogButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (logTextArea.isVisible()) {
-                    logTextArea.setVisible(false);
-                } else {
-                    logTextArea.setVisible(true);
-                }
-            }
-        });
+
 
         gamesNameLabel.setText("            GAMES PROJECT TITLE");
 
@@ -354,9 +377,6 @@ public class MainWindow extends javax.swing.JFrame {
         fileMenuItem.setText("File");
         fileMenuItem.setName("fileMenuItem"); // NOI18N
 
-        exitMenuItem.setText("Exit");
-        fileMenuItem.add(exitMenuItem);
-
         menuBar.add(fileMenuItem);
 
         configurationMenuItem.setText("Configuration");
@@ -448,7 +468,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPanel computingResourcesPanel;
     private javax.swing.JTree computingResourcesTree;
     private javax.swing.JMenu configurationMenuItem;
-    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenuItem;
     private javax.swing.JPanel gamesLogoPanel;
     private javax.swing.JLabel gamesNameLabel;
@@ -473,51 +492,59 @@ public class MainWindow extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                List<ServerDto> dtos = new ArrayList<ServerDto>();
-                ServerDto dto_1 = new ServerDto();
-                dto_1.setServerName("Server_1");
-                dto_1.setCoreCount(2);
-                dto_1.setTotalCPU(2000);
-                dto_1.setTotalMemory(1024);
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                List<ServerDto> dtos = new ArrayList<ServerDto>();
+//                ServerDto dto_1 = new ServerDto();
+//                dto_1.setServerName("Server_1");
+//                dto_1.setCoreCount(2);
+//                dto_1.setTotalCPU(2000);
+//                dto_1.setTotalMemory(1024);
+//
+//                ServerDto dto_2 = new ServerDto();
+//
+//                dto_2.setServerName("Server_2");
+//                dto_2.setCoreCount(2);
+//                dto_2.setTotalCPU(2000);
+//                dto_2.setTotalMemory(1024);
+//
+//                MainWindow mainWindow = new MainWindow(agent);
+//                mainWindow.setVisible(true);
+//                mainWindow.addComputingResource(dto_1);
+//                mainWindow.addComputingResource(dto_2);
+//
+//
+//                Collection<TaskDto> strings = new ArrayList<TaskDto>();
+//
+//                TaskDto taskDto = new TaskDto();
+//                taskDto.setTaskName("Activity_1");
+//                taskDto.setRequestedCPUMax(500);
+//                taskDto.setRequestedCPUMin(100);
+//                taskDto.setRequestedMemoryMax(500);
+//                taskDto.setRequestedMemoryMin(100);
+//                taskDto.setRequestedStorageMax(500);
+//                taskDto.setRequestedStorageMin(100);
+//
+//                taskDto.setRequestedCores(2);
+//
+//
+//                mainWindow.setApplicationActivities(strings);
+//
+//                mainWindow.setApplicationActivityStatus(taskDto, "->.. Processing ->.. Activity_1");
+//            }
+//        });
+//    }
 
-                ServerDto dto_2 = new ServerDto();
-
-                dto_2.setServerName("Server_2");
-                dto_2.setCoreCount(2);
-                dto_2.setTotalCPU(2000);
-                dto_2.setTotalMemory(1024);
-
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.setVisible(true);
-                mainWindow.addComputingResource(dto_1);
-                mainWindow.addComputingResource(dto_2);
-
-
-                Collection<TaskDto> strings = new ArrayList<TaskDto>();
-
-                TaskDto taskDto = new TaskDto();
-                taskDto.setTaskName("Activity_1");
-                taskDto.setRequestedCPUMax(500);
-                taskDto.setRequestedCPUMin(100);
-                taskDto.setRequestedMemoryMax(500);
-                taskDto.setRequestedMemoryMin(100);
-                taskDto.setRequestedStorageMax(500);
-                taskDto.setRequestedStorageMin(100);
-
-                taskDto.setRequestedCores(2);
-
-
-                mainWindow.setApplicationActivities(strings);
-
-                mainWindow.setApplicationActivityStatus(taskDto, "->.. Processing ->.. Activity_1");
-            }
-        });
-    }
-
+//    public static void main(String[] args){
+//         System.out.println(Runtime.getRuntime().totalMemory()  - Runtime.getRuntime().freeMemory() );
+//        try {
+//            Thread.sleep(500000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+//    }
 }

@@ -49,7 +49,7 @@ public class TMAgent extends Agent {
             case GlobalVars.INDIVIDUAL_CREATED:
                 msg = new ACLMessage(ACLMessage.INFORM);
                 try {
-                    msg.setContentObject((Serializable) message);
+                    msg.setContentObject(new Object[]{"Task added",(Serializable) message});
                 } catch (IOException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
@@ -57,7 +57,6 @@ public class TMAgent extends Agent {
             case GlobalVars.INDIVIDUAL_DELETED:
                 msg = new ACLMessage(ACLMessage.INFORM_IF);
                 msg.setContent((String) message);
-
                 break;
             case GlobalVars.INDIVIDUAL_MODIFIED:
                 msg = new ACLMessage(ACLMessage.INFORM_REF);

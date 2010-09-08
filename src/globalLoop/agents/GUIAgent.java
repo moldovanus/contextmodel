@@ -3,14 +3,11 @@ package globalLoop.agents;
 
 import globalLoop.agents.behaviors.ReceiveChangesGUIBehaviour;
 import gui.ActionsOutputFrame;
-import gui.datacenterConfiguration.impl.ConfigurationGUI;
+import gui.newgui.MainWindow;
 import gui.resourceMonitor.IMonitor;
-import gui.resourceMonitor.serverMonitorPlotter.impl.FullServerMonitor;
-import gui.resourceMonitor.taskMonitor.TasksQueueMonitor;
 import jade.core.Agent;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
@@ -115,38 +112,38 @@ public class GUIAgent extends Agent {
             this.doDelete();
             return;
         }
-        serverMonitors = new ArrayList<IMonitor>();
-        tasksQueueMonitor = new TasksQueueMonitor(modelAccess);
-        container = getContainerController();
-
-        enviromentMonitor = new ActionsOutputFrame("Enviroment");
-        enviromentLogger = new LoggerGUI("EnviromentManagementLog");
-        datacenterLogger = new LoggerGUI("DatacenterManagementLog");
-
-        enviromentLogger.setLogPath("./Logs/");
-        datacenterLogger.setLogPath("./Logs/");
-
-        frame = new JFrame("System Control Unit");
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        menuBar = new JMenuBar();
-        frame.setSize(500, 400);
-
-        frame.setLayout(new BorderLayout());
-
-
-        ImageIcon icon = new ImageIcon("./src/images/main_image.png");
-
-        JLabel label = new JLabel("", icon, JLabel.CENTER);
-        frame.add(label, BorderLayout.CENTER);
-
-        frame.setJMenuBar(menuBar);
-
-        JMenu fileMenu = new JMenu("File");
-        JMenu windowMenu = new JMenu("Window");
-
-        JMenu enviromentalControlMenu = new JMenu("Enviromental Information");
-        JMenu datacenterControlMenu = new JMenu("Datacenter Information");
-
+//        serverMonitors = new ArrayList<IMonitor>();
+//        tasksQueueMonitor = new TasksQueueMonitor(modelAccess);
+//        container = getContainerController();
+//
+//        enviromentMonitor = new ActionsOutputFrame("Enviroment");
+//        enviromentLogger = new LoggerGUI("EnviromentManagementLog");
+//        datacenterLogger = new LoggerGUI("DatacenterManagementLog");
+//
+//        enviromentLogger.setLogPath("./Logs/");
+//        datacenterLogger.setLogPath("./Logs/");
+//
+//        frame = new JFrame("System Control Unit");
+//        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//        menuBar = new JMenuBar();
+//        frame.setSize(500, 400);
+//
+//        frame.setLayout(new BorderLayout());
+//
+//
+//        ImageIcon icon = new ImageIcon("./src/images/main_image.png");
+//
+//        JLabel label = new JLabel("", icon, JLabel.CENTER);
+//        frame.add(label, BorderLayout.CENTER);
+//
+//        frame.setJMenuBar(menuBar);
+//
+//        JMenu fileMenu = new JMenu("File");
+//        JMenu windowMenu = new JMenu("Window");
+//
+//        JMenu enviromentalControlMenu = new JMenu("Enviromental Information");
+//        JMenu datacenterControlMenu = new JMenu("Datacenter Information");
+//
         AbstractAction exitAction = new AbstractAction("Exit") {
 
             public void actionPerformed(ActionEvent e) {
@@ -163,105 +160,109 @@ public class GUIAgent extends Agent {
                 shutdownPlatform();
             }
         };
-
-        AbstractAction showSelfHealingLogMenuItem = new AbstractAction("Log") {
-
-            public void actionPerformed(ActionEvent e) {
-                enviromentLogger.setVisible(true);
-            }
-        };
-
-
-        AbstractAction showDatacenterLogMenuItem = new AbstractAction("Log") {
-
-            public void actionPerformed(ActionEvent e) {
-                datacenterLogger.setVisible(true);
-            }
-        };
-
-        AbstractAction showEnviromentMonitorWindowMenuItem = new AbstractAction("Context Monitor") {
-
-            public void actionPerformed(ActionEvent e) {
-                showEnviromentMonitor();
-            }
-        };
-
-        AbstractAction showServerMonitorsMenuItem = new AbstractAction("Server Monitors") {
-
-            public void actionPerformed(ActionEvent e) {
-
-                for (IMonitor monitor : serverMonitors) {
-                    monitor.destroyStandaloneWindow();
-                }
-
-                serverMonitors.clear();
-
-                Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
-                for (ServiceCenterServer server : servers) {
-                    IMonitor serverMonitor = new FullServerMonitor(server, ProxyFactory.createServerManagementProxy(server.getIpAddress()));
-                    serverMonitor.executeStandaloneWindow();
-                    serverMonitors.add(serverMonitor);
-                }
-            }
-        };
-
-        AbstractAction showTasksQueueMenuItem = new AbstractAction("Pending Tasks Queue") {
-
-            public void actionPerformed(ActionEvent e) {
-
-                tasksQueueMonitor.destroyStandaloneWindow();
-                tasksQueueMonitor.executeStandaloneWindow();
-            }
-        };
-
-        AbstractAction showDatacenterConfigurationWindow = new AbstractAction("Datacenter Configuration Window") {
-
-            public void actionPerformed(ActionEvent e) {
-                new ConfigurationGUI(modelAccess).setVisible(true);
-            }
-        };
-
-        AbstractAction showDatacenterSimulationWindowMenuItem = new AbstractAction("X3D  Representation") {
-
-            public void actionPerformed(ActionEvent e) {
-
-//                try {
-//                    x3DController = container.createNewAgent(GlobalVars.X3DAGENT_NAME, X3DAgent.class.getName(), null);
-//                    x3DController.start();
-//                } catch (StaleProxyException e1) {
-//                    e1.printStackTrace();
+//
+//        AbstractAction showSelfHealingLogMenuItem = new AbstractAction("Log") {
+//
+//            public void actionPerformed(ActionEvent e) {
+//                enviromentLogger.setVisible(true);
+//            }
+//        };
+//
+//
+//        AbstractAction showDatacenterLogMenuItem = new AbstractAction("Log") {
+//
+//            public void actionPerformed(ActionEvent e) {
+//                datacenterLogger.setVisible(true);
+//            }
+//        };
+//
+//        AbstractAction showEnviromentMonitorWindowMenuItem = new AbstractAction("Context Monitor") {
+//
+//            public void actionPerformed(ActionEvent e) {
+//                showEnviromentMonitor();
+//            }
+//        };
+//
+//        AbstractAction showServerMonitorsMenuItem = new AbstractAction("Server Monitors") {
+//
+//            public void actionPerformed(ActionEvent e) {
+//
+//                for (IMonitor monitor : serverMonitors) {
+//                    monitor.destroyStandaloneWindow();
 //                }
+//
+//                serverMonitors.clear();
+//
+//                Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+//                for (ServiceCenterServer server : servers) {
+//                    IMonitor serverMonitor = new FullServerMonitor(server, ProxyFactory.createServerManagementProxy(server.getIpAddress()));
+//                    serverMonitor.executeStandaloneWindow();
+//                    serverMonitors.add(serverMonitor);
+//                }
+//            }
+//        };
+//
+//        AbstractAction showTasksQueueMenuItem = new AbstractAction("Pending Tasks Queue") {
+//
+//            public void actionPerformed(ActionEvent e) {
+//
+//                tasksQueueMonitor.destroyStandaloneWindow();
+//                tasksQueueMonitor.executeStandaloneWindow();
+//            }
+//        };
+//
+//        AbstractAction showDatacenterConfigurationWindow = new AbstractAction("Datacenter Configuration Window") {
+//
+//            public void actionPerformed(ActionEvent e) {
+//                new ConfigurationGUI(modelAccess).setVisible(true);
+//            }
+//        };
+//
+//        AbstractAction showDatacenterSimulationWindowMenuItem = new AbstractAction("X3D  Representation") {
+//
+//            public void actionPerformed(ActionEvent e) {
+//
+////                try {
+////                    x3DController = container.createNewAgent(GlobalVars.X3DAGENT_NAME, X3DAgent.class.getName(), null);
+////                    x3DController.start();
+////                } catch (StaleProxyException e1) {
+////                    e1.printStackTrace();
+////                }
+//
+//            }
+//        };
+//
+//        showSelfHealingLogMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, LOG_TOOLTIP);
+//        showDatacenterLogMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, LOG_TOOLTIP);
+//        showEnviromentMonitorWindowMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, ENVIRONMENT_CONTEXT_MONITOR_TOOLTIP);
+//        showTasksQueueMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, DATACENTER_PENDING_TASKS_QUEUE_TOOLTIP);
+//        showDatacenterConfigurationWindow.putValue(AbstractAction.SHORT_DESCRIPTION, DATACENTER_CONFIGURATION_TOOLTIP);
+//        showDatacenterSimulationWindowMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, X3D_REPRESENTATION_TOOLTIP);
+//        showServerMonitorsMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, DATACENTER_SERVER_MONITORS_TOOLTIP);
+//        exitAction.putValue(AbstractAction.SHORT_DESCRIPTION, EXIT_TOOLTIP);
+//
+//        fileMenu.add(exitAction);
+//
+//        windowMenu.add(enviromentalControlMenu);
+//        windowMenu.add(datacenterControlMenu);
+//
+//        enviromentalControlMenu.add(showEnviromentMonitorWindowMenuItem);
+//        enviromentalControlMenu.add(showSelfHealingLogMenuItem);
+//
+//        datacenterControlMenu.add(showDatacenterConfigurationWindow);
+//        datacenterControlMenu.add(showDatacenterLogMenuItem);
+//        datacenterControlMenu.add(showTasksQueueMenuItem);
+//        datacenterControlMenu.add(showServerMonitorsMenuItem);
+//        datacenterControlMenu.add(showDatacenterSimulationWindowMenuItem);
+//
+//        menuBar.add(fileMenu);
+//        menuBar.add(windowMenu);
+//
+//        frame.setVisible(true);
 
-            }
-        };
-
-        showSelfHealingLogMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, LOG_TOOLTIP);
-        showDatacenterLogMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, LOG_TOOLTIP);
-        showEnviromentMonitorWindowMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, ENVIRONMENT_CONTEXT_MONITOR_TOOLTIP);
-        showTasksQueueMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, DATACENTER_PENDING_TASKS_QUEUE_TOOLTIP);
-        showDatacenterConfigurationWindow.putValue(AbstractAction.SHORT_DESCRIPTION, DATACENTER_CONFIGURATION_TOOLTIP);
-        showDatacenterSimulationWindowMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, X3D_REPRESENTATION_TOOLTIP);
-        showServerMonitorsMenuItem.putValue(AbstractAction.SHORT_DESCRIPTION, DATACENTER_SERVER_MONITORS_TOOLTIP);
-        exitAction.putValue(AbstractAction.SHORT_DESCRIPTION, EXIT_TOOLTIP);
-
-        fileMenu.add(exitAction);
-
-        windowMenu.add(enviromentalControlMenu);
-        windowMenu.add(datacenterControlMenu);
-
-        enviromentalControlMenu.add(showEnviromentMonitorWindowMenuItem);
-        enviromentalControlMenu.add(showSelfHealingLogMenuItem);
-
-        datacenterControlMenu.add(showDatacenterConfigurationWindow);
-        datacenterControlMenu.add(showDatacenterLogMenuItem);
-        datacenterControlMenu.add(showTasksQueueMenuItem);
-        datacenterControlMenu.add(showServerMonitorsMenuItem);
-        datacenterControlMenu.add(showDatacenterSimulationWindowMenuItem);
-
-        menuBar.add(fileMenu);
-        menuBar.add(windowMenu);
-
-        frame.setVisible(true);
+        MainWindow mainWindow = new MainWindow(this);
+        mainWindow.addFileMenuAction(exitAction);
+        mainWindow.setVisible(true);
 
         this.addBehaviour(new ReceiveChangesGUIBehaviour(this));
 
@@ -301,5 +302,7 @@ public class GUIAgent extends Agent {
     public void logDatacenterManagementInformation(Color color, String header, ArrayList message) {
         datacenterLogger.log(color, header, message);
     }
+
+    
 
 }

@@ -1,7 +1,8 @@
 package gui.datacenterConfiguration;
 
+import jade.core.Agent;
 import model.impl.util.ModelAccess;
- 
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +28,7 @@ public interface IServerTableModel extends ITableModel {
     String SERVER_CORE_COUNT = "Cores No";
 
 
-    void createServerEntities(ModelAccess modelAccess);
+    void createServerEntities(Agent agent);
 
 
 }

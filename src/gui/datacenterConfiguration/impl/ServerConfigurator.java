@@ -1,20 +1,27 @@
 package gui.datacenterConfiguration.impl;
 
+import globalLoop.utils.GlobalVars;
 import gui.datacenterConfiguration.AbstractConfigurator;
 import gui.datacenterConfiguration.IServerTableModel;
 import gui.datacenterConfiguration.TableCellValueValidator;
+import jade.core.AID;
+import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import main.PelletJena;
 import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
 import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.worldInterface.dtos.ExtendedServerDto;
+import utils.worldInterface.dtos.ServerDto;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -27,6 +34,7 @@ import java.util.*;
 public class ServerConfigurator extends AbstractConfigurator {
 
     private ServerInfoTableModel tableModel;
+
 
     private class ServerInfoTableModel extends AbstractTableModel implements IServerTableModel {
 
@@ -154,7 +162,7 @@ public class ServerConfigurator extends AbstractConfigurator {
             }
         }
 
-        public void createServerEntities(ModelAccess modelAccess) {
+        public void createServerEntities(Agent agent) {
             int rowsCount = rowsData.size();
             for (int j = 0; j < rowsCount; j++) {
                 String[] data = rowsData.get(j);
@@ -167,118 +175,33 @@ public class ServerConfigurator extends AbstractConfigurator {
                 }
             }
 
-            for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
-                Collection<CPU> cpus = server.getCpuResources();
-                Collection<MEM> mems = server.getMemResources();
-                Collection<HDD> hdds = server.getHddResources();
-                for (CPU cpu : cpus) {
-                    Collection cores = cpu.getAssociatedCores();
-                    for (Object o : cores) {
-                        Core core = (Core) o;
-                        core.delete();
-                    }
-                    cpu.delete();
-                }
-                for (MEM memory : mems) {
-                    memory.delete();
-                }
-                for (HDD storage : hdds) {
-                    storage.delete();
-                }
-
-
-                Collection<ApplicationActivity> tasks = server.getRunningActivities();
-                for (Object task : tasks) {
-                    server.removeRunningActivity((ApplicationActivity) task);
-                }
-                server.delete();
-            }
-
-            //TODO: de verificat daca  ITComputingContextPolicy e pentru server
-            for (ITComputingContextPolicy policy : modelAccess.getAllITComputingContextPolicyInstances()) {
-                policy.delete();
-            }
-            ArrayList<Integer> energyStates = new ArrayList<Integer>();
-            energyStates.add(0);
-            energyStates.add(1);
+            List<ExtendedServerDto> serverDtos = new ArrayList<ExtendedServerDto>();
 
             for (String[] data : rowsData) {
                 String serverName = data[0].trim();
-                ServiceCenterServer server = modelAccess.createServiceCenterServer(serverName);
-//TODO; insert field pt MAC si IP  si VIRTUAL MACHINES PATH DACA NE TREBE
-                server.setIpAddress(data[1].trim());
-                server.setMacAddress(data[2].trim());
-//                Collection virtualMachinesPath = new ArrayList();
-//                virtualMachinesPath.add(data[3].trim());
-//                server.setVirtualMachinesPath(virtualMachinesPath);
-                server.setIsActive(false);
-                server.setResourceID(server.getName());
-                server.setEnergyStates(energyStates);
-                server.setCurrentEnergyState(0);
-
-                server.addResourceWorkloadProperty("Workload_Property");
-
-                CPU cpu = modelAccess.createCPU(serverName + "_CPU_");
-                cpu.setResourceID(cpu.getName());
-                cpu.setCurrentEnergyState(0);
-
-                server.setCPUWeight(0.5f);
-                int coreCount = Integer.parseInt(data[4].trim());
-//                cpu.setMaximumWorkLoad(coreCount * Double.parseDouble(data[5].trim()));
-//                cpu.setOptimalWorkLoad(Double.parseDouble(data[6].trim()));
-                for (int i = 0; i < coreCount; i++) {
-                    Core core = modelAccess.createCore(serverName + "_Core_" + i);
-                    core.setMaximumWorkLoad(Double.parseDouble(data[5].trim()));
-                    core.setOptimalWorkLoad(Double.parseDouble(data[6].trim()));
-                    //TODO: daca bagam max si min workload. 
-//                    core.setMaxAcceptableValue(Integer.parseInt(data[7].trim()));
-                    cpu.addAssociatedCore(core);
-                    core.setEnergyStates(energyStates);
-                    core.setResourceID(core.getName());
-                    core.addPartOf(cpu);
-                    core.setCurrentEnergyState(0);
-                }
-                cpu.setEnergyStates(energyStates);
-                server.addCpuResource(cpu);
-
-                MEM memory = modelAccess.createMEM(serverName + "_Memory");
-                memory.setResourceID(memory.getName());
-                memory.setMaximumWorkLoad(Double.parseDouble(data[8].trim()));
-                memory.setOptimalWorkLoad(Double.parseDouble(data[9].trim()));
-//                memory.setMaxAcceptableValue(Integer.parseInt(data[10].trim()));
-                memory.setEnergyStates(energyStates);
-                memory.setCurrentEnergyState(0);
-
-                server.setMEMWeight(0.25f);
-
-                server.addMemResource(memory);
-
-                HDD storage = modelAccess.createHDD(serverName + "_Storage");
-                storage.setResourceID(storage.getName());
-                storage.setMaximumWorkLoad(Double.parseDouble(data[11].trim()));
-                storage.setOptimalWorkLoad(Double.parseDouble(data[12].trim()));
-                storage.setEnergyStates(energyStates);
-//                storage.setMaxAcceptableValue(Integer.parseInt(data[13].trim()));
-                server.setHDDWeight(0.25f);
-                server.addHddResources(storage);
-                storage.setCurrentEnergyState(0);
-                storage.setPhysicalPath(data[3]);
-
-                ITComputingContextPolicy policy = modelAccess.createITComputingContextPolicy(server.getLocalName() + "_EnergyPolicy");
-                policy.addPolicySubject(server);
-                //TODO: de facut ceva cu subject target asta
-                policy.addPolicyTarget(server);
-                policy.setPolicyWeight(1.0f);
-                policy.setPolicyName(policy.getName());
-                policy.setEvaluationCondition("Evaluation_condition");
-
-                cpu.addPartOf(server);
-                memory.addPartOf(server);
-                storage.addPartOf(server);
-//                policy.setPriority(1);
+                ExtendedServerDto dto = new ExtendedServerDto();
+                dto.setServerName(serverName);
+                dto.setIpAddress(data[1].trim());
+                dto.setMacAddress(data[2].trim());
+                dto.setMaximumCPU(Integer.parseInt(data[5].trim()));
+                dto.setOptimumCPU(Integer.parseInt(data[6].trim()));
+                dto.setCoreCount(Integer.parseInt(data[4].trim()));
+                dto.setMaximumMemory(Integer.parseInt(data[8].trim()));
+                dto.setOptimumMemory(Integer.parseInt(data[9].trim()));
+                dto.setMaximumStorage(Integer.parseInt(data[11].trim()));
+                dto.setOptimumStorage(Integer.parseInt(data[12].trim()));
+                serverDtos.add(dto);
             }
 
-            PelletJena.generateEnergyRules((modelAccess.getOntologyModelFactory()).getOwlModel(), modelAccess);
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            try {
+                msg.setContentObject(new Object[]{"Servers added", serverDtos});
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+            agent.send(msg);
+
         }
 
         public List<String[]> getTableData() {
@@ -295,7 +218,7 @@ public class ServerConfigurator extends AbstractConfigurator {
         }
     }
 
-    public ServerConfigurator() {
+    public ServerConfigurator( ) {
         configurationTable = new JTable();
         tableModel = new ServerInfoTableModel();
         configurationTable.setModel(tableModel);
@@ -335,6 +258,7 @@ public class ServerConfigurator extends AbstractConfigurator {
 
     }
 
+
     public void insertEmptyRow() {
         tableModel.insertEmptyRow();
     }
@@ -355,11 +279,11 @@ public class ServerConfigurator extends AbstractConfigurator {
         tableModel.setTableData(data);
     }
 
-    public void createEntities(ModelAccess modelAccess) {
-        tableModel.createServerEntities(modelAccess);
+    public void createEntities(Agent agent) {
+        tableModel.createServerEntities(agent);
     }
 
-    public static void main(String[] main) {
-        new ServerConfigurator();
-    }
+//    public static void main(String[] main) {
+//        new ServerConfigurator();
+//    }
 }
