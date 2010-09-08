@@ -170,11 +170,11 @@ public class TaskConfigurator extends AbstractConfigurator {
             for (String[] data : rowsData) {
 
                 ExtendedTaskDto task = new ExtendedTaskDto();
-
+                task.setTaskName(data[0].trim());
+                task.setRequestedCores(Integer.parseInt(data[1].trim()));
                 task.setCpuWeight(Float.parseFloat(data[2].trim()));
                 task.setMemWeight(Float.parseFloat(data[3].trim()));
                 task.setHddWeight(Float.parseFloat(data[4].trim()));
-                task.setRequestedCores(Integer.parseInt(data[1].trim()));
                 task.setRequestedCPUMin(Integer.parseInt(data[5].trim()));
                 task.setRequestedCPUMax(Integer.parseInt(data[6].trim()));
                 task.setRequestedMemoryMin(Integer.parseInt(data[7].trim()));
@@ -183,7 +183,7 @@ public class TaskConfigurator extends AbstractConfigurator {
                 task.setRequestedStorageMax(Integer.parseInt(data[10].trim()));
 
                 taskDtos.add(task);
-                
+
             }
 
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -212,7 +212,7 @@ public class TaskConfigurator extends AbstractConfigurator {
         }
     }
 
-    public TaskConfigurator( ) {
+    public TaskConfigurator() {
 
         configurationTable = new JTable();
         tableModel = new TaskInfoTableModel();

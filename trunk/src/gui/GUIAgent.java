@@ -307,4 +307,5 @@ public class GUIAgent extends Agent {
         datacenterLogger.log(color, header, message);
     }
 
+    //TODO: message passing de la ca o primit generate task inapoila GUI agent si refresh pe gui    
 }

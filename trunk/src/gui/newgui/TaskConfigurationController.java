@@ -7,8 +7,10 @@ import model.impl.util.ModelAccess;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -53,7 +55,7 @@ public class TaskConfigurationController {
         duplicateTaskRowButton.setToolTipText(DUPLICATE_ROW_TOOLTIP);
         removeTaskRowButton.setToolTipText(REMOVE_ROW_TOOLTIP);
         generateVirtualMachinesButton.setToolTipText(CREATE_VIRTUAL_MACHINES_TOOLTIP);
-        
+
         addTaskRowButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -128,5 +130,17 @@ public class TaskConfigurationController {
 
     public JPanel getConfigurationPanel() {
         return taskConfigurationPanel;
+    }
+
+    public void addGenerateTasksListener(ActionListener actionListener) {
+        generateVirtualMachinesButton.addActionListener(actionListener);
+    }
+
+    public java.util.List<String[]> getTableData() {
+        return taskConfigurator.getTableData();
+    }
+
+    public void setTableData(java.util.List<String[]> data) {
+        taskConfigurator.setTableData(data);
     }
 }

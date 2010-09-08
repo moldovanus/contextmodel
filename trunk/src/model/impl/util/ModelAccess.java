@@ -1190,6 +1190,7 @@ public class ModelAccess implements ModelFactory {
     public QoSPolicy createQoSPolicy(String name) {
         QoSPolicy object;
         if (accessType == ONTOLOGY_ACCESS) {
+
             object = ontologyModelFactory.createQoSPolicy((name));
             //databaseModelFactory.createQoSPolicy(name);
         } else {
