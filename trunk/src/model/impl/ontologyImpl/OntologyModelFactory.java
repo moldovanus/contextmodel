@@ -65,6 +65,7 @@ public class OntologyModelFactory implements ModelFactory {
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#Application", Application.class, DefaultApplication.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#CPUIntensiveActivity", CPUIntensiveActivity.class, DefaultCPUIntensiveActivity.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationAdaptationAction", ApplicationAdaptationAction.class, DefaultApplicationAdaptationAction.class);
+        ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationAdaptationAction", ServerAdaptationAction.class, DefaultServerAdaptationAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationRedesign", ApplicationRedesign.class, DefaultApplicationRedesignAction.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ITFacilityActiveResource", ITFacilityActiveResource.class, DefaultITFacilityActiveResource.class);
         ProtegeJavaMapping.add("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#HDD", HDD.class, DefaultHDD.class);
@@ -1071,6 +1072,49 @@ public class OntologyModelFactory implements ModelFactory {
         return null;
     }
 
+    public Collection<ServerAdaptationAction> getAllServerAdaptationActionInstances() {
+        return getAllServerAdaptationActionInstances(true);
+    }
+
+    public Collection<ServerAdaptationAction> getAllServerAdaptationActionInstances(boolean transitive) {
+        Collection<ServerAdaptationAction> result = new ArrayList<ServerAdaptationAction>();
+        final RDFSNamedClass cls = getServerAdaptationActionClass();
+        RDFResource owlIndividual;
+        for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
+            owlIndividual = (RDFResource) it.next();
+            result.add(new DefaultServerAdaptationAction(owlModel, owlIndividual.getFrameID()));
+        }
+        return result;
+    }
+
+
+    public RDFSNamedClass getServerAdaptationActionClass() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ServerAdaptationAction";
+        final String name = owlModel.getResourceNameForURI(uri);
+        return owlModel.getRDFSNamedClass(name);
+    }
+
+    public ServerAdaptationAction createServerAdaptationAction(String name) {
+        final RDFSNamedClass cls = getServerAdaptationActionClass();
+        if (name == null) {
+            name = owlModel.getNextAnonymousResourceName();
+        }
+        return new DefaultServerAdaptationAction(owlModel, cls.createInstance(name).getFrameID());
+    }
+
+    public ServerAdaptationAction getServerAdaptationAction(String name) {
+        RDFResource res = owlModel.getRDFResource(OWLUtil.getInternalFullName(owlModel, name));
+        if (res == null) {
+            return null;
+        }
+        if (res instanceof ApplicationAdaptationAction) {
+            return (ServerAdaptationAction) res;
+        } else if (res.hasProtegeType(getApplicationAdaptationActionClass())) {
+            return new DefaultServerAdaptationAction(owlModel, res.getFrameID());
+        }
+        return null;
+    }
+
     public Collection<ApplicationAdaptationAction> getAllApplicationAdaptationActionInstances() {
         return getAllApplicationAdaptationActionInstances(true);
     }
@@ -1085,7 +1129,7 @@ public class OntologyModelFactory implements ModelFactory {
         }
         return result;
     }
-
+    
 
     public RDFSNamedClass getApplicationRedesignClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationRedesign";

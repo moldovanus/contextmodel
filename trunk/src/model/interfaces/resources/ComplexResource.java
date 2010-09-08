@@ -115,5 +115,5 @@ public interface ComplexResource extends ServiceCenterITComputingResource {
     void setResourceWorkloadProperty(Collection newResourceWorkloadProperty);
 
     boolean hasResourcesFor(ApplicationActivity task);
-
+    boolean hasResourcesToBeNegotiatedFor(ApplicationActivity task); 
 }

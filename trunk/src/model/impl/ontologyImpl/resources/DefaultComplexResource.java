@@ -337,6 +337,31 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
         setPropertyValues(getSimpleResourcesProperty(), newSimpleResources);
     }
 
+    public boolean hasResourcesToBeNegotiatedFor(ApplicationActivity task) {
+        CPU cpu = (CPU) this.getCpuResources().iterator().next();
+        Collection<Core> cores = cpu.getAssociatedCores();
+        int requestedCores = (int) task.getNumberOfCoresRequiredValue();
+        if (cores.size() < requestedCores) {
+            return false;
+        }
+        for (Core core : cores) {
+            if (core.getCurrentWorkLoad()+task.getCpuRequiredMinValue()>core.getMaximumWorkLoad()){
+                continue;
+            }else{
+                requestedCores--;
+            }
+        }
+        if (requestedCores>0){
+            return false;
+        }
+        MEM memory = (MEM) this.getMemResources().iterator().next();
+         if (memory.getCurrentWorkLoad() + task.getMemRequiredMinValue() > memory.getMaximumWorkLoad()) {
+            return false;
+        }
+       
+        return true;
+    }
+
     public boolean hasResourcesFor(ApplicationActivity task) {
 
 

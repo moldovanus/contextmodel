@@ -671,7 +671,17 @@ public class ModelAccess implements ModelFactory {
             return databaseModelFactory.getAllCPUIntensiveActivityInstances();
         }
     }
-
+    public ServerAdaptationAction createServerAdaptationAction(String name){
+       ServerAdaptationAction object = null;
+        if (accessType == ONTOLOGY_ACCESS) {
+            object = ontologyModelFactory.createServerAdaptationAction(generateUniqueName(name));
+            // databaseModelFactory.createApplicationAdaptationAction(name);
+        } else {
+            //ontologyModelFactory.createApplicationAdaptationAction(name);
+         //   object = databaseModelFactory.createServerAdaptationAction(generateUniqueName(name));
+        }
+        return object;
+    }
     public ApplicationAdaptationAction createApplicationAdaptationAction(String name) {
         ApplicationAdaptationAction object;
         if (accessType == ONTOLOGY_ACCESS) {

@@ -9,6 +9,7 @@ import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInt
 import utils.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
 import utils.worldInterface.dtos.ServerDto;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
@@ -449,9 +450,10 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     }
 
     public static void main(String [] args){
-        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.2.13");
-       // proxy.moveSourceActions("\\\\192.168.2.10\\VirtualMachines\\Source","Empty");
-        proxy.moveDestinationActions("\\\\192.168.2.10\\VirtualMachines\\Source","\\\\192.168.2.10\\VirtualMachines\\Dest","Empty");
+//        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.2.13");
+//       // proxy.moveSourceActions("\\\\192.168.2.10\\VirtualMachines\\Source","Empty");
+//        proxy.moveDestinationActions("\\\\192.168.2.10\\VirtualMachines\\Source","\\\\192.168.2.10\\VirtualMachines\\Dest","Empty");
+         
     }
 
 }
