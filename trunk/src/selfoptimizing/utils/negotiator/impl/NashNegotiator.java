@@ -1,4 +1,4 @@
-package utils.negotiator.impl;
+package selfoptimizing.utils.negotiator.impl;
 
 import model.interfaces.resources.CPU;
 import model.interfaces.resources.Core;

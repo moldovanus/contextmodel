@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils.negotiator.impl;
+package selfoptimizing.utils.negotiator.impl;
 
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;

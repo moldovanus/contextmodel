@@ -1,7 +1,7 @@
-package utils.negotiator.impl;
+package selfoptimizing.utils.negotiator.impl;
 
 import globalLoop.utils.GlobalVars;
-import utils.negotiator.Negotiator;
+import selfoptimizing.utils.negotiator.Negotiator;
 
 
 /**
@@ -19,12 +19,7 @@ public final class NegotiatorFactory {
     }
 
     public static synchronized Negotiator getNashNegotiator() {
-        NashNegotiator negotiator = nashNegotiator;
-        if (negotiator == null) {
-            nashNegotiator = new NashNegotiator();
-            negotiator = nashNegotiator;
-        }
-        return negotiator;
+      return null;
     }
 
     public static synchronized Negotiator getFuzzyLogicNegotiator() {
@@ -34,6 +29,6 @@ public final class NegotiatorFactory {
             negotiator = fuzzyLogicNegotiator;
         }
 
-        return negotiator;
+        return null;
     }
 }
