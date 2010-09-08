@@ -79,8 +79,8 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                         // agent.setContextIsOK(false);
                     } else if (content.equals("OK")) {
                         // agent.setContextIsOK(true);
-                    } else {
-                        Object[] contentData = (Object[]) content;
+                    } else  {
+                        Object[] contentData = (Object[]) message.getContentObject();
                         Object dataType = contentData[0];
                         if (dataType.equals("Task added")) {
                             TaskDto taskDto = (TaskDto) contentData[1];
@@ -111,24 +111,24 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             //task.setResourceID("Task_" + taskDto.getTaskName());
                             task.setResourceID(task.getFrameID().getName());
                             task.addActivityPolicies(policy);
-                            SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
-                            String swrlRule = "";
-                            try {
-                                swrlRule = "ApplicationActivity(?x) ^ resourceID(?x,\"" + task.getResourceID() + "\") " +
-                                        " ^ memAllocatedValue(?x,?memAllocated)" +
-                                        " ^ memRequiredMaxValue(?x, ?memMax)" +
-                                        " ^ memRequiredMinValue(?x,?memMin)" +
-                                        " ^ swrlb:lessThanOrEqual(?memMin,?memAllocated)" +
-                                        " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
-                                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
-                                        " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
-                                        " -> isRespected(" + policy.getName() + ", true)";
-                                SWRLImp imp = factory.createImp(policy.getName() + "_Rule", swrlRule);
-
-                                //imp.enable();
-                            } catch (SWRLParseException e) {
-                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                            }
+//                            SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
+//                            String swrlRule = "";
+//                            try {
+//                                swrlRule = "ApplicationActivity(?x) ^ resourceID(?x,\"" + task.getResourceID() + "\") " +
+//                                        " ^ memAllocatedValue(?x,?memAllocated)" +
+//                                        " ^ memRequiredMaxValue(?x, ?memMax)" +
+//                                        " ^ memRequiredMinValue(?x,?memMin)" +
+//                                        " ^ swrlb:lessThanOrEqual(?memMin,?memAllocated)" +
+//                                        " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
+//                                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
+//                                        " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
+//                                        " -> isRespected(" + policy.getName() + ", true)";
+//                                SWRLImp imp = factory.createImp(policy.getName() + "_Rule", swrlRule);
+//
+//                                //imp.enable();
+//                            } catch (SWRLParseException e) {
+//                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//                            }
                         } else if (dataType.equals("Servers added")) {
                             List<ExtendedServerDto> servers = (List<ExtendedServerDto>) contentData[1];
                             for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
@@ -269,14 +269,15 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             List<ExtendedTaskDto> tasks = (List<ExtendedTaskDto>) contentData[1];
                             for (ExtendedTaskDto taskDto : tasks) {
                                 ApplicationActivity task = modelAccess.createApplicationActivity(taskDto.getTaskName());
-                                QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
-                                System.out.println(policy);
-                                List<ContextResource> subjects = new ArrayList<ContextResource>(1);
-                                subjects.add(task);
-                                policy.setPolicySubject(subjects);
-                                policy.setPolicyTarget(subjects);
-                                policy.setPolicyName(taskDto.getTaskName() + "_QoSPolicy");
-                                policy.setPolicyWeight(1);
+//                                QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
+//                                System.out.println(policy);
+//                                List<ContextResource> subjects = new ArrayList<ContextResource>(1);
+//                                subjects.add(task);
+//                                policy.setPolicySubject(subjects);
+//                                policy.setPolicyTarget(subjects);
+//                                policy.setPolicyName(taskDto.getTaskName() + "_QoSPolicy");
+//                                policy.setPolicyWeight(1);
+//                                task.addActivityPolicies(policy);
                                 task.setCpuAllocatedValue(0);
                                 task.setCpuRequiredMaxValue(taskDto.getRequestedCPUMax());
                                 task.setCpuRequiredMinValue(taskDto.getRequestedCPUMin());
@@ -292,10 +293,11 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 task.setMemWeight(0.3f);
                                 task.setHddWeight(0.3f);
                                 task.setResourceID(task.getFrameID().getName());
-                                task.addActivityPolicies(policy);
-                                SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
-                                String swrlRule = "";
-                                PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
+
+
+//                                SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
+//                                String swrlRule = "";
+//                                PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                             }
                         }
                     }

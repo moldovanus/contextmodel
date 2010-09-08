@@ -260,7 +260,7 @@ public class GUIAgent extends Agent {
 //
 //        frame.setVisible(true);
 
-        MainWindow mainWindow = new MainWindow(this);
+        MainWindow mainWindow = new MainWindow(this, modelAccess);
         mainWindow.addFileMenuAction(exitAction);
         mainWindow.setVisible(true);
 

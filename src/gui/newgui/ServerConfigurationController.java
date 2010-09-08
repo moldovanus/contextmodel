@@ -48,7 +48,7 @@ public class ServerConfigurationController {
         duplicateServerRowButton = new JButton("Duplicate row");
         removeServerRowButton = new JButton("Remove selected");
         generateServersButton = new JButton("Create Server Instances");
-        
+
         addServerRowButton.setToolTipText(ADD_ROW_TOOLTIP);
         duplicateServerRowButton.setToolTipText(DUPLICATE_ROW_TOOLTIP);
         removeServerRowButton.setToolTipText(REMOVE_ROW_TOOLTIP);
@@ -90,6 +90,8 @@ public class ServerConfigurationController {
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 0;
         constraints.gridy = 0;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
 
@@ -123,5 +125,13 @@ public class ServerConfigurationController {
 
     public JPanel getConfigurationPanel() {
         return serverConfigurationPanel;
+    }
+
+    public java.util.List<String[]> getTableData() {
+        return serverConfigurator.getTableData();
+    }
+
+    public void setTableData(java.util.List<String[]> data) {
+        serverConfigurator.setTableData(data);
     }
 }

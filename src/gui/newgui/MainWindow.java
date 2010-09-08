@@ -12,6 +12,7 @@
 package gui.newgui;
 
 import globalLoop.agents.GUIAgent;
+import model.impl.util.ModelAccess;
 import utils.worldInterface.dtos.ServerDto;
 import utils.worldInterface.dtos.TaskDto;
 
@@ -28,6 +29,8 @@ import java.util.*;
 public class MainWindow extends javax.swing.JFrame {
 
     private GUIAgent agent;
+    private ModelAccess modelAccess;
+
     private List<ServerDto> computingResourcesList;
     private Map<TaskDto, String> applicationActivitiesList;
 
@@ -149,9 +152,11 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * Creates new form MainWindow
      * @param agent
+     * @param modelAccess
      */
-    public MainWindow(GUIAgent agent) {
+    public MainWindow(GUIAgent agent, ModelAccess modelAccess) {
         this.agent = agent;
+        this.modelAccess = modelAccess;
         initComponents();
         initComponents_2();
     }
@@ -171,7 +176,7 @@ public class MainWindow extends javax.swing.JFrame {
         showExpertConfigMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ExpertConfigurationGUI gui = new  ExpertConfigurationGUI();
-                ExpertConfigurationGUIController controller = new ExpertConfigurationGUIController(agent,gui);
+                ExpertConfigurationGUIController controller = new ExpertConfigurationGUIController(agent, modelAccess, gui);
                 gui.setVisible(true);
             }
         });
