@@ -542,7 +542,7 @@ public class TaskManagement extends javax.swing.JFrame {
                 task.setReceivedInfo(receivedInfo);
                 task.setRequestedInfo(requestedInfo);
                 task.setCpuWeight(0.33f);
-                task.setStorageWeight(0.33f);
+                task.setHddWeight(0.33f);
                 task.setMemoryWeight(0.33f);
 
                 */

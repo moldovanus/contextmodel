@@ -1,5 +1,6 @@
 package gui.datacenterConfiguration;
 
+import jade.core.Agent;
 import model.impl.util.ModelAccess;
  
 
@@ -25,7 +26,7 @@ public interface ITaskTableModel extends ITableModel {
     String TASK_MIN_STORAGE = "Min Storage";
     String TASK_MAX_STORAGE = "Max Storage";
 
-    void createTaskEntities(ModelAccess modelAccess);
+    void createTaskEntities(Agent agent);
 
     public List<String[]> getTableData();
 

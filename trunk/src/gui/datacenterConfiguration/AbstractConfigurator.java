@@ -1,5 +1,6 @@
 package gui.datacenterConfiguration;
 
+import jade.core.Agent;
 import model.impl.util.ModelAccess;
  
 
@@ -20,12 +21,15 @@ public abstract class AbstractConfigurator {
     protected JTable configurationTable;
 
 
-    public abstract void createEntities(ModelAccess modelAcces);
+    protected AbstractConfigurator( ) {
+
+    }
+
+    public abstract void createEntities(Agent agent);
 
     public abstract void insertEmptyRow();
 
     public abstract void duplicateSelectedRow();
-
 
     public abstract void removeRow();
 

@@ -163,7 +163,7 @@ public class ConfigurationGUI {
 
             public void actionPerformed(ActionEvent e) {
                 progressBar.setIndeterminate(true);
-                taskConfigurator.createEntities(pf);
+//                taskConfigurator.createEntities(pf);
                 progressBar.setIndeterminate(false);
             }
         });
@@ -172,7 +172,7 @@ public class ConfigurationGUI {
 
             public void actionPerformed(ActionEvent e) {
                 progressBar.setIndeterminate(true);
-                serverConfigurator.createEntities(pf);
+//                serverConfigurator.createEntities(pf);
                 progressBar.setIndeterminate(false);
             }
         });
@@ -277,8 +277,8 @@ public class ConfigurationGUI {
         menu.add(loadServersConfiguration);
         menu.add(exitAction);
 
-        taskConfigurator = new TaskConfigurator();
-        serverConfigurator = new ServerConfigurator();
+        taskConfigurator = null;
+        serverConfigurator = null;
 
         configurationFrame.setSize(1200, 700);
         configurationFrame.setLayout(new BorderLayout());

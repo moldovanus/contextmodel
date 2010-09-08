@@ -73,6 +73,10 @@ public class PelletJena {
         model.add(owlModel.getJenaModel());
     }
 
+    public static void generateSWRLRules(OWLModel model, ModelAccess modelAccess) {
+        generateEnergyRules(model, modelAccess);
+        generateBusinessRules(model, modelAccess);
+    }
 
     public static void generateEnergyRules(OWLModel model, ModelAccess modelAccess) {
         Collection<ITComputingContextPolicy> energyPolicies = modelAccess.getAllITComputingContextPolicyInstances();
@@ -90,7 +94,6 @@ public class PelletJena {
                     System.err.println("No simple resource associated to: " + compResource.getName());
                 }
                 int a = 0;
-                //am trecut sqwrl builtinsd pe swrlb ca primele nu-s suportate de pellet
                 for (Object assocResource : assocResources) {
                     if (assocResource instanceof CPU || assocResource instanceof HDD) {
                         continue;
@@ -148,7 +151,7 @@ public class PelletJena {
 
     }
 
-    public static void generateBussinessRules(OWLModel model, ModelAccess modelAccess) {
+    public static void generateBusinessRules(OWLModel model, ModelAccess modelAccess) {
         Collection<ITComputingContextPolicy> energyPolicies = modelAccess.getAllITComputingContextPolicyInstances();
 
         SWRLFactory factory = new SWRLFactory(model);
@@ -165,7 +168,7 @@ public class PelletJena {
                         " ^ memRequiredMinValue(?x,?memMin)" +
                         " ^ swrlb:lessThanOrEqual(?memMin,?memAllocated)" +
                         " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
-                //        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
+                        //        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
                         " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
                         " -> isRespected(" + businessPolicy.getName() + ", true)";
                 System.out.println(swrlRule);
@@ -175,6 +178,93 @@ public class PelletJena {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
+    }
+
+    public static void generateBusinessRule(OWLModel model, BusinessPolicy businessPolicy) {
+        SWRLFactory factory = new SWRLFactory(model);
+        ApplicationActivity applicationActivity = (ApplicationActivity) businessPolicy.getPolicySubject().get(0);
+        try {
+
+            String swrlRule = "ApplicationActivity(?x) ^ resourceID(?x,\"" + applicationActivity.getResourceID() + "\") " +
+                    " ^ memAllocatedValue(?x,?memAllocated)" +
+                    " ^ memRequiredMaxValue(?x, ?memMax)" +
+                    " ^ memRequiredMinValue(?x,?memMin)" +
+                    " ^ swrlb:lessThanOrEqual(?memMin,?memAllocated)" +
+                    " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
+                    //        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
+                    " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
+                    " -> isRespected(" + businessPolicy.getName() + ", true)";
+            System.out.println(swrlRule);
+            SWRLImp imp = factory.createImp(swrlRule);
+            imp.enable();
+        } catch (SWRLParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    public static void generateEnergyRule(OWLModel model, ITComputingContextPolicy currentPolicy) {
+        SWRLFactory factory = new SWRLFactory(model);
+        ComplexResource compResource = (ComplexResource) currentPolicy.getPolicySubject().get(0);
+        String swrlRule = "";
+        List<ServiceCenterITComputingResource> assocResources = compResource.getResources();
+        if (assocResources.size() == 0) {
+            System.err.println("No simple resource associated to: " + compResource.getName());
+        }
+        int a = 0;
+        for (Object assocResource : assocResources) {
+            if (assocResource instanceof CPU || assocResource instanceof HDD) {
+                continue;
+            }
+            SimpleResource simpleResource = (SimpleResource) assocResource;
+            if (a != 0) {
+                swrlRule += " ^ ";
+            }
+            swrlRule += "SimpleResource(?a" + a + ") ^ resourceID(?a" + a + ",\"" + simpleResource.getResourceID() + "\")" +
+                    " ^ currentWorkload(?a" + a + ",?cWorkload" + a + ")" +
+                    " ^ maximumWorkload(?a" + a + ",?maxWorkload" + a + ")" +
+                    " ^ optimalWorkload(?a" + a + ",?optWorkload" + a + ")" +
+                    " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")" +
+                    " ^ swrlb:multiply(?downDif" + a + ",0.5 , ?optWorkload" + a + ")" +
+                    " ^ swrlb:subtract(?sumOf" + a + ", ?maxWorkload" + a + ",?optWorkload" + a + ")" +
+                    " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
+                    " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
+                    " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
+                    " ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?cWorkload" + a + ")" +
+                    " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxThreshold" + a + ") \n"
+                    ;
+            a++;
+        }
+
+        for (Object assocResource : compResource.getCpuResources()) {
+            for (SimpleResource simpleResource : ((CPU) assocResource).getAssociatedCores()) {
+                if (a != 0) {
+                    swrlRule += " ^ ";
+                }
+                swrlRule += "SimpleResource(?core_" + a + ") ^ resourceID(?core_" + a + ",\"" + simpleResource.getResourceID() + "\")" +
+                        " ^ currentWorkload(?core_" + a + ",?cWorkload" + a + ")" +
+                        " ^ maximumWorkload(?core_" + a + ",?maxWorkload" + a + ")" +
+                        " ^ optimalWorkload(?core_" + a + ",?optWorkload" + a + ")" +
+                        " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxWorkload" + a + ")" +
+                        " ^ swrlb:multiply(?downDif" + a + ",0.5 , ?optWorkload" + a + ")" +
+                        " ^ swrlb:subtract(?sumOf" + a + ", ?maxWorkload" + a + ",?optWorkload" + a + ")" +
+                        " ^ swrlb:subtract(?minThreshold" + a + ",?optWorkload" + a + ",?downDif" + a + ")" +
+                        " ^ swrlb:multiply(?upDif" + a + ", ?sumOf" + a + ", 0.5 )" +
+                        " ^ swrlb:add(?maxThreshold" + a + ",?upDif" + a + ",?optWorkload" + a + " )" +
+                        " ^ swrlb:lessThanOrEqual(?minThreshold" + a + ",?cWorkload" + a + ")" +
+                        " ^ swrlb:lessThanOrEqual(?cWorkload" + a + ",?maxThreshold" + a + ") \n"
+                        ;
+                a++;
+            }
+        }
+
+        System.out.println(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");
+        SWRLImp imp = null;//  " ^ ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
+        try {
+            imp = factory.createImp(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");
+        } catch (SWRLParseException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        imp.enable();
     }
 
     public void checkRespected() {
