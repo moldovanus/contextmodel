@@ -3,10 +3,12 @@
  * and open the template in the editor.
  */
 
-package selfoptimizing.utils.negotiator;
+package utils.negotiator;
 
-import selfoptimizing.ontologyRepresentations.greenContextOntology.Server;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.Task;
+
+
+import model.interfaces.resources.ServiceCenterServer;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -20,5 +22,5 @@ public interface Negotiator extends Serializable {
     public static final String NEGOTIATED_MEMORY = "MEMORY";
     public static final String NEGOTIATED_STORAGE = "STORAGE";
 
-    public Map<String, Double> negotiate(Server server, Task task);
+    public Map<String, Double> negotiate(ServiceCenterServer server, ApplicationActivity task);
 }
