@@ -85,55 +85,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                     } else {
                         Object[] contentData = (Object[]) message.getContentObject();
                         Object dataType = contentData[0];
-                        if (dataType.equals("Task added")) {
-                            TaskDto taskDto = (TaskDto) contentData[1];
-                            ApplicationActivity task = modelAccess.createApplicationActivity(taskDto.getTaskName());
-//                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa          " + taskDto.getTaskName());
-                            QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
-                            System.out.println(policy);
-                            List<ContextResource> subjects = new ArrayList<ContextResource>(1);
-                            subjects.add(task);
-                            policy.setPolicySubject(subjects);
-                            policy.setPolicyTarget(subjects);
-                            policy.setPolicyName(taskDto.getTaskName() + "_QoSPolicy");
-                            policy.setPolicyWeight(1);
-                            task.setCpuAllocatedValue(0);
-                            task.setCpuRequiredMaxValue(taskDto.getRequestedCPUMax());
-                            task.setCpuRequiredMinValue(taskDto.getRequestedCPUMin());
-                            task.setMemAllocatedValue(0);
-                            task.setMemRequiredMaxValue(taskDto.getRequestedMemoryMax());
-                            task.setMemRequiredMinValue(taskDto.getRequestedMemoryMin());
-                            task.setHddAllocatedValue(0);
-                            task.setHddRequiredMaxValue(taskDto.getRequestedStorageMax());
-                            task.setHddRequiredMinValue(taskDto.getRequestedStorageMin());
-                            task.setNumberOfCoresAllocatedValue(0);
-                            task.setNumberOfCoresRequiredValue(taskDto.getRequestedCores());
-                            task.setCpuWeight(0.3f);
-                            task.setMemWeight(0.3f);
-                            task.setHddWeight(0.3f);
-                            //task.setResourceID("Task_" + taskDto.getTaskName());
-                            task.setResourceID(task.getFrameID().getName());
-                            task.addActivityPolicies(policy);
-                            sendReplyToGUIAgent();
-//                            SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
-//                            String swrlRule = "";
-//                            try {
-//                                swrlRule = "ApplicationActivity(?x) ^ resourceID(?x,\"" + task.getResourceID() + "\") " +
-//                                        " ^ memAllocatedValue(?x,?memAllocated)" +
-//                                        " ^ memRequiredMaxValue(?x, ?memMax)" +
-//                                        " ^ memRequiredMinValue(?x,?memMin)" +
-//                                        " ^ swrlb:lessThanOrEqual(?memMin,?memAllocated)" +
-//                                        " ^ swrlb:lessThanOrEqual(?memAllocated,?memMax) \n " +
-//                                        " ^ hddAllocatedValue(?x,?hddAllocated) ^ hddRequiredMaxValue(?x, ?hddMax) ^ swrlb:lessThanOrEqual(?hddAllocated,?hddMax) ^ hddRequiredMinValue(?x,?hddMin) ^ swrlb:lessThanOrEqual(?hddMin,?hddAllocated) \n" +
-//                                        " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
-//                                        " -> isRespected(" + policy.getName() + ", true)";
-//                                SWRLImp imp = factory.createImp(policy.getName() + "_Rule", swrlRule);
-//
-//                                //imp.enable();
-//                            } catch (SWRLParseException e) {
-//                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//                            }
-                        } else if (dataType.equals("Servers added")) {
+                        if (dataType.equals("Servers added")) {
                             List<ExtendedServerDto> servers = (List<ExtendedServerDto>) contentData[1];
                             for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
                                 Collection<CPU> cpus = server.getCpuResources();
@@ -235,20 +187,18 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
 
                                 PelletJena.generateEnergyRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                             }
-
-
-                        }
-                        if (dataType.equals("Task added")) {
+                        } else if (dataType.equals("Task added")) {
                             TaskDto taskDto = (TaskDto) contentData[1];
                             ApplicationActivity task = modelAccess.createApplicationActivity(taskDto.getTaskName());
-                            QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
-                            System.out.println(policy);
-                            List<ContextResource> subjects = new ArrayList<ContextResource>(1);
-                            subjects.add(task);
-                            policy.setPolicySubject(subjects);
-                            policy.setPolicyTarget(subjects);
-                            policy.setPolicyName(taskDto.getTaskName() + "_QoSPolicy");
-                            policy.setPolicyWeight(1);
+//                            QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
+//                            System.out.println(policy);
+//                            List<ContextResource> subjects = new ArrayList<ContextResource>(1);
+//                            subjects.add(task);
+//                            policy.setPolicySubject(subjects);
+//                            policy.setPolicyTarget(subjects);
+//                            policy.setPolicyName(taskDto.getTaskName() + "_QoSPolicy");
+//                            policy.setPolicyWeight(1);
+//                            task.addActivityPolicies(policy);
                             task.setCpuAllocatedValue(0);
                             task.setCpuRequiredMaxValue(taskDto.getRequestedCPUMax());
                             task.setCpuRequiredMinValue(taskDto.getRequestedCPUMin());
@@ -265,10 +215,10 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             task.setHddWeight(0.3f);
                             //task.setResourceID("Task_" + taskDto.getTaskName());
                             task.setResourceID(task.getFrameID().getName());
-                            task.addActivityPolicies(policy);
-                            SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
-                            String swrlRule = "";
-                            PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
+
+//                            SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
+//                            String swrlRule = "";
+//                            PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                         } else if (dataType.equals("Tasks added")) {
                             List<ExtendedTaskDto> tasks = (List<ExtendedTaskDto>) contentData[1];
                             for (ExtendedTaskDto taskDto : tasks) {
@@ -302,6 +252,38 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
 //                                SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
 //                                String swrlRule = "";
 //                                PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
+                            }
+                        } else if (dataType.equals("Create clones")) {
+                            List<String> names = (List<String>) contentData[1];
+                            int count = names.size();
+                            for (int i = 0; i < count; i++) {
+                                ApplicationActivity template = modelAccess.getApplicationActivity(names.get(i));
+                                ApplicationActivity task = modelAccess.createApplicationActivity( "Activity" + "_" + i + "_");
+                                QoSPolicy policy = modelAccess.createQoSPolicy(task.getLocalName() + "_QoSPolicy");
+                                System.out.println(policy);
+                                List<ContextResource> subjects = new ArrayList<ContextResource>(1);
+                                subjects.add(task);
+                                policy.setPolicySubject(subjects);
+                                policy.setPolicyTarget(subjects);
+                                policy.setPolicyName(policy.getName());
+                                policy.setPolicyWeight(1);
+                                task.addActivityPolicies(policy);
+                                task.setCpuAllocatedValue(0);
+                                task.setCpuRequiredMaxValue(template.getCpuRequiredMaxValue());
+                                task.setCpuRequiredMinValue(template.getCpuRequiredMinValue());
+                                task.setMemAllocatedValue(0);
+                                task.setMemRequiredMaxValue(template.getMemRequiredMaxValue());
+                                task.setMemRequiredMinValue(template.getMemRequiredMinValue());
+                                task.setHddAllocatedValue(0);
+                                task.setHddRequiredMaxValue(template.getHddRequiredMaxValue());
+                                task.setHddRequiredMinValue(template.getHddRequiredMinValue());
+                                task.setNumberOfCoresAllocatedValue(0);
+                                task.setNumberOfCoresRequiredValue(template.getNumberOfCoresRequiredValue());
+                                task.setCpuWeight(0.3f);
+                                task.setMemWeight(0.3f);
+                                task.setHddWeight(0.3f);
+                                task.setResourceID(task.getFrameID().getName());
+                                PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                             }
                         }
                     }
