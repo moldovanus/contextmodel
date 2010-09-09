@@ -29,7 +29,11 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     private JTree availableTasksTree;
 
     /**
-     * Creates new form ExpertConfigurationGUI
+     * Creates new
+     *
+     *
+     *
+     * form ExpertConfigurationGUI
      */
     public ExpertConfigurationGUI() {
         initComponents();

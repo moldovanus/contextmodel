@@ -130,7 +130,10 @@ public class ExpertConfigurationGUIController implements Observer {
 ////                            });
 ////                            dialog.add(button, "South");
 //                            dialog.setSize(200,300);
-//                            dialog.setVisible(true);
+//                            dialo
+//
+//
+// g.setVisible(true);
 //                            dialog.setModal(true);
 
                     if (scheduledTasks.size() > 0) {
