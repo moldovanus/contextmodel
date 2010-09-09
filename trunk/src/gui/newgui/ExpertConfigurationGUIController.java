@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,7 +22,7 @@ import java.util.List;
  * Time: 9:40:40 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ExpertConfigurationGUIController {
+public class ExpertConfigurationGUIController implements Observer {
     private GUIAgent agent;
     private ModelAccess modelAccess;
 
@@ -53,6 +55,9 @@ public class ExpertConfigurationGUIController {
 
     public ExpertConfigurationGUIController(GUIAgent agent, ModelAccess modelAccess, ExpertConfigurationGUI gui) {
         this.agent = agent;
+
+        agent.addObserver(this);
+
         this.modelAccess = modelAccess;
         this.expertGui = gui;
         serverConfigurationController = new ServerConfigurationController(agent);
@@ -60,14 +65,6 @@ public class ExpertConfigurationGUIController {
         workloadSchedulerController = new WorkloadSchedulerController(modelAccess);
         expertGui.addServerConfigurationPanel(serverConfigurationController.getConfigurationPanel());
         expertGui.addWorkloadConfigurationPanel(taskConfigurationController.getConfigurationPanel());
-
-        taskConfigurationController.addGenerateTasksListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                workloadSchedulerController.refreshAvailableTasks();
-                expertGui.addAvailableTasksPanel(workloadSchedulerController.getAvailableTasksTree());
-            }
-        });
 
         expertGui.addAvailableTasksPanel(workloadSchedulerController.getAvailableTasksTree());
         createDecisionTimeChart();
@@ -239,5 +236,10 @@ public class ExpertConfigurationGUIController {
 
     public void setDecisionTime(int decisionTime) {
         this.decisionTime = decisionTime;
+    }
+
+    public void update(Observable o, Object arg) {
+        workloadSchedulerController.refreshAvailableTasks();
+        expertGui.addAvailableTasksPanel(workloadSchedulerController.getAvailableTasksTree());
     }
 }

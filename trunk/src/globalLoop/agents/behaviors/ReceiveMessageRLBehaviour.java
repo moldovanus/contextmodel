@@ -8,6 +8,8 @@ import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
 import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
 import globalLoop.agents.RLAgent;
+import globalLoop.utils.GlobalVars;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -27,6 +29,7 @@ import utils.worldInterface.dtos.ExtendedServerDto;
 import utils.worldInterface.dtos.ExtendedTaskDto;
 import utils.worldInterface.dtos.TaskDto;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -79,7 +82,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                         // agent.setContextIsOK(false);
                     } else if (content.equals("OK")) {
                         // agent.setContextIsOK(true);
-                    } else  {
+                    } else {
                         Object[] contentData = (Object[]) message.getContentObject();
                         Object dataType = contentData[0];
                         if (dataType.equals("Task added")) {
@@ -111,6 +114,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             //task.setResourceID("Task_" + taskDto.getTaskName());
                             task.setResourceID(task.getFrameID().getName());
                             task.addActivityPolicies(policy);
+                            sendReplyToGUIAgent();
 //                            SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
 //                            String swrlRule = "";
 //                            try {
@@ -301,6 +305,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             }
                         }
                     }
+                    sendReplyToGUIAgent();
                     break;
                 case ACLMessage.INFORM_IF:
 
@@ -325,5 +330,16 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                 ex) {
             ex.printStackTrace(System.err);
         }
+    }
+
+    private void sendReplyToGUIAgent() {
+        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+        try {
+            msg.setContentObject(new Object[]{"Tasks added"});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+        agent.send(msg);
     }
 }

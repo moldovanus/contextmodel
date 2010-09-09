@@ -131,11 +131,7 @@ public class TaskConfigurationController {
     public JPanel getConfigurationPanel() {
         return taskConfigurationPanel;
     }
-
-    public void addGenerateTasksListener(ActionListener actionListener) {
-        generateVirtualMachinesButton.addActionListener(actionListener);
-    }
-
+ 
     public java.util.List<String[]> getTableData() {
         return taskConfigurator.getTableData();
     }
