@@ -13,6 +13,8 @@ package gui.newgui;
 
 import globalLoop.agents.GUIAgent;
 import model.impl.util.ModelAccess;
+import model.interfaces.resources.ServiceCenterServer;
+import model.interfaces.resources.applications.ApplicationActivity;
 import utils.worldInterface.dtos.ServerDto;
 import utils.worldInterface.dtos.TaskDto;
 
@@ -26,47 +28,52 @@ import java.util.*;
 /**
  * @author Administrator
  */
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements Observer {
 
     private GUIAgent agent;
     private ModelAccess modelAccess;
 
-    private List<ServerDto> computingResourcesList;
+//    private List<ServerDto> computingResourcesList;
     private Map<TaskDto, String> applicationActivitiesList;
 
     {
         applicationActivitiesList = new HashMap<TaskDto, String>();
-        computingResourcesList = new ArrayList<ServerDto>();
+//        computingResourcesList = new ArrayList<ServerDto>();
     }
 
     public void logMessage(String message) {
+        boolean caretIsAtEnd = logTextArea.getCaretPosition() == logTextArea.getDocument().getLength();
         logTextArea.append(message + "\n");
+        if (caretIsAtEnd) {
+            logTextArea.setCaretPosition(logTextArea.getDocument().getLength());
+        }
     }
 
     public void setRunButtonActionListener(ActionListener listener) {
         runOnButton.addActionListener(listener);
     }
-
-    public List<ServerDto> getComputingResourcesList() {
-        return computingResourcesList;
-    }
-
-    public void setComputingResourcesList(List<ServerDto> computingResourcesList) {
-        this.computingResourcesList = computingResourcesList;
-        refreshComputingResourcesTree();
-    }
-
-    public void addComputingResource(ServerDto dto) {
-        computingResourcesList.add(dto);
-        refreshComputingResourcesTree();
-    }
-
-    public void removeComputingResource(ServerDto dto) {
-        computingResourcesList.remove(dto);
-        refreshComputingResourcesTree();
-    }
+//
+//    public List<ServerDto> getComputingResourcesList() {
+//        return computingResourcesList;
+//    }
+//
+//    public void setComputingResourcesList(List<ServerDto> computingResourcesList) {
+//        this.computingResourcesList = computingResourcesList;
+//        refreshComputingResourcesTree();
+//    }
+//
+//    public void addComputingResource(ServerDto dto) {
+//        computingResourcesList.add(dto);
+//        refreshComputingResourcesTree();
+//    }
+//
+//    public void removeComputingResource(ServerDto dto) {
+//        computingResourcesList.remove(dto);
+//        refreshComputingResourcesTree();
+//    }
 
     public void setApplicationActivities(Collection<TaskDto> activities) {
+        applicationActivitiesList.clear();
         for (TaskDto taskDto : activities) {
             applicationActivitiesList.put(taskDto, taskDto.getTaskName());
         }
@@ -119,12 +126,16 @@ public class MainWindow extends javax.swing.JFrame {
                 computingResourcesPanel.remove(computingResourcesTree);
                 DefaultMutableTreeNode root = new DefaultMutableTreeNode("Resources");
 
-                for (ServerDto dto : computingResourcesList) {
-                    DefaultMutableTreeNode serverNode = new DefaultMutableTreeNode(dto.getServerName());
+                for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
+                    DefaultMutableTreeNode serverNode = new DefaultMutableTreeNode(server.getLocalName());
                     {
                         DefaultMutableTreeNode serverCPU = new DefaultMutableTreeNode("CPU");
-                        DefaultMutableTreeNode coreCount = new DefaultMutableTreeNode("cores: " + dto.getCoreCount());
-                        DefaultMutableTreeNode totalServerCPU = new DefaultMutableTreeNode("total: " + dto.getTotalCPU());
+                        DefaultMutableTreeNode coreCount =
+                                new DefaultMutableTreeNode("cores: "
+                                        + server.getCpuResources().iterator().next().getAssociatedCores().size());
+                        DefaultMutableTreeNode totalServerCPU =
+                                new DefaultMutableTreeNode("total: "
+                                        + server.getCpuResources().iterator().next().getMaximumWorkLoad());
 
                         serverCPU.add(coreCount);
                         serverCPU.add(totalServerCPU);
@@ -134,7 +145,9 @@ public class MainWindow extends javax.swing.JFrame {
 
                     {
                         DefaultMutableTreeNode serverMEM = new DefaultMutableTreeNode("MEM");
-                        DefaultMutableTreeNode totalServerCPU = new DefaultMutableTreeNode("total: " + dto.getTotalMemory());
+                        DefaultMutableTreeNode totalServerCPU =
+                                new DefaultMutableTreeNode("total: "
+                                        + server.getMemResources().iterator().next().getMaximumWorkLoad());
 
                         serverMEM.add(totalServerCPU);
 
@@ -151,11 +164,13 @@ public class MainWindow extends javax.swing.JFrame {
 
     /**
      * Creates new form MainWindow
+     *
      * @param agent
      * @param modelAccess
      */
     public MainWindow(GUIAgent agent, ModelAccess modelAccess) {
         this.agent = agent;
+        agent.addObserver(this);
         this.modelAccess = modelAccess;
         initComponents();
         initComponents_2();
@@ -175,7 +190,7 @@ public class MainWindow extends javax.swing.JFrame {
         showLogButton.setText("Hide Log");
         showExpertConfigMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ExpertConfigurationGUI gui = new  ExpertConfigurationGUI();
+                ExpertConfigurationGUI gui = new ExpertConfigurationGUI();
                 ExpertConfigurationGUIController controller = new ExpertConfigurationGUIController(agent, modelAccess, gui);
                 gui.setVisible(true);
             }
@@ -185,8 +200,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     }
 
-    public void addFileMenuAction(AbstractAction abstractAction){
-         fileMenuItem.add(abstractAction);
+    public void addFileMenuAction(AbstractAction abstractAction) {
+        fileMenuItem.add(abstractAction);
     }
 
     private boolean isSimulationChosen() {
@@ -552,4 +567,29 @@ public class MainWindow extends javax.swing.JFrame {
 //            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 //        }
 //    }
+
+    public void update(Observable o, Object arg) {
+        Object[] data = (Object[]) arg;
+        Object dataType = data[0];
+        if (dataType.equals("Log")) {
+            this.logMessage(data[1].toString());
+        } else if (dataType.equals("Tasks added")) {
+            List<TaskDto> availableTasks = (List<TaskDto>) data[1];
+            setApplicationActivities(availableTasks);
+            refreshApplicationActivities();
+        } else if (dataType.equals("Servers added")) {
+            refreshComputingResourcesTree();
+        } else if (dataType.equals("TaskStatusChanged")) {
+            List<String> names = (List<String>) data[1];
+            for (TaskDto taskDto : applicationActivitiesList.keySet()) {
+                for (String name : names) {
+                    if (taskDto.getTaskName().equals(name)) {
+                        setApplicationActivityStatus(taskDto, "->.." + taskDto.getTaskName());
+                        names.remove(name);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

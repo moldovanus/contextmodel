@@ -93,34 +93,32 @@ public class ExpertConfigurationGUIController implements Observer {
             public void actionPerformed(ActionEvent e) {
 
                 expertGui.setTimerProgress(scheduleCount);
-                new Thread() {
-                    @Override
-                    public void run() {
 
-                        List<String> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
-                        List<TaskDto> availableTasks = new ArrayList<TaskDto>();
+
+                List<String> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
+                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
 //                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
-                        String taskNames = "";
-                        for (String name : scheduledTasks) {
-                            taskNames += name + ", ";
-                            ApplicationActivity activity = modelAccess.getApplicationActivity(name);
-                            //TODO; remove if other solution for templates implemented
-                            if (activity.getLocalName().toLowerCase().contains("template")) {
+                String taskNames = "";
+                for (String name : scheduledTasks) {
+                    taskNames += name + ", ";
+                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
+                    //TODO; remove if other solution for templates implemented
+                    if (activity.getLocalName().toLowerCase().contains("template")) {
 
-                                TaskDto taskDto = new TaskDto();
-                                taskDto.setTaskName(activity.getLocalName());
-                                taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
-                                taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
-                                taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
-                                taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
-                                taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
-                                taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
-                                taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+                        TaskDto taskDto = new TaskDto();
+                        taskDto.setTaskName(activity.getLocalName());
+                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
 
-                                availableTasks.add(taskDto);
-                            }
-                        }
-                        if (expertGui.generatePopupMessages()) {
+                        availableTasks.add(taskDto);
+                    }
+                }
+                if (expertGui.generatePopupMessages()) {
 //                            WorkloadTreeDisplay workloadTreeDisplay = new WorkloadTreeDisplay(availableTasks);
 //                            final JDialog dialog = new JDialog(expertGui);
 //
@@ -140,25 +138,24 @@ public class ExpertConfigurationGUIController implements Observer {
 // g.setVisible(true);
 //                            dialog.setModal(true);
 
-                            if (scheduledTasks.size() > 0) {
-                                JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
-                            }
-                        }
-                        jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
-                        try {
-                            msg.setContentObject(new Object[]{"Create clones", scheduledTasks});
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                        msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
-                        agent.send(msg);
-
+                    if (scheduledTasks.size() > 0) {
+                        JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
                     }
-                }.start();
+                }
+                jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
+                try {
+                    msg.setContentObject(new Object[]{"Create clones", scheduledTasks});
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+                agent.send(msg);
+
+
                 scheduleCount++;
             }
         };
-        
+
         timers.add(scheduleTimer);
         expertGui.addStartTimerButtonListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -388,6 +385,13 @@ public class ExpertConfigurationGUIController implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        workloadSchedulerController.refreshAvailableTasks();
+        Object[] data = (Object[]) arg;
+        if (data[0].equals("Log")) {
+            this.expertGui.logMessage(data[1].toString());
+        } else if (data[0].equals("Tasks added")) {
+            workloadSchedulerController.refreshAvailableTasks();
+        }
     }
+
+
 }
