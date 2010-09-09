@@ -5,7 +5,7 @@ import jade.core.Agent;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.DatacenterProtegeFactory;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.Server;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.Task;
-import selfoptimizing.utils.negotiator.Negotiator;
+import utils.negotiator.Negotiator;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class NegotiateResourcesCommand extends SelfOptimizingCommand {
-    private Negotiator negotiator;
+//    private Negotiator negotiator;
     private String serverName;
     private String taskName;
 
@@ -30,22 +30,22 @@ public class NegotiateResourcesCommand extends SelfOptimizingCommand {
 
     public NegotiateResourcesCommand(DatacenterProtegeFactory protegeFactory, Negotiator negotiator, String serverName, String taskName) {
         super(protegeFactory);
-        cost = 0;
-        this.negotiator = negotiator;
-        this.serverName = serverName;
-        this.taskName = taskName;
-        server = protegeFactory.getServer(serverName);
-        task = protegeFactory.getTask(taskName);
-        Map<String, Double> negotiatedValues = negotiator.negotiate(server, task);
-
-        if (negotiatedValues.size() == 0) {
-            //System.err.println("Nothing found after negotiation");
-            return;
-        }
-        negotiatedCPU = (negotiatedValues.containsKey(Negotiator.NEGOTIATED_CPU)) ? negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue() : 0;
-        negotiatedMemory = (negotiatedValues.containsKey(Negotiator.NEGOTIATED_MEMORY)) ? negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY).intValue() : 0;
-        negotiatedStorage = (negotiatedValues.containsKey(Negotiator.NEGOTIATED_STORAGE)) ? negotiatedValues.get(Negotiator.NEGOTIATED_STORAGE).intValue() : 0;
-
+//        cost = 0;
+//        this.negotiator = negotiator;
+//        this.serverName = serverName;
+//        this.taskName = taskName;
+//        server = protegeFactory.getServer(serverName);
+//        task = protegeFactory.getTask(taskName);
+//        Map<String, Double> negotiatedValues = negotiator.negotiate(server, task);
+//
+//        if (negotiatedValues.size() == 0) {
+//            //System.err.println("Nothing found after negotiation");
+//            return;
+//        }
+//        negotiatedCPU = (negotiatedValues.containsKey(Negotiator.NEGOTIATED_CPU)) ? negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue() : 0;
+//        negotiatedMemory = (negotiatedValues.containsKey(Negotiator.NEGOTIATED_MEMORY)) ? negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY).intValue() : 0;
+//        negotiatedStorage = (negotiatedValues.containsKey(Negotiator.NEGOTIATED_STORAGE)) ? negotiatedValues.get(Negotiator.NEGOTIATED_STORAGE).intValue() : 0;
+//
 
     }
 

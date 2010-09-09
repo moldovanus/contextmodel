@@ -27,8 +27,6 @@ import selfoptimizing.utils.context.ContextSnapshot;
 import selfoptimizing.utils.context.DatacenterMemory;
 import selfoptimizing.utils.context.DatacenterMockupContext;
 import selfoptimizing.utils.context.EnvironmentMemory;
-import selfoptimizing.utils.negotiator.Negotiator;
-import selfoptimizing.utils.negotiator.impl.NegotiatorFactory;
 import selfoptimizing.utils.workLoadGenerator.TaskLifeManager;
 
 import java.awt.*;
@@ -54,7 +52,6 @@ public class ReinforcementLearningDataCenterManagementBehavior extends TickerBeh
     private DatacenterProtegeFactory protegeFactory;
     private SWRLFactory swrlFactory;
     private Logger logger;
-    private Negotiator negotiator;
     //  private TaskManagement taskManagementWindow;
 
     public ReinforcementLearningDataCenterManagementBehavior(Agent a, int interval, OWLModel datacenterOwlModel, OntModel datacenterPolicyConversionModel,
@@ -170,7 +167,6 @@ public class ReinforcementLearningDataCenterManagementBehavior extends TickerBeh
         this.memory = memory;
         swrlFactory = new SWRLFactory(datacenterOwlModel);
 
-        negotiator = NegotiatorFactory.getNashNegotiator();
 
         /*for (SWRLImp imp : swrlFactory.getEnabledImps()) {
             System.out.println(imp.toString());
@@ -750,7 +746,7 @@ public class ReinforcementLearningDataCenterManagementBehavior extends TickerBeh
                         if (server == null) {
                             continue;
                         }
-                        NegotiateResourcesCommand negotiateResourcesCommand = new NegotiateResourcesCommand(protegeFactory, negotiator, server.getServerName(), task.getName());
+                        NegotiateResourcesCommand negotiateResourcesCommand = new NegotiateResourcesCommand(protegeFactory, null, server.getServerName(), task.getName());
                         negotiateResourcesCommand.execute(datacenterPolicyConversionModel);
                         negotiateResourcesCommand.executeOnWebService();
                         /*  try {

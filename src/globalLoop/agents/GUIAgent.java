@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Observer;
 
 public class GUIAgent extends Agent {
     private final String EXIT_TOOLTIP = "Shuts down the system gracefully.";
@@ -88,6 +89,23 @@ public class GUIAgent extends Agent {
 
     private JFrame frame;
 
+    private java.util.List<Observer> observers;
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+    
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(){
+        for(Observer observer : observers){
+            observer.update(null,null);
+        }
+    }
+
+
     @Override
     protected void setup() {
 //        try {
@@ -112,6 +130,7 @@ public class GUIAgent extends Agent {
             this.doDelete();
             return;
         }
+        observers = new ArrayList<Observer>();
 //        serverMonitors = new ArrayList<IMonitor>();
 //        tasksQueueMonitor = new TasksQueueMonitor(modelAccess);
 //        container = getContainerController();
@@ -303,6 +322,5 @@ public class GUIAgent extends Agent {
         datacenterLogger.log(color, header, message);
     }
 
-    
 
 }
