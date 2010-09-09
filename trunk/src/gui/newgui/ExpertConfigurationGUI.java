@@ -29,11 +29,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     private JTree availableTasksTree;
 
     /**
-     * Creates new
-     *
-     *
-     *
-     * form ExpertConfigurationGUI
+     * Creates new form ExpertConfigurationGUI
      */
     public ExpertConfigurationGUI() {
         initComponents();
@@ -58,7 +54,82 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         radioGroup.add(realChoiceRadio);
         radioGroup.add(simulateChoiceRadio);
 
+        tabbedPane.addChangeListener(new ChangeListener() {
 
+            public void stateChanged(ChangeEvent e) {
+                JTabbedPane pane = (JTabbedPane) e.getSource();
+                int sel = pane.getSelectedIndex();
+                if (sel == 3) {
+                    existingWorkloadBasePanel.repaint();
+                }
+            }
+        });
+
+        ActionListener repaintScheduleTableListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                scheduleWorkloadBasePanel.repaint();
+            }
+        };
+
+        scheduleButton.addActionListener(repaintScheduleTableListener);
+        duplicateScheduleRowButton.addActionListener(repaintScheduleTableListener);
+        deleteScheduleRowButton.addActionListener(repaintScheduleTableListener);
+
+        scheduleDelaySpinner.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                if ((Integer) scheduleDelaySpinner.getValue() < 0) {
+                    scheduleDelaySpinner.setValue(0);
+                }
+            }
+        });
+
+    }
+
+    public void setTimerProgress(int progress){
+        timerProgressLabel.setText("" + progress);
+    }
+    public boolean generatePopupMessages(){
+        return popupNotificationRadioButton.isSelected();
+    }
+    public void addStartTimerButtonListener(ActionListener actionListener) {
+        startButton.addActionListener(actionListener);
+    }
+
+    public void addPauseTimerButtonListener(ActionListener actionListener) {
+        pauseButton.addActionListener(actionListener);
+    }
+
+    public void addStopTimerButtonListener(ActionListener actionListener) {
+        stopButton.addActionListener(actionListener);
+    }
+
+    public void addDuplicateRowActionListener(ActionListener listener) {
+        duplicateScheduleRowButton.addActionListener(listener);
+    }
+
+    public void addRemoveSelectedActionListener(ActionListener listener) {
+        deleteScheduleRowButton.addActionListener(listener);
+    }
+
+    public void addGenerateRandomActionListener(ActionListener listener) {
+        generateRandomScheduleRowButton.addActionListener(listener);
+    }
+
+
+    public int getScheduleDelay() {
+        return (Integer) scheduleDelaySpinner.getValue();
+    }
+
+    public void addScheduleTable(JTable table) {
+        scheduleWorkloadBasePanel.add(table, "Center");
+    }
+
+    public void addScheduleButtonActionListener(ActionListener listener) {
+        scheduleButton.addActionListener(listener);
+    }
+
+    public void addTabbedPaneListener(ChangeListener listener) {
+        tabbedPane.addChangeListener(listener);
     }
 
     public void addFileMenuAction(AbstractAction action) {
@@ -90,15 +161,8 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     }
 
     public void addAvailableTasksPanel(JTree tree) {
-        if (availableTasksTree != null) {
-            existingWorkloadBasePanel.remove(availableTasksTree);
-            existingWorkloadBasePanel.add(tree, "Center");
-            existingWorkloadBasePanel.repaint();
-        } else {
-            existingWorkloadBasePanel.add(tree, "Center");
-            existingWorkloadBasePanel.repaint();
-            availableTasksTree = tree;
-        }
+//            existingWorkloadBasePanel.remove(1);
+        existingWorkloadScrollPanel.setViewportView(tree);
     }
 
 
@@ -134,7 +198,6 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         timeDelayLabel = new javax.swing.JLabel();
         existingWorkloadLable = new javax.swing.JLabel();
         scheduleWorkloadBasePanel = new javax.swing.JPanel();
-        scheduleTablePanel = new javax.swing.JPanel();
         scheduleControlPanel = new javax.swing.JPanel();
         deleteScheduleRowButton = new javax.swing.JButton();
         duplicateScheduleRowButton = new javax.swing.JButton();
@@ -332,9 +395,6 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
 
         scheduleWorkloadBasePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         scheduleWorkloadBasePanel.setLayout(new java.awt.BorderLayout());
-
-        scheduleTablePanel.setLayout(new java.awt.BorderLayout());
-        scheduleWorkloadBasePanel.add(scheduleTablePanel, java.awt.BorderLayout.LINE_START);
 
         scheduleControlPanel.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -535,7 +595,6 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     private javax.swing.JPanel scheduleControlPanel;
     private javax.swing.JPanel scheduleControlRightPanel;
     private javax.swing.JSpinner scheduleDelaySpinner;
-    private javax.swing.JPanel scheduleTablePanel;
     private javax.swing.JPanel scheduleWorkloadBasePanel;
     private javax.swing.JPanel schedulerControlPanel;
     private javax.swing.JPanel serverConfigurationTabPanel;
