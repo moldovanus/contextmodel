@@ -51,6 +51,8 @@ public class ReceiveChangesGUIBehaviour extends CyclicBehaviour {
                     Object[] messageContent = (Object[]) message.getContentObject();
                     if (messageContent[0].equals("Tasks added")) {
                         guiAgent.notifyObservers();
+                    }else if (messageContent[0].equals("Running time")) {
+                        guiAgent.setDecisionTime(((Long)messageContent[1]).intValue());
                     }
                     break;
             }

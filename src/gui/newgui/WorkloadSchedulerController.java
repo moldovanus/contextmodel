@@ -99,7 +99,7 @@ public class WorkloadSchedulerController {
     }
 
     public void deleteSelected(int rowIndex) {
-        if (rowIndex < 0 || rowIndex > schedule.size()) {
+        if (rowIndex < 0 || rowIndex >= schedule.size()) {
             return;
         }
         schedule.remove(rowIndex);

@@ -2,8 +2,11 @@ package globalLoop.agents.behaviors;
 
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import globalLoop.utils.GlobalVars;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
+import jade.lang.acl.ACLMessage;
 import model.impl.ontologyImpl.actions.DefaultApplicationAdaptationAction;
 import model.impl.ontologyImpl.actions.DefaultDeployActivityAction;
 import model.impl.ontologyImpl.actions.DefaultServerAdaptationAction;
@@ -566,66 +569,81 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         queue.add(initialContext);
 
         if (entropyAndPolicy.getFirst() > 0) {
+            java.util.Date before = new java.util.Date();
             ContextSnapshot result = reinforcementLearning(queue);
+            java.util.Date after = new java.util.Date();
+
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            try {
+                msg.setContentObject(new Object[]{"Running time", new java.util.Date(after.getTime() - before.getTime()).getTime()});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+            agent.send(msg);
+
+
             result.executeActions(modelAccess);
             result.executeOnServiceCenter(modelAccess);
 
             if (result.getContextEntropy() > 0) {
-                entropyAndPolicy= computeEntropy();
-                ApplicationActivity activity= (ApplicationActivity) entropyAndPolicy.getSecond().getPolicySubject().get(0);
-                Negotiator negotiator = (Negotiator) NegotiatorFactory.getNashNegotiator();
-                ServiceCenterServer server = getMinDistanceServer(activity);
-                if (server != null){
-                CPU cpu = server.getCpuResources().iterator().next();
-                MEM mem = server.getMemResources().iterator().next();
-                Map<String, Double> negotiatedValues =  negotiator.negotiate(server,activity);
-                 double optimalCpu =cpu.getAssociatedCores().get(0).getOptimalWorkLoad();
-                 double totalCpu = cpu.getAssociatedCores().get(0).getMaximumWorkLoad();
-                    double currentCpu = cpu.getAssociatedCores().get(0).getCurrentWorkLoad();
-                double optimalMem = mem.getOptimalWorkLoad();
+                entropyAndPolicy = computeEntropy();
+                if (entropyAndPolicy.getSecond().getPolicySubject().get(0) instanceof ApplicationActivity) {
+                    ApplicationActivity activity = (ApplicationActivity) entropyAndPolicy.getSecond().getPolicySubject().get(0);
+                    Negotiator negotiator = (Negotiator) NegotiatorFactory.getNashNegotiator();
+                    ServiceCenterServer server = getMinDistanceServer(activity);
+                    if (server != null) {
+                        CPU cpu = server.getCpuResources().iterator().next();
+                        MEM mem = server.getMemResources().iterator().next();
+                        Map<String, Double> negotiatedValues = negotiator.negotiate(server, activity);
+                        double optimalCpu = cpu.getAssociatedCores().get(0).getOptimalWorkLoad();
+                        double totalCpu = cpu.getAssociatedCores().get(0).getMaximumWorkLoad();
+                        double currentCpu = cpu.getAssociatedCores().get(0).getCurrentWorkLoad();
+                        double optimalMem = mem.getOptimalWorkLoad();
 
-                if (negotiatedValues.get(Negotiator.NEGOTIATED_CPU)+currentCpu>(optimalCpu+totalCpu)/2.0){
-                    double current = negotiatedValues.get(Negotiator.NEGOTIATED_CPU)+currentCpu;
-                    optimalCpu = 2*current-cpu.getMaximumWorkLoad();
-                }
-                if (negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY)+mem.getCurrentWorkLoad()>(mem.getOptimalWorkLoad()+mem.getMaximumWorkLoad())/2.0){
-                    double current = negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY)+mem.getCurrentWorkLoad();
-                    optimalMem = 2*current-mem.getMaximumWorkLoad();
-                }
-                 SetServerStateActivity newActivity =
-                            modelAccess.createSetServerStateActivity("Set_state_for_" + server.getName()
-                                    + "_to_" + 1);
-                newActivity.execute(modelAccess);
-                newActivity.executeOnServiceCenter(modelAccess);
-                result.getActions().add(newActivity);
+                        if (negotiatedValues.get(Negotiator.NEGOTIATED_CPU) + currentCpu > (optimalCpu + totalCpu) / 2.0) {
+                            double current = negotiatedValues.get(Negotiator.NEGOTIATED_CPU) + currentCpu;
+                            optimalCpu = 2 * current - cpu.getMaximumWorkLoad();
+                        }
+                        if (negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY) + mem.getCurrentWorkLoad() > (mem.getOptimalWorkLoad() + mem.getMaximumWorkLoad()) / 2.0) {
+                            double current = negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY) + mem.getCurrentWorkLoad();
+                            optimalMem = 2 * current - mem.getMaximumWorkLoad();
+                        }
+                        SetServerStateActivity newActivity =
+                                modelAccess.createSetServerStateActivity("Set_state_for_" + server.getName()
+                                        + "_to_" + 1);
+                        newActivity.execute(modelAccess);
+                        newActivity.executeOnServiceCenter(modelAccess);
+                        result.getActions().add(newActivity);
 
-                ServerAdaptationAction defaultServerAdaptationAction= modelAccess.createServerAdaptationAction("ServerAdaptationAction_"+server);
+                        ServerAdaptationAction defaultServerAdaptationAction = modelAccess.createServerAdaptationAction("ServerAdaptationAction_" + server);
                         //new DefaultServerAdaptationAction(server,(int)optimalCpu,(int)optimalMem);
-                defaultServerAdaptationAction.setNewOptimalValueForCpu((int) optimalCpu);
-                defaultServerAdaptationAction.setNewOptimalValueForMem((int) optimalMem);
-                    defaultServerAdaptationAction.setServer(server);
-                defaultServerAdaptationAction.execute(modelAccess);
-                result.getActions().add(defaultServerAdaptationAction);
-                ApplicationAdaptationAction applicationAdaptationAction = modelAccess.createApplicationAdaptationAction("ApplicationAdaptationAction_"+activity.getLocalName());
-                applicationAdaptationAction.setActivity(activity);
-                applicationAdaptationAction.setCpuMin((int) activity.getCpuRequiredMinValue());
-                applicationAdaptationAction.setCpuMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
-                applicationAdaptationAction.setMemMin((int)activity.getMemRequiredMinValue());
-                applicationAdaptationAction.setMemMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
+                        defaultServerAdaptationAction.setNewOptimalValueForCpu((int) optimalCpu);
+                        defaultServerAdaptationAction.setNewOptimalValueForMem((int) optimalMem);
+                        defaultServerAdaptationAction.setServer(server);
+                        defaultServerAdaptationAction.execute(modelAccess);
+                        result.getActions().add(defaultServerAdaptationAction);
+                        ApplicationAdaptationAction applicationAdaptationAction = modelAccess.createApplicationAdaptationAction("ApplicationAdaptationAction_" + activity.getLocalName());
+                        applicationAdaptationAction.setActivity(activity);
+                        applicationAdaptationAction.setCpuMin((int) activity.getCpuRequiredMinValue());
+                        applicationAdaptationAction.setCpuMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
+                        applicationAdaptationAction.setMemMin((int) activity.getMemRequiredMinValue());
+                        applicationAdaptationAction.setMemMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
 
-                applicationAdaptationAction.execute(modelAccess);
-                result.getActions().add(applicationAdaptationAction);
-                DeployActivity deployActivityAction = modelAccess.createDeployActivity("Deploy_"
+                        applicationAdaptationAction.execute(modelAccess);
+                        result.getActions().add(applicationAdaptationAction);
+                        DeployActivity deployActivityAction = modelAccess.createDeployActivity("Deploy_"
                                 + activity.getName() + "_to_" + server.getName());
-                deployActivityAction.setActivity(activity);
-                deployActivityAction.setResourceTo(server);
-                deployActivityAction.execute(modelAccess);
-                deployActivityAction.executeOnServiceCenter(modelAccess);
-               result.getActions().add(deployActivityAction);
-                entropyAndPolicy=computeEntropy();
-                result.setContextEntropy(entropyAndPolicy.getFirst());
+                        deployActivityAction.setActivity(activity);
+                        deployActivityAction.setResourceTo(server);
+                        deployActivityAction.execute(modelAccess);
+                        deployActivityAction.executeOnServiceCenter(modelAccess);
+                        result.getActions().add(deployActivityAction);
+                        entropyAndPolicy = computeEntropy();
+                        result.setContextEntropy(entropyAndPolicy.getFirst());
+                    }
                 }
-               
+
             }
 //            OntModel ontModel = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
 //            ontModel.add(modelAccess.getOntologyModelFactory().getOwlModel().getJenaModel());

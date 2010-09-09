@@ -2,6 +2,8 @@ package gui.newgui;
 
 import globalLoop.agents.GUIAgent;
 import globalLoop.utils.GlobalVars;
+import gui.energyConsumption.EnergyConsumption;
+import gui.energyConsumption.EnergyConsumptionFactory;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
 import jade.core.AID;
 import jade.domain.introspection.ACLMessage;
@@ -17,8 +19,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -53,7 +57,7 @@ public class ExpertConfigurationGUIController implements Observer {
     private int decisionTimeRefreshRateInMillis = 1000;
     private List<Timer> timers;
     private ActionListener scheduleTimerActionListener;
-    private int scheduleCount = 0;
+    private int scheduleCount = -1;
     private Timer scheduleTimer;
 
     {
@@ -76,7 +80,7 @@ public class ExpertConfigurationGUIController implements Observer {
         expertGui.addAvailableTasksPanel(workloadSchedulerController.getAvailableTasksTree());
         createDecisionTimeChart();
         createMemoryUsageChart();
-
+        createEnergyConsumptionCharts();
         fileChooser = new JFileChooser();
         File file = new File("./testConfigurations");
         if (file.exists()) {
@@ -87,36 +91,36 @@ public class ExpertConfigurationGUIController implements Observer {
 
         scheduleTimerActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                scheduleCount++;
+
                 expertGui.setTimerProgress(scheduleCount);
-//                new Thread() {
-//                    @Override
-//                    public void run() {
+                new Thread() {
+                    @Override
+                    public void run() {
 
-                List<String> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
-                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
+                        List<String> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
+                        List<TaskDto> availableTasks = new ArrayList<TaskDto>();
 //                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
-                String taskNames = "";
-                for (String name : scheduledTasks) {
-                    taskNames += name + ", ";
-                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
-                    //TODO; remove if other solution for templates implemented
-                    if (activity.getLocalName().toLowerCase().contains("template")) {
+                        String taskNames = "";
+                        for (String name : scheduledTasks) {
+                            taskNames += name + ", ";
+                            ApplicationActivity activity = modelAccess.getApplicationActivity(name);
+                            //TODO; remove if other solution for templates implemented
+                            if (activity.getLocalName().toLowerCase().contains("template")) {
 
-                        TaskDto taskDto = new TaskDto();
-                        taskDto.setTaskName(activity.getLocalName());
-                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
-                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
-                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
-                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
-                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
-                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
-                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+                                TaskDto taskDto = new TaskDto();
+                                taskDto.setTaskName(activity.getLocalName());
+                                taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+                                taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+                                taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+                                taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+                                taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+                                taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+                                taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
 
-                        availableTasks.add(taskDto);
-                    }
-                }
-                if (expertGui.generatePopupMessages()) {
+                                availableTasks.add(taskDto);
+                            }
+                        }
+                        if (expertGui.generatePopupMessages()) {
 //                            WorkloadTreeDisplay workloadTreeDisplay = new WorkloadTreeDisplay(availableTasks);
 //                            final JDialog dialog = new JDialog(expertGui);
 //
@@ -130,27 +134,32 @@ public class ExpertConfigurationGUIController implements Observer {
 ////                            });
 ////                            dialog.add(button, "South");
 //                            dialog.setSize(200,300);
-//                            dialog.setVisible(true);
+//                            dialo
+//
+//
+// g.setVisible(true);
 //                            dialog.setModal(true);
 
-                    if (scheduledTasks.size() > 0) {
-                        JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
-                    }
-                }
-                jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
-                try {
-                    msg.setContentObject(new Object[]{"Create clones", scheduledTasks});
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
-                agent.send(msg);
+                            if (scheduledTasks.size() > 0) {
+                                JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
+                            }
+                        }
+                        jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
+                        try {
+                            msg.setContentObject(new Object[]{"Create clones", scheduledTasks});
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+                        agent.send(msg);
 
-//                    }
-//                }.start();
+                    }
+                }.start();
+                scheduleCount++;
             }
         };
-
+        
+        timers.add(scheduleTimer);
         expertGui.addStartTimerButtonListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 scheduleTimer = new Timer(1000, scheduleTimerActionListener);
@@ -296,6 +305,31 @@ public class ExpertConfigurationGUIController implements Observer {
 
     }
 
+    private void createEnergyConsumptionCharts() {
+        final ResourceMonitorXYChartPlotter plotter1 = new ResourceMonitorXYChartPlotter("Energy Consumption without GAMES infrastructure", "Time(s)", "Energy Consumed (W)", 0, 5000);
+        final ResourceMonitorXYChartPlotter plotter2 = new ResourceMonitorXYChartPlotter("Energy Consumption with GAMES infrastructure", "Time(s)", "Energy Consumed (W)", 0, 5000);
+        plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
+        plotter2.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
+        final EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
+        ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
+                        plotter1.setCurrentValue(energyConsumption.getValueWithoutAlgorithm());
+                        plotter2.setCurrentValue(energyConsumption.getValueWithRunningAlgorithm());
+                    }
+                }.start();
+            }
+        };
+        Timer refreshTimerEnergyConsumption = new Timer(decisionTimeRefreshRateInMillis, actionListener);
+        refreshTimerEnergyConsumption.start();
+        timers.add(refreshTimerEnergyConsumption);
+        expertGui.addEnergyConsumptionWithoutOptimizationAlgorithm(plotter1.getGraphPanel());
+        expertGui.addEnergyConsumptionWithOptimizationAlgorithm(plotter2.getGraphPanel());
+    }
+
     private void createMemoryUsageChart() {
         final ResourceMonitorXYChartPlotter plotter = new ResourceMonitorXYChartPlotter("Memory usage", "Time(s)", "Memory used (MB)", 0, 100);
         plotter.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
@@ -317,7 +351,7 @@ public class ExpertConfigurationGUIController implements Observer {
     }
 
     private void createDecisionTimeChart() {
-        final ResourceMonitorXYChartPlotter plotter = new ResourceMonitorXYChartPlotter("DecisionTime", "Time(s)", "Decision Making Time(s)", 0, 100);
+        final ResourceMonitorXYChartPlotter plotter = new ResourceMonitorXYChartPlotter("DecisionTime", "Time (s)", "Decision Making Time (milliseconds)", 0, 100);
         plotter.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
 
         ActionListener actionListener = new ActionListener() {
@@ -325,7 +359,7 @@ public class ExpertConfigurationGUIController implements Observer {
                 new Thread() {
                     @Override
                     public void run() {
-                        plotter.setCurrentValue(decisionTime);
+                        plotter.setCurrentValue(agent.getDecisionTime());
                     }
                 }.start();
                 decisionTime = 0;

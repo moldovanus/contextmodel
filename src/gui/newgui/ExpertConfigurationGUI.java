@@ -16,6 +16,7 @@ import utils.fileIO.ConfigurationFileIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -74,11 +75,12 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         scheduleButton.addActionListener(repaintScheduleTableListener);
         duplicateScheduleRowButton.addActionListener(repaintScheduleTableListener);
         deleteScheduleRowButton.addActionListener(repaintScheduleTableListener);
-
+        scheduleDelaySpinner.setValue(1);
+        
         scheduleDelaySpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                if ((Integer) scheduleDelaySpinner.getValue() < 0) {
-                    scheduleDelaySpinner.setValue(0);
+                if ((Integer) scheduleDelaySpinner.getValue() < 1) {
+                    scheduleDelaySpinner.setValue(1);
                 }
             }
         });
@@ -165,6 +167,17 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         existingWorkloadScrollPanel.setViewportView(tree);
     }
 
+    public void addEnergyConsumptionWithoutOptimizationAlgorithm(JPanel graphWithoutAlg){
+        panelEnergyConsumptionWithoutAlg.setLayout(new BorderLayout());
+        panelEnergyConsumptionWithoutAlg.add(graphWithoutAlg,"Center");
+        panelEnergyConsumptionWithoutAlg.repaint();
+    }
+    public void addEnergyConsumptionWithOptimizationAlgorithm(JPanel graphWithAlg){
+        panelEnergyConsumptionWithAlg.setLayout(new BorderLayout());
+        panelEnergyConsumptionWithAlg.add(graphWithAlg,"Center");
+        panelEnergyConsumptionWithAlg.repaint();
+    }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -198,6 +211,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         timeDelayLabel = new javax.swing.JLabel();
         existingWorkloadLable = new javax.swing.JLabel();
         scheduleWorkloadBasePanel = new javax.swing.JPanel();
+        scheduleTablePanel = new javax.swing.JPanel();
         scheduleControlPanel = new javax.swing.JPanel();
         deleteScheduleRowButton = new javax.swing.JButton();
         duplicateScheduleRowButton = new javax.swing.JButton();
@@ -216,6 +230,8 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         popupNotificationRadioButton = new javax.swing.JRadioButton();
         resourcesMonitorPanel = new javax.swing.JPanel();
         eneryEfficiencyPanel = new javax.swing.JPanel();
+        panelEnergyConsumptionWithoutAlg = new javax.swing.JPanel();
+        panelEnergyConsumptionWithAlg = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
 
@@ -261,6 +277,8 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        getContentPane().add(upperPanel, java.awt.BorderLayout.CENTER);
+
         logLabel3.setText("Log");
 
         showLogButton.setText("Show Log");
@@ -296,6 +314,8 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
                         .addComponent(logScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        getContentPane().add(logControlPane3, java.awt.BorderLayout.PAGE_START);
 
         decisionTimeBasePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         decisionTimeBasePanel.setLayout(new java.awt.BorderLayout());
@@ -395,6 +415,9 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
 
         scheduleWorkloadBasePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         scheduleWorkloadBasePanel.setLayout(new java.awt.BorderLayout());
+
+        scheduleTablePanel.setLayout(new java.awt.BorderLayout());
+        scheduleWorkloadBasePanel.add(scheduleTablePanel, java.awt.BorderLayout.LINE_START);
 
         scheduleControlPanel.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -503,18 +526,31 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         resourcesMonitorPanel.setLayout(new java.awt.BorderLayout());
         tabbedPane.addTab("Resources Monitor", resourcesMonitorPanel);
 
-        javax.swing.GroupLayout eneryEfficiencyPanelLayout = new javax.swing.GroupLayout(eneryEfficiencyPanel);
-        eneryEfficiencyPanel.setLayout(eneryEfficiencyPanelLayout);
-        eneryEfficiencyPanelLayout.setHorizontalGroup(
-                eneryEfficiencyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1101, Short.MAX_VALUE)
+        eneryEfficiencyPanel.setLayout(new java.awt.GridLayout());
+
+        panelEnergyConsumptionWithoutAlg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelEnergyConsumptionWithoutAlg.setMaximumSize(new java.awt.Dimension(400, 400));
+        eneryEfficiencyPanel.add(panelEnergyConsumptionWithoutAlg);
+
+        panelEnergyConsumptionWithAlg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelEnergyConsumptionWithAlg.setMaximumSize(new java.awt.Dimension(400, 400));
+
+        javax.swing.GroupLayout panelEnergyConsumptionWithAlgLayout = new javax.swing.GroupLayout(panelEnergyConsumptionWithAlg);
+        panelEnergyConsumptionWithAlg.setLayout(panelEnergyConsumptionWithAlgLayout);
+        panelEnergyConsumptionWithAlgLayout.setHorizontalGroup(
+            panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 548, Short.MAX_VALUE)
         );
-        eneryEfficiencyPanelLayout.setVerticalGroup(
-                eneryEfficiencyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 348, Short.MAX_VALUE)
+        panelEnergyConsumptionWithAlgLayout.setVerticalGroup(
+            panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 346, Short.MAX_VALUE)
         );
 
+        eneryEfficiencyPanel.add(panelEnergyConsumptionWithAlg);
+
         tabbedPane.addTab("Energy Eficiency Monitor", eneryEfficiencyPanel);
+
+        getContentPane().add(tabbedPane, java.awt.BorderLayout.PAGE_END);
 
         fileMenu.setText("File");
         menuBar.add(fileMenu);
@@ -584,6 +620,8 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     private javax.swing.JPanel memoryUsageBasePanel;
     private javax.swing.JPanel memoryUsagePanel;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JPanel panelEnergyConsumptionWithAlg;
+    private javax.swing.JPanel panelEnergyConsumptionWithoutAlg;
     private javax.swing.JButton pauseButton;
     private javax.swing.JRadioButton popupNotificationRadioButton;
     private javax.swing.JPanel radioButtonPanel;
@@ -595,6 +633,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     private javax.swing.JPanel scheduleControlPanel;
     private javax.swing.JPanel scheduleControlRightPanel;
     private javax.swing.JSpinner scheduleDelaySpinner;
+    private javax.swing.JPanel scheduleTablePanel;
     private javax.swing.JPanel scheduleWorkloadBasePanel;
     private javax.swing.JPanel schedulerControlPanel;
     private javax.swing.JPanel serverConfigurationTabPanel;

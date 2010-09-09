@@ -24,6 +24,10 @@ import java.util.Collection;
 import java.util.Observer;
 
 public class GUIAgent extends Agent {
+
+    //just temporary until time to propery define and place this
+    private int decisionTime;
+
     private final String EXIT_TOOLTIP = "Shuts down the system gracefully.";
 
     private final String LOG_TOOLTIP = "<html>Opens a window where are logged:" +
@@ -91,6 +95,16 @@ public class GUIAgent extends Agent {
 
     private java.util.List<Observer> observers;
 
+    public void setDecisionTime(int decisionTime) {
+        this.decisionTime = decisionTime;
+    }
+
+    public int getDecisionTime() {
+        int value = decisionTime;
+        decisionTime = 0;
+        return value;
+    }
+
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
@@ -99,9 +113,9 @@ public class GUIAgent extends Agent {
         observers.remove(observer);
     }
 
-    public void notifyObservers(){
-        for(Observer observer : observers){
-            observer.update(null,null);
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(null, null);
         }
     }
 
@@ -296,6 +310,7 @@ public class GUIAgent extends Agent {
             e.printStackTrace();
         }
     }
+
 
     private void showEnviromentMonitor() {
 
