@@ -1,23 +1,18 @@
 package gui.newgui;
 
 import globalLoop.agents.GUIAgent;
-import globalLoop.utils.GlobalVars;
+import gui.energyConsumption.EnergyConsumption;
+import gui.energyConsumption.EnergyConsumptionFactory;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
-import jade.core.AID;
-import jade.domain.introspection.ACLMessage;
 import model.impl.util.ModelAccess;
-import model.interfaces.resources.applications.ApplicationActivity;
 import utils.fileIO.ConfigurationFileIO;
-import utils.worldInterface.dtos.TaskDto;
 
 import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +22,7 @@ import java.util.List;
  * Time: 9:40:40 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ExpertConfigurationGUIController implements Observer {
+public class ExpertConfigurationGUIController {
     private GUIAgent agent;
     private ModelAccess modelAccess;
 
@@ -35,6 +30,7 @@ public class ExpertConfigurationGUIController implements Observer {
     private ServerConfigurationController serverConfigurationController;
     private TaskConfigurationController taskConfigurationController;
     private WorkloadSchedulerController workloadSchedulerController;
+
 
     private final String SAVE_TASKS_CONFIGURATION_TOOLTIP = "Saves the tasks configuration information from the tasks table in a user specified file";
     private final String SAVE_SERVES_CONFIGURATION_TOOLTIP = "Saves the servers configuration information from the servers table in a user specified file";
@@ -52,23 +48,17 @@ public class ExpertConfigurationGUIController implements Observer {
     private int decisionTime = 0;
     private int decisionTimeRefreshRateInMillis = 1000;
     private List<Timer> timers;
-    private ActionListener scheduleTimerActionListener;
-    private int scheduleCount = 0;
-    private Timer scheduleTimer;
 
     {
         timers = new ArrayList<Timer>(2);
     }
 
-    public ExpertConfigurationGUIController(GUIAgent a, ModelAccess ma, ExpertConfigurationGUI gui) {
-        this.agent = a;
-
-        a.addObserver(this);
-
-        this.modelAccess = ma;
+    public ExpertConfigurationGUIController(GUIAgent agent, ModelAccess modelAccess, ExpertConfigurationGUI gui) {
+        this.agent = agent;
+        this.modelAccess = modelAccess;
         this.expertGui = gui;
-        serverConfigurationController = new ServerConfigurationController(a);
-        taskConfigurationController = new TaskConfigurationController(a);
+        serverConfigurationController = new ServerConfigurationController(agent);
+        taskConfigurationController = new TaskConfigurationController(agent);
         workloadSchedulerController = new WorkloadSchedulerController(modelAccess);
         expertGui.addServerConfigurationPanel(serverConfigurationController.getConfigurationPanel());
         expertGui.addWorkloadConfigurationPanel(taskConfigurationController.getConfigurationPanel());
@@ -84,117 +74,6 @@ public class ExpertConfigurationGUIController implements Observer {
         } else {
             fileChooser.setCurrentDirectory(new File("."));
         }
-
-        scheduleTimerActionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                scheduleCount++;
-                expertGui.setTimerProgress(scheduleCount);
-//                new Thread() {
-//                    @Override
-//                    public void run() {
-
-                List<String> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
-                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
-//                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
-                String taskNames = "";
-                for (String name : scheduledTasks) {
-                    taskNames += name + ", ";
-                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
-                    //TODO; remove if other solution for templates implemented
-                    if (activity.getLocalName().toLowerCase().contains("template")) {
-
-                        TaskDto taskDto = new TaskDto();
-                        taskDto.setTaskName(activity.getLocalName());
-                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
-                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
-                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
-                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
-                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
-                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
-                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
-
-                        availableTasks.add(taskDto);
-                    }
-                }
-                if (expertGui.generatePopupMessages()) {
-//                            WorkloadTreeDisplay workloadTreeDisplay = new WorkloadTreeDisplay(availableTasks);
-//                            final JDialog dialog = new JDialog(expertGui);
-//
-//                            dialog.getContentPane().setLayout(new BorderLayout());
-//                            dialog.add(workloadTreeDisplay.getTree(), "Center");
-////                            JButton button = new JButton("OK");
-////                            button.addActionListener(new ActionListener() {
-////                                public void actionPerformed(ActionEvent e) {
-////                                    dialog.dispose();
-////                                }
-////                            });
-////                            dialog.add(button, "South");
-//                            dialog.setSize(200,300);
-//                            dialo
-//
-//
-// g.setVisible(true);
-//                            dialog.setModal(true);
-
-                    if (scheduledTasks.size() > 0) {
-                        JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
-                    }
-                }
-                jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
-                try {
-                    msg.setContentObject(new Object[]{"Create clones", scheduledTasks});
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
-                agent.send(msg);
-
-//                    }
-//                }.start();
-            }
-        };
-
-        expertGui.addStartTimerButtonListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                scheduleTimer = new Timer(1000, scheduleTimerActionListener);
-                scheduleTimer.start();
-            }
-        });
-
-        expertGui.addPauseTimerButtonListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                scheduleTimer.stop();
-            }
-        });
-
-        expertGui.addStopTimerButtonListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                scheduleCount = 0;
-                expertGui.setTimerProgress(scheduleCount);
-                scheduleTimer.stop();
-            }
-        });
-
-
-        expertGui.addScheduleTable(workloadSchedulerController.getScheduleTable());
-
-        expertGui.addDuplicateRowActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                workloadSchedulerController.duplicateRow(workloadSchedulerController.getScheduleTable().getSelectedRow());
-            }
-        });
-
-        expertGui.addRemoveSelectedActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                workloadSchedulerController.deleteSelected(workloadSchedulerController.getScheduleTable().getSelectedRow());
-            }
-        });
-
-        expertGui.addScheduleButtonActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                workloadSchedulerController.scheduleSelectedTasks(expertGui.getScheduleDelay());
-            }
-        });
 
         saveTasksConfiguration = new AbstractAction("Save tasks configuration") {
 
@@ -354,9 +233,5 @@ public class ExpertConfigurationGUIController implements Observer {
 
     public void setDecisionTime(int decisionTime) {
         this.decisionTime = decisionTime;
-    }
-
-    public void update(Observable o, Object arg) {
-        workloadSchedulerController.refreshAvailableTasks();
     }
 }
