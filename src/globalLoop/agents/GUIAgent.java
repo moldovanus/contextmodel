@@ -94,7 +94,7 @@ public class GUIAgent extends Agent {
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
-    
+
     public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
