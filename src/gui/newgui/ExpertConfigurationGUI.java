@@ -30,7 +30,11 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     private JTree availableTasksTree;
 
     /**
-     * Creates new form ExpertConfigurationGUI
+     * Creates new
+     *
+     *
+     *
+     * form ExpertConfigurationGUI
      */
     public ExpertConfigurationGUI() {
         initComponents();
@@ -54,7 +58,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         ButtonGroup radioGroup = new ButtonGroup();
         radioGroup.add(realChoiceRadio);
         radioGroup.add(simulateChoiceRadio);
-
+//        tabbedPane.set
         tabbedPane.addChangeListener(new ChangeListener() {
 
             public void stateChanged(ChangeEvent e) {
@@ -76,7 +80,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         duplicateScheduleRowButton.addActionListener(repaintScheduleTableListener);
         deleteScheduleRowButton.addActionListener(repaintScheduleTableListener);
         scheduleDelaySpinner.setValue(1);
-        
+
         scheduleDelaySpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 if ((Integer) scheduleDelaySpinner.getValue() < 1) {
@@ -139,7 +143,11 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     }
 
     public void logMessage(String message) {
+        boolean caretIsAtEnd = logTextArea.getCaretPosition() == logTextArea.getDocument().getLength();
         logTextArea.append(message + "\n");
+        if (caretIsAtEnd) {
+            logTextArea.setCaretPosition(logTextArea.getDocument().getLength());
+        }
     }
 
     public void addDecisionTimePanel(JPanel panel) {
@@ -167,14 +175,15 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         existingWorkloadScrollPanel.setViewportView(tree);
     }
 
-    public void addEnergyConsumptionWithoutOptimizationAlgorithm(JPanel graphWithoutAlg){
+    public void addEnergyConsumptionWithoutOptimizationAlgorithm(JPanel graphWithoutAlg) {
         panelEnergyConsumptionWithoutAlg.setLayout(new BorderLayout());
-        panelEnergyConsumptionWithoutAlg.add(graphWithoutAlg,"Center");
+        panelEnergyConsumptionWithoutAlg.add(graphWithoutAlg, "Center");
         panelEnergyConsumptionWithoutAlg.repaint();
     }
-    public void addEnergyConsumptionWithOptimizationAlgorithm(JPanel graphWithAlg){
+
+    public void addEnergyConsumptionWithOptimizationAlgorithm(JPanel graphWithAlg) {
         panelEnergyConsumptionWithAlg.setLayout(new BorderLayout());
-        panelEnergyConsumptionWithAlg.add(graphWithAlg,"Center");
+        panelEnergyConsumptionWithAlg.add(graphWithAlg, "Center");
         panelEnergyConsumptionWithAlg.repaint();
     }
 
@@ -538,12 +547,12 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout panelEnergyConsumptionWithAlgLayout = new javax.swing.GroupLayout(panelEnergyConsumptionWithAlg);
         panelEnergyConsumptionWithAlg.setLayout(panelEnergyConsumptionWithAlgLayout);
         panelEnergyConsumptionWithAlgLayout.setHorizontalGroup(
-            panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 548, Short.MAX_VALUE)
+                panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 548, Short.MAX_VALUE)
         );
         panelEnergyConsumptionWithAlgLayout.setVerticalGroup(
-            panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 346, Short.MAX_VALUE)
+                panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 346, Short.MAX_VALUE)
         );
 
         eneryEfficiencyPanel.add(panelEnergyConsumptionWithAlg);

@@ -114,9 +114,9 @@ public class ModelAccess implements ModelFactory {
 
     public Core createCore(String name) {
         if (accessType == ONTOLOGY_ACCESS) {
-            return ontologyModelFactory.createCore((name));
+            return ontologyModelFactory.createCore(generateUniqueName(name));
         } else {
-            return databaseModelFactory.createCore((name));
+            return databaseModelFactory.createCore(generateUniqueName(name));
         }
     }
 
@@ -386,13 +386,13 @@ public class ModelAccess implements ModelFactory {
 
         switch (accessType) {
             case ONTOLOGY_ACCESS:
-                object = ontologyModelFactory.createServiceCenterITComputingResource((name));
+                object = ontologyModelFactory.createServiceCenterITComputingResource(generateUniqueName(name));
                 break;
             case DATABASE_ACCESS:
-                object = databaseModelFactory.createServiceCenterITComputingResource((name));
+                object = databaseModelFactory.createServiceCenterITComputingResource(generateUniqueName(name));
                 break;
             case PREVAYLER_ACCESS:
-                object = prevailerModelFactory.createServiceCenterITComputingResource((name));
+                object = prevailerModelFactory.createServiceCenterITComputingResource(generateUniqueName(name));
                 break;
             default:
                 throw new UnsupportedOperationException("Invalid access type");
@@ -455,11 +455,11 @@ public class ModelAccess implements ModelFactory {
     public ServiceCenterServer createServiceCenterServer(String name) {
         ServiceCenterServer object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createServiceCenterServer((name));
+            object = ontologyModelFactory.createServiceCenterServer(generateUniqueName(name));
             //databaseModelFactory.createServiceCenterServer(name);
         } else {
             //ontologyModelFactory.createServiceCenterServer(name);
-            object = databaseModelFactory.createServiceCenterServer((name));
+            object = databaseModelFactory.createServiceCenterServer(generateUniqueName(name));
         }
         return object;
     }
@@ -769,11 +769,11 @@ public class ModelAccess implements ModelFactory {
     public HDD createHDD(String name) {
         HDD object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createHDD((name));
+            object = ontologyModelFactory.createHDD(generateUniqueName(name));
             //databaseModelFactory.createHDD(name);
         } else {
             //ontologyModelFactory.createHDD(name);
-            object = databaseModelFactory.createHDD((name));
+            object = databaseModelFactory.createHDD(generateUniqueName(name));
         }
         return object;
     }
@@ -797,11 +797,11 @@ public class ModelAccess implements ModelFactory {
     public SimpleResource createSimpleResource(String name) {
         SimpleResource object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createSimpleResource((name));
+            object = ontologyModelFactory.createSimpleResource(generateUniqueName(name));
             //databaseModelFactory.createSimpleResource(name);
         } else {
             //ontologyModelFactory.createSimpleResource(name);
-            object = databaseModelFactory.createSimpleResource((name));
+            object = databaseModelFactory.createSimpleResource(generateUniqueName(name));
         }
         return object;
     }
@@ -825,11 +825,11 @@ public class ModelAccess implements ModelFactory {
     public ITComputingContextPolicy createITComputingContextPolicy(String name) {
         ITComputingContextPolicy object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createITComputingContextPolicy((name));
+            object = ontologyModelFactory.createITComputingContextPolicy(generateUniqueName(name));
             //databaseModelFactory.createITComputingContextPolicy(name);
         } else {
             //ontologyModelFactory.createITComputingContextPolicy(name);
-            object = databaseModelFactory.createITComputingContextPolicy((name));
+            object = databaseModelFactory.createITComputingContextPolicy(generateUniqueName(name));
         }
         return object;
     }
@@ -993,11 +993,11 @@ public class ModelAccess implements ModelFactory {
     public BusinessPolicy createBusinessPolicy(String name) {
         BusinessPolicy object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createBusinessPolicy((name));
+            object = ontologyModelFactory.createBusinessPolicy(generateUniqueName(name));
             //databaseModelFactory.createBusinessPolicy(name);
         } else {
             //ontologyModelFactory.createBusinessPolicy(name);
-            object = databaseModelFactory.createBusinessPolicy((name));
+            object = databaseModelFactory.createBusinessPolicy(generateUniqueName(name));
         }
         System.out.println("BussinessPolicy" + object+ name);
         return object;
@@ -1022,11 +1022,11 @@ public class ModelAccess implements ModelFactory {
     public MEM createMEM(String name) {
         MEM object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createMEM((name));
+            object = ontologyModelFactory.createMEM(generateUniqueName(name));
             //databaseModelFactory.createMEM(name);
         } else {
             // ontologyModelFactory.createMEM(name);
-            object = databaseModelFactory.createMEM((name));
+            object = databaseModelFactory.createMEM(generateUniqueName(name));
         }
         return object;
     }
@@ -1078,11 +1078,11 @@ public class ModelAccess implements ModelFactory {
     public CPU createCPU(String name) {
         CPU object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createCPU((name));
+            object = ontologyModelFactory.createCPU(generateUniqueName(name));
             //databaseModelFactory.createCPU(name);
         } else {
             // ontologyModelFactory.createCPU(name);
-            object = databaseModelFactory.createCPU((name));
+            object = databaseModelFactory.createCPU(generateUniqueName(name));
         }
         return object;
     }
@@ -1106,11 +1106,11 @@ public class ModelAccess implements ModelFactory {
     public SLAPolicy createSLAPolicy(String name) {
         SLAPolicy object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createSLAPolicy((name));
+            object = ontologyModelFactory.createSLAPolicy(generateUniqueName(name));
             // databaseModelFactory.createSLAPolicy(name);
         } else {
             // ontologyModelFactory.createSLAPolicy(name);
-            object = databaseModelFactory.createSLAPolicy((name));
+            object = databaseModelFactory.createSLAPolicy(generateUniqueName(name));
         }
         return object;
     }
@@ -1162,11 +1162,11 @@ public class ModelAccess implements ModelFactory {
     public Facility createFacility(String name) {
         Facility object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createFacility((name));
+            object = ontologyModelFactory.createFacility(generateUniqueName(name));
             //databaseModelFactory.createFacility(name);
         } else {
             //ontologyModelFactory.createFacility(name);
-            object = databaseModelFactory.createFacility((name));
+            object = databaseModelFactory.createFacility(generateUniqueName(name));
         }
         return object;
     }
@@ -1191,11 +1191,11 @@ public class ModelAccess implements ModelFactory {
         QoSPolicy object;
         if (accessType == ONTOLOGY_ACCESS) {
 
-            object = ontologyModelFactory.createQoSPolicy((name));
+            object = ontologyModelFactory.createQoSPolicy(generateUniqueName(name));
             //databaseModelFactory.createQoSPolicy(name);
         } else {
             // ontologyModelFactory.createQoSPolicy(name);
-            object = databaseModelFactory.createQoSPolicy((name));
+            object = databaseModelFactory.createQoSPolicy(generateUniqueName(name));
         }
         return object;
     }
@@ -1247,11 +1247,11 @@ public class ModelAccess implements ModelFactory {
     public EnvironmentPolicy createEnvironmentPolicy(String name) {
         EnvironmentPolicy object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createEnvironmentPolicy((name));
+            object = ontologyModelFactory.createEnvironmentPolicy(generateUniqueName(name));
             //databaseModelFactory.createEnvironmentPolicy(name);
         } else {
             // ontologyModelFactory.createEnvironmentPolicy(name);
-            object = databaseModelFactory.createEnvironmentPolicy((name));
+            object = databaseModelFactory.createEnvironmentPolicy(generateUniqueName(name));
         }
         return object;
     }

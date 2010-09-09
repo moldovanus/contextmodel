@@ -274,9 +274,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
             System.out.println("Could not repair the context totally. Returning best solution:");
+            sendLogToGUI("Could not repair the context totally. Returning best solution:");
             Queue<ContextAction> commands = smallestEntropyContext.getActions();
             for (ContextAction command : commands) {
                 System.out.println(command.toString());
+                sendLogToGUI(command.toString());
             }
 
 //            System.out.println("Broken " + entropyAndPolicy.getSecond().getLocalName() + "\n Referenced " + entropyAndPolicy.getSecond().getReferenced().toString());
@@ -284,7 +286,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             //agent.getSelfOptimizingLogger().log(Color.red, "No solution found", "Could not repair the context totally. Returning best solution.");
             return smallestEntropyContext;
         }
-        System.out.println("---A");
+        System.out.println("----------------------------");
+        sendLogToGUI("----------------------------");
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         newContext.executeActions(modelAccess);
 //        datacenterMemory.restoreProtegeFactory(protegeFactory);
@@ -304,7 +307,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         }
 
         System.out.println("\n Entropy" + entropyAndPolicy.getFirst() + "  " + newContext.getRewardFunction() + "  " + entropyAndPolicy.getSecond() + "\n");
-        System.out.println("---B");
+        sendLogToGUI("\n Entropy" + entropyAndPolicy.getFirst() + "  " + newContext.getRewardFunction() + "  " + entropyAndPolicy.getSecond() + "\n");
+        System.out.println("------------------------------");
+        sendLogToGUI("------------------------------");
 
 
         Collection<ContextResource> associatedTasks = null;
@@ -562,7 +567,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         ContextSnapshot initialContext = new ContextSnapshot(new LinkedList());
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
-        System.out.println("Initial on tick entropy: " + entropyAndPolicy.getFirst() + " " + entropyAndPolicy.getSecond());
+        System.out.println("Entropy:  " + entropyAndPolicy.getFirst() + " " + entropyAndPolicy.getSecond());
+        sendLogToGUI("Entropy:  " + entropyAndPolicy.getFirst() + " " + entropyAndPolicy.getSecond());
 
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
         initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));
@@ -582,7 +588,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
             agent.send(msg);
 
-
+            Queue<ContextAction> actions = result.getActions();
+            for(ContextAction action: actions){
+                sendLogToGUI(action.toString());
+            }
             result.executeActions(modelAccess);
             result.executeOnServiceCenter(modelAccess);
 
@@ -658,4 +667,17 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         smallestEntropyContext = null;
 
     }
+
+    private void sendLogToGUI(String message){
+         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            try {
+                msg.setContentObject(new Object[]{"Log", message});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+            agent.send(msg);
+    }
+
+
 }

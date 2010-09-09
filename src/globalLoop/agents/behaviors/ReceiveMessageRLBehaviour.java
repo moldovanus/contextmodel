@@ -184,45 +184,14 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 cpu.addPartOf(server);
                                 memory.addPartOf(server);
                                 storage.addPartOf(server);
-
                                 PelletJena.generateEnergyRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                             }
-                        } else if (dataType.equals("Task added")) {
-                            TaskDto taskDto = (TaskDto) contentData[1];
-                            ApplicationActivity task = modelAccess.createApplicationActivity(taskDto.getTaskName());
-//                            QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
-//                            System.out.println(policy);
-//                            List<ContextResource> subjects = new ArrayList<ContextResource>(1);
-//                            subjects.add(task);
-//                            policy.setPolicySubject(subjects);
-//                            policy.setPolicyTarget(subjects);
-//                            policy.setPolicyName(taskDto.getTaskName() + "_QoSPolicy");
-//                            policy.setPolicyWeight(1);
-//                            task.addActivityPolicies(policy);
-                            task.setCpuAllocatedValue(0);
-                            task.setCpuRequiredMaxValue(taskDto.getRequestedCPUMax());
-                            task.setCpuRequiredMinValue(taskDto.getRequestedCPUMin());
-                            task.setMemAllocatedValue(0);
-                            task.setMemRequiredMaxValue(taskDto.getRequestedMemoryMax());
-                            task.setMemRequiredMinValue(taskDto.getRequestedMemoryMin());
-                            task.setHddAllocatedValue(0);
-                            task.setHddRequiredMaxValue(taskDto.getRequestedStorageMax());
-                            task.setHddRequiredMinValue(taskDto.getRequestedStorageMin());
-                            task.setNumberOfCoresAllocatedValue(0);
-                            task.setNumberOfCoresRequiredValue(taskDto.getRequestedCores());
-                            task.setCpuWeight(0.3f);
-                            task.setMemWeight(0.3f);
-                            task.setHddWeight(0.3f);
-                            //task.setResourceID("Task_" + taskDto.getTaskName());
-                            task.setResourceID(task.getFrameID().getName());
-
-//                            SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
-//                            String swrlRule = "";
-//                            PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
+                            sendMessageToGUI("Servers added", null);
                         } else if (dataType.equals("Tasks added")) {
                             List<ExtendedTaskDto> tasks = (List<ExtendedTaskDto>) contentData[1];
                             for (ExtendedTaskDto taskDto : tasks) {
                                 ApplicationActivity task = modelAccess.createApplicationActivity(taskDto.getTaskName());
+                                taskDto.setTaskName(task.getLocalName());
 //                                QoSPolicy policy = modelAccess.createQoSPolicy(taskDto.getTaskName() + "_QoSPolicy");
 //                                System.out.println(policy);
 //                                List<ContextResource> subjects = new ArrayList<ContextResource>(1);
@@ -248,7 +217,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 task.setHddWeight(0.3f);
                                 task.setResourceID(task.getFrameID().getName());
 
-
+                                sendMessageToGUI("Tasks added", tasks);
 //                                SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
 //                                String swrlRule = "";
 //                                PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
@@ -258,7 +227,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             int count = names.size();
                             for (int i = 0; i < count; i++) {
                                 ApplicationActivity template = modelAccess.getApplicationActivity(names.get(i));
-                                ApplicationActivity task = modelAccess.createApplicationActivity( "Activity" + "_" + i + "_");
+                                ApplicationActivity task = modelAccess.createApplicationActivity("Activity" + "_" + i + "_");
                                 QoSPolicy policy = modelAccess.createQoSPolicy(task.getLocalName() + "_QoSPolicy");
                                 System.out.println(policy);
                                 List<ContextResource> subjects = new ArrayList<ContextResource>(1);
@@ -284,10 +253,11 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 task.setHddWeight(0.3f);
                                 task.setResourceID(task.getFrameID().getName());
                                 PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
+
                             }
+                            sendMessageToGUI("TaskStatusChanged", names);
                         }
                     }
-                    sendReplyToGUIAgent();
                     break;
                 case ACLMessage.INFORM_IF:
 
@@ -314,10 +284,10 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
         }
     }
 
-    private void sendReplyToGUIAgent() {
+    private void sendMessageToGUI(String header, Object content) {
         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
         try {
-            msg.setContentObject(new Object[]{"Tasks added"});
+            msg.setContentObject(new Object[]{header, content});
         } catch (IOException e) {
             e.printStackTrace();
         }

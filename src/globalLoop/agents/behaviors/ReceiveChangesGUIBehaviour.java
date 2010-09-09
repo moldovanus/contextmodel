@@ -49,10 +49,10 @@ public class ReceiveChangesGUIBehaviour extends CyclicBehaviour {
             switch (message.getPerformative()) {
                 case ACLMessage.INFORM:
                     Object[] messageContent = (Object[]) message.getContentObject();
-                    if (messageContent[0].equals("Tasks added")) {
-                        guiAgent.notifyObservers();
-                    }else if (messageContent[0].equals("Running time")) {
-                        guiAgent.setDecisionTime(((Long)messageContent[1]).intValue());
+                    if (messageContent[0].equals("Running time")) {
+                        guiAgent.setDecisionTime(((Long) messageContent[1]).intValue());
+                    } else {
+                        guiAgent.notifyObservers(new Object[]{messageContent[0], messageContent[1]});
                     }
                     break;
             }

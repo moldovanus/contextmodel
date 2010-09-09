@@ -113,9 +113,9 @@ public class GUIAgent extends Agent {
         observers.remove(observer);
     }
 
-    public void notifyObservers() {
+    public void notifyObservers(Object[] objects) {
         for (Observer observer : observers) {
-            observer.update(null, null);
+            observer.update(null, objects);
         }
     }
 
