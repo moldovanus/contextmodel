@@ -227,7 +227,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             int count = names.size();
                             for (int i = 0; i < count; i++) {
                                 ApplicationActivity template = modelAccess.getApplicationActivity(names.get(i));
-                                ApplicationActivity task = modelAccess.createApplicationActivity("Activity" + "_" + i + "_");
+                                ApplicationActivity task = modelAccess.createApplicationActivity(template.getLocalName());
                                 QoSPolicy policy = modelAccess.createQoSPolicy(task.getLocalName() + "_QoSPolicy");
                                 System.out.println(policy);
                                 List<ContextResource> subjects = new ArrayList<ContextResource>(1);

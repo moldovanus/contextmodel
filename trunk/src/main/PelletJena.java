@@ -142,7 +142,7 @@ public class PelletJena {
 
                 System.out.println(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");
                 ;//+ " ^ ComplexResource(?x) ^ ResourceID(?x," + compResource.getResourceID() + ") ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maximumWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
-                SWRLImp imp = factory.createImp(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");//  " ^ ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
+                SWRLImp imp = factory.createImp(currentPolicy.getPolicySubject().get(0).getName(),swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");//  " ^ ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
                 imp.enable();
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

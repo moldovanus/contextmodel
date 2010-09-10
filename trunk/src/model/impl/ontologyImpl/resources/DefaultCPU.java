@@ -56,16 +56,28 @@ public class DefaultCPU extends DefaultSimpleResource
 
     public void addAssociatedCore(Core newAssociatedCores) {
         addPropertyValue(getAssociatedCoresProperty(), newAssociatedCores);
+        this.setCurrentWorkLoad(this.getCurrentWorkLoad()+ newAssociatedCores.getCurrentWorkLoad());
+
     }
 
 
     public void removeAssociatedCore(Core oldAssociatedCores) {
         removePropertyValue(getAssociatedCoresProperty(), oldAssociatedCores);
+        this.setCurrentWorkLoad(this.getCurrentWorkLoad()- oldAssociatedCores.getCurrentWorkLoad());
+
     }
 
 
     public void setAssociatedCores(List<Core> newAssociatedCores) {
         setPropertyValues(getAssociatedCoresProperty(), newAssociatedCores);
+        this.setOptimalWorkLoad(newAssociatedCores.get(0).getOptimalWorkLoad());
+        this.setMaximumWorkLoad(newAssociatedCores.get(0).getMaximumWorkLoad());
+        double currentWorkload= 0;
+        for (Core core:newAssociatedCores){
+          currentWorkload+=core.getCurrentWorkLoad();
+        }
+        this.setCurrentWorkLoad(currentWorkload*newAssociatedCores.size());
+
     }
 
 
@@ -121,20 +133,22 @@ public class DefaultCPU extends DefaultSimpleResource
         if (cores.size() < requestedCoresNo) {
             return false;
         }
-
-        boolean hasResources = false;
-
-        for (Core core : cores) {
-            if (core.hasResourcesFor(activity)) {
-                requestedCoresNo--;
-            }
-            if (requestedCoresNo == 0) {
-                hasResources = true;
-                break;
-            }
-        }
-
-        return hasResources;
+        if (requestedCoresNo * activity.getCpuRequiredMaxValue() <= this.getAssociatedCores().size()*((this.getAssociatedCores().get(0).getMaximumWorkLoad()+ this.getAssociatedCores().get(0).getOptimalWorkLoad()) / 2) - this.getCurrentWorkLoad())
+            return true;
+        else return false;
+//            boolean hasResources = false;
+//
+//        for (Core core : cores) {
+//            if (core.hasResourcesFor(activity)) {
+//                requestedCoresNo--;
+//            }
+//            if (requestedCoresNo == 0) {
+//                hasResources = true;
+//                break;
+//            }
+//        }
+//
+//        return hasResources;
     }
 
     @Override
