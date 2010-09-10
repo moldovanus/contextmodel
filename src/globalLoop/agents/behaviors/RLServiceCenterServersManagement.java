@@ -511,30 +511,51 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         return newContext;
     }
 
+    public void adjustPolicies(ServiceCenterServer server) {
+        CPU cpu = server.getCpuResources().iterator().next();
+        for (Core core : cpu.getAssociatedCores()) {
+            if ((core.getOptimalWorkLoad() / 2.0 )> core.getCurrentWorkLoad()) {
+                core.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2);
+                cpu.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2);
+            }
+            if (((core.getOptimalWorkLoad() + core.getMaximumWorkLoad()) / 2.0) < core.getCurrentWorkLoad()) {
+                core.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2 - core.getMaximumWorkLoad());
+                cpu.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2 - core.getMaximumWorkLoad());
+            }
+        }
+        MEM mem = server.getMemResources().iterator().next();
+        if ((mem.getOptimalWorkLoad() / 2.0 )> mem.getCurrentWorkLoad()){
+            mem.setOptimalWorkLoad((mem.getCurrentWorkLoad()-100) * 2);
+        }
+        if (((mem.getOptimalWorkLoad() + mem.getMaximumWorkLoad()) / 2.0) < mem.getCurrentWorkLoad()) {
+            mem.setOptimalWorkLoad((mem.getCurrentWorkLoad()+100) * 2 - mem.getMaximumWorkLoad());
+        }
+    }
 
     @Override
     protected void onTick() {
 
 //        refresh server information
-//        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
-//        for (ServiceCenterServer server : servers) {
-//            if ( !server.getIsActive()){
-//                continue;
-//            }
-//            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
-//            ServerDto dto = proxy.getServerInfo();
-//            int coreCount = dto.getCoreCount();
-//            int totalCPU = dto.getTotalCPU();
-//
-//            //read info only about the number of cores wanted for test
-//            List<Integer> integers = dto.getFreeCPU();
-//            List<Core> cores = server.getCpuResources().iterator().next().getAssociatedCores();
-//            for (int i = 0; i < cores.size(); i++) {
-//                Core core = cores.get(i);
-//                core.setCurrentWorkLoad(totalCPU - integers.get(i).doubleValue());
-//                core.setMaximumWorkLoad((double)totalCPU);
-//            }
-//
+        System.out.println("New configuration");
+        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+        for (ServiceCenterServer server : servers) {
+            if (!server.getIsActive()) {
+                continue;
+            }
+            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+            ServerDto dto = proxy.getServerInfo();
+            int coreCount = dto.getCoreCount();
+            int totalCPU = dto.getTotalCPU();
+
+            //read info only about the number of cores wanted for test
+            List<Integer> integers = dto.getFreeCPU();
+            List<Core> cores = server.getCpuResources().iterator().next().getAssociatedCores();
+            for (int i = 0; i < cores.size(); i++) {
+                Core core = cores.get(i);
+                core.setCurrentWorkLoad(totalCPU - integers.get(i).doubleValue());
+                core.setMaximumWorkLoad((double) totalCPU);
+            }
+
 //            List<StorageDto> storageDtos = dto.getStorage();
 //            for(StorageDto storageDto : storageDtos){
 //                HDD  hdd = server.getHddResources().iterator().next();
@@ -544,12 +565,14 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //                    break;
 //                }
 //            }
-//
-//            MEM memory = server.getMemResources().iterator().next();
-//            memory.setCurrentWorkLoad((double)dto.getTotalMemory() - dto.getFreeMemory());
-//            memory.setMaximumWorkLoad((double)dto.getTotalMemory());
-//
-//        }
+
+            MEM memory = server.getMemResources().iterator().next();
+            memory.setCurrentWorkLoad((double) dto.getTotalMemory() - dto.getFreeMemory());
+            memory.setMaximumWorkLoad((double) dto.getTotalMemory());
+            System.out.println(server.toString());
+            System.out.println(server.getCpuResources().iterator().next().toString());
+            System.out.println(memory.toString());
+        }
 
         PriorityQueue<ContextSnapshot> queue = new PriorityQueue<ContextSnapshot>(1, new Comparator<ContextSnapshot>() {
 
@@ -589,7 +612,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             agent.send(msg);
 
             Queue<ContextAction> actions = result.getActions();
-            for(ContextAction action: actions){
+            for (ContextAction action : actions) {
                 sendLogToGUI(action.toString());
             }
             result.executeActions(modelAccess);
@@ -651,6 +674,12 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                         entropyAndPolicy = computeEntropy();
                         result.setContextEntropy(entropyAndPolicy.getFirst());
                     }
+                } else {
+                    for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
+                        if (server.getIsActive())
+                        adjustPolicies(server);
+
+                    }
                 }
 
             }
@@ -668,15 +697,15 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     }
 
-    private void sendLogToGUI(String message){
-         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-            try {
-                msg.setContentObject(new Object[]{"Log", message});
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
-            agent.send(msg);
+    private void sendLogToGUI(String message) {
+        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+        try {
+            msg.setContentObject(new Object[]{"Log", message});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+        agent.send(msg);
     }
 
 
