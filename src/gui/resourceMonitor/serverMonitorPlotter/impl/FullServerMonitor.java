@@ -64,8 +64,8 @@ public class FullServerMonitor implements IMonitor {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         serverTasksMonitor = new ServerTasksMonitor(server);
-        xyMonitor = new ServerMonitorXYPlotter(server, proxy, refreshRate);
-        pieMonitor = new ServerMonitorPiePlotter(server, proxy, refreshRate);
+        xyMonitor = new ServerMonitorXYPlotter(server,  refreshRate);
+        pieMonitor = new ServerMonitorPiePlotter(server,  refreshRate);
 
         serverMonitorWindow = new JDesktopPane();
         serverMonitorWindow.setBackground(new Color(100, 149, 237));

@@ -43,8 +43,8 @@ public class ServersMonitorController {
             serverMonitors.put(
                     server.getLocalName(),
                     new Pair<AbstractMonitor, AbstractMonitor>(
-                            new ServerMonitorXYPlotter(server, ProxyFactory.createServerManagementProxy(server.getIpAddress())),
-                            new ServerMonitorPiePlotter(server, ProxyFactory.createServerManagementProxy(server.getIpAddress()))));
+                            new ServerMonitorXYPlotter(server),
+                            new ServerMonitorPiePlotter(server)));
         }
     }
 

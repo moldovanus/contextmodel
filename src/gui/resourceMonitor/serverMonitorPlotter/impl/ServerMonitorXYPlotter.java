@@ -8,6 +8,7 @@ import model.interfaces.resources.HDD;
 import model.interfaces.resources.MEM;
 import model.interfaces.resources.ServiceCenterServer;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ServerDto;
 import utils.worldInterface.dtos.StorageDto;
 
@@ -27,13 +28,13 @@ import java.util.List;
 public class ServerMonitorXYPlotter extends ServerMonitor {
 
 
-    public ServerMonitorXYPlotter(ServiceCenterServer server, ServerManagementProxyInterface proxy) {
-        super(server, proxy);
+    public ServerMonitorXYPlotter(ServiceCenterServer server) {
+        super(server);
         setup();
     }
 
-    public ServerMonitorXYPlotter(ServiceCenterServer server, ServerManagementProxyInterface proxy, int refreshRate) {
-        super(proxy, server, refreshRate);
+    public ServerMonitorXYPlotter(ServiceCenterServer server, int refreshRate) {
+        super(server, refreshRate);
         setup();
     }
 
@@ -77,15 +78,12 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
     }
 
     protected void refreshData() {
-        if (!server.getIsActive()) {
+        ServerManagementProxyInterface proxyInterface = getProxy();
+        if (!server.getIsActive() || (proxyInterface instanceof StubProxy)) {
             return;
         }
-        //TODO: place if Server Is In SLEEP
-        //System.err.println("After finishing with tests check if sever is in sleep and do not query if it is");
-        /*if ( server.getIsInLowPowerState()){
-            return;
-        }*/
-        ServerDto serverDto = proxy.getServerInfo();
+
+        ServerDto serverDto = proxyInterface.getServerInfo();
         List<Integer> freeCPU = serverDto.getFreeCPU();
         int totalCPU = serverDto.getTotalCPU();
         int coresCount = coresMonitors.size();
@@ -93,18 +91,18 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
             coresMonitors.get(i).setCurrentValue(totalCPU - freeCPU.get(i));
         }
 
-        HDD storage = server.getHddResources().iterator().next();
-        List<StorageDto> storageList = serverDto.getStorage();
-        StorageDto targetStorage = null;
-        String storagePath = storage.getPhysicalPath();
-        for (StorageDto storageDto : storageList) {
-            if (storageDto.getName().charAt(0) == storagePath.charAt(0)) {
-                targetStorage = storageDto;
-                break;
-            }
-        }
+//        HDD storage = server.getHddResources().iterator().next();
+//        List<StorageDto> storageList = serverDto.getStorage();
+//        StorageDto targetStorage = null;
+//        String storagePath = storage.getPhysicalPath();
+//        for (StorageDto storageDto : storageList) {
+//            if (storageDto.getName().charAt(0) == storagePath.charAt(0)) {
+//                targetStorage = storageDto;
+//                break;
+//            }
+//        }
 
-        storageMonitor.setCurrentValue(targetStorage.getSize() - targetStorage.getFreeSpace());
+//        storageMonitor.setCurrentValue(targetStorage.getSize() - targetStorage.getFreeSpace());
 
         memoryMonitor.setCurrentValue(serverDto.getTotalMemory() - serverDto.getFreeMemory());
 

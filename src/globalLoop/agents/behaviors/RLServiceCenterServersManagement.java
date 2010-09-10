@@ -266,11 +266,13 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         return retServer;
     }
 
+    private int stackDepth = 0;
 
     private ContextSnapshot reinforcementLearning(PriorityQueue<ContextSnapshot> queue) {
+        System.out.println("STACK depth: " + stackDepth++);
 
         ContextSnapshot newContext = queue.poll();
-        if (newContext == null) {
+        if (newContext == null || (stackDepth == 500)) {
             Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
             System.out.println("Could not repair the context totally. Returning best solution:");
@@ -284,12 +286,17 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //            System.out.println("Broken " + entropyAndPolicy.getSecond().getLocalName() + "\n Referenced " + entropyAndPolicy.getSecond().getReferenced().toString());
 
             //agent.getSelfOptimizingLogger().log(Color.red, "No solution found", "Could not repair the context totally. Returning best solution.");
+            stackDepth = 0;
             return smallestEntropyContext;
         }
-        System.out.println("----------------------------");
-        sendLogToGUI("----------------------------");
+        System.out.println(stackDepth + " :----------------------------");
+        sendLogToGUI(stackDepth + "----------------------------");
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         newContext.executeActions(modelAccess);
+        Queue<ContextAction> actions = newContext.getActions();
+        for (ContextAction action : actions) {
+            sendLogToGUI("Executing:  " + action.toString());
+        }
 //        datacenterMemory.restoreProtegeFactory(protegeFactory);
         //TODO: de bagat dupa ce bagam memoria
 //        Queue<ContextAction> commands = datacenterMemory.getActionsForTasks(protegeFactory);
@@ -306,8 +313,12 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             smallestEntropyContext = newContext;
         }
 
-        System.out.println("\n Entropy" + entropyAndPolicy.getFirst() + "  " + newContext.getRewardFunction() + "  " + entropyAndPolicy.getSecond() + "\n");
-        sendLogToGUI("\n Entropy" + entropyAndPolicy.getFirst() + "  " + newContext.getRewardFunction() + "  " + entropyAndPolicy.getSecond() + "\n");
+        System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
+                + ",  Reward: " + newContext.getRewardFunction()
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()) + "\n");
+        sendLogToGUI("\n Entropy: "
+                + entropyAndPolicy.getFirst() + ",  Reward: " + newContext.getRewardFunction()
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()) + "\n");
         System.out.println("------------------------------");
         sendLogToGUI("------------------------------");
 
@@ -514,7 +525,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     public void adjustPolicies(ServiceCenterServer server) {
         CPU cpu = server.getCpuResources().iterator().next();
         for (Core core : cpu.getAssociatedCores()) {
-            if ((core.getOptimalWorkLoad() / 2.0 )> core.getCurrentWorkLoad()) {
+            if ((core.getOptimalWorkLoad() / 2.0) > core.getCurrentWorkLoad()) {
                 core.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2);
                 cpu.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2);
             }
@@ -524,17 +535,17 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
         }
         MEM mem = server.getMemResources().iterator().next();
-        if ((mem.getOptimalWorkLoad() / 2.0 )> mem.getCurrentWorkLoad()){
-            mem.setOptimalWorkLoad((mem.getCurrentWorkLoad()-100) * 2);
+        if ((mem.getOptimalWorkLoad() / 2.0) > mem.getCurrentWorkLoad()) {
+            mem.setOptimalWorkLoad((mem.getCurrentWorkLoad() - 100) * 2);
         }
         if (((mem.getOptimalWorkLoad() + mem.getMaximumWorkLoad()) / 2.0) < mem.getCurrentWorkLoad()) {
-            mem.setOptimalWorkLoad((mem.getCurrentWorkLoad()+100) * 2 - mem.getMaximumWorkLoad());
+            mem.setOptimalWorkLoad((mem.getCurrentWorkLoad() + 100) * 2 - mem.getMaximumWorkLoad());
         }
     }
 
     @Override
     protected void onTick() {
-
+        stackDepth = 0;
 //        refresh server information
         System.out.println("New configuration");
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
@@ -590,8 +601,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         ContextSnapshot initialContext = new ContextSnapshot(new LinkedList());
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
-        System.out.println("Entropy:  " + entropyAndPolicy.getFirst() + " " + entropyAndPolicy.getSecond());
-        sendLogToGUI("Entropy:  " + entropyAndPolicy.getFirst() + " " + entropyAndPolicy.getSecond());
+        System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()));
+        sendLogToGUI("\n Entropy: "
+                + entropyAndPolicy.getFirst()
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()));
 
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
         initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));
@@ -677,7 +691,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 } else {
                     for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
                         if (server.getIsActive())
-                        adjustPolicies(server);
+                            adjustPolicies(server);
 
                     }
                 }
