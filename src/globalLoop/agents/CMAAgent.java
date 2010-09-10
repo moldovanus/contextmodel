@@ -33,14 +33,13 @@ public class CMAAgent extends Agent {
         } catch (StaleProxyException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        
+
         try {
             tmAgentController = container.createNewAgent(GlobalVars.TMAGENT_NAME, TMAgent.class.getName(), new Object[]{});
             tmAgentController.start();
         } catch (StaleProxyException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
 
         try {
             guiAgentController = container.createNewAgent(GlobalVars.GUIAGENT_NAME, GUIAgent.class.getName(), new Object[]{modelAccess});
@@ -50,4 +49,5 @@ public class CMAAgent extends Agent {
         }
 
     }
+
 }

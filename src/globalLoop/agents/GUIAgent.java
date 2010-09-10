@@ -15,7 +15,6 @@ import utils.logger.LoggerGUI;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,8 +24,6 @@ import java.util.Observer;
 
 public class GUIAgent extends Agent {
 
-    //just temporary until time to propery define and place this
-    private int decisionTime;
 
     private final String EXIT_TOOLTIP = "Shuts down the system gracefully.";
 
@@ -91,19 +88,10 @@ public class GUIAgent extends Agent {
     private java.util.List<IMonitor> serverMonitors;
     private IMonitor tasksQueueMonitor;
 
+    private MainWindow mainWindow;
     private JFrame frame;
 
     private java.util.List<Observer> observers;
-
-    public void setDecisionTime(int decisionTime) {
-        this.decisionTime = decisionTime;
-    }
-
-    public int getDecisionTime() {
-        int value = decisionTime;
-        decisionTime = 0;
-        return value;
-    }
 
     public void addObserver(Observer observer) {
         observers.add(observer);
@@ -118,7 +106,6 @@ public class GUIAgent extends Agent {
             observer.update(null, objects);
         }
     }
-
 
     @Override
     protected void setup() {
@@ -293,7 +280,7 @@ public class GUIAgent extends Agent {
 //
 //        frame.setVisible(true);
 
-        MainWindow mainWindow = new MainWindow(this, modelAccess);
+        mainWindow = new MainWindow(this, modelAccess);
         mainWindow.addFileMenuAction(exitAction);
         mainWindow.setVisible(true);
 

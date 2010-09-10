@@ -3,9 +3,7 @@ package globalLoop.agents.behaviors;
 import globalLoop.agents.GUIAgent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.UnreadableException;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +48,7 @@ public class ReceiveChangesGUIBehaviour extends CyclicBehaviour {
                 case ACLMessage.INFORM:
                     Object[] messageContent = (Object[]) message.getContentObject();
                     if (messageContent[0].equals("Running time")) {
-                        guiAgent.setDecisionTime(((Long) messageContent[1]).intValue());
+                        guiAgent.notifyObservers(new Object[]{messageContent[0], messageContent[1]});
                     } else {
                         guiAgent.notifyObservers(new Object[]{messageContent[0], messageContent[1]});
                     }

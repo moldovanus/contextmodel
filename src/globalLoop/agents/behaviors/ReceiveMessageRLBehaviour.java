@@ -5,18 +5,12 @@
 package globalLoop.agents.behaviors;
 
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
-import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
-import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
 import globalLoop.agents.RLAgent;
 import globalLoop.utils.GlobalVars;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-//import selfoptimizing.actionEnforcement.command.selfOptimizingCommand.RemoveTaskFromServerCommand;
-//import selfoptimizing.contextaware.GlobalVars;
-//import selfoptimizing.contextaware.agents.ReinforcementLearningAgent;
-//import selfoptimizing.ontologyRepresentations.greenContextOntology.*;
 import main.PelletJena;
 import model.impl.util.ModelAccess;
 import model.interfaces.policies.ITComputingContextPolicy;
@@ -27,7 +21,6 @@ import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInt
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.ExtendedServerDto;
 import utils.worldInterface.dtos.ExtendedTaskDto;
-import utils.worldInterface.dtos.TaskDto;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -227,7 +220,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             int count = names.size();
                             for (int i = 0; i < count; i++) {
                                 ApplicationActivity template = modelAccess.getApplicationActivity(names.get(i));
-                                ApplicationActivity task = modelAccess.createApplicationActivity(template.getLocalName());
+                                ApplicationActivity task = modelAccess.createApplicationActivity(names.get(i));
                                 QoSPolicy policy = modelAccess.createQoSPolicy(task.getLocalName() + "_QoSPolicy");
                                 System.out.println(policy);
                                 List<ContextResource> subjects = new ArrayList<ContextResource>(1);

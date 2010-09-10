@@ -10,11 +10,17 @@ import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInt
  * To change this template use File | Settings | File Templates.
  */
 public class ProxyFactory {
+    private static boolean returnStub = true;
+
     private ProxyFactory() {
     }
 
     public static ServerManagementProxyInterface createServerManagementProxy(String hostName) {
-        return new HyperVServerManagementProxy(hostName);
+        return (returnStub) ? new StubProxy(hostName) : new HyperVServerManagementProxy(hostName);
+    }
+
+    public static void setReturnStub(boolean returnStub) {
+        ProxyFactory.returnStub = returnStub;
     }
 }
     
