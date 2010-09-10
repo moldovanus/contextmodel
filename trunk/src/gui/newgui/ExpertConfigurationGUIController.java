@@ -4,11 +4,12 @@ import globalLoop.agents.GUIAgent;
 import globalLoop.utils.GlobalVars;
 import gui.energyConsumption.EnergyConsumption;
 import gui.energyConsumption.EnergyConsumptionFactory;
+import gui.resourceMonitor.AbstractMonitor;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
 import jade.core.AID;
-import jade.domain.introspection.ACLMessage;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.applications.ApplicationActivity;
+import selfoptimizing.utils.Pair;
 import utils.fileIO.ConfigurationFileIO;
 import utils.worldInterface.dtos.TaskDto;
 
@@ -19,10 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,6 +38,7 @@ public class ExpertConfigurationGUIController implements Observer {
     private ServerConfigurationController serverConfigurationController;
     private TaskConfigurationController taskConfigurationController;
     private WorkloadSchedulerController workloadSchedulerController;
+    private ServersMonitorController serversMonitorController;
 
     private final String SAVE_TASKS_CONFIGURATION_TOOLTIP = "Saves the tasks configuration information from the tasks table in a user specified file";
     private final String SAVE_SERVES_CONFIGURATION_TOOLTIP = "Saves the servers configuration information from the servers table in a user specified file";
@@ -50,8 +50,8 @@ public class ExpertConfigurationGUIController implements Observer {
     private AbstractAction loadTasksConfiguration;
     private AbstractAction loadServersConfiguration;
 
-    private JFileChooser fileChooser;
 
+    private JFileChooser fileChooser;
 
     private int decisionTime = 0;
     private int decisionTimeRefreshRateInMillis = 1000;
@@ -59,6 +59,10 @@ public class ExpertConfigurationGUIController implements Observer {
     private ActionListener scheduleTimerActionListener;
     private int scheduleCount = -1;
     private Timer scheduleTimer;
+
+
+    private int energyEstimateWithoutAlg = 0;
+    private int energyEstimateWithAlg = 0;
 
     {
         timers = new ArrayList<Timer>(2);
@@ -74,6 +78,7 @@ public class ExpertConfigurationGUIController implements Observer {
         serverConfigurationController = new ServerConfigurationController(a);
         taskConfigurationController = new TaskConfigurationController(a);
         workloadSchedulerController = new WorkloadSchedulerController(modelAccess);
+        serversMonitorController = new ServersMonitorController(modelAccess);
         expertGui.addServerConfigurationPanel(serverConfigurationController.getConfigurationPanel());
         expertGui.addWorkloadConfigurationPanel(taskConfigurationController.getConfigurationPanel());
 
@@ -82,12 +87,15 @@ public class ExpertConfigurationGUIController implements Observer {
         createMemoryUsageChart();
         createEnergyConsumptionCharts();
         fileChooser = new JFileChooser();
+
+
         File file = new File("./testConfigurations");
         if (file.exists()) {
             fileChooser.setCurrentDirectory(file);
         } else {
             fileChooser.setCurrentDirectory(new File("."));
         }
+
 
         scheduleTimerActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -156,17 +164,19 @@ public class ExpertConfigurationGUIController implements Observer {
             }
         };
 
-        timers.add(scheduleTimer);
+
         expertGui.addStartTimerButtonListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 scheduleTimer = new Timer(1000, scheduleTimerActionListener);
                 scheduleTimer.start();
+                timers.add(scheduleTimer);
             }
         });
 
         expertGui.addPauseTimerButtonListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 scheduleTimer.stop();
+                timers.remove(scheduleTimer);
             }
         });
 
@@ -179,17 +189,17 @@ public class ExpertConfigurationGUIController implements Observer {
         });
 
 
-        expertGui.addScheduleTable(workloadSchedulerController.getScheduleTable());
+        expertGui.addScheduleTableModel(workloadSchedulerController.getScheduleTableModel());
 
         expertGui.addDuplicateRowActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                workloadSchedulerController.duplicateRow(workloadSchedulerController.getScheduleTable().getSelectedRow());
+                workloadSchedulerController.duplicateRow(expertGui.getWorkloadScheduleTable().getSelectedRow());
             }
         });
 
         expertGui.addRemoveSelectedActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                workloadSchedulerController.deleteSelected(workloadSchedulerController.getScheduleTable().getSelectedRow());
+                workloadSchedulerController.deleteSelected(expertGui.getWorkloadScheduleTable().getSelectedRow());
             }
         });
 
@@ -298,24 +308,42 @@ public class ExpertConfigurationGUIController implements Observer {
         });
     }
 
-    private void createServersConfigurationPanel() {
 
+    private void refreshEnergyEstimate() {
+        EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
+        EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
+        energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm();
+        energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm();
+    }
+
+    private void refreshServersMonitorsPanel() {
+        JTabbedPane tabbedPane = expertGui.getServerMonitorTabbedPane();
+        tabbedPane.removeAll();
+
+        Map<String, Pair<AbstractMonitor, AbstractMonitor>> map = serversMonitorController.getServerMonitors();
+        for (String serverName : map.keySet()) {
+            JPanel panel = new JPanel();
+            panel.setLayout(new GridLayout(2, 1));
+            Pair<AbstractMonitor, AbstractMonitor> pair = map.get(serverName);
+            panel.add(pair.getFirst().getMonitorPanel(), 0, 0);
+            panel.add(pair.getSecond().getMonitorPanel(), 0, 1);
+            tabbedPane.addTab(serverName, panel);
+        }
     }
 
     private void createEnergyConsumptionCharts() {
+        refreshEnergyEstimate();
         final ResourceMonitorXYChartPlotter plotter1 = new ResourceMonitorXYChartPlotter("Energy Consumption without GAMES infrastructure", "Time(s)", "Energy Consumed (W)", 0, 5000);
         final ResourceMonitorXYChartPlotter plotter2 = new ResourceMonitorXYChartPlotter("Energy Consumption with GAMES infrastructure", "Time(s)", "Energy Consumed (W)", 0, 5000);
         plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         plotter2.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
-        final EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new Thread() {
                     @Override
                     public void run() {
-                        EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
-                        plotter1.setCurrentValue(energyConsumption.getValueWithoutAlgorithm());
-                        plotter2.setCurrentValue(energyConsumption.getValueWithRunningAlgorithm());
+                        plotter1.setCurrentValue(energyEstimateWithoutAlg);
+                        plotter2.setCurrentValue(energyEstimateWithAlg);
                     }
                 }.start();
             }
@@ -356,10 +384,10 @@ public class ExpertConfigurationGUIController implements Observer {
                 new Thread() {
                     @Override
                     public void run() {
-                        plotter.setCurrentValue(agent.getDecisionTime());
+                        plotter.setCurrentValue(decisionTime);
+                        decisionTime = 0;
                     }
                 }.start();
-                decisionTime = 0;
             }
         };
         Timer refreshDecisionTimeTimer = new Timer(decisionTimeRefreshRateInMillis, actionListener);
@@ -390,6 +418,17 @@ public class ExpertConfigurationGUIController implements Observer {
             this.expertGui.logMessage(data[1].toString());
         } else if (data[0].equals("Tasks added")) {
             workloadSchedulerController.refreshAvailableTasks();
+        } else if (data[0].equals("Servers added")) {
+            new Thread() {
+                @Override
+                public void run() {
+//                    refreshServersMonitorsPanel();
+                }
+
+            }.start();
+        } else if (data[0].equals("Running time")) {
+            refreshEnergyEstimate();
+            decisionTime = ((Long) data[1]).intValue();
         }
     }
 

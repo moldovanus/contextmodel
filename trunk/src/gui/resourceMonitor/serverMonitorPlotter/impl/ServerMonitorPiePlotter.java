@@ -41,7 +41,7 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
     protected void setup() {
 
         monitorPanel = new JPanel();
-        // monitorPanel.setLayout(new GridLayout(2, 1));
+        monitorPanel.setLayout(new GridLayout(1, 2));
 
         // JPanel coresPanel = new JPanel();
         //JPanel storageAndMemoryPanel = new JPanel();
@@ -53,21 +53,23 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
         }
         coresMonitors = new ArrayList<ResourceMonitorPlotter>();
 
-        monitorPanel.setLayout(new GridLayout(coresCount / 2 + 1, coresCount / (coresCount / 2) + 2));
+//        monitorPanel.setLayout(new GridLayout(coresCount / 2 + 1, coresCount / (coresCount / 2) + 2));
+
         //coresPanel.setSize(400, 150);
         //JScrollPane coresScrollPanel = new JScrollPane(coresPanel);
 
         // storageAndMemoryPanel.setLayout(new GridLayout(1,2));
 
-        for (Object o : cores) {
-            Core core = (Core) o;
-            ResourceMonitorPlotter plotter = new ResourceMonitorPieChartPlotter(core.getLocalName(), 0, core.getMaximumWorkLoad().intValue());
-            plotter.setSnapshotIncrement(refreshRate / 1000);
-            JPanel graphPanel = plotter.getGraphPanel();
-            graphPanel.setSize(250, 150);
-            monitorPanel.add(graphPanel);
-            coresMonitors.add(plotter);
-        }
+//        for (Object o : cores) {
+//            Core core = (Core) o;
+        Core core = (Core) cores.iterator().next();
+        ResourceMonitorPlotter plotter = new ResourceMonitorPieChartPlotter("CPU", 0, core.getMaximumWorkLoad().intValue());
+        plotter.setSnapshotIncrement(refreshRate / 1000);
+        JPanel graphPanel = plotter.getGraphPanel();
+        graphPanel.setSize(250, 150);
+        monitorPanel.add(graphPanel);
+        coresMonitors.add(plotter);
+//        }
 
         //monitorPanel.add(coresPanel);
 
@@ -76,10 +78,10 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
         memoryMonitor.setSnapshotIncrement(refreshRate / 1000);
         monitorPanel.add(memoryMonitor.getGraphPanel());
 
-        HDD storage = server.getHddResources().iterator().next();
-        storageMonitor = new ResourceMonitorPieChartPlotter("Storage", 0, storage.getMaximumWorkLoad().intValue());
-        storageMonitor.setSnapshotIncrement(refreshRate / 1000);
-        monitorPanel.add(storageMonitor.getGraphPanel());
+//        HDD storage = server.getHddResources().iterator().next();
+//        storageMonitor = new ResourceMonitorPieChartPlotter("Storage", 0, storage.getMaximumWorkLoad().intValue());
+//        storageMonitor.setSnapshotIncrement(refreshRate / 1000);
+//        monitorPanel.add(storageMonitor.getGraphPanel());
     }
 
     protected void refreshData() {
@@ -136,7 +138,7 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
         int totalStorageUsedByTasks = 0;
 
         for (ApplicationActivity task : runningTasks) {
-           
+
             Iterator<Integer> receivedCoresIndexIterator = task.getReceivedCoreIndexes().iterator();
             int usedCPUByTask = (int) task.getCpuAllocatedValue();
             String taskName = task.getLocalName();
@@ -152,7 +154,7 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
             memoryInformation.put(newTaskName, usedMemory);
             totalMemoryUsedByTasks += usedMemory;
 
-            int usedStorage = (int)task.getHddAllocatedValue();
+            int usedStorage = (int) task.getHddAllocatedValue();
             storageInformation.put(newTaskName, usedStorage);
             totalStorageUsedByTasks += usedStorage;
 

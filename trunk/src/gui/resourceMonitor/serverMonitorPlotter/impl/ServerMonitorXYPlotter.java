@@ -3,7 +3,6 @@ package gui.resourceMonitor.serverMonitorPlotter.impl;
 import gui.resourceMonitor.resourceMonitorPlotter.ResourceMonitorPlotter;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
 import gui.resourceMonitor.serverMonitorPlotter.ServerMonitor;
-
 import model.interfaces.resources.Core;
 import model.interfaces.resources.HDD;
 import model.interfaces.resources.MEM;
@@ -11,7 +10,6 @@ import model.interfaces.resources.ServiceCenterServer;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.dtos.ServerDto;
 import utils.worldInterface.dtos.StorageDto;
-
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,42 +41,43 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
 
 
         monitorPanel = new JPanel();
-        monitorPanel.setLayout(new GridLayout(2, 1));
+        monitorPanel.setLayout(new GridLayout(1, 2));
 
         Collection cores = server.getCpuResources().iterator().next().getAssociatedCores();
         int coresCount = cores.size();
-        if ( coresCount % 2 != 0){
-            coresCount ++;
+        if (coresCount % 2 != 0) {
+            coresCount++;
         }
 
         coresMonitors = new ArrayList<ResourceMonitorPlotter>();
 
-        monitorPanel.setLayout(new GridLayout(coresCount / 2 + 1, 2));
+//        monitorPanel.setLayout(new GridLayout(coresCount / 2 + 1, 2));
 
-        for (Object o : cores) {
-            Core core = (Core) o;
-            ResourceMonitorPlotter plotter = new ResourceMonitorXYChartPlotter(core.getLocalName(), "Time","Usage",0, core.getMaximumWorkLoad().intValue());
-            plotter.setSnapshotIncrement(refreshRate / 1000);
-            JPanel graphPanel = plotter.getGraphPanel();
-            graphPanel.setSize(250, 150);
-            monitorPanel.add(graphPanel);
-            coresMonitors.add(plotter);
-        }
+//        for (Object o : cores) {
+//            Core core = (Core) o;
+        Core core = (Core) cores.iterator().next();
+        ResourceMonitorPlotter plotter = new ResourceMonitorXYChartPlotter("CPU", "Time", "Usage", 0, core.getMaximumWorkLoad().intValue());
+        plotter.setSnapshotIncrement(refreshRate / 1000);
+        JPanel graphPanel = plotter.getGraphPanel();
+        graphPanel.setSize(250, 150);
+        monitorPanel.add(graphPanel);
+        coresMonitors.add(plotter);
+//        }
 
         MEM memory = server.getMemResources().iterator().next();
-        memoryMonitor = new ResourceMonitorXYChartPlotter("Memory",  "Time","Usage", 0, memory.getMaximumWorkLoad().intValue());
+        memoryMonitor = new ResourceMonitorXYChartPlotter("Memory", "Time", "Usage", 0, memory.getMaximumWorkLoad().intValue());
         memoryMonitor.setSnapshotIncrement(refreshRate / 1000);
         monitorPanel.add(memoryMonitor.getGraphPanel());
 
-        HDD storage = server.getHddResources().iterator().next();
-        storageMonitor = new ResourceMonitorXYChartPlotter("Storage","Time","Usage", 0, storage.getMaximumWorkLoad().intValue());
-        storageMonitor.setSnapshotIncrement(refreshRate / 1000);
-        monitorPanel.add(storageMonitor.getGraphPanel());
+//        HDD storage = server.getHddResources().iterator().next();
+//        storageMonitor = new ResourceMonitorXYChartPlotter("Storage","Time","Usage", 0, storage.getMaximumWorkLoad().intValue());
+//        storageMonitor.setSnapshotIncrement(refreshRate / 1000);
+//        monitorPanel.add(storageMonitor.getGraphPanel());
 
     }
 
     protected void refreshData() {
-        if ( !server.getIsActive()){
+        if (!server.getIsActive()) {
             return;
         }
         //TODO: place if Server Is In SLEEP

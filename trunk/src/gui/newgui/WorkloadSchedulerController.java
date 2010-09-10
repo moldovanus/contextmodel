@@ -9,7 +9,6 @@ import utils.worldInterface.dtos.TaskDto;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ public class WorkloadSchedulerController {
     private ModelAccess modelAccess;
     private List<Pair<String, Integer>> schedule;
     private TableModel scheduleTableModel;
-    private JTable scheduleTable;
 
     public WorkloadSchedulerController(ModelAccess modelAccess) {
         this.modelAccess = modelAccess;
@@ -38,9 +36,6 @@ public class WorkloadSchedulerController {
         workloadTreeDisplay = new WorkloadTreeDisplay(availableTasks);
         refreshAvailableTasks();
         initTableModel();
-        scheduleTable = new JTable(scheduleTableModel);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(scheduleTable.getModel());
-        scheduleTable.setRowSorter(sorter);
     }
 
     private void initTableModel() {
@@ -94,8 +89,6 @@ public class WorkloadSchedulerController {
             return;
         }
         schedule.add(rowIndex, schedule.get(rowIndex));
-
-        scheduleTable.repaint();
     }
 
     public void deleteSelected(int rowIndex) {
@@ -119,7 +112,6 @@ public class WorkloadSchedulerController {
                 schedule.add(new Pair<String, Integer>(node.toString(), scheduleDelay));
             }
         }
-        scheduleTable.repaint();
     }
 
     public JTree getAvailableTasksTree() {
@@ -144,21 +136,18 @@ public class WorkloadSchedulerController {
                 List<TaskDto> availableTasks = new ArrayList<TaskDto>();
                 Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
                 for (ApplicationActivity activity : activities) {
-                    //TODO; remove if other solution for templates implemented
-                    if (activity.getLocalName().toLowerCase().contains("template")) {
 
-                        TaskDto taskDto = new TaskDto();
-                        taskDto.setTaskName(activity.getLocalName());
-                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
-                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
-                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
-                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
-                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
-                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
-                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+                    TaskDto taskDto = new TaskDto();
+                    taskDto.setTaskName(activity.getLocalName());
+                    taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+                    taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+                    taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+                    taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+                    taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+                    taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+                    taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
 
-                        availableTasks.add(taskDto);
-                    }
+                    availableTasks.add(taskDto);
                 }
                 workloadTreeDisplay.setTasks(availableTasks);
             }
@@ -166,7 +155,9 @@ public class WorkloadSchedulerController {
         }.start();
     }
 
-    public JTable getScheduleTable() {
-        return scheduleTable;
+    public TableModel getScheduleTableModel() {
+        return scheduleTableModel;
     }
+
+
 }
