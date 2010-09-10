@@ -105,7 +105,7 @@ public class WorkloadSchedulerController {
         }
         for (TreePath path : paths) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            if (node.isLeaf()) {
+            if (node.isLeaf() && ! node.isRoot()) {
                 DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
                 schedule.add(new Pair<String, Integer>(parent.toString(), scheduleDelay));
             } else {

@@ -27,7 +27,6 @@ import java.util.List;
  */
 public class ServerMonitorXYPlotter extends ServerMonitor {
 
-
     public ServerMonitorXYPlotter(ServiceCenterServer server) {
         super(server);
         setup();
@@ -39,7 +38,6 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
     }
 
     protected void setup() {
-
 
         monitorPanel = new JPanel();
         monitorPanel.setLayout(new GridLayout(1, 2));
