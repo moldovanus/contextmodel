@@ -10,6 +10,7 @@ import model.interfaces.resources.MEM;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ServerDto;
 import utils.worldInterface.dtos.StorageDto;
 
@@ -27,13 +28,13 @@ import java.util.*;
 public class ServerMonitorPiePlotter extends ServerMonitor {
 
 
-    public ServerMonitorPiePlotter(ServiceCenterServer server, ServerManagementProxyInterface proxy) {
-        super(server, proxy);
+    public ServerMonitorPiePlotter(ServiceCenterServer server) {
+        super(server);
         setup();
     }
 
-    public ServerMonitorPiePlotter(ServiceCenterServer server, ServerManagementProxyInterface proxy, int refreshRate) {
-        super(proxy, server, refreshRate);
+    public ServerMonitorPiePlotter(ServiceCenterServer server,  int refreshRate) {
+        super( server, refreshRate);
         setup();
     }
 
@@ -85,16 +86,11 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
     }
 
     protected void refreshData() {
-        if (!server.getIsActive()) {
+        ServerManagementProxyInterface proxyInterface = getProxy();
+        if (!server.getIsActive() || ( proxyInterface instanceof StubProxy)) {
             return;
         }
-        //TODO: place if Server Is In SLEEP
-        //System.err.println("After finishing with tests check if sever is in sleep and do not query if it is");
-        /*if ( server.getIsInLowPowerState()){
-            return;
-        }*/
-
-        ServerDto serverDto = proxy.getServerInfo();
+        ServerDto serverDto = proxyInterface.getServerInfo();
         java.util.List<Integer> freeCPU = serverDto.getFreeCPU();
         int totalCPU = serverDto.getTotalCPU();
         int totalUsedMemory = serverDto.getTotalMemory() - serverDto.getFreeMemory();
@@ -106,20 +102,20 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
         Map<String, Integer> storageInformation = new HashMap<String, Integer>();
 
 
-        HDD storage = server.getHddResources().iterator().next();
-        java.util.List<StorageDto> storageList = serverDto.getStorage();
-        StorageDto targetStorage = null;
-        String storagePath = storage.getPhysicalPath();
-        for (StorageDto storageDto : storageList) {
-            if (storageDto.getName().charAt(0) == storagePath.charAt(0)) {
-                targetStorage = storageDto;
-                break;
-            }
-        }
+//        HDD storage = server.getHddResources().iterator().next();
+//        java.util.List<StorageDto> storageList = serverDto.getStorage();
+//        StorageDto targetStorage = null;
+//        String storagePath = storage.getPhysicalPath();
+//        for (StorageDto storageDto : storageList) {
+//            if (storageDto.getName().charAt(0) == storagePath.charAt(0)) {
+//                targetStorage = storageDto;
+//                break;
+//            }
+//        }
+//
+//        totalUsedStorage = targetStorage.getSize() - targetStorage.getFreeSpace();
 
-        totalUsedStorage = targetStorage.getSize() - targetStorage.getFreeSpace();
-
-        storageInformation.put("Free", targetStorage.getFreeSpace());
+//        storageInformation.put("Free", targetStorage.getFreeSpace());
         memoryInformation.put("Free", serverDto.getFreeMemory());
 
 
@@ -129,7 +125,6 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
             Map<String, Integer> map = new HashMap<String, Integer>();
             map.put("Free", freeCPU.get(i));
             coreInformation.add(map);
-
         }
 
 
@@ -139,25 +134,24 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
 
         for (ApplicationActivity task : runningTasks) {
 
-            Iterator<Integer> receivedCoresIndexIterator = task.getReceivedCoreIndexes().iterator();
+//            Iterator<Integer> receivedCoresIndexIterator = task.getReceivedCoreIndexes().iterator();
             int usedCPUByTask = (int) task.getCpuAllocatedValue();
             String taskName = task.getLocalName();
             String newTaskName = (taskName.length() > GlobalVars.MAX_NAME_LENGTH) ? taskName.substring(0, GlobalVars.MAX_NAME_LENGTH) + "..." : taskName;
 
-            while (receivedCoresIndexIterator.hasNext()) {
-                Integer index = receivedCoresIndexIterator.next();
-                Map<String, Integer> map = coreInformation.get(index);
-                map.put(newTaskName, usedCPUByTask);
-                totalCPUUsedByTasks[index] += usedCPUByTask;
-            }
+//            while (receivedCoresIndexIterator.hasNext()) {
+//                Integer index = receivedCoresIndexIterator.next();
+            Map<String, Integer> map = coreInformation.get(0);
+            map.put(newTaskName, usedCPUByTask);
+            totalCPUUsedByTasks[0] += usedCPUByTask;
+//            }
             int usedMemory = (int) task.getMemAllocatedValue();
             memoryInformation.put(newTaskName, usedMemory);
             totalMemoryUsedByTasks += usedMemory;
 
-            int usedStorage = (int) task.getHddAllocatedValue();
-            storageInformation.put(newTaskName, usedStorage);
-            totalStorageUsedByTasks += usedStorage;
-
+//            int usedStorage = (int) task.getHddAllocatedValue();
+//            storageInformation.put(newTaskName, usedStorage);
+//            totalStorageUsedByTasks += usedStorage;
         }
 
 
@@ -170,8 +164,8 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
         memoryInformation.put("OS", totalUsedMemory - totalMemoryUsedByTasks);
         memoryMonitor.setCurrentValue(memoryInformation);
 
-        storageInformation.put("OS", totalUsedStorage - totalStorageUsedByTasks);
-        storageMonitor.setCurrentValue(storageInformation);
+//        storageInformation.put("OS", totalUsedStorage - totalStorageUsedByTasks);
+//        storageMonitor.setCurrentValue(storageInformation);
 
     }
 }

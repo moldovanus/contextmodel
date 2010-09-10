@@ -4,6 +4,7 @@ import gui.resourceMonitor.AbstractMonitor;
 import gui.resourceMonitor.resourceMonitorPlotter.ResourceMonitorPlotter;
 import model.interfaces.resources.ServiceCenterServer;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,6 @@ import java.util.List;
  */
 public abstract class ServerMonitor extends AbstractMonitor {
 
-    protected ServerManagementProxyInterface proxy;
 
     protected List<ResourceMonitorPlotter> coresMonitors;
 
@@ -27,15 +27,17 @@ public abstract class ServerMonitor extends AbstractMonitor {
 
     protected ServiceCenterServer server;
 
-    protected ServerMonitor(ServiceCenterServer server, ServerManagementProxyInterface proxy) {
+    protected ServerMonitor(ServiceCenterServer server) {
         this.server = server;
-        this.proxy = proxy;
     }
 
-    protected ServerMonitor(ServerManagementProxyInterface proxy, ServiceCenterServer server, int refreshRate) {
-        this.proxy = proxy;
+    protected ServerMonitor(ServiceCenterServer server, int refreshRate) {
         this.server = server;
         this.refreshRate = refreshRate;
+    }
+
+    protected ServerManagementProxyInterface getProxy() {
+        return ProxyFactory.createServerManagementProxy(server.getIpAddress());
     }
 
     public void executeStandaloneWindow() {

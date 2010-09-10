@@ -422,7 +422,7 @@ public class ExpertConfigurationGUIController implements Observer {
             new Thread() {
                 @Override
                 public void run() {
-//                    refreshServersMonitorsPanel();
+                    refreshServersMonitorsPanel();
                 }
 
             }.start();

@@ -27,14 +27,14 @@ public class WorkloadTreeDisplay {
             DefaultMutableTreeNode taskRequestedCores =
                     new DefaultMutableTreeNode("requested cores: " + taskDto.getRequestedCores());
             DefaultMutableTreeNode taskRequestedCpu =
-                    new DefaultMutableTreeNode("requested CPU min: " + taskDto.getRequestedCPUMin()
-                            + ", CPU max: " + taskDto.getRequestedCPUMax());
+                    new DefaultMutableTreeNode("requested CPU: [ min: " + taskDto.getRequestedCPUMin()
+                            + ",max: " + taskDto.getRequestedCPUMax() + "]");
             DefaultMutableTreeNode taskRequestedMem =
-                    new DefaultMutableTreeNode("requested MEM min: " + taskDto.getRequestedMemoryMin()
-                            + ", MEM max: " + taskDto.getRequestedMemoryMax());
+                    new DefaultMutableTreeNode("requested MEM: [ min: " + taskDto.getRequestedMemoryMin()
+                            + ",max: " + taskDto.getRequestedMemoryMax() + "]");
             DefaultMutableTreeNode taskRequestedHdd =
-                    new DefaultMutableTreeNode("requested HDD min: " + taskDto.getRequestedStorageMin()
-                            + ", HDD max: " + taskDto.getRequestedStorageMax());
+                    new DefaultMutableTreeNode("requested HDD: [ min: " + taskDto.getRequestedStorageMin()
+                            + ",max: " + taskDto.getRequestedStorageMax() + "]");
 
             task.add(taskRequestedCores);
             task.add(taskRequestedCpu);
