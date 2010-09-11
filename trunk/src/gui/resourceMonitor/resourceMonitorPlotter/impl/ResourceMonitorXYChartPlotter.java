@@ -15,10 +15,10 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,6 +34,7 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
     private String xAxisLabel;
     private String yAxisLabel;
     private JScrollBar scrollBar;
+    private boolean autoAdjustRange = true;
 
     public ResourceMonitorXYChartPlotter(String resourceName, String xAxisLabel, String yAxisLabel, int minimumValue, int maximumValue) {
         super(resourceName);
@@ -80,16 +81,31 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
 
         scrollBar.setMinimum(minTimeRange);
         scrollBar.setMaximum(maxTimeRange);
+
+        scrollBar.addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent e) {
+                int adjustment = scrollBar.getValue();
+                if (adjustment < minTimeRange && adjustment > 0) {
+                    autoAdjustRange = false;
+                } else {
+                    autoAdjustRange = true;
+                }
+            }
+
+        });
         scrollBar.addAdjustmentListener(new AdjustmentListener() {
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 int adjustment = e.getValue();
-                ValueAxis domain = plot.getDomainAxis();
-                domain.setRange(adjustment - maxTimeRange, adjustment);
+                if (adjustment > 0) {
+                    ValueAxis domain = plot.getDomainAxis();
+                    domain.setRange(adjustment - maxTimeRange, adjustment);
+                }
             }
         });
 
         panel.add(scrollBar, "South");
         panel.repaint();
+        scrollBar.repaint();
         graphPanel = panel;
 
     }
@@ -103,7 +119,7 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
     }
 
     public void setCurrentValue(Object currentValue) {
-        if (snapshotCount > maxTimeRange - 1) {
+        if (snapshotCount > maxTimeRange - 1 && autoAdjustRange) {
             ValueAxis domain = plot.getDomainAxis();
             // domain.setAutoRange(false);
             minTimeRange += snapshotIncrement;
@@ -118,10 +134,10 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
         snapshotCount += snapshotIncrement;
         scrollBar.repaint();
         scrollBar.setMaximum(scrollBar.getMaximum() + 1);
-        if (scrollBar.getValue() >= minTimeRange) {
-            ValueAxis domain = plot.getDomainAxis();
-            domain.setRange(minTimeRange, minTimeRange + maxTimeRange);
-        }
+//        if (scrollBar.getValue() >= maxTimeRange + minTimeRange) {
+//            ValueAxis domain = plot.getDomainAxis();
+//            domain.setRange(minTimeRange, minTimeRange + maxTimeRange);
+//        }
     }
 
 }
