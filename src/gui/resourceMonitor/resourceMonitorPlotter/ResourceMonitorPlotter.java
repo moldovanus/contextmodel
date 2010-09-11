@@ -16,7 +16,7 @@ public abstract class ResourceMonitorPlotter {
 
     protected int snapshotCount = 0;
     protected int minTimeRange = 0;
-    protected int maxTimeRange = 10;
+    protected int maxTimeRange = 60;
     protected int snapshotIncrement = 1;
 
     protected static final Font LABEL_FONT = new Font("sherif", Font.BOLD, 15);
@@ -45,7 +45,7 @@ public abstract class ResourceMonitorPlotter {
     }
 
     public void setMaxTimeRange(int maxTimeRange) {
-//        this.maxTimeRange = maxTimeRange;
+        this.maxTimeRange = maxTimeRange;
     }
 
     public JPanel getGraphPanel() {
@@ -58,7 +58,7 @@ public abstract class ResourceMonitorPlotter {
 
     public void setSnapshotIncrement(int snapshotIncrement) {
         this.snapshotIncrement = snapshotIncrement;
-        this.setMaxTimeRange(60*snapshotIncrement);
+        this.setMaxTimeRange(60 * snapshotIncrement);
     }
 
     public void setDisplayTimeRange(int minim, int max) {
