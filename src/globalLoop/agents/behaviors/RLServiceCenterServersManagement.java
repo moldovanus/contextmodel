@@ -1,16 +1,10 @@
 package globalLoop.agents.behaviors;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import globalLoop.utils.GlobalVars;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
-import model.impl.ontologyImpl.actions.DefaultApplicationAdaptationAction;
-import model.impl.ontologyImpl.actions.DefaultDeployActivityAction;
-import model.impl.ontologyImpl.actions.DefaultServerAdaptationAction;
-import model.impl.ontologyImpl.actions.DefaultSetServerStateAction;
 import model.impl.util.ModelAccess;
 import model.interfaces.ContextSnapshot;
 import model.interfaces.actions.*;
@@ -23,19 +17,19 @@ import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
 import selfoptimizing.utils.Pair;
 import utils.exceptions.IndividualNotFoundException;
+import utils.logger.LoggerGUI;
 import utils.negotiator.Negotiator;
 import utils.negotiator.impl.NegotiatorFactory;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
-import utils.worldInterface.datacenterInterface.proxies.impl.ServerManagementProxy;
+import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ServerDto;
-import utils.worldInterface.dtos.StorageDto;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by IntelliJ IDEA.
@@ -48,11 +42,14 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     private Agent agent;
     ModelAccess modelAccess;
     private ContextSnapshot smallestEntropyContext;
+    private LoggerGUI logger;
 
     public RLServiceCenterServersManagement(Agent a, ModelAccess modelAccess, long period) {
         super(a, period);
         agent = a;
         this.modelAccess = modelAccess;
+        logger = new LoggerGUI("Service_Center_Log");
+        logger.setLogPath("./logs/");
     }
 
 
@@ -272,11 +269,13 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         System.out.println("STACK depth: " + stackDepth++);
 
         ContextSnapshot newContext = queue.poll();
-        if (newContext == null || (stackDepth == 500)) {
+        if (newContext == null || (stackDepth == 300)) {
             Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
             System.out.println("Could not repair the context totally. Returning best solution:");
             sendLogToGUI("Could not repair the context totally. Returning best solution:");
+            logger.log(Color.ORANGE, "Could not repair the context totally. Returning best solution", new ArrayList<String>());
+
             Queue<ContextAction> commands = smallestEntropyContext.getActions();
             for (ContextAction command : commands) {
                 System.out.println(command.toString());
@@ -290,13 +289,17 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             return smallestEntropyContext;
         }
         System.out.println(stackDepth + " :----------------------------");
-        sendLogToGUI(stackDepth + "----------------------------");
+        sendLogToGUI(stackDepth + " :----------------------------");
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         newContext.executeActions(modelAccess);
         Queue<ContextAction> actions = newContext.getActions();
+        ArrayList<String> message = new ArrayList<String>();
         for (ContextAction action : actions) {
-            sendLogToGUI("Executing:  " + action.toString());
+            message.add("Simulating: " + action.toString());
+            sendLogToGUI("Simulating:  " + action.toString());
         }
+
+        logger.log(Color.BLACK, "Current try", message);
 //        datacenterMemory.restoreProtegeFactory(protegeFactory);
         //TODO: de bagat dupa ce bagam memoria
 //        Queue<ContextAction> commands = datacenterMemory.getActionsForTasks(protegeFactory);
@@ -322,6 +325,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         System.out.println("------------------------------");
         sendLogToGUI("------------------------------");
 
+        ArrayList<String> simulationResultMessage = new ArrayList<String>();
+        simulationResultMessage.add("\n Entropy: " + entropyAndPolicy.getFirst()
+                + ",  Reward: " + newContext.getRewardFunction()
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()) + "\n");
+        logger.log(Color.black, "Simulation result context", simulationResultMessage);
 
         Collection<ContextResource> associatedTasks = null;
         Collection<ContextResource> associatedServers = null;
@@ -550,10 +558,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         System.out.println("New configuration");
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         for (ServiceCenterServer server : servers) {
-            if (!server.getIsActive()) {
+            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+            if (!server.getIsActive() || (proxy instanceof StubProxy)) {
                 continue;
             }
-            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+
             ServerDto dto = proxy.getServerInfo();
             int coreCount = dto.getCoreCount();
             int totalCPU = dto.getTotalCPU();
@@ -607,11 +616,17 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 + entropyAndPolicy.getFirst()
                 + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()));
 
+
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
         initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));
         queue.add(initialContext);
 
         if (entropyAndPolicy.getFirst() > 0) {
+            ArrayList<String> message = new ArrayList<String>();
+            message.add("Entropy: " + entropyAndPolicy.getFirst()
+                    + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
+            logger.log(Color.black, "Resulting context", message);
+            logContext(Color.RED);
             java.util.Date before = new java.util.Date();
             ContextSnapshot result = reinforcementLearning(queue);
             java.util.Date after = new java.util.Date();
@@ -625,19 +640,32 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
             agent.send(msg);
 
+            ArrayList<String> newMessage = new ArrayList<String>();
             Queue<ContextAction> actions = result.getActions();
             for (ContextAction action : actions) {
-                sendLogToGUI(action.toString());
+                sendLogToGUI("Executing: " + action.toString());
+                newMessage.add(action.toString());
+
             }
+            logger.log(Color.ORANGE, "Decision result", newMessage);
+
             result.executeActions(modelAccess);
             result.executeOnServiceCenter(modelAccess);
 
+
+            ArrayList<String> negotiationMessage = new ArrayList<String>();
             if (result.getContextEntropy() > 0) {
+                logContext(Color.RED);
+
                 entropyAndPolicy = computeEntropy();
                 if (entropyAndPolicy.getSecond().getPolicySubject().get(0) instanceof ApplicationActivity) {
+
                     ApplicationActivity activity = (ApplicationActivity) entropyAndPolicy.getSecond().getPolicySubject().get(0);
+
                     Negotiator negotiator = (Negotiator) NegotiatorFactory.getNashNegotiator();
                     ServiceCenterServer server = getMinDistanceServer(activity);
+
+                    negotiationMessage.add("Negotiating between " + activity.getName() + " and " + server.getName());
                     if (server != null) {
                         CPU cpu = server.getCpuResources().iterator().next();
                         MEM mem = server.getMemResources().iterator().next();
@@ -667,14 +695,20 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                         defaultServerAdaptationAction.setNewOptimalValueForCpu((int) optimalCpu);
                         defaultServerAdaptationAction.setNewOptimalValueForMem((int) optimalMem);
                         defaultServerAdaptationAction.setServer(server);
+
+                        negotiationMessage.add(defaultServerAdaptationAction.toString());
+
                         defaultServerAdaptationAction.execute(modelAccess);
                         result.getActions().add(defaultServerAdaptationAction);
+
                         ApplicationAdaptationAction applicationAdaptationAction = modelAccess.createApplicationAdaptationAction("ApplicationAdaptationAction_" + activity.getLocalName());
                         applicationAdaptationAction.setActivity(activity);
                         applicationAdaptationAction.setCpuMin((int) activity.getCpuRequiredMinValue());
                         applicationAdaptationAction.setCpuMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
                         applicationAdaptationAction.setMemMin((int) activity.getMemRequiredMinValue());
-                        applicationAdaptationAction.setMemMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
+                        applicationAdaptationAction.setMemMax(negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY).intValue());
+
+                        negotiationMessage.add(applicationAdaptationAction.toString());
 
                         applicationAdaptationAction.execute(modelAccess);
                         result.getActions().add(applicationAdaptationAction);
@@ -687,8 +721,13 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                         result.getActions().add(deployActivityAction);
                         entropyAndPolicy = computeEntropy();
                         result.setContextEntropy(entropyAndPolicy.getFirst());
+
+                        negotiationMessage.add(deployActivityAction.toString());
+                        logger.log(Color.ORANGE, "Negotiation result", negotiationMessage);
+
                     }
                 } else {
+
                     for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
                         if (server.getIsActive())
                             adjustPolicies(server);
@@ -697,6 +736,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 }
 
             }
+            logContext(Color.GREEN);
 //            OntModel ontModel = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
 //            ontModel.add(modelAccess.getOntologyModelFactory().getOwlModel().getJenaModel());
 //            try {
@@ -722,5 +762,36 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         agent.send(msg);
     }
 
+    private void logContext(Color color) {
+
+        ArrayList<String> message = new ArrayList<String>();
+        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+        for (ServiceCenterServer server : servers) {
+            MEM mem = server.getMemResources().iterator().next();
+            Core core = server.getCpuResources().iterator().next().getAssociatedCores().iterator().next();
+            message.add(server.getLocalName());
+            message.add("Server state: " + ((server.getIsActive()) ? "active" : "in low power state"));
+            message.add("Cores no: " + server.getCpuResources().iterator().next().getAssociatedCores().size());
+            message.add("CPU total: " + core.getMaximumWorkLoad() + " used: " + core.getCurrentWorkLoad());
+            message.add("MEM total: " + mem.getMaximumWorkLoad() + " used: " + mem.getCurrentWorkLoad());
+        }
+        logger.log(color, "Computing Resources", message);
+        ArrayList<String> message_1 = new ArrayList<String>();
+        Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
+        for (ApplicationActivity activity : activities) {
+            message_1.add(activity.getLocalName());
+            message_1.add("Cores requested: " + activity.getNumberOfCoresRequiredValue()
+                    + " received: " + activity.getNumberOfCoresAllocatedValue());
+            message_1.add("CPU maxRequested: " + activity.getCpuRequiredMaxValue()
+                    + " minRequested: " + activity.getCpuRequiredMaxValue()
+                    + " received: " + activity.getCpuAllocatedValue());
+            message_1.add("MEM maxRequested: " + activity.getMemRequiredMaxValue()
+                    + " minRequested: " + activity.getMemRequiredMaxValue()
+                    + " received: " + activity.getMemAllocatedValue());
+
+        }
+        logger.log(color, "Application Activities", message_1);
+
+    }
 
 }

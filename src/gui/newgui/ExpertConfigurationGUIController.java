@@ -57,7 +57,7 @@ public class ExpertConfigurationGUIController implements Observer {
     private int decisionTimeRefreshRateInMillis = 1000;
     private List<Timer> timers;
     private ActionListener scheduleTimerActionListener;
-    private int scheduleCount = -1;
+    private int scheduleCount = 0;
     private Timer scheduleTimer;
 
 
@@ -310,10 +310,16 @@ public class ExpertConfigurationGUIController implements Observer {
 
 
     private void refreshEnergyEstimate() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
         EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
         energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm();
         energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm();
+        System.out.println("After refresh  " + energyEstimateWithoutAlg + " ___ " + energyEstimateWithAlg);
     }
 
     private void refreshServersMonitorsPanel() {
@@ -339,13 +345,8 @@ public class ExpertConfigurationGUIController implements Observer {
         plotter2.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        plotter1.setCurrentValue(energyEstimateWithoutAlg);
-                        plotter2.setCurrentValue(energyEstimateWithAlg);
-                    }
-                }.start();
+                plotter1.setCurrentValue(energyEstimateWithoutAlg);
+                plotter2.setCurrentValue(energyEstimateWithAlg);
             }
         };
         Timer refreshTimerEnergyConsumption = new Timer(decisionTimeRefreshRateInMillis, actionListener);
@@ -423,6 +424,7 @@ public class ExpertConfigurationGUIController implements Observer {
                 @Override
                 public void run() {
                     refreshServersMonitorsPanel();
+                    refreshEnergyEstimate();
                 }
 
             }.start();

@@ -3,14 +3,13 @@ package gui.resourceMonitor.serverMonitorPlotter.impl;
 import gui.resourceMonitor.resourceMonitorPlotter.ResourceMonitorPlotter;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
 import gui.resourceMonitor.serverMonitorPlotter.ServerMonitor;
+import model.impl.util.ModelAccess;
 import model.interfaces.resources.Core;
-import model.interfaces.resources.HDD;
 import model.interfaces.resources.MEM;
 import model.interfaces.resources.ServiceCenterServer;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ServerDto;
-import utils.worldInterface.dtos.StorageDto;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,13 +26,13 @@ import java.util.List;
  */
 public class ServerMonitorXYPlotter extends ServerMonitor {
 
-    public ServerMonitorXYPlotter(ServiceCenterServer server) {
-        super(server);
+    public ServerMonitorXYPlotter(ServiceCenterServer server, ModelAccess modelAccess) {
+        super(server, modelAccess);
         setup();
     }
 
-    public ServerMonitorXYPlotter(ServiceCenterServer server, int refreshRate) {
-        super(server, refreshRate);
+    public ServerMonitorXYPlotter(ServiceCenterServer server, ModelAccess modelAccess, int refreshRate) {
+        super(server, modelAccess, refreshRate);
         setup();
     }
 
@@ -77,16 +76,33 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
 
     protected void refreshData() {
         ServerManagementProxyInterface proxyInterface = getProxy();
-        if (!server.getIsActive() || (proxyInterface instanceof StubProxy)) {
+        if (!server.getIsActive()) {
             return;
         }
 
-        ServerDto serverDto = proxyInterface.getServerInfo();
-        List<Integer> freeCPU = serverDto.getFreeCPU();
-        int totalCPU = serverDto.getTotalCPU();
-        int coresCount = coresMonitors.size();
-        for (int i = 0; i < coresCount; i++) {
-            coresMonitors.get(i).setCurrentValue(totalCPU - freeCPU.get(i));
+        if ((proxyInterface instanceof StubProxy)) {
+            ServiceCenterServer serverData = modelAccess.getServiceCenterServer(server.getName());
+            List<Core> cores = serverData.getCpuResources().iterator().next().getAssociatedCores();
+
+            Core core = cores.get(0);
+            coresMonitors.get(0).setCurrentValue(
+                    core.getMaximumWorkLoad().intValue()
+                            - (core.getMaximumWorkLoad().intValue() - core.getCurrentWorkLoad().intValue()));
+
+            MEM memory = serverData.getMemResources().iterator().next();
+            memoryMonitor.setCurrentValue(
+                    memory.getMaximumWorkLoad().intValue()
+                            - (memory.getMaximumWorkLoad().intValue() - memory.getCurrentWorkLoad().intValue()));
+        } else {
+            ServerDto serverDto = proxyInterface.getServerInfo();
+            List<Integer> freeCPU = serverDto.getFreeCPU();
+            int totalCPU = serverDto.getTotalCPU();
+            int coresCount = coresMonitors.size();
+            for (int i = 0; i < coresCount; i++) {
+                coresMonitors.get(i).setCurrentValue(totalCPU - freeCPU.get(i));
+            }
+            memoryMonitor.setCurrentValue(serverDto.getTotalMemory() - serverDto.getFreeMemory());
+
         }
 
 //        HDD storage = server.getHddResources().iterator().next();
@@ -101,8 +117,6 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
 //        }
 
 //        storageMonitor.setCurrentValue(targetStorage.getSize() - targetStorage.getFreeSpace());
-
-        memoryMonitor.setCurrentValue(serverDto.getTotalMemory() - serverDto.getFreeMemory());
 
     }
 

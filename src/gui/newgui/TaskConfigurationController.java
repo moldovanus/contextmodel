@@ -3,14 +3,11 @@ package gui.newgui;
 import gui.datacenterConfiguration.AbstractConfigurator;
 import gui.datacenterConfiguration.impl.TaskConfigurator;
 import jade.core.Agent;
-import model.impl.util.ModelAccess;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,8 +20,9 @@ public class TaskConfigurationController {
     private final String ADD_ROW_TOOLTIP = "Inserts an empty row in the table";
     private final String DUPLICATE_ROW_TOOLTIP = "Creates an identical row with the selected row";
     private final String REMOVE_ROW_TOOLTIP = "Deletes the selected row from the table";
-    private final String CREATE_VIRTUAL_MACHINES_TOOLTIP = "<html>Creates virtual machines based on an existing virtual machine with the specified resource requirements." +
-            "<br><b>WARNING:</b>It will erase all previous virtual machines from the context model and generate new ones.</br></html>";
+    private final String CREATE_VIRTUAL_MACHINES_TOOLTIP = "<html>Creates activity templates based on an existing virtual machine with the specified resource requirements." +
+//            "<br><b>WARNING:</b>It will erase all previous virtual machines from the context model and generate new ones.</br></html>" +
+            "";
 
     private JPanel taskConfigurationPanel;
     JPanel taskConfigurationButtonsPanel;
@@ -49,7 +47,7 @@ public class TaskConfigurationController {
         addTaskRowButton = new JButton("Add row");
         duplicateTaskRowButton = new JButton("Duplicate row");
         removeTaskRowButton = new JButton("Remove selected");
-        generateVirtualMachinesButton = new JButton("Create Virtual Machines");
+        generateVirtualMachinesButton = new JButton("Create Activity Templates Instances");
 
         addTaskRowButton.setToolTipText(ADD_ROW_TOOLTIP);
         duplicateTaskRowButton.setToolTipText(DUPLICATE_ROW_TOOLTIP);
@@ -131,7 +129,7 @@ public class TaskConfigurationController {
     public JPanel getConfigurationPanel() {
         return taskConfigurationPanel;
     }
- 
+
     public java.util.List<String[]> getTableData() {
         return taskConfigurator.getTableData();
     }

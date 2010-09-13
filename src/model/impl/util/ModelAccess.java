@@ -43,8 +43,8 @@ public class ModelAccess implements ModelFactory {
         return prevailerModelFactory;
     }
 
-    private String generateUniqueName(String name){
-        return name + UUID.randomUUID().toString();
+    private String generateUniqueName(String name) {
+        return name + "_" + UUID.randomUUID().toString().substring(0, 3);
     }
 
     public ModelAccess(OntologyModelFactory ontologyModelFactory, DatabaseModelFactory databaseModelFactory,
@@ -671,17 +671,19 @@ public class ModelAccess implements ModelFactory {
             return databaseModelFactory.getAllCPUIntensiveActivityInstances();
         }
     }
-    public ServerAdaptationAction createServerAdaptationAction(String name){
-       ServerAdaptationAction object = null;
+
+    public ServerAdaptationAction createServerAdaptationAction(String name) {
+        ServerAdaptationAction object = null;
         if (accessType == ONTOLOGY_ACCESS) {
             object = ontologyModelFactory.createServerAdaptationAction(generateUniqueName(name));
             // databaseModelFactory.createApplicationAdaptationAction(name);
         } else {
             //ontologyModelFactory.createApplicationAdaptationAction(name);
-         //   object = databaseModelFactory.createServerAdaptationAction(generateUniqueName(name));
+            //   object = databaseModelFactory.createServerAdaptationAction(generateUniqueName(name));
         }
         return object;
     }
+
     public ApplicationAdaptationAction createApplicationAdaptationAction(String name) {
         ApplicationAdaptationAction object;
         if (accessType == ONTOLOGY_ACCESS) {
@@ -999,7 +1001,7 @@ public class ModelAccess implements ModelFactory {
             //ontologyModelFactory.createBusinessPolicy(name);
             object = databaseModelFactory.createBusinessPolicy(generateUniqueName(name));
         }
-        System.out.println("BussinessPolicy" + object+ name);
+        System.out.println("BussinessPolicy" + object + name);
         return object;
     }
 

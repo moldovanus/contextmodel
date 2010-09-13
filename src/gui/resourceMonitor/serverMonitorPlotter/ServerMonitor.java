@@ -2,6 +2,7 @@ package gui.resourceMonitor.serverMonitorPlotter;
 
 import gui.resourceMonitor.AbstractMonitor;
 import gui.resourceMonitor.resourceMonitorPlotter.ResourceMonitorPlotter;
+import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
@@ -26,12 +27,14 @@ public abstract class ServerMonitor extends AbstractMonitor {
     protected ResourceMonitorPlotter storageMonitor;
 
     protected ServiceCenterServer server;
+    protected ModelAccess modelAccess;
 
-    protected ServerMonitor(ServiceCenterServer server) {
+    protected ServerMonitor(ServiceCenterServer server, ModelAccess access) {
         this.server = server;
+        modelAccess = access;
     }
 
-    protected ServerMonitor(ServiceCenterServer server, int refreshRate) {
+    protected ServerMonitor(ServiceCenterServer server, ModelAccess access, int refreshRate) {
         this.server = server;
         this.refreshRate = refreshRate;
     }
