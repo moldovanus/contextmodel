@@ -16,7 +16,6 @@ import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -41,9 +40,11 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
      * form ExpertConfigurationGUI
      */
     public ExpertConfigurationGUI() {
+
         initComponents();
-        initComponents_2();
         selfReference = this;
+        initComponents_2();
+
     }
 
     public JTabbedPane getServerMonitorTabbedPane() {
@@ -60,6 +61,23 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     }
 
     private void initComponents_2() {
+        try {
+            // Set cross-platform Java L&F (also called "Metal")
+            UIManager.setLookAndFeel(
+                    UIManager.getCrossPlatformLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        }
+        catch (ClassNotFoundException e) {
+            // handle exception
+        }
+        catch (InstantiationException e) {
+            // handle exception
+        }
+        catch (IllegalAccessException e) {
+            // handle exception
+        }
         simulateChoiceRadio.setSelected(true);
 
         serverMonitorTabbedPane = new JTabbedPane();
@@ -67,14 +85,16 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         resourcesMonitorPanel.setLayout(new BorderLayout());
         resourcesMonitorPanel.add(serverMonitorTabbedPane, "Center");
 
-        showLogButton.addActionListener(new ActionListener() {
+        ActionListener logButtonListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (logTextArea.isVisible()) {
+                    showLogButton.setText("Show log");
                     logTextArea.setVisible(false);
                     logControlPane3.remove(logScrollPane);
                     logControlPane3.repaint();
                     selfReference.setSize(selfReference.getWidth(), selfReference.getHeight() - logScrollPane.getHeight());
                 } else {
+                    showLogButton.setText("Hide log");
                     logTextArea.setVisible(true);
                     logControlPane3.add(logScrollPane);
                     logScrollPane.setViewportView(logTextArea);
@@ -82,9 +102,13 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
                     selfReference.setSize(selfReference.getWidth(), selfReference.getHeight() + logScrollPane.getHeight());
                 }
             }
-        });
-
+        };
         showLogButton.setText("Hide Log");
+
+        showLogButton.addActionListener(logButtonListener);
+        logButtonListener.actionPerformed(new ActionEvent(this, 0, ""));
+
+
         this.setTitle("Configuration Generator");
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         ButtonGroup radioGroup = new ButtonGroup();
@@ -249,8 +273,8 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
 
         upperPanel = new javax.swing.JPanel();
         realChoiceRadio = new javax.swing.JRadioButton();
-        runOnButton = new javax.swing.JButton();
         simulateChoiceRadio = new javax.swing.JRadioButton();
+        runOnLabel = new javax.swing.JLabel();
         logControlPane3 = new javax.swing.JPanel();
         logLabel3 = new javax.swing.JLabel();
         showLogButton = new javax.swing.JToggleButton();
@@ -306,8 +330,6 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
 
         realChoiceRadio.setText("real service center");
 
-        runOnButton.setText("Run on");
-
         simulateChoiceRadio.setText("simulated service center");
         simulateChoiceRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -315,13 +337,16 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
             }
         });
 
+        runOnLabel.setText(" Run on");
+        runOnLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
         upperPanel.setLayout(upperPanelLayout);
         upperPanelLayout.setHorizontalGroup(
                 upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(upperPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(runOnButton)
+                        .addGap(24, 24, 24)
+                        .addComponent(runOnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(simulateChoiceRadio)
@@ -331,15 +356,15 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         upperPanelLayout.setVerticalGroup(
                 upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(upperPanelLayout.createSequentialGroup()
-                        .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(upperPanelLayout.createSequentialGroup()
-                                        .addGap(9, 9, 9)
-                                        .addComponent(runOnButton))
-                                .addGroup(upperPanelLayout.createSequentialGroup()
+                                .addContainerGap()
                                 .addComponent(simulateChoiceRadio)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(realChoiceRadio)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(realChoiceRadio)
+                                .addContainerGap(9, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
+                        .addContainerGap(16, Short.MAX_VALUE)
+                        .addComponent(runOnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23))
         );
 
         logLabel3.setText("Log");
@@ -706,7 +731,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     private javax.swing.JPanel radioButtonPanel;
     private javax.swing.JRadioButton realChoiceRadio;
     private javax.swing.JPanel resourcesMonitorPanel;
-    private javax.swing.JButton runOnButton;
+    private javax.swing.JLabel runOnLabel;
     private javax.swing.JButton scheduleButton;
     private javax.swing.JPanel scheduleControlLeftPanel;
     private javax.swing.JPanel scheduleControlPanel;
