@@ -4,19 +4,19 @@ import globalLoop.utils.GlobalVars;
 import gui.resourceMonitor.resourceMonitorPlotter.ResourceMonitorPlotter;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorPieChartPlotter;
 import gui.resourceMonitor.serverMonitorPlotter.ServerMonitor;
+import model.impl.util.ModelAccess;
 import model.interfaces.resources.Core;
-import model.interfaces.resources.HDD;
 import model.interfaces.resources.MEM;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ServerDto;
-import utils.worldInterface.dtos.StorageDto;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,13 +28,13 @@ import java.util.*;
 public class ServerMonitorPiePlotter extends ServerMonitor {
 
 
-    public ServerMonitorPiePlotter(ServiceCenterServer server) {
-        super(server);
+    public ServerMonitorPiePlotter(ServiceCenterServer server, ModelAccess modelAccess) {
+        super(server, modelAccess);
         setup();
     }
 
-    public ServerMonitorPiePlotter(ServiceCenterServer server,  int refreshRate) {
-        super( server, refreshRate);
+    public ServerMonitorPiePlotter(ServiceCenterServer server, ModelAccess modelAccess, int refreshRate) {
+        super(server, modelAccess, refreshRate);
         setup();
     }
 
@@ -87,19 +87,94 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
 
     protected void refreshData() {
         ServerManagementProxyInterface proxyInterface = getProxy();
-        if (!server.getIsActive() || ( proxyInterface instanceof StubProxy)) {
+        if (!server.getIsActive()) {
             return;
         }
-        ServerDto serverDto = proxyInterface.getServerInfo();
-        java.util.List<Integer> freeCPU = serverDto.getFreeCPU();
-        int totalCPU = serverDto.getTotalCPU();
-        int totalUsedMemory = serverDto.getTotalMemory() - serverDto.getFreeMemory();
-        int totalUsedStorage = 0;
+        if (proxyInterface instanceof StubProxy) {
+            ServiceCenterServer serverData = modelAccess.getServiceCenterServer(server.getName());
+            Collection<ApplicationActivity> runningTasks = server.getRunningActivities();
+            java.util.List<Map<String, Integer>> coreInformation = new java.util.ArrayList<Map<String, Integer>>();
+            Map<String, Integer> memoryInformation = new HashMap<String, Integer>();
+            Map<String, Integer> storageInformation = new HashMap<String, Integer>();
 
-        Collection<ApplicationActivity> runningTasks = server.getRunningActivities();
-        java.util.List<Map<String, Integer>> coreInformation = new java.util.ArrayList<Map<String, Integer>>();
-        Map<String, Integer> memoryInformation = new HashMap<String, Integer>();
-        Map<String, Integer> storageInformation = new HashMap<String, Integer>();
+//        HDD storage = server.getHddResources().iterator().next();
+//        java.util.List<StorageDto> storageList = serverDto.getStorage();
+//        StorageDto targetStorage = null;
+//        String storagePath = storage.getPhysicalPath();
+//        for (StorageDto storageDto : storageList) {
+//            if (storageDto.getName().charAt(0) == storagePath.charAt(0)) {
+//                targetStorage = storageDto;
+//                break;
+//            }
+//        }
+//
+//        totalUsedStorage = targetStorage.getSize() - targetStorage.getFreeSpace();
+
+//        storageInformation.put("Free", targetStorage.getFreeSpace());
+            MEM memory = serverData.getMemResources().iterator().next();
+            List<Core> cores = serverData.getCpuResources().iterator().next().getAssociatedCores();
+
+            memoryInformation.put("Free", memory.getMaximumWorkLoad().intValue() - memory.getCurrentWorkLoad().intValue());
+
+
+            int coresCount = coresMonitors.size();
+            for (int i = 0; i < coresCount; i++) {
+                //TODO :  after adding info for all cores in C# modify this
+                Map<String, Integer> map = new HashMap<String, Integer>();
+                Core core = cores.get(i);
+                map.put("Free", core.getMaximumWorkLoad().intValue() - core.getCurrentWorkLoad().intValue());
+                coreInformation.add(map);
+            }
+
+
+            int[] totalCPUUsedByTasks = new int[coresCount];
+            int totalMemoryUsedByTasks = 0;
+            int totalStorageUsedByTasks = 0;
+
+            for (ApplicationActivity task : runningTasks) {
+
+//            Iterator<Integer> receivedCoresIndexIterator = task.getReceivedCoreIndexes().iterator();
+                int usedCPUByTask = (int) task.getCpuAllocatedValue();
+                String taskName = task.getLocalName();
+                String newTaskName = (taskName.length() > GlobalVars.MAX_NAME_LENGTH) ? taskName.substring(0, GlobalVars.MAX_NAME_LENGTH) + "..." : taskName;
+
+//            while (receivedCoresIndexIterator.hasNext()) {
+//                Integer index = receivedCoresIndexIterator.next();
+                Map<String, Integer> map = coreInformation.get(0);
+                map.put(newTaskName, usedCPUByTask);
+                totalCPUUsedByTasks[0] += usedCPUByTask;
+//            }
+                int usedMemory = (int) task.getMemAllocatedValue();
+                memoryInformation.put(newTaskName, usedMemory);
+                totalMemoryUsedByTasks += usedMemory;
+
+//            int usedStorage = (int) task.getHddAllocatedValue();
+//            storageInformation.put(newTaskName, usedStorage);
+//            totalStorageUsedByTasks += usedStorage;
+            }
+
+
+            for (int i = 0; i < coresCount; i++) {
+                Map<String, Integer> map = coreInformation.get(i);
+                Core core = cores.get(i);
+                map.put("OS", core.getMaximumWorkLoad().intValue() - (core.getMaximumWorkLoad().intValue() - core.getCurrentWorkLoad().intValue()) - totalCPUUsedByTasks[i]);
+                coresMonitors.get(i).setCurrentValue(map);
+            }
+
+            memoryInformation.put("OS", memory.getMaximumWorkLoad().intValue() - totalMemoryUsedByTasks);
+            memoryMonitor.setCurrentValue(memoryInformation);
+
+        } else {
+            ServerDto serverDto = proxyInterface.getServerInfo();
+            java.util.List<Integer> freeCPU = serverDto.getFreeCPU();
+            int totalCPU = serverDto.getTotalCPU();
+            int totalUsedMemory = serverDto.getTotalMemory() - serverDto.getFreeMemory();
+            int totalUsedStorage = 0;
+
+            Collection<ApplicationActivity> runningTasks = server.getRunningActivities();
+            java.util.List<Map<String, Integer>> coreInformation = new java.util.ArrayList<Map<String, Integer>>();
+            Map<String, Integer> memoryInformation = new HashMap<String, Integer>();
+            Map<String, Integer> storageInformation = new HashMap<String, Integer>();
 
 
 //        HDD storage = server.getHddResources().iterator().next();
@@ -116,56 +191,56 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
 //        totalUsedStorage = targetStorage.getSize() - targetStorage.getFreeSpace();
 
 //        storageInformation.put("Free", targetStorage.getFreeSpace());
-        memoryInformation.put("Free", serverDto.getFreeMemory());
+            memoryInformation.put("Free", serverDto.getFreeMemory());
 
 
-        int coresCount = coresMonitors.size();
-        for (int i = 0; i < coresCount; i++) {
-            //TODO :  after adding info for all cores in C# modify this
-            Map<String, Integer> map = new HashMap<String, Integer>();
-            map.put("Free", freeCPU.get(i));
-            coreInformation.add(map);
-        }
+            int coresCount = coresMonitors.size();
+            for (int i = 0; i < coresCount; i++) {
+                //TODO :  after adding info for all cores in C# modify this
+                Map<String, Integer> map = new HashMap<String, Integer>();
+                map.put("Free", freeCPU.get(i));
+                coreInformation.add(map);
+            }
 
 
-        int[] totalCPUUsedByTasks = new int[coresCount];
-        int totalMemoryUsedByTasks = 0;
-        int totalStorageUsedByTasks = 0;
+            int[] totalCPUUsedByTasks = new int[coresCount];
+            int totalMemoryUsedByTasks = 0;
+            int totalStorageUsedByTasks = 0;
 
-        for (ApplicationActivity task : runningTasks) {
+            for (ApplicationActivity task : runningTasks) {
 
 //            Iterator<Integer> receivedCoresIndexIterator = task.getReceivedCoreIndexes().iterator();
-            int usedCPUByTask = (int) task.getCpuAllocatedValue();
-            String taskName = task.getLocalName();
-            String newTaskName = (taskName.length() > GlobalVars.MAX_NAME_LENGTH) ? taskName.substring(0, GlobalVars.MAX_NAME_LENGTH) + "..." : taskName;
+                int usedCPUByTask = (int) task.getCpuAllocatedValue();
+                String taskName = task.getLocalName();
+                String newTaskName = (taskName.length() > GlobalVars.MAX_NAME_LENGTH) ? taskName.substring(0, GlobalVars.MAX_NAME_LENGTH) + "..." : taskName;
 
 //            while (receivedCoresIndexIterator.hasNext()) {
 //                Integer index = receivedCoresIndexIterator.next();
-            Map<String, Integer> map = coreInformation.get(0);
-            map.put(newTaskName, usedCPUByTask);
-            totalCPUUsedByTasks[0] += usedCPUByTask;
+                Map<String, Integer> map = coreInformation.get(0);
+                map.put(newTaskName, usedCPUByTask);
+                totalCPUUsedByTasks[0] += usedCPUByTask;
 //            }
-            int usedMemory = (int) task.getMemAllocatedValue();
-            memoryInformation.put(newTaskName, usedMemory);
-            totalMemoryUsedByTasks += usedMemory;
+                int usedMemory = (int) task.getMemAllocatedValue();
+                memoryInformation.put(newTaskName, usedMemory);
+                totalMemoryUsedByTasks += usedMemory;
 
 //            int usedStorage = (int) task.getHddAllocatedValue();
 //            storageInformation.put(newTaskName, usedStorage);
 //            totalStorageUsedByTasks += usedStorage;
-        }
+            }
 
 
-        for (int i = 0; i < coresCount; i++) {
-            Map<String, Integer> map = coreInformation.get(i);
-            map.put("OS", totalCPU - freeCPU.get(i) - totalCPUUsedByTasks[i]);
-            coresMonitors.get(i).setCurrentValue(map);
-        }
+            for (int i = 0; i < coresCount; i++) {
+                Map<String, Integer> map = coreInformation.get(i);
+                map.put("OS", totalCPU - freeCPU.get(i) - totalCPUUsedByTasks[i]);
+                coresMonitors.get(i).setCurrentValue(map);
+            }
 
-        memoryInformation.put("OS", totalUsedMemory - totalMemoryUsedByTasks);
-        memoryMonitor.setCurrentValue(memoryInformation);
+            memoryInformation.put("OS", totalUsedMemory - totalMemoryUsedByTasks);
+            memoryMonitor.setCurrentValue(memoryInformation);
 
 //        storageInformation.put("OS", totalUsedStorage - totalStorageUsedByTasks);
 //        storageMonitor.setCurrentValue(storageInformation);
-
+        }
     }
 }

@@ -6,7 +6,6 @@ import gui.resourceMonitor.serverMonitorPlotter.impl.ServerMonitorXYPlotter;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
 import selfoptimizing.utils.Pair;
-import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,8 +42,8 @@ public class ServersMonitorController {
             serverMonitors.put(
                     server.getLocalName(),
                     new Pair<AbstractMonitor, AbstractMonitor>(
-                            new ServerMonitorXYPlotter(server),
-                            new ServerMonitorPiePlotter(server)));
+                            new ServerMonitorXYPlotter(server, modelAccess),
+                            new ServerMonitorPiePlotter(server, modelAccess)));
         }
     }
 

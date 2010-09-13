@@ -12,12 +12,16 @@
 package gui.newgui;
 
 import globalLoop.agents.GUIAgent;
+import gui.energyConsumption.EnergyConsumption;
+import gui.energyConsumption.EnergyConsumptionFactory;
+import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.TaskDto;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
@@ -32,6 +36,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private GUIAgent agent;
     private ModelAccess modelAccess;
     private MainWindow selfReference;
+
+    private int decisionTime = 0;
+    private int decisionTimeRefreshRateInMillis = 1000;
+
+    private int energyEstimateWithoutAlg = 0;
+    private int energyEstimateWithAlg = 0;
 
 //    private List<ServerDto> computingResourcesList;
     private Map<TaskDto, String> applicationActivitiesList;
@@ -178,6 +188,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }
 
     private void initComponents_2() {
+        createDecisionTimeChart();
+        createEnergyConsumptionCharts();
         simulateChoiceRadio.setSelected(true);
         simulateChoiceRadio.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -222,6 +234,57 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         refreshComputingResourcesTree();
     }
 
+    private void createDecisionTimeChart() {
+        final ResourceMonitorXYChartPlotter plotter = new ResourceMonitorXYChartPlotter("DecisionTime", "Time (s)", "Decision Time (ms)", 0, 100);
+        plotter.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
+
+        ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        plotter.setCurrentValue(decisionTime);
+                        decisionTime = 0;
+                    }
+                }.start();
+            }
+        };
+        Timer refreshDecisionTimeTimer = new Timer(decisionTimeRefreshRateInMillis, actionListener);
+        refreshDecisionTimeTimer.start();
+//        this.energyConsumptionPanel.setLayout(new BorderLayout());
+        decisionTimePanel.add(plotter.getGraphPanel(), "Center");
+    }
+
+    private void refreshEnergyEstimate() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
+        EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
+        energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm();
+        energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm();
+        System.out.println("After refresh  " + energyEstimateWithoutAlg + " ___ " + energyEstimateWithAlg);
+    }
+
+    private void createEnergyConsumptionCharts() {
+        refreshEnergyEstimate();
+        final ResourceMonitorXYChartPlotter plotter1 = new ResourceMonitorXYChartPlotter("Energy Consumption without GAMES infrastructure", "Time(s)", "Energy Consumed (W)", 0, 5000);
+        final ResourceMonitorXYChartPlotter plotter2 = new ResourceMonitorXYChartPlotter("Energy Consumption", "Time(s)", "Energy Consumed (W)", 0, 5000);
+        plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
+        plotter2.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
+        ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                plotter1.setCurrentValue(energyEstimateWithoutAlg);
+                plotter2.setCurrentValue(energyEstimateWithAlg);
+            }
+        };
+        Timer refreshTimerEnergyConsumption = new Timer(decisionTimeRefreshRateInMillis, actionListener);
+        refreshTimerEnergyConsumption.start();
+        energyConsumptionPanel.add(plotter2.getGraphPanel(), "Center");
+    }
+
     public void addFileMenuAction(AbstractAction abstractAction) {
         fileMenuItem.add(abstractAction);
     }
@@ -252,10 +315,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         computingResourcesLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         computingResourcesTree = new javax.swing.JTree();
+        energyConsumptionPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         workLoadScheduleScrollPane = new javax.swing.JScrollPane();
         workloadScheduleJTree = new javax.swing.JTree();
+        decisionTimePanel = new javax.swing.JPanel();
         showTopologyButton = new javax.swing.JButton();
         simulateChoiceRadio = new javax.swing.JRadioButton();
         realChoiceRadio = new javax.swing.JRadioButton();
@@ -268,7 +333,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         runOnLabel = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenuItem = new javax.swing.JMenu();
-        exitMenuItem = new javax.swing.JMenuItem();
         configurationMenuItem = new javax.swing.JMenu();
         loadConfigMenuItem = new javax.swing.JMenuItem();
         showExpertConfigMenuItem = new javax.swing.JMenuItem();
@@ -283,66 +347,81 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         javax.swing.GroupLayout gamesLogoPanelLayout = new javax.swing.GroupLayout(gamesLogoPanel);
         gamesLogoPanel.setLayout(gamesLogoPanelLayout);
         gamesLogoPanelLayout.setHorizontalGroup(
-            gamesLogoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
+                gamesLogoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 340, Short.MAX_VALUE)
         );
         gamesLogoPanelLayout.setVerticalGroup(
-            gamesLogoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 243, Short.MAX_VALUE)
+                gamesLogoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 247, Short.MAX_VALUE)
         );
 
         computingResourcesLabel.setText("Computing Resources");
 
         jScrollPane2.setViewportView(computingResourcesTree);
 
+        energyConsumptionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        energyConsumptionPanel.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout computingResourcesPanelLayout = new javax.swing.GroupLayout(computingResourcesPanel);
         computingResourcesPanel.setLayout(computingResourcesPanelLayout);
         computingResourcesPanelLayout.setHorizontalGroup(
-            computingResourcesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(computingResourcesPanelLayout.createSequentialGroup()
-                .addGroup(computingResourcesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(computingResourcesPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(computingResourcesPanelLayout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(computingResourcesLabel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                computingResourcesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(computingResourcesPanelLayout.createSequentialGroup()
+                        .addGroup(computingResourcesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(computingResourcesPanelLayout.createSequentialGroup()
+                                        .addGap(66, 66, 66)
+                                        .addComponent(computingResourcesLabel))
+                                .addGroup(computingResourcesPanelLayout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE))
+                                .addGroup(computingResourcesPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(energyConsumptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
         );
         computingResourcesPanelLayout.setVerticalGroup(
-            computingResourcesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, computingResourcesPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(computingResourcesLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                computingResourcesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(computingResourcesPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(computingResourcesLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(energyConsumptionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                        .addContainerGap())
         );
 
         jLabel1.setText("Workload Schedule");
 
         workLoadScheduleScrollPane.setViewportView(workloadScheduleJTree);
 
+        decisionTimePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        decisionTimePanel.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(jLabel1)
-                .addContainerGap(81, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(workLoadScheduleScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(decisionTimePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(workLoadScheduleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(72, 72, 72)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(workLoadScheduleScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(workLoadScheduleScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(decisionTimePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         showTopologyButton.setText("Show Topology");
@@ -376,27 +455,27 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         javax.swing.GroupLayout logControlPaneLayout = new javax.swing.GroupLayout(logControlPane);
         logControlPane.setLayout(logControlPaneLayout);
         logControlPaneLayout.setHorizontalGroup(
-            logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(logControlPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(logControlPaneLayout.createSequentialGroup()
-                        .addComponent(logLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(showLogButton)))
-                .addGap(76, 76, 76))
+                logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(logControlPaneLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(logBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(logControlPaneLayout.createSequentialGroup()
+                                .addComponent(logLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(showLogButton)))
+                        .addGap(111, 111, 111))
         );
         logControlPaneLayout.setVerticalGroup(
-            logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(logControlPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logLabel)
-                    .addComponent(showLogButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(logBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(logControlPaneLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(logLabel)
+                                .addComponent(showLogButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(logBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         runOnLabel.setText("Run on");
@@ -405,10 +484,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         fileMenuItem.setText("File");
         fileMenuItem.setName("fileMenuItem"); // NOI18N
-
-        exitMenuItem.setText("Exit");
-        fileMenuItem.add(exitMenuItem);
-
         menuBar.add(fileMenuItem);
 
         configurationMenuItem.setText("Configuration");
@@ -427,63 +502,65 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(logControlPane, javax.swing.GroupLayout.Alignment.LEADING, 0, 862, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(computingResourcesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(67, 67, 67)
-                                .addComponent(gamesNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(runOnLabel)
-                                .addGap(6, 6, 6)
+                                .addComponent(logControlPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createSequentialGroup()
+                                .addComponent(computingResourcesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(simulateChoiceRadio)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(realChoiceRadio)
-                                        .addGap(26, 26, 26)))
-                                .addGap(27, 27, 27)
-                                .addComponent(showTopologyButton))
-                            .addComponent(gamesLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(67, 67, 67)
+                                        .addComponent(gamesNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addComponent(runOnLabel)
+                                                .addGap(6, 6, 6)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(simulateChoiceRadio)
+                                                        .addComponent(realChoiceRadio))
+                                                .addGap(27, 27, 27)
+                                                .addComponent(showTopologyButton))
+                                        .addComponent(gamesLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(computingResourcesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(gamesNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(gamesLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(showTopologyButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(64, 64, 64)
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(39, 39, 39)
+                                        .addComponent(computingResourcesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                .addComponent(gamesNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(gamesLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addGap(30, 30, 30)
+                                        .addComponent(showTopologyButton))
+                                .addGroup(layout.createSequentialGroup()
                                         .addGap(14, 14, 14)
                                         .addComponent(runOnLabel))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(simulateChoiceRadio)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(realChoiceRadio)))))))
-                .addGap(18, 18, 18)
-                .addComponent(logControlPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                .addComponent(simulateChoiceRadio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(realChoiceRadio)))))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(logControlPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -504,7 +581,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel computingResourcesPanel;
     private javax.swing.JTree computingResourcesTree;
     private javax.swing.JMenu configurationMenuItem;
-    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JPanel decisionTimePanel;
+    private javax.swing.JPanel energyConsumptionPanel;
     private javax.swing.JMenu fileMenuItem;
     private javax.swing.JPanel gamesLogoPanel;
     private javax.swing.JLabel gamesNameLabel;
@@ -596,15 +674,23 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             refreshApplicationActivities();
         } else if (dataType.equals("Servers added")) {
             refreshComputingResourcesTree();
+        } else if (data[0].equals("Running time")) {
+            refreshEnergyEstimate();
+            decisionTime = ((Long) data[1]).intValue();
         } else if (dataType.equals("TaskStatusChanged")) {
             List<String> names = (List<String>) data[1];
             for (TaskDto taskDto : applicationActivitiesList.keySet()) {
+                boolean taskMarked = false;
                 for (String name : names) {
                     if (taskDto.getTaskName().equals(name)) {
-                        setApplicationActivityStatus(taskDto, "->.." + taskDto.getTaskName());
+                        setApplicationActivityStatus(taskDto, "->>..Received ->>.." + taskDto.getTaskName());
                         names.remove(name);
+                        taskMarked = true;
                         break;
                     }
+                }
+                if (!taskMarked) {
+                    setApplicationActivityStatus(taskDto, taskDto.getTaskName());
                 }
             }
         }

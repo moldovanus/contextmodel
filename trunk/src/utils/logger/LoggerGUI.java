@@ -63,13 +63,12 @@ public class LoggerGUI {
         String date = "_" + new java.util.Date().toString();
         messages.add(new Object[]{messageColor, header, message, date});
 
-
-        textArea.append("\n" + header + " \t[" + date + "]\n");
-        for (Object s : message) {
-            textArea.append("\t" + s.toString() + "\n");
-        }
-        textArea.repaint();
-        textArea.setCaretPosition(textArea.getText().length());
+//        textArea.append("\n" + header + " \t[" + date + "]\n");
+//        for (Object s : message) {
+//            textArea.append("\t" + s.toString() + "\n");
+//        }
+//        textArea.repaint();
+//        textArea.setCaretPosition(textArea.getText().length());
 
         savePDF();
     }
@@ -118,7 +117,7 @@ public class LoggerGUI {
         this.logPath = logPath;
     }
 
-    public void setVisible(boolean visible){
+    public void setVisible(boolean visible) {
         frame.setVisible(visible);
     }
 }
