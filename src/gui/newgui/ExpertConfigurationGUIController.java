@@ -10,6 +10,7 @@ import jade.core.AID;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.applications.ApplicationActivity;
 import selfoptimizing.utils.Pair;
+import sun.management.ManagementFactory;
 import utils.fileIO.ConfigurationFileIO;
 import utils.worldInterface.dtos.TaskDto;
 
@@ -20,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
 import java.util.*;
 import java.util.List;
 
@@ -359,13 +362,15 @@ public class ExpertConfigurationGUIController implements Observer {
     private void createMemoryUsageChart() {
         final ResourceMonitorXYChartPlotter plotter = new ResourceMonitorXYChartPlotter("Memory usage", "Time(s)", "Memory used (MB)", 0, 100);
         plotter.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
-        final Runtime runtime = Runtime.getRuntime();
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new Thread() {
                     @Override
                     public void run() {
-                        plotter.setCurrentValue(new Long(runtime.totalMemory() - runtime.freeMemory()).intValue() / 1048576);
+                        MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
+                        MemoryUsage heapUsage = mbean.getHeapMemoryUsage();
+                        MemoryUsage nonHeapUsage = mbean.getNonHeapMemoryUsage();
+                        plotter.setCurrentValue(new Long(heapUsage.getUsed() + nonHeapUsage.getUsed()).intValue() / 1048576);
                     }
                 }.start();
             }

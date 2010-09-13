@@ -75,7 +75,7 @@ public class MultipleResourceMonitorXYChartPlotter extends ResourceMonitorPlotte
         Random random = new Random();
 
         for (int i = 0; i < count; i++) {
-            renderer.setSeriesPaint(i, new Color(random.nextInt(256), 255, random.nextInt(256)));
+            renderer.setSeriesPaint(i, new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
         }
 
         ValueAxis yAxis = plot.getRangeAxis();

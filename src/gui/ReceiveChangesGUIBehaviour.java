@@ -1,14 +1,11 @@
 package gui;
 
+import globalLoop.agents.GUIAgent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.UnreadableException;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ReceiveChangesGUIBehaviour extends CyclicBehaviour {
 
@@ -44,8 +41,7 @@ public class ReceiveChangesGUIBehaviour extends CyclicBehaviour {
 //            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 //        }
 
-         
-        
+
         /*try {
             switch (message.getPerformative()) {
                 case ACLMessage.INFORM:
