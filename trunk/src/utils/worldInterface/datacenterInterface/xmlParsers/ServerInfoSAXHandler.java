@@ -54,6 +54,7 @@ public class ServerInfoSAXHandler extends DefaultHandler {
 
     private static final String TOTAL_MEMORY = "TotalMemory";
     private static final String FREE_MEMORY = "FreeMemory";
+    private static final String STRING ="string";
 
     private boolean inTotalCPU = false;
     private boolean inCoreCount = false;
@@ -66,7 +67,10 @@ public class ServerInfoSAXHandler extends DefaultHandler {
     private boolean inTotalMemory = false;
     private boolean inFreeMemory = false;
 
+    private boolean energyInfo = false ;
+    private String energyContent ;
     private String text;
+
 
     private final NumberFormat numberFormat = NumberFormat.getIntegerInstance();
 
@@ -90,7 +94,8 @@ public class ServerInfoSAXHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
-
+        if (localName.equals(STRING))
+            energyInfo = true;
         if (localName.equals(TOTAL_CPU)) {
             inTotalCPU = true;
         } else if (localName.equals(CORE_COUNT)) {
@@ -115,7 +120,11 @@ public class ServerInfoSAXHandler extends DefaultHandler {
 
     public void endElement(String namespaceURI, String localName, String qualifiedName)
             throws SAXException {
-
+        if (localName.equals(STRING))
+        {
+             energyInfo = false;
+             energyContent = text;
+        }
         if (localName.equals(TOTAL_CPU)) {
             try {
                 serverDto.setTotalCPU(numberFormat.parse(text).intValue());
@@ -175,12 +184,14 @@ public class ServerInfoSAXHandler extends DefaultHandler {
             inStorageFreeSpace = false;
         }
     }
-
+    public String getEnergyContent(){
+        return energyContent;
+    }
     public void characters(char[] ch, int start, int length) throws SAXException {
 
         if (inTotalCPU || inCoreCount
                 || inFreeCPUVal || inTotalMemory || inFreeMemory
-                || inStorageName || inStorageFreeSpace || inStorageSize) {
+                || inStorageName || inStorageFreeSpace || inStorageSize || energyInfo) {
             text = new String(ch, start, length);
         }
     }

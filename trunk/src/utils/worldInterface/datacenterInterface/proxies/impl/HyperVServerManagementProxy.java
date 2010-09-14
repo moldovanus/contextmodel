@@ -14,6 +14,10 @@ import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -449,11 +453,69 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         }
     }
 
-    public static void main(String [] args){
+    public String getEnergyConsumptionInfo() {
+        try {
+            Calendar cal = Calendar.getInstance();
+            String DATE_FORMAT_NOW = "MM/dd/yyyy HH:mm:ss";
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+            String date = sdf.format(cal.getTime());
+            String theDate ="";
+            if (date.split(" ")[0].charAt(0)=='0')
+                theDate = date.split(" ")[0].substring(1);
+                else
+                theDate = date.split(" ")[0];
+            if (theDate.split("/")[1].charAt(0)=='0')
+                theDate = theDate.split("/")[0]+"//"+theDate.split("/")[1].substring(1)+"//"+theDate.split("/")[2];
+            String theTime = "";
+               if (date.split(" ")[1].substring(0,5).charAt(0)=='0')
+                theTime = date.split(" ")[1].substring(1,5);
+                else
+                theTime = date.split(" ")[1].substring(0,5);
+            if (theTime.split(":")[1].charAt(0)=='0')
+                theTime = theTime.split(":")[0]+":"+theTime.split(":")[1].substring(1);
+
+            URL url = new URL("http://" + hostName + "/Service1.asmx/GetPowerConsumption?"+"time="+theTime+"&date="+theDate);
+                   
+           URLConnection connection = url.openConnection();
+            connection.setDoInput(true);
+
+            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+
+                String content ="";
+               while ((line = rd.readLine()) != null) {
+               // if (DEBUG) {
+                    System.out.println(line);
+               // }
+                if (line.length() > 0 && line.charAt(1) != '?') {
+                    content += "\n" + line;
+                }
+            }
+
+            try {
+                XMLReader reader = XMLReaderFactory.createXMLReader();
+                ServerInfoSAXHandler handler = new ServerInfoSAXHandler();
+                reader.setContentHandler(handler);
+                ByteArrayInputStream in = new ByteArrayInputStream(content.getBytes());
+                InputSource source = new InputSource(in);
+                reader.parse(source);
+                return handler.getEnergyContent();
+                 } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        
+        return  "";
+    }
+
+    public static void main(String[] args) {
 //        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.2.13");
 //       // proxy.moveSourceActions("\\\\192.168.2.10\\VirtualMachines\\Source","Empty");
 //        proxy.moveDestinationActions("\\\\192.168.2.10\\VirtualMachines\\Source","\\\\192.168.2.10\\VirtualMachines\\Dest","Empty");
-         
+
     }
 
 }

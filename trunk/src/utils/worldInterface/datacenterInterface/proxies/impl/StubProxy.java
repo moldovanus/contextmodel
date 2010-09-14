@@ -78,4 +78,8 @@ public class StubProxy extends ServerManagementProxy {
     public void sendServerToSleep() {
 //        new HyperVServerManagementProxy(hostName).sendServerToSleep();
     }
+    public String getEnergyConsumptionInfo(){
+        //new HyperVServerManagementProxy(hostName).getEnergyConsumptionInfo();
+        return "0";
+    }
 }
