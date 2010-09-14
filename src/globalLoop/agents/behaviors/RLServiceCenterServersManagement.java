@@ -43,6 +43,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     ModelAccess modelAccess;
     private ContextSnapshot smallestEntropyContext;
     private LoggerGUI logger;
+    private int stackDepth = 0;
+    private static final int MAXIMUM_STACK_DEPTH = 100;
 
     public RLServiceCenterServersManagement(Agent a, ModelAccess modelAccess, long period) {
         super(a, period);
@@ -263,13 +265,12 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         return retServer;
     }
 
-    private int stackDepth = 0;
 
     private ContextSnapshot reinforcementLearning(PriorityQueue<ContextSnapshot> queue) {
         System.out.println("STACK depth: " + stackDepth++);
 
         ContextSnapshot newContext = queue.poll();
-        if (newContext == null || (stackDepth == 300)) {
+        if (newContext == null || (stackDepth >= MAXIMUM_STACK_DEPTH)) {
             Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
             System.out.println("Could not repair the context totally. Returning best solution:");
@@ -653,9 +654,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             result.executeOnServiceCenter(modelAccess);
 
 
-            ArrayList<String> negotiationMessage = new ArrayList<String>();
             if (result.getContextEntropy() > 0) {
                 logContext(Color.RED);
+                ArrayList<String> negotiationMessage = new ArrayList<String>();
 
                 entropyAndPolicy = computeEntropy();
                 if (entropyAndPolicy.getSecond().getPolicySubject().get(0) instanceof ApplicationActivity) {

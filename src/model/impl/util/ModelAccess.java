@@ -299,7 +299,11 @@ public class ModelAccess implements ModelFactory {
     public ApplicationActivity createApplicationActivity(String name) {
         ApplicationActivity object;
         if (accessType == ONTOLOGY_ACCESS) {
-            object = ontologyModelFactory.createApplicationActivity(generateUniqueName(name));
+            if (ontologyModelFactory.getApplicationActivity(name) != null) {
+                object = ontologyModelFactory.createApplicationActivity(generateUniqueName(name));
+            } else {
+                object = ontologyModelFactory.createApplicationActivity((name));
+            }
             // databaseModelFactory.createContextAction(name);
         } else {
             //ontologyModelFactory.createApplicationActivity(name);
@@ -386,7 +390,11 @@ public class ModelAccess implements ModelFactory {
 
         switch (accessType) {
             case ONTOLOGY_ACCESS:
-                object = ontologyModelFactory.createServiceCenterITComputingResource(generateUniqueName(name));
+                if (ontologyModelFactory.getServiceCenterITComputingResource(name) != null) {
+                    object = ontologyModelFactory.createServiceCenterITComputingResource(generateUniqueName(name));
+                } else {
+                    object = ontologyModelFactory.createServiceCenterITComputingResource((name));
+                }
                 break;
             case DATABASE_ACCESS:
                 object = databaseModelFactory.createServiceCenterITComputingResource(generateUniqueName(name));

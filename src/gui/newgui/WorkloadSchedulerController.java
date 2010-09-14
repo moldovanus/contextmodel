@@ -38,6 +38,15 @@ public class WorkloadSchedulerController {
         initTableModel();
     }
 
+    public List<Pair<String, Integer>> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(List<Pair<String, Integer>> schedule) {
+        this.schedule.clear();
+        this.schedule.addAll(schedule);
+    }
+
     private void initTableModel() {
         scheduleTableModel = new AbstractTableModel() {
 
@@ -105,7 +114,7 @@ public class WorkloadSchedulerController {
         }
         for (TreePath path : paths) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-            if (node.isLeaf() && ! node.isRoot()) {
+            if (node.isLeaf() && !node.isRoot()) {
                 DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
                 schedule.add(new Pair<String, Integer>(parent.toString(), scheduleDelay));
             } else {
@@ -113,6 +122,7 @@ public class WorkloadSchedulerController {
             }
         }
     }
+
 
     public JTree getAvailableTasksTree() {
         return workloadTreeDisplay.getTree();

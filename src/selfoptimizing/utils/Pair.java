@@ -5,10 +5,12 @@
 
 package selfoptimizing.utils;
 
+import java.io.Serializable;
+
 /**
  * @author Moldovanus
  */
-public class Pair<T, S> {
+public class Pair<T, S> implements Serializable {
     private T first;
     private S second;
 

@@ -12,13 +12,19 @@
 package gui.newgui;
 
 import globalLoop.agents.GUIAgent;
+import globalLoop.utils.GlobalVars;
 import gui.energyConsumption.EnergyConsumption;
 import gui.energyConsumption.EnergyConsumptionFactory;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.MultipleResourceMonitorXYChartPlotter;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorBarChartPlotter;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
+import jade.core.AID;
+import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
+import model.interfaces.resources.applications.ApplicationActivity;
+import selfoptimizing.utils.Pair;
+import utils.fileIO.ConfigurationFileIO;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.TaskDto;
 
@@ -29,6 +35,8 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -46,6 +54,16 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
     private int energyEstimateWithoutAlg = 0;
     private int energyEstimateWithAlg = 0;
+
+    private ServerConfigurationController serverConfigurationController;
+    private TaskConfigurationController taskConfigurationController;
+    private WorkloadSchedulerController workloadSchedulerController;
+    private JFileChooser fileChooser;
+
+    private Timer scheduleTimer;
+
+    private int scheduleCount = 0;
+    private List<Pair<String, Integer>> schedule;
 
 //    private List<ServerDto> computingResourcesList;
     private Map<TaskDto, String> applicationActivitiesList;
@@ -212,6 +230,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             // handle exception
         }
 
+
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Image image = toolkit.getImage("./logo_games.jpg");
         ImageIcon icon = new ImageIcon(image.getScaledInstance(imageLogoPanel.getWidth(), imageLogoPanel.getHeight(), Image.SCALE_SMOOTH));
@@ -219,24 +238,186 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         label.setIcon(icon);
         imageLogoPanel.setLayout(new BorderLayout());
         imageLogoPanel.add(label, "Center");
+        Image image_1 = toolkit.getImage("./bus_architecture.png");
+        ImageIcon icon_1 = new ImageIcon(image_1.getScaledInstance(imageLogoPanel1.getWidth(), imageLogoPanel1.getHeight(), Image.SCALE_SMOOTH));
+        JLabel label_1 = new JLabel();
+        label_1.setIcon(icon_1);
+        imageLogoPanel1.setLayout(new BorderLayout());
+        imageLogoPanel1.add(label_1, "Center");
+
         createDecisionTimeChart();
         createEnergyConsumptionCharts();
         ButtonGroup group = new ButtonGroup();
         group.add(simulateChoiceRadio);
         group.add(realChoiceRadio);
 
-        simulateChoiceRadio.setSelected(true);
-        simulateChoiceRadio.addActionListener(new ActionListener() {
+        workloadSchedulerController = new WorkloadSchedulerController(modelAccess);
+        serverConfigurationController = new ServerConfigurationController(agent);
+        taskConfigurationController = new TaskConfigurationController(agent);
+
+        final ActionListener scheduleTimerListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ProxyFactory.setReturnStub(isSimulationChosen());
+
+                List<String> scheduledTasks = new ArrayList<String>();
+                for (Pair<String, Integer> entry : schedule) {
+                    if (entry.getSecond().equals(scheduleCount)) {
+                        scheduledTasks.add(entry.getFirst());
+                    }
+                }
+                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
+//                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
+                String taskNames = "";
+                for (String name : scheduledTasks) {
+                    taskNames += name + ", ";
+                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
+                    //TODO; remove if other solution for templates implemented
+                    if (activity.getLocalName().toLowerCase().contains("template")) {
+
+                        TaskDto taskDto = new TaskDto();
+                        taskDto.setTaskName(activity.getLocalName());
+                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+
+                        availableTasks.add(taskDto);
+                    }
+                }
+
+                if (scheduledTasks.size() > 0) {
+                    JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
+                }
+
+                jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
+                try {
+                    msg.setContentObject(new Object[]{"Create clones", scheduledTasks});
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+                agent.send(msg);
+
+
+                scheduleCount++;
+            }
+        };
+        fileChooser = new JFileChooser();
+        File file = new File("./testConfigurations");
+        if (file.exists()) {
+            fileChooser.setCurrentDirectory(file);
+        } else {
+            fileChooser.setCurrentDirectory(new File("."));
+        }
+
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                scheduleTimer = new Timer(1000, scheduleTimerListener);
+                scheduleTimer.start();
+            }
+        });
+        pauseButton.setText("Pause");
+
+        pauseButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (scheduleTimer != null) {
+                    if (scheduleTimer.isRunning()) {
+                        scheduleTimer.stop();
+                        pauseButton.setText("Resume");
+                    } else {
+                        scheduleTimer.start();
+                        pauseButton.setText("Pause");
+                    }
+                }
             }
         });
 
-        realChoiceRadio.addActionListener(new ActionListener() {
+        restartButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ProxyFactory.setReturnStub(isSimulationChosen());
+                ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                try {
+                    msg.setContentObject(new Object[]{"Delete all"});
+                } catch (IOException ex) {
+                    ex.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+                msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+                agent.send(msg);
+                serverConfigurationController.generateEntities(agent);
+                taskConfigurationController.generateEntities(agent);
+                scheduleTimer = new Timer(1000, scheduleTimerListener);
+                scheduleTimer.restart();
+                scheduleCount = 0;
             }
         });
+
+        loadConfigMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Object[] data;
+
+                int userOption = fileChooser.showOpenDialog(null);
+                if (userOption == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        if (!file.getName().endsWith("general_config")) {
+                            throw new Exception();
+                        }
+                        data = (Object[]) ConfigurationFileIO.loadGeneralConfig(file);
+
+                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                        try {
+                            msg.setContentObject(new Object[]{"Delete all"});
+                        } catch (IOException ex) {
+                            ex.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+                        agent.send(msg);
+
+                        serverConfigurationController.setTableData((List<String[]>) data[0]);
+                        taskConfigurationController.setTableData((List<String[]>) data[1]);
+
+                        serverConfigurationController.getConfigurationPanel().repaint();
+                        taskConfigurationController.getConfigurationPanel().repaint();
+
+                        serverConfigurationController.generateEntities(agent);
+                        taskConfigurationController.generateEntities(agent);
+
+                        schedule = (List<Pair<String, Integer>>) data[2];
+                        workloadSchedulerController.setSchedule(schedule);
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(null, "Invalid file", "Load error", JOptionPane.WARNING_MESSAGE);
+                        e1.printStackTrace();
+                    }
+                }
+            }
+
+        });
+
+        simulateChoiceRadio.setSelected(true);
+        simulateChoiceRadio.addActionListener(new
+
+                ActionListener() {
+                    public void actionPerformed
+                            (ActionEvent
+                                    e) {
+                        ProxyFactory.setReturnStub(isSimulationChosen());
+                    }
+                }
+
+        );
+
+        realChoiceRadio.addActionListener(new
+
+                ActionListener() {
+                    public void actionPerformed
+                            (ActionEvent
+                                    e) {
+                        ProxyFactory.setReturnStub(isSimulationChosen());
+                    }
+                }
+
+        );
 
         ActionListener logButtonListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -258,19 +439,35 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         };
         showLogButton.setText("Hide Log");
         showLogButton.addActionListener(logButtonListener);
-        logButtonListener.actionPerformed(new ActionEvent(this, 0, ""));
+        logButtonListener.actionPerformed(new
+
+                ActionEvent(this, 0, "")
+
+        );
 
 
-        showExpertConfigMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ExpertConfigurationGUI gui = new ExpertConfigurationGUI();
-                ExpertConfigurationGUIController controller = new ExpertConfigurationGUIController(agent, modelAccess, gui);
-                gui.setVisible(true);
-            }
-        });
+        showExpertConfigMenuItem.addActionListener(new
+
+                ActionListener() {
+                    public void actionPerformed
+                            (ActionEvent
+                                    e) {
+                        ExpertConfigurationGUI gui = new ExpertConfigurationGUI();
+                        ExpertConfigurationGUIController controller =
+                                new ExpertConfigurationGUIController(agent, modelAccess, gui,
+                                        serverConfigurationController, taskConfigurationController,
+                                        workloadSchedulerController);
+                        gui.setVisible(true);
+                    }
+                }
+
+        );
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
         this.setTitle("GAMES Initial Window");
+
         refreshApplicationActivities();
+
         refreshComputingResourcesTree();
     }
 
@@ -370,11 +567,15 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         simulateChoiceRadio = new javax.swing.JRadioButton();
         runOnLabel = new javax.swing.JLabel();
         realChoiceRadio = new javax.swing.JRadioButton();
+        restartButton = new javax.swing.JButton();
+        pauseButton = new javax.swing.JButton();
+        startButton = new javax.swing.JButton();
         centerPanel = new javax.swing.JPanel();
         chartsPanel = new javax.swing.JPanel();
         energyConsumptionPanel = new javax.swing.JPanel();
         energyEfficiencyXYPanel = new javax.swing.JPanel();
         energyEfficiencyBarPanel = new javax.swing.JPanel();
+        energyEfficiencyLabel = new javax.swing.JLabel();
         decisionTimePanel = new javax.swing.JPanel();
         treesPanel = new javax.swing.JPanel();
         computingResourcesPanel = new javax.swing.JPanel();
@@ -387,6 +588,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         workloadScheduleLabel = new javax.swing.JLabel();
         upperPanel = new javax.swing.JPanel();
         imageLogoPanel = new javax.swing.JPanel();
+        imageLogoPanel1 = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenuItem = new javax.swing.JMenu();
         configurationMenuItem = new javax.swing.JMenu();
@@ -424,6 +626,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         realChoiceRadio.setText("real service center");
 
+        restartButton.setText("Restart");
+
+        pauseButton.setText("Stop");
+
+        startButton.setText("Start");
+
         javax.swing.GroupLayout logControlPaneLayout = new javax.swing.GroupLayout(logControlPane);
         logControlPane.setLayout(logControlPaneLayout);
         logControlPaneLayout.setHorizontalGroup(
@@ -440,28 +648,40 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                                 .addComponent(runOnLabel)
                                 .addGap(6, 6, 6)
                                 .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(simulateChoiceRadio)
-                                .addComponent(realChoiceRadio))))
+                                        .addComponent(simulateChoiceRadio)
+                                        .addComponent(realChoiceRadio))
+                                .addGap(29, 29, 29)
+                                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(pauseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(restartButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())
         );
         logControlPaneLayout.setVerticalGroup(
                 logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(logControlPaneLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(logControlPaneLayout.createSequentialGroup()
-                                        .addComponent(simulateChoiceRadio)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(realChoiceRadio))
+                                        .addContainerGap()
+                                        .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(logControlPaneLayout.createSequentialGroup()
+                                                .addComponent(simulateChoiceRadio)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(realChoiceRadio))
+                                        .addGroup(logControlPaneLayout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(runOnLabel)
+                                        .addComponent(showLogButton)
+                                        .addComponent(logLabel)))))
                                 .addGroup(logControlPaneLayout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(runOnLabel)
-                                .addComponent(showLogButton)
-                                .addComponent(logLabel))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(logBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(19, 19, 19)
+                                .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(startButton)
+                                .addComponent(pauseButton)
+                                .addComponent(restartButton))))
+                        .addGap(18, 18, 18)
+                        .addComponent(logBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(37, Short.MAX_VALUE))
         );
 
         centerPanel.setLayout(new java.awt.GridBagLayout());
@@ -476,6 +696,9 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         energyEfficiencyBarPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         energyEfficiencyBarPanel.setLayout(new java.awt.BorderLayout());
 
+        energyEfficiencyLabel.setText("     Energy Efficiency Gain");
+        energyEfficiencyBarPanel.add(energyEfficiencyLabel, java.awt.BorderLayout.PAGE_START);
+
         decisionTimePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         decisionTimePanel.setLayout(new java.awt.BorderLayout());
 
@@ -485,19 +708,19 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 energyConsumptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, energyConsumptionPanelLayout.createSequentialGroup()
                         .addComponent(energyEfficiencyXYPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(energyEfficiencyBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(decisionTimePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(energyEfficiencyBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(decisionTimePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         energyConsumptionPanelLayout.setVerticalGroup(
                 energyConsumptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(energyConsumptionPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(energyConsumptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(energyEfficiencyXYPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                        .addComponent(energyEfficiencyBarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                        .addComponent(decisionTimePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)))
+                        .addComponent(energyEfficiencyBarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                        .addComponent(decisionTimePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                        .addComponent(energyEfficiencyXYPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -565,21 +788,35 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                         .addGap(0, 87, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout imageLogoPanel1Layout = new javax.swing.GroupLayout(imageLogoPanel1);
+        imageLogoPanel1.setLayout(imageLogoPanel1Layout);
+        imageLogoPanel1Layout.setHorizontalGroup(
+                imageLogoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 393, Short.MAX_VALUE)
+        );
+        imageLogoPanel1Layout.setVerticalGroup(
+                imageLogoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 87, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
         upperPanel.setLayout(upperPanelLayout);
         upperPanelLayout.setHorizontalGroup(
                 upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(upperPanelLayout.createSequentialGroup()
-                        .addGap(308, 308, 308)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
+                        .addContainerGap(92, Short.MAX_VALUE)
                         .addComponent(imageLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(318, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(imageLogoPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(123, 123, 123))
         );
         upperPanelLayout.setVerticalGroup(
                 upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(imageLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addGroup(upperPanelLayout.createSequentialGroup()
+                        .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(imageLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(imageLogoPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -619,7 +856,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                         .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(logControlPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(15, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -646,9 +883,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel decisionTimePanel;
     private javax.swing.JPanel energyConsumptionPanel;
     private javax.swing.JPanel energyEfficiencyBarPanel;
+    private javax.swing.JLabel energyEfficiencyLabel;
     private javax.swing.JPanel energyEfficiencyXYPanel;
     private javax.swing.JMenu fileMenuItem;
     private javax.swing.JPanel imageLogoPanel;
+    private javax.swing.JPanel imageLogoPanel1;
     private javax.swing.JMenuItem loadConfigMenuItem;
     private javax.swing.JPanel logBasePanel;
     private javax.swing.JPanel logControlPane;
@@ -656,11 +895,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JScrollPane logScrollPane;
     private javax.swing.JTextArea logTextArea;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JButton pauseButton;
     private javax.swing.JRadioButton realChoiceRadio;
+    private javax.swing.JButton restartButton;
     private javax.swing.JLabel runOnLabel;
     private javax.swing.JMenuItem showExpertConfigMenuItem;
     private javax.swing.JToggleButton showLogButton;
     private javax.swing.JRadioButton simulateChoiceRadio;
+    private javax.swing.JButton startButton;
     private javax.swing.JPanel treesPanel;
     private javax.swing.JPanel upperPanel;
     private javax.swing.JScrollPane workLoadScheduleScrollPane;

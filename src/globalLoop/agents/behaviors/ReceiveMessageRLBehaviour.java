@@ -13,6 +13,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import main.PelletJena;
 import model.impl.util.ModelAccess;
+import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.policies.QoSPolicy;
 import model.interfaces.resources.*;
@@ -210,11 +211,11 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 task.setHddWeight(0.3f);
                                 task.setResourceID(task.getFrameID().getName());
 
-                                sendMessageToGUI("Tasks added", tasks);
 //                                SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
 //                                String swrlRule = "";
 //                                PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                             }
+                            sendMessageToGUI("Tasks added", tasks);
                         } else if (dataType.equals("Create clones")) {
                             List<String> names = (List<String>) contentData[1];
                             int count = names.size();
@@ -249,6 +250,32 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
 
                             }
                             sendMessageToGUI("TaskStatusChanged", names);
+                        } else if (dataType.equals("Delete all")) {
+                            Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+                            for (ServiceCenterServer server : servers) {
+                                CPU cpu = server.getCpuResources().iterator().next();
+                                List<Core> cores = cpu.getAssociatedCores();
+                                for (Core core : cores) {
+                                    core.delete();
+                                }
+                                cpu.delete();
+                                server.getMemResources().iterator().next().delete();
+                                server.getHddResources().iterator().next().delete();
+                                server.delete();
+                            }
+                            Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
+                            for (ApplicationActivity activity : activities) {
+                                activity.delete();
+                            }
+                            for (ITComputingContextPolicy policy : modelAccess.getAllITComputingContextPolicyInstances()) {
+                                policy.delete();
+                            }
+
+                            for (BusinessPolicy policy : modelAccess.getAllBusinessPolicyInstances()) {
+                                policy.delete();
+                            }
+                            SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
+                            factory.deleteImps();
                         }
                     }
                     break;
