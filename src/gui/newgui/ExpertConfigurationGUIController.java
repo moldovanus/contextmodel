@@ -422,8 +422,12 @@ public class ExpertConfigurationGUIController implements Observer {
 
     private void createEnergyConsumptionCharts() {
         refreshEnergyEstimate();
-        final ResourceMonitorXYChartPlotter plotter1 = new ResourceMonitorXYChartPlotter("Energy Consumption without GAMES infrastructure", "Time(s)", "Energy Consumed (W)", 0, 5000);
-        final ResourceMonitorXYChartPlotter plotter2 = new ResourceMonitorXYChartPlotter("Energy Consumption with GAMES infrastructure", "Time(s)", "Energy Consumed (W)", 0, 5000);
+        final ResourceMonitorXYChartPlotter plotter1 =
+                new ResourceMonitorXYChartPlotter("Energy Consumption without GAMES infrastructure",
+                        "Time(s)", "Energy Consumed (W)", 0, 200);
+        final ResourceMonitorXYChartPlotter plotter2 =
+                new ResourceMonitorXYChartPlotter("Energy Consumption with GAMES infrastructure",
+                        "Time(s)", "Energy Consumed (W)", 0, 2000);
         plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         plotter2.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         ActionListener actionListener = new ActionListener() {

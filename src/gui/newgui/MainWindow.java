@@ -542,7 +542,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         final MultipleResourceMonitorXYChartPlotter plotter1 =
                 new MultipleResourceMonitorXYChartPlotter("Energy Consumption",
                         new String[]{"With GAMES infrastructure", "Without GAMES infrastructure"},
-                        "Time(s)", "Energy Consumed (W)", 0, 5000);
+                        "Time(s)", "Energy Consumed (W)", 0, 200);
         final ResourceMonitorBarChartPlotter barChartPlotter = new ResourceMonitorBarChartPlotter("Energy Reduction", "Improvement", 0, 100);
 
         plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
