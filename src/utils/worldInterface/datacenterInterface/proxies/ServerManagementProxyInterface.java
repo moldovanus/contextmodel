@@ -39,5 +39,6 @@ public interface ServerManagementProxyInterface {
     void wakeUpServer(String mac, String ipAddress, int port);
 
     void sendServerToSleep();
+    String getEnergyConsumptionInfo();
 
 }

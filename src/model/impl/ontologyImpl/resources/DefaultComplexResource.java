@@ -344,6 +344,17 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
         if (cores.size() < requestedCores) {
             return false;
         }
+        int freeCores = cores.size();
+        for (Core core: cores){
+            List<ApplicationActivity> runningActivities = core.getRunningActivities();
+            int usedCore = 0 ;
+            for (ApplicationActivity activity:runningActivities){
+                usedCore+=activity.getCpuAllocatedValue();
+            }
+            if (usedCore+task.getCpuRequiredMinValue()>core.getMaximumWorkLoad()) freeCores--;
+        }
+
+        if (freeCores<task.getNumberOfCoresRequiredValue()) return false;
         for (Core core : cores) {
             if (core.getCurrentWorkLoad()+task.getCpuRequiredMinValue()>core.getMaximumWorkLoad()){
                 continue;

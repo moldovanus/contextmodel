@@ -3,6 +3,8 @@ package gui.energyConsumption.energyConsumptionImpl;
 import gui.energyConsumption.EnergyConsumption;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
+import utils.worldInterface.datacenterInterface.proxies.impl.HyperVServerManagementProxy;
+import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 
 import java.util.Collection;
 
@@ -15,19 +17,24 @@ import java.util.Collection;
  */
 public class EnergyEstimator implements EnergyConsumption {
     private ModelAccess modelAccess;
-      public static final int  POWER_CONSUMPTION = 600;
+      public static final int  POWER_CONSUMPTION = 400;
     public EnergyEstimator(ModelAccess modelAccess){
            this.modelAccess = modelAccess;
     }
+
     public int getValueWithRunningAlgorithm() {
         Collection<ServiceCenterServer> servers= modelAccess.getAllServiceCenterServerInstances();
-        int numberOfActiveServers = 0 ;
+        double totalEnergyConsumed = 0;
         for (ServiceCenterServer server: servers){
             if (server.getIsActive()){
-                numberOfActiveServers++;
+                 
+                HyperVServerManagementProxy proxy = new HyperVServerManagementProxy(server.getIpAddress());
+                String energyConsumption = proxy.getEnergyConsumptionInfo();
+                double d =Integer.parseInt(energyConsumption );
+                totalEnergyConsumed+=d;
             }
         }
-        return numberOfActiveServers*POWER_CONSUMPTION;  
+        return (int)totalEnergyConsumed;  
     }
 
     public int getValueWithoutAlgorithm() {

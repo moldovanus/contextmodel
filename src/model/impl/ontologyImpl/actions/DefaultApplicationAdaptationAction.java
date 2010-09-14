@@ -91,7 +91,9 @@ public class DefaultApplicationAdaptationAction extends DefaultContextAction
 
     @Override
     public String toString() {
-        return this.getName();
+        return "Application Adaptation Action: name = "+this.getName()+" prevCpuMinValue ="+prevCpuMin+" prevCpuMax="+prevCpuMax+" prevMemMin="+prevMemMin+" prevMemMax="+prevMemMax+"\n"+
+                " cpuMin="+cpuMin+ " cpuMax="+cpuMax+" memMin="+memMin + " memMax="+memMax+"\n"+
+                "For Activity:"+ task.toString();
     }
 
     public int getCpuMin() {
@@ -131,4 +133,5 @@ public class DefaultApplicationAdaptationAction extends DefaultContextAction
     public void setActivity(ApplicationActivity task){
         this.task = task;
     }
+
 }

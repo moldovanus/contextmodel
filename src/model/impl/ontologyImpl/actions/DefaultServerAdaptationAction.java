@@ -65,7 +65,8 @@ public class DefaultServerAdaptationAction extends DefaultITComputingResourceAda
 
     @Override
     public String toString() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return "Server Adaptation Action for :" +server.toString()+"\n"+"With old opt values : cpu= "+newOptimalValueForCpu+" mem="+newOptimalValueForMem+"\n"+
+                "\n With new values: cpu="+newOptimalValueForCpu+" mem="+newOptimalValueForMem ;
     }
 
     public int getNewOptimalValueForCpu() {
