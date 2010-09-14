@@ -249,7 +249,9 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
 
                             }
-                            sendMessageToGUI("TaskStatusChanged", names);
+                            if ( count > 0 ){
+                                sendMessageToGUI("TaskStatusChanged", names);
+                            }
                         } else if (dataType.equals("Delete all")) {
                             Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
                             for (ServiceCenterServer server : servers) {
@@ -267,6 +269,10 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             for (ApplicationActivity activity : activities) {
                                 activity.delete();
                             }
+                            for (ITComputingContextPolicy policy : modelAccess.getAllITComputingContextPolicyInstances()) {
+                                policy.delete();
+                            }
+
                             for (ITComputingContextPolicy policy : modelAccess.getAllITComputingContextPolicyInstances()) {
                                 policy.delete();
                             }

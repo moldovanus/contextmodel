@@ -411,82 +411,84 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
     public void wakeUpServer(String mac, String ipAddress, int port) {
 //        System.err.println("Wake up disabled from Hyper-V Management Proxy");
-        try {
-            URL url = new URL("http://" + GlobalVars.GLOBAL_LOOP_CONTROLLER_IP + "/Service1.asmx/WakeUpServer?"
-                    + "mac=" + mac + "&ipAddress=" + GlobalVars.BROADCAST_IP_ADDRESS + "&port=" + GlobalVars.WAKE_UP_PORT);
-            URLConnection connection = url.openConnection();
-//            connection.setDoInput(true);
-            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            if (DEBUG) {
-                // Response
-                String line;
-                while ((line = rd.readLine()) != null) {
-                    System.out.println(line);
-                }
-            }
-            waitUntilTargetIsAlive(ipAddress);
-            //Thread.sleep(60000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            URL url = new URL("http://" + GlobalVars.GLOBAL_LOOP_CONTROLLER_IP + "/Service1.asmx/WakeUpServer?"
+//                    + "mac=" + mac + "&ipAddress=" + GlobalVars.BROADCAST_IP_ADDRESS + "&port=" + GlobalVars.WAKE_UP_PORT);
+//            URLConnection connection = url.openConnection();
+////            connection.setDoInput(true);
+//            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            if (DEBUG) {
+//                // Response
+//                String line;
+//                while ((line = rd.readLine()) != null) {
+//                    System.out.println(line);
+//                }
+//            }
+//            waitUntilTargetIsAlive(ipAddress);
+//            //Thread.sleep(60000);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void sendServerToSleep() {
 //        System.err.println("Sleep disabled from Hyper-V Management Proxy");
-        try {
-            URL url = new URL("http://" + hostName + "/Service1.asmx/SendServerToSleep");
-            URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
-
-            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            if (DEBUG) {
-                // Response
-                String line;
-                while ((line = rd.readLine()) != null) {
-
-                    System.out.println(line);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            URL url = new URL("http://" + hostName + "/Service1.asmx/SendServerToSleep");
+//            URLConnection connection = url.openConnection();
+//            connection.setDoInput(true);
+//
+//            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            if (DEBUG) {
+//                // Response
+//                String line;
+//                while ((line = rd.readLine()) != null) {
+//
+//                    System.out.println(line);
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public String getEnergyConsumptionInfo() {
         try {
             Calendar cal = Calendar.getInstance();
-            String DATE_FORMAT_NOW = "MM/dd/yyyy HH:mm:ss";
+            //H = 24H, h = 12h 
+            String DATE_FORMAT_NOW = "M/dd/yyyy h:mm";  // aici am pus cu dd k si la minute are 2 mm nu 1 ( adik arata si 01 nu numa 1)
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
             String date = sdf.format(cal.getTime());
-            String theDate ="";
-            if (date.split(" ")[0].charAt(0)=='0')
-                theDate = date.split(" ")[0].substring(1);
-                else
-                theDate = date.split(" ")[0];
-            if (theDate.split("/")[1].charAt(0)=='0')
-                theDate = theDate.split("/")[0]+"//"+theDate.split("/")[1].substring(1)+"//"+theDate.split("/")[2];
-            String theTime = "";
-               if (date.split(" ")[1].substring(0,5).charAt(0)=='0')
-                theTime = date.split(" ")[1].substring(1,5);
-                else
-                theTime = date.split(" ")[1].substring(0,5);
-            if (theTime.split(":")[1].charAt(0)=='0')
-                theTime = theTime.split(":")[0]+":"+theTime.split(":")[1].substring(1);
+//            String theDate ="";
+//            if (date.split(" ")[0].charAt(0)=='0')
+//                theDate = date.split(" ")[0].substring(1);
+//                else
+//                theDate = date.split(" ")[0];
+//            if (theDate.split("/")[1].charAt(0)=='0')
+//                theDate = theDate.split("/")[0]+"//"+theDate.split("/")[1].substring(1)+"//"+theDate.split("/")[2];
+//            String theTime = "";
+//               if (date.split(" ")[1].substring(0,5).charAt(0)=='0')
+//                theTime = date.split(" ")[1].substring(1,5);
+//                else
+//                theTime = date.split(" ")[1].substring(0,5);
+//            if (theTime.split(":")[1].charAt(0)=='0')
+//                theTime = theTime.split(":")[0]+":"+theTime.split(":")[1].substring(1);
 
-            URL url = new URL("http://" + hostName + "/Service1.asmx/GetPowerConsumption?"+"time="+theTime+"&date="+theDate);
-                   
-           URLConnection connection = url.openConnection();
+            URL url = new URL("http://" + hostName + "/Service1.asmx/GetPowerConsumption?"
+                    + "time=" + date.split(" ")[1] + "&date=" + date.split(" ")[0]);
+
+            URLConnection connection = url.openConnection();
             connection.setDoInput(true);
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
+            String line;
 
-                String content ="";
-               while ((line = rd.readLine()) != null) {
-               // if (DEBUG) {
-                    System.out.println(line);
-               // }
+            String content = "";
+            while ((line = rd.readLine()) != null) {
+                // if (DEBUG) {
+                System.out.println(line);
+                // }
                 if (line.length() > 0 && line.charAt(1) != '?') {
                     content += "\n" + line;
                 }
@@ -500,15 +502,15 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
                 InputSource source = new InputSource(in);
                 reader.parse(source);
                 return handler.getEnergyContent();
-                 } catch (Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
-        
-        return  "";
+
+        return "";
     }
 
     public static void main(String[] args) {

@@ -72,11 +72,18 @@ public class ExpertConfigurationGUIController implements Observer {
         timers = new ArrayList<Timer>(2);
     }
 
+    public void resetScheduleCount(){
+        scheduleCount = 0;
+        expertGui.setTimerProgress(scheduleCount);
+    }
+
     public ExpertConfigurationGUIController(GUIAgent a, ModelAccess ma, ExpertConfigurationGUI gui,
                                             ServerConfigurationController sController,
                                             TaskConfigurationController tController,
-                                            WorkloadSchedulerController wController) {
+                                            WorkloadSchedulerController wController,
+                                            Timer timer) {
         this.agent = a;
+        scheduleTimer = timer;
         this.serverConfigurationController = sController;
         this.taskConfigurationController = tController;
 
@@ -111,27 +118,27 @@ public class ExpertConfigurationGUIController implements Observer {
                 expertGui.setTimerProgress(scheduleCount);
 
                 List<String> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
-                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
-//                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
+//                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
+////                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
                 String taskNames = "";
                 for (String name : scheduledTasks) {
                     taskNames += name + ", ";
-                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
-                    //TODO; remove if other solution for templates implemented
-                    if (activity.getLocalName().toLowerCase().contains("template")) {
-
-                        TaskDto taskDto = new TaskDto();
-                        taskDto.setTaskName(activity.getLocalName());
-                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
-                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
-                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
-                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
-                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
-                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
-                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
-
-                        availableTasks.add(taskDto);
-                    }
+//                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
+//                    //TODO; remove if other solution for templates implemented
+//                    if (activity.getLocalName().toLowerCase().contains("template")) {
+//
+//                        TaskDto taskDto = new TaskDto();
+//                        taskDto.setTaskName(activity.getLocalName());
+//                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+//                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+//                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+//                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+//                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+//                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+//                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+//
+//                        availableTasks.add(taskDto);
+//                    }
                 }
                 if (expertGui.generatePopupMessages()) {
 //                            WorkloadTreeDisplay workloadTreeDisplay = new WorkloadTreeDisplay(availableTasks);
@@ -171,19 +178,18 @@ public class ExpertConfigurationGUIController implements Observer {
             }
         };
 
+        scheduleTimer.addActionListener(scheduleTimerActionListener);
 
         expertGui.addStartTimerButtonListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                scheduleTimer = new Timer(1000, scheduleTimerActionListener);
+                scheduleTimer.setDelay(1000);
                 scheduleTimer.start();
-                timers.add(scheduleTimer);
             }
         });
 
         expertGui.addPauseTimerButtonListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 scheduleTimer.stop();
-                timers.remove(scheduleTimer);
             }
         });
 
@@ -271,7 +277,8 @@ public class ExpertConfigurationGUIController implements Observer {
 
                         serverConfigurationController.generateEntities(agent);
                         taskConfigurationController.generateEntities(agent);
-
+                        
+                        workloadSchedulerController.refreshAvailableTasks();
                         workloadSchedulerController.setSchedule((List<Pair<String, Integer>>) data[2]);
                         expertGui.repaintSchedule();
                     } catch (Exception e1) {
