@@ -274,7 +274,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
             System.out.println("Could not repair the context totally. Returning best solution:");
-            sendLogToGUI("Could not repair the context totally. Returning best solution:");
+            sendLogToGUI("Could not repair the context totally. Returning best solution:\n");
             logger.log(Color.ORANGE, "Could not repair the context totally. Returning best solution", new ArrayList<String>());
 
             Queue<ContextAction> commands = smallestEntropyContext.getActions();
@@ -282,15 +282,15 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 System.out.println(command.toString());
                 sendLogToGUI(command.toString());
             }
-
+            sendLogToGUI("\n");
 //            System.out.println("Broken " + entropyAndPolicy.getSecond().getLocalName() + "\n Referenced " + entropyAndPolicy.getSecond().getReferenced().toString());
 
             //agent.getSelfOptimizingLogger().log(Color.red, "No solution found", "Could not repair the context totally. Returning best solution.");
             stackDepth = 0;
             return smallestEntropyContext;
         }
-        System.out.println(stackDepth + " :----------------------------");
-        sendLogToGUI(stackDepth + " :----------------------------");
+        System.out.println("Step no " + stackDepth + " :----------------------------");
+        sendLogToGUI("Step no " + stackDepth + "\n :----------------------------");
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         newContext.executeActions(modelAccess);
         Queue<ContextAction> actions = newContext.getActions();
@@ -319,12 +319,12 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
         System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
                 + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()) + "\n");
         sendLogToGUI("\n Entropy: "
                 + entropyAndPolicy.getFirst() + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()) + "\n");
         System.out.println("------------------------------");
-        sendLogToGUI("------------------------------");
+
 
         ArrayList<String> simulationResultMessage = new ArrayList<String>();
         simulationResultMessage.add("\n Entropy: " + entropyAndPolicy.getFirst()
@@ -612,10 +612,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
         System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()));
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()))        ;
         sendLogToGUI("\n Entropy: "
                 + entropyAndPolicy.getFirst()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()));
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()))        ;
 
 
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
@@ -663,7 +663,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                     Negotiator negotiator = (Negotiator) NegotiatorFactory.getNashNegotiator();
                     ServiceCenterServer server = getMinDistanceServer(activity);
 
-                    negotiationMessage.add("Negotiating between " + activity.getName() + " and " + server.getName());
+                    negotiationMessage.add("Negotiating between " + activity.getLocalName() + " and " + server.getLocalName());
+                    sendLogToGUI("Negotiating between " + activity.getLocalName() + " and " + server.getLocalName());
                     if (server != null) {
                         CPU cpu = server.getCpuResources().iterator().next();
                         MEM mem = server.getMemResources().iterator().next();
@@ -721,14 +722,17 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                         result.setContextEntropy(entropyAndPolicy.getFirst());
 
                         negotiationMessage.add(deployActivityAction.toString());
+                        sendLogToGUI(deployActivityAction.toString());
                         logger.log(Color.ORANGE, "Negotiation result", negotiationMessage);
 
                     }
                 } else {
 
                     for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
-                        if (server.getIsActive())
+                        if (server.getIsActive()) {
                             adjustPolicies(server);
+                            sendLogToGUI("Server " + server.getLocalName() + " underused. Decreasing optimum load indicators");
+                        }
 
                     }
                 }
