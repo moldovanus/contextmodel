@@ -45,9 +45,9 @@ public class ResourceMonitorBarChartPlotter extends ResourceMonitorPlotter {
         dataset = new DefaultCategoryDataset();
         dataset.addValue(0, xAxisLabel, "");
         JFreeChart chart = ChartFactory.createBarChart(
-                resourceName,  // Title
-                "",    // X-Axis label
-                xAxisLabel,    // Y-Axis label
+                "",  // Title
+                xAxisLabel,    // X-Axis label
+                "",    // Y-Axis label
                 dataset,     // Dataset
                 PlotOrientation.VERTICAL,
                 false,                // Show legend

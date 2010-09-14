@@ -7,6 +7,7 @@ import gui.energyConsumption.EnergyConsumptionFactory;
 import gui.resourceMonitor.AbstractMonitor;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
 import jade.core.AID;
+import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.applications.ApplicationActivity;
 import selfoptimizing.utils.Pair;
@@ -35,11 +36,11 @@ import java.util.List;
  */
 public class ExpertConfigurationGUIController implements Observer {
     private GUIAgent agent;
+    private ServerConfigurationController serverConfigurationController;
+    private TaskConfigurationController taskConfigurationController;
     private ModelAccess modelAccess;
 
     private ExpertConfigurationGUI expertGui;
-    private ServerConfigurationController serverConfigurationController;
-    private TaskConfigurationController taskConfigurationController;
     private WorkloadSchedulerController workloadSchedulerController;
     private ServersMonitorController serversMonitorController;
 
@@ -71,19 +72,23 @@ public class ExpertConfigurationGUIController implements Observer {
         timers = new ArrayList<Timer>(2);
     }
 
-    public ExpertConfigurationGUIController(GUIAgent a, ModelAccess ma, ExpertConfigurationGUI gui) {
+    public ExpertConfigurationGUIController(GUIAgent a, ModelAccess ma, ExpertConfigurationGUI gui,
+                                            ServerConfigurationController sController,
+                                            TaskConfigurationController tController,
+                                            WorkloadSchedulerController wController) {
         this.agent = a;
+        this.serverConfigurationController = sController;
+        this.taskConfigurationController = tController;
 
         a.addObserver(this);
 
         this.modelAccess = ma;
         this.expertGui = gui;
-        serverConfigurationController = new ServerConfigurationController(a);
-        taskConfigurationController = new TaskConfigurationController(a);
-        workloadSchedulerController = new WorkloadSchedulerController(modelAccess);
+        workloadSchedulerController = wController;
         serversMonitorController = new ServersMonitorController(modelAccess);
-        expertGui.addServerConfigurationPanel(serverConfigurationController.getConfigurationPanel());
-        expertGui.addWorkloadConfigurationPanel(taskConfigurationController.getConfigurationPanel());
+
+        expertGui.addServerConfigurationPanel(sController.getConfigurationPanel());
+        expertGui.addWorkloadConfigurationPanel(tController.getConfigurationPanel());
 
         expertGui.addAvailableTasksPanel(workloadSchedulerController.getAvailableTasksTree());
         createDecisionTimeChart();
@@ -98,13 +103,12 @@ public class ExpertConfigurationGUIController implements Observer {
         } else {
             fileChooser.setCurrentDirectory(new File("."));
         }
-
+        refreshServersMonitorsPanel();
 
         scheduleTimerActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 expertGui.setTimerProgress(scheduleCount);
-
 
                 List<String> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
                 List<TaskDto> availableTasks = new ArrayList<TaskDto>();
@@ -191,7 +195,6 @@ public class ExpertConfigurationGUIController implements Observer {
             }
         });
 
-
         expertGui.addScheduleTableModel(workloadSchedulerController.getScheduleTableModel());
 
         expertGui.addDuplicateRowActionListener(new ActionListener() {
@@ -211,6 +214,74 @@ public class ExpertConfigurationGUIController implements Observer {
                 workloadSchedulerController.scheduleSelectedTasks(expertGui.getScheduleDelay());
             }
         });
+
+        AbstractAction saveConfiguration = new AbstractAction("Save entire configuration") {
+            public void actionPerformed(ActionEvent e) {
+                Object[] data = new Object[3];
+                data[0] = serverConfigurationController.getTableData();
+                data[1] = taskConfigurationController.getTableData();
+                data[2] = workloadSchedulerController.getSchedule();
+
+                int userOption = fileChooser.showSaveDialog(null);
+                if (userOption == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        if (file.getPath().endsWith(".general_config")) {
+                            ConfigurationFileIO.saveGeneralConfig(data, file);
+                        } else {
+                            ConfigurationFileIO.saveGeneralConfig(data, new File(file.getPath() + ".general_config"));
+                        }
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(null, "File save error", "Save error", JOptionPane.WARNING_MESSAGE);
+                        e1.printStackTrace();
+                    }
+                }
+
+            }
+        };
+
+        AbstractAction loadConfiguration = new AbstractAction("Load complete configuration") {
+            public void actionPerformed(ActionEvent e) {
+                Object[] data;
+
+                int userOption = fileChooser.showOpenDialog(null);
+                if (userOption == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        if (!file.getName().endsWith("general_config")) {
+                            throw new Exception();
+                        }
+                        data = (Object[]) ConfigurationFileIO.loadGeneralConfig(file);
+
+                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+                        try {
+                            msg.setContentObject(new Object[]{"Delete all"});
+                        } catch (IOException ex) {
+                            ex.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                        msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+                        agent.send(msg);
+
+
+                        serverConfigurationController.setTableData((List<String[]>) data[0]);
+                        taskConfigurationController.setTableData((List<String[]>) data[1]);
+
+                        serverConfigurationController.getConfigurationPanel().repaint();
+                        taskConfigurationController.getConfigurationPanel().repaint();
+
+                        serverConfigurationController.generateEntities(agent);
+                        taskConfigurationController.generateEntities(agent);
+
+                        workloadSchedulerController.setSchedule((List<Pair<String, Integer>>) data[2]);
+                        expertGui.repaintSchedule();
+                    } catch (Exception e1) {
+                        JOptionPane.showMessageDialog(null, "Invalid file", "Load error", JOptionPane.WARNING_MESSAGE);
+                        e1.printStackTrace();
+                    }
+                }
+
+            }
+        };
 
         saveTasksConfiguration = new AbstractAction("Save tasks configuration") {
 
@@ -300,6 +371,8 @@ public class ExpertConfigurationGUIController implements Observer {
         expertGui.addFileMenuAction(saveServersConfiguration);
         expertGui.addFileMenuAction(loadTasksConfiguration);
         expertGui.addFileMenuAction(loadServersConfiguration);
+        expertGui.addFileMenuAction(saveConfiguration);
+        expertGui.addFileMenuAction(loadConfiguration);
 
         expertGui.addFileMenuAction(new AbstractAction("Close") {
             public void actionPerformed(ActionEvent e) {

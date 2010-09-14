@@ -75,7 +75,7 @@
               <Component id="centerPanel" min="-2" pref="465" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="logControlPane" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -98,9 +98,13 @@
                           <Component id="runOnLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="simulateChoiceRadio" min="-2" max="-2" attributes="0"/>
+                              <Component id="simulateChoiceRadio" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="realChoiceRadio" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                          <Component id="startButton" min="-2" pref="92" max="-2" attributes="0"/>
+                          <Component id="pauseButton" min="-2" pref="96" max="-2" attributes="0"/>
+                          <Component id="restartButton" min="-2" pref="90" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -110,25 +114,37 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="simulateChoiceRadio" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="realChoiceRadio" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="simulateChoiceRadio" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="realChoiceRadio" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="runOnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="showLogButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="logLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="runOnLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="showLogButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="logLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="startButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="pauseButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="restartButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="logBasePanel" min="-2" pref="146" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="logBasePanel" min="-2" pref="120" max="-2" attributes="0"/>
+                  <EmptySpace pref="37" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -188,6 +204,21 @@
             <Property name="text" type="java.lang.String" value="real service center"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="restartButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Restart"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="pauseButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Stop"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="startButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Start"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="centerPanel">
@@ -222,10 +253,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="energyEfficiencyXYPanel" pref="510" max="32767" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="energyEfficiencyBarPanel" min="-2" pref="205" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="decisionTimePanel" min="-2" pref="264" max="-2" attributes="0"/>
+                          <Component id="energyEfficiencyBarPanel" min="-2" pref="159" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="decisionTimePanel" min="-2" pref="318" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -234,9 +265,9 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="energyEfficiencyXYPanel" alignment="0" pref="207" max="32767" attributes="0"/>
-                              <Component id="energyEfficiencyBarPanel" alignment="0" pref="207" max="32767" attributes="0"/>
-                              <Component id="decisionTimePanel" alignment="0" pref="207" max="32767" attributes="0"/>
+                              <Component id="energyEfficiencyBarPanel" alignment="0" pref="214" max="32767" attributes="0"/>
+                              <Component id="decisionTimePanel" alignment="0" pref="214" max="32767" attributes="0"/>
+                              <Component id="energyEfficiencyXYPanel" alignment="0" pref="214" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -264,6 +295,18 @@
                   </Properties>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JLabel" name="energyEfficiencyLabel">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="     Energy Efficiency Gain"/>
+                      </Properties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="First"/>
+                        </Constraint>
+                      </Constraints>
+                    </Component>
+                  </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="decisionTimePanel">
                   <Properties>
@@ -376,19 +419,23 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="308" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace pref="92" max="32767" attributes="0"/>
                   <Component id="imageLogoPanel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="318" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="imageLogoPanel1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="imageLogoPanel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="imageLogoPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="imageLogoPanel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -400,6 +447,21 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <EmptySpace min="0" pref="377" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="87" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JPanel" name="imageLogoPanel1">
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="393" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">

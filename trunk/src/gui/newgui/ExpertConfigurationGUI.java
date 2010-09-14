@@ -60,6 +60,11 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         return workloadScheduleTable;
     }
 
+    public void repaintSchedule() {
+        scheduleWorkloadScrollPane.setViewportView(workloadScheduleTable);
+        scheduleWorkloadScrollPane.repaint();
+    }
+
     private void initComponents_2() {
         try {
             // Set cross-platform Java L&F (also called "Metal")

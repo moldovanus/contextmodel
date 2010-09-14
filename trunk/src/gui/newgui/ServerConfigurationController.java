@@ -134,4 +134,8 @@ public class ServerConfigurationController {
     public void setTableData(java.util.List<String[]> data) {
         serverConfigurator.setTableData(data);
     }
+
+    public void generateEntities(Agent a) {
+        serverConfigurator.createEntities(a);
+    }
 }

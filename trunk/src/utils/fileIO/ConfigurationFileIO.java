@@ -28,5 +28,15 @@ public class ConfigurationFileIO {
         return data;
     }
 
+    public static void saveGeneralConfig(Serializable o, File file) throws IOException {
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+        outputStream.writeObject(o);
+        outputStream.flush();
+        outputStream.close();
+    }
 
+    public static Object loadGeneralConfig(File file) throws IOException, ClassNotFoundException {
+        ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
+        return inputStream.readObject();
+    }
 }

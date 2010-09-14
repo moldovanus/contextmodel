@@ -137,4 +137,8 @@ public class TaskConfigurationController {
     public void setTableData(java.util.List<String[]> data) {
         taskConfigurator.setTableData(data);
     }
+
+    public void generateEntities(Agent a) {
+        taskConfigurator.createEntities(a);
+    }
 }
