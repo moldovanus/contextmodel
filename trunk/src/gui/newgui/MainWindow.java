@@ -30,6 +30,7 @@ import utils.worldInterface.dtos.TaskDto;
 
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
@@ -65,8 +66,23 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private int scheduleCount = 0;
     private List<Pair<String, Integer>> schedule;
 
+    private ExpertConfigurationGUIController controller;
+
 //    private List<ServerDto> computingResourcesList;
     private Map<TaskDto, String> applicationActivitiesList;
+
+    FileFilter generalConfigFilter = new FileFilter() {
+        @Override
+        public boolean accept(File f) {
+            return f.getName().endsWith("general_config");
+        }
+
+        @Override
+        public String getDescription() {
+            return "Complete Configuration Files (.general_config)";
+        }
+    };
+
 
     {
         applicationActivitiesList = new HashMap<TaskDto, String>();
@@ -255,9 +271,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         serverConfigurationController = new ServerConfigurationController(agent);
         taskConfigurationController = new TaskConfigurationController(agent);
 
+
         final ActionListener scheduleTimerListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                if (schedule == null) {
+                    return;
+                }
                 List<String> scheduledTasks = new ArrayList<String>();
                 for (Pair<String, Integer> entry : schedule) {
                     if (entry.getSecond().equals(scheduleCount)) {
@@ -287,9 +306,9 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                     }
                 }
 
-                if (scheduledTasks.size() > 0) {
-                    JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
-                }
+//                if (scheduledTasks.size() > 0) {
+//                    JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
+//                }
 
                 jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
                 try {
@@ -304,7 +323,11 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 scheduleCount++;
             }
         };
+
+        scheduleTimer = new Timer(1000, scheduleTimerListener);
         fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(generalConfigFilter);
+
         File file = new File("./testConfigurations");
         if (file.exists()) {
             fileChooser.setCurrentDirectory(file);
@@ -314,7 +337,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                scheduleTimer = new Timer(1000, scheduleTimerListener);
+                scheduleTimer.setDelay(1000);
                 scheduleTimer.start();
             }
         });
@@ -325,6 +348,9 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 if (scheduleTimer != null) {
                     if (scheduleTimer.isRunning()) {
                         scheduleTimer.stop();
+                        if (controller != null) {
+                            controller.resetScheduleCount();
+                        }
                         pauseButton.setText("Resume");
                     } else {
                         scheduleTimer.start();
@@ -333,7 +359,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 }
             }
         });
-
+        restartButton.setText("Reset");
         restartButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
@@ -346,8 +372,9 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 agent.send(msg);
                 serverConfigurationController.generateEntities(agent);
                 taskConfigurationController.generateEntities(agent);
-                scheduleTimer = new Timer(1000, scheduleTimerListener);
-                scheduleTimer.restart();
+                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
+                setApplicationActivities(availableTasks);
+                refreshComputingResourcesTree();
                 scheduleCount = 0;
             }
         });
@@ -356,9 +383,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             public void actionPerformed(ActionEvent e) {
                 Object[] data;
 
+
                 int userOption = fileChooser.showOpenDialog(null);
                 if (userOption == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
+
+
                     try {
                         if (!file.getName().endsWith("general_config")) {
                             throw new Exception();
@@ -453,15 +483,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                             (ActionEvent
                                     e) {
                         ExpertConfigurationGUI gui = new ExpertConfigurationGUI();
-                        ExpertConfigurationGUIController controller =
-                                new ExpertConfigurationGUIController(agent, modelAccess, gui,
-                                        serverConfigurationController, taskConfigurationController,
-                                        workloadSchedulerController);
+                        workloadSchedulerController.refreshAvailableTasks();
+
+                        controller = new ExpertConfigurationGUIController(agent, modelAccess, gui,
+                                serverConfigurationController, taskConfigurationController,
+                                workloadSchedulerController, scheduleTimer);
                         gui.setVisible(true);
                     }
                 }
 
         );
+
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         this.setTitle("GAMES Initial Window");
@@ -973,13 +1005,15 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         Object dataType = data[0];
         if (dataType.equals("Log")) {
             this.logMessage(data[1].toString());
+            if (data[1].toString().startsWith("Executing")) {
+                refreshEnergyEstimate();
+            }
         } else if (dataType.equals("Tasks added")) {
             List<TaskDto> availableTasks = (List<TaskDto>) data[1];
             setApplicationActivities(availableTasks);
         } else if (dataType.equals("Servers added")) {
             refreshComputingResourcesTree();
         } else if (data[0].equals("Running time")) {
-            refreshEnergyEstimate();
             decisionTime = ((Long) data[1]).intValue();
         } else if (dataType.equals("TaskStatusChanged")) {
             List<String> names = (List<String>) data[1];

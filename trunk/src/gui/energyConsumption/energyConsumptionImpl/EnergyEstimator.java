@@ -3,8 +3,10 @@ package gui.energyConsumption.energyConsumptionImpl;
 import gui.energyConsumption.EnergyConsumption;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
-import utils.worldInterface.datacenterInterface.proxies.impl.HyperVServerManagementProxy;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
+import utils.worldInterface.datacenterInterface.proxies.impl.ServerManagementProxy;
+import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 
 import java.util.Collection;
 
@@ -17,27 +19,31 @@ import java.util.Collection;
  */
 public class EnergyEstimator implements EnergyConsumption {
     private ModelAccess modelAccess;
-      public static final int  POWER_CONSUMPTION = 400;
-    public EnergyEstimator(ModelAccess modelAccess){
-           this.modelAccess = modelAccess;
+    public static final int POWER_CONSUMPTION = 115;
+
+    public EnergyEstimator(ModelAccess modelAccess) {
+        this.modelAccess = modelAccess;
     }
 
     public int getValueWithRunningAlgorithm() {
-        Collection<ServiceCenterServer> servers= modelAccess.getAllServiceCenterServerInstances();
+        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         double totalEnergyConsumed = 0;
-        for (ServiceCenterServer server: servers){
-            if (server.getIsActive()){
-                 
-                HyperVServerManagementProxy proxy = new HyperVServerManagementProxy(server.getIpAddress());
-                String energyConsumption = proxy.getEnergyConsumptionInfo();
-                double d =Integer.parseInt(energyConsumption );
-                totalEnergyConsumed+=d;
+        for (ServiceCenterServer server : servers) {
+            if (server.getIsActive()) {
+                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+                if (proxy instanceof StubProxy) {
+                    totalEnergyConsumed += POWER_CONSUMPTION;
+                } else {
+                    String energyConsumption = proxy.getEnergyConsumptionInfo();
+                    double d = Integer.parseInt(energyConsumption);
+                    totalEnergyConsumed += d;
+                }
             }
         }
-        return (int)totalEnergyConsumed;  
+        return (int) totalEnergyConsumed;
     }
 
     public int getValueWithoutAlgorithm() {
-       return modelAccess.getAllServiceCenterServerInstances().size()*POWER_CONSUMPTION;
+        return modelAccess.getAllServiceCenterServerInstances().size() * POWER_CONSUMPTION;
     }
 }

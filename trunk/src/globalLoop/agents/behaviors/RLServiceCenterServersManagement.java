@@ -646,13 +646,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             for (ContextAction action : actions) {
                 sendLogToGUI("Executing: " + action.toString());
                 newMessage.add(action.toString());
-
+                action.execute(modelAccess);
+                action.executeOnServiceCenter(modelAccess);
             }
             logger.log(Color.ORANGE, "Decision result", newMessage);
-
-            result.executeActions(modelAccess);
-            result.executeOnServiceCenter(modelAccess);
-
 
             if (result.getContextEntropy() > 0) {
                 logContext(Color.RED);
