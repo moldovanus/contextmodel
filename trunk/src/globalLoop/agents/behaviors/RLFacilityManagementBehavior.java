@@ -17,7 +17,7 @@ import model.interfaces.resources.ITFacilityActiveResource;
 import model.interfaces.resources.Sensor;
 import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
-import selfoptimizing.utils.Pair;
+import utils.misc.Pair;
 import utils.exceptions.IndividualNotFoundException;
 
 import java.util.*;

@@ -21,7 +21,7 @@ import selfoptimizing.ontologyRepresentations.greenContextOntology.Component;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.impl.DefaultServer;
 import selfoptimizing.ontologyRepresentations.greenContextOntology.impl.DefaultTask;
 import selfoptimizing.ontologyRepresentations.selfHealingOntology.SelfHealingProtegeFactory;
-import selfoptimizing.utils.Pair;
+import utils.misc.Pair;
 import selfoptimizing.utils.X3DMessageDispatcher;
 import selfoptimizing.utils.context.ContextSnapshot;
 import selfoptimizing.utils.context.DatacenterMemory;

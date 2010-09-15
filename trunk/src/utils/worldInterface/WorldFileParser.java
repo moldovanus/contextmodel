@@ -1,8 +1,8 @@
 package utils.worldInterface;
 
+import globalLoop.utils.GlobalVars;
 import org.w3c.dom.*;
-import selfoptimizing.contextaware.GlobalVars;
-import selfoptimizing.contextaware.WorldFileValidationException;
+import utils.exceptions.WorldFileValidationException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

@@ -2,7 +2,6 @@ package utils.worldInterface.sensorapi.impl;
 
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.*;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.Storage;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.ServerDto;

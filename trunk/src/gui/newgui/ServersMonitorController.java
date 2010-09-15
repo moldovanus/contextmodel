@@ -5,7 +5,7 @@ import gui.resourceMonitor.serverMonitorPlotter.impl.ServerMonitorPiePlotter;
 import gui.resourceMonitor.serverMonitorPlotter.impl.ServerMonitorXYPlotter;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
-import selfoptimizing.utils.Pair;
+import utils.misc.Pair;
 
 import java.util.Collection;
 import java.util.HashMap;

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package selfoptimizing.utils;
+package utils.misc;
 
 import java.io.Serializable;
 

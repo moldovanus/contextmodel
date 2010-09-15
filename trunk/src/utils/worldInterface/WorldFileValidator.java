@@ -1,7 +1,7 @@
 package utils.worldInterface;
 
 import org.xml.sax.InputSource;
-import selfoptimizing.contextaware.WorldFileValidationException;
+import utils.exceptions.WorldFileValidationException;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.sax.SAXSource;

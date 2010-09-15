@@ -23,7 +23,7 @@ import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
-import selfoptimizing.utils.Pair;
+import utils.misc.Pair;
 import utils.fileIO.ConfigurationFileIO;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.TaskDto;
@@ -229,21 +229,10 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private void initComponents_2() {
 
         try {
-            // Set cross-platform Java L&F (also called "Metal")
-            UIManager.setLookAndFeel(
-                    UIManager.getCrossPlatformLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         }
-        catch (UnsupportedLookAndFeelException e) {
-            // handle exception
-        }
-        catch (ClassNotFoundException e) {
-            // handle exception
-        }
-        catch (InstantiationException e) {
-            // handle exception
-        }
-        catch (IllegalAccessException e) {
-            // handle exception
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
 

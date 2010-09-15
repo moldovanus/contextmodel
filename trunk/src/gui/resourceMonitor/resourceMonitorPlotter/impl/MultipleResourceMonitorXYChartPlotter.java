@@ -78,6 +78,11 @@ public class MultipleResourceMonitorXYChartPlotter extends ResourceMonitorPlotte
             renderer.setSeriesPaint(i, new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
         }
 
+        if ( count == 2){
+            renderer.setSeriesPaint(0,Color.RED);
+            renderer.setSeriesPaint(1,Color.GREEN);
+        }
+
         ValueAxis yAxis = plot.getRangeAxis();
         yAxis.setLabelFont(LABEL_FONT);
         yAxis.setRange(minimumValue, maximumValue);
