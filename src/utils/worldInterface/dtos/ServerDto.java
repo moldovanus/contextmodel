@@ -1,9 +1,10 @@
 package utils.worldInterface.dtos;
 
-import selfoptimizing.ontologyRepresentations.greenContextOntology.CPU;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.Core;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.Server;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.Storage;
+
+import model.interfaces.resources.CPU;
+import model.interfaces.resources.Core;
+import model.interfaces.resources.MEM;
+import model.interfaces.resources.ServiceCenterServer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,35 +29,37 @@ public class ServerDto implements Serializable {
 
     @Override
     public boolean equals(Object sv) {
-        if (sv instanceof Server) {
-            Server server = (Server) sv;
-            CPU cpu = server.getAssociatedCPU();
-            Collection<Core> cores = cpu.getAssociatedCore();
+        if (sv instanceof ServiceCenterServer) {
+            ServiceCenterServer server = (ServiceCenterServer) sv;
+            CPU cpu = server.getCpuResources().iterator().next();
+            Collection<Core> cores = cpu.getAssociatedCores();
             ArrayList<Integer> freeCpus = new ArrayList(cores.size());
-            Storage s = server.getAssociatedStorage();
-            int st = 0;
-            for (int i = 0; i < storage.size(); i++) {
-                st += storage.get(i).getFreeSpace();
-            }
-            if (st != (s.getTotal() - s.getUsed())) {
-                return false;
-            }
+//            Storage s = server.getAssociatedStorage();
+//            int st = 0;
+//            for (int i = 0; i < storage.size(); i++) {
+//                st += storage.get(i).getFreeSpace();
+//            }
+//            if (st != (s.getTotal() - s.getUsed())) {
+//                return false;
+//            }
 
             int i = 0;
             for (Core core : cores) {
-                if (freeCPU.get(i) != core.getTotal() - core.getUsed()) {
+                if (freeCPU.get(i) != core.getMaximumWorkLoad() - core.getCurrentWorkLoad()) {
                     i++;
                     return false;
                 }
                 i++;
-                if (core.getTotal() != totalCPU)
+                if (core.getMaximumWorkLoad() != totalCPU)
                     return false;
             }
 
-            if (freeMemory != (server.getAssociatedMemory().getTotal() - server.getAssociatedMemory().getUsed()))
+            MEM memory = server.getMemResources().iterator().next();
+
+            if (freeMemory != (memory.getMaximumWorkLoad() - memory.getCurrentWorkLoad()))
                 return false;
 
-            if (totalMemory != server.getAssociatedMemory().getTotal()) return false;
+            if (totalMemory != memory.getMaximumWorkLoad()) return false;
 
             if (coreCount != cores.size()) return false;
         }

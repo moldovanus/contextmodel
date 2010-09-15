@@ -9,12 +9,13 @@ import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlo
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
-import utils.misc.Pair;
 import sun.management.ManagementFactory;
 import utils.fileIO.ConfigurationFileIO;
+import utils.misc.Pair;
 
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,6 +53,10 @@ public class ExpertConfigurationGUIController implements Observer {
     private AbstractAction loadTasksConfiguration;
     private AbstractAction loadServersConfiguration;
 
+    private FileFilter generalConfigFilter;
+    private FileFilter tasksConfigFilter;
+    private FileFilter serversConfigFilter;
+
 
     private JFileChooser fileChooser;
 
@@ -70,7 +75,7 @@ public class ExpertConfigurationGUIController implements Observer {
         timers = new ArrayList<Timer>(2);
     }
 
-    public void resetScheduleCount(){
+    public void resetScheduleCount() {
         scheduleCount = 0;
         expertGui.setTimerProgress(scheduleCount);
     }
@@ -101,6 +106,41 @@ public class ExpertConfigurationGUIController implements Observer {
         createEnergyConsumptionCharts();
         fileChooser = new JFileChooser();
 
+        generalConfigFilter = new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.getName().endsWith(".general_config");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Complete Configuration Files (.general_config)";
+            }
+        };
+
+        tasksConfigFilter = new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.getName().endsWith(".tasks_config");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Workload Configuration File (.tasks_config)";
+            }
+        };
+
+        serversConfigFilter = new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.getName().endsWith(".servers_config");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Workload Configuration File (.servers_config)";
+            }
+        };
 
         File file = new File("./testConfigurations");
         if (file.exists()) {
@@ -221,6 +261,7 @@ public class ExpertConfigurationGUIController implements Observer {
 
         AbstractAction saveConfiguration = new AbstractAction("Save entire configuration") {
             public void actionPerformed(ActionEvent e) {
+                fileChooser.setFileFilter(generalConfigFilter);
                 Object[] data = new Object[3];
                 data[0] = serverConfigurationController.getTableData();
                 data[1] = taskConfigurationController.getTableData();
@@ -247,7 +288,7 @@ public class ExpertConfigurationGUIController implements Observer {
         AbstractAction loadConfiguration = new AbstractAction("Load complete configuration") {
             public void actionPerformed(ActionEvent e) {
                 Object[] data;
-
+                fileChooser.setFileFilter(generalConfigFilter);
                 int userOption = fileChooser.showOpenDialog(null);
                 if (userOption == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
@@ -275,7 +316,7 @@ public class ExpertConfigurationGUIController implements Observer {
 
                         serverConfigurationController.generateEntities(agent);
                         taskConfigurationController.generateEntities(agent);
-                        
+
                         workloadSchedulerController.refreshAvailableTasks();
                         workloadSchedulerController.setSchedule((List<Pair<String, Integer>>) data[2]);
                         expertGui.repaintSchedule();
@@ -291,6 +332,7 @@ public class ExpertConfigurationGUIController implements Observer {
         saveTasksConfiguration = new AbstractAction("Save tasks configuration") {
 
             public void actionPerformed(ActionEvent e) {
+                fileChooser.setFileFilter(tasksConfigFilter);
                 int userOption = fileChooser.showSaveDialog(null);
                 if (userOption == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
@@ -310,6 +352,7 @@ public class ExpertConfigurationGUIController implements Observer {
         saveServersConfiguration = new AbstractAction("Save servers configuration") {
 
             public void actionPerformed(ActionEvent e) {
+                fileChooser.setFileFilter(serversConfigFilter);
                 int userOption = fileChooser.showSaveDialog(null);
                 if (userOption == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
@@ -330,6 +373,7 @@ public class ExpertConfigurationGUIController implements Observer {
         loadTasksConfiguration = new AbstractAction("Load tasks configuration") {
 
             public void actionPerformed(ActionEvent e) {
+                fileChooser.setFileFilter(tasksConfigFilter);
                 int userOption = fileChooser.showOpenDialog(null);
                 if (userOption == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
@@ -350,6 +394,7 @@ public class ExpertConfigurationGUIController implements Observer {
         loadServersConfiguration = new AbstractAction("Load servers configuration") {
 
             public void actionPerformed(ActionEvent e) {
+                fileChooser.setFileFilter(serversConfigFilter);
                 int userOption = fileChooser.showOpenDialog(null);
                 if (userOption == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();

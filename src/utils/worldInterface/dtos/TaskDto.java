@@ -1,8 +1,6 @@
 package utils.worldInterface.dtos;
 
-import selfoptimizing.ontologyRepresentations.greenContextOntology.ReceivedTaskInfo;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.RequestedTaskInfo;
-import selfoptimizing.ontologyRepresentations.greenContextOntology.Task;
+import model.interfaces.resources.applications.ApplicationActivity;
 
 import java.io.Serializable;
 
@@ -33,23 +31,21 @@ public class TaskDto implements Serializable {
     @Override
     public boolean equals(Object task) {
         if (this == task) return true;
-        if (task instanceof Task) {
-            Task t = (Task) task;
-            RequestedTaskInfo rti = t.getRequestedInfo();
-            if (requestedCores != rti.getCores()) return false;
-            if (requestedCPUMax != rti.getCpuMaxAcceptableValue()) return false;
-            if (requestedCPUMin != rti.getCpuMinAcceptableValue()) return false;
-            if (requestedMemoryMax != rti.getMemoryMaxAcceptableValue()) return false;
-            if (requestedMemoryMin != rti.getMemoryMinAcceptableValue()) return false;
-            if (requestedStorageMax != rti.getStorageMaxAcceptableValue()) return false;
-            if (requestedStorageMin != rti.getStorageMinAcceptableValue()) return false;
+        if (task instanceof ApplicationActivity) {
+            ApplicationActivity activity = (ApplicationActivity) task;
+            if (requestedCores != activity.getNumberOfCoresRequiredValue()) return false;
+            if (requestedCPUMax != activity.getCpuRequiredMaxValue()) return false;
+            if (requestedCPUMin != activity.getCpuRequiredMinValue()) return false;
+            if (requestedMemoryMax != activity.getMemRequiredMaxValue()) return false;
+            if (requestedMemoryMin != activity.getMemRequiredMinValue()) return false;
+            if (requestedStorageMax != activity.getHddRequiredMaxValue()) return false;
+            if (requestedStorageMin != activity.getHddRequiredMinValue()) return false;
 
-            ReceivedTaskInfo rci = t.getReceivedInfo();
-            if (receivedCores != rci.getCores()) return false;
-            if (receivedCPU != rci.getCpuReceived()) return false;
-            if (receivedMemory != rci.getMemoryReceived()) return false;
-            if (receivedStorage != rci.getStorageReceived()) return false;
-            if (t.isRunning() == isRunning()) return false;
+            if (receivedCores != activity.getNumberOfCoresAllocatedValue()) return false;
+            if (receivedCPU != activity.getCpuAllocatedValue()) return false;
+            if (receivedMemory != activity.getMemAllocatedValue()) return false;
+            if (receivedStorage != activity.getHddAllocatedValue()) return false;
+            if (activity.isRunning() == isRunning()) return false;
         }
         if (task instanceof TaskDto) {
             TaskDto taskDto = (TaskDto) task;

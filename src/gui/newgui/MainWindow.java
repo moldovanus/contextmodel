@@ -23,8 +23,8 @@ import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
-import utils.misc.Pair;
 import utils.fileIO.ConfigurationFileIO;
+import utils.misc.Pair;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.TaskDto;
 
@@ -71,15 +71,15 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 //    private List<ServerDto> computingResourcesList;
     private Map<TaskDto, String> applicationActivitiesList;
 
-    FileFilter generalConfigFilter = new FileFilter() {
+    private FileFilter generalConfigFilter = new FileFilter() {
         @Override
         public boolean accept(File f) {
-            return f.getName().endsWith("general_config");
+            return f.getName().endsWith(".general_config");
         }
 
         @Override
         public String getDescription() {
-            return "Complete Configuration Files (.general_config)";
+            return "Complete Configuration File (.general_config)";
         }
     };
 
