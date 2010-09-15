@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package selfoptimizing.contextaware;
+package utils.exceptions;
 
 public class WorldFileValidationException extends Exception {
 

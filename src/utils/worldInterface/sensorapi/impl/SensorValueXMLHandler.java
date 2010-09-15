@@ -1,8 +1,8 @@
 package utils.worldInterface.sensorapi.impl;
 
+import globalLoop.utils.GlobalVars;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import selfoptimizing.contextaware.GlobalVars;
 
 class SensorValueXMLHandler extends DefaultHandler {
 

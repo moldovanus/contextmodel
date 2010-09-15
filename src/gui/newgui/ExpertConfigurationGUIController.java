@@ -9,11 +9,9 @@ import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlo
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
-import model.interfaces.resources.applications.ApplicationActivity;
-import selfoptimizing.utils.Pair;
+import utils.misc.Pair;
 import sun.management.ManagementFactory;
 import utils.fileIO.ConfigurationFileIO;
-import utils.worldInterface.dtos.TaskDto;
 
 import javax.swing.*;
 import javax.swing.Timer;

@@ -3,7 +3,7 @@ package gui.newgui;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.applications.ApplicationActivity;
 import org.apache.log4j.jmx.Agent;
-import selfoptimizing.utils.Pair;
+import utils.misc.Pair;
 import utils.worldInterface.dtos.TaskDto;
 
 import javax.swing.*;

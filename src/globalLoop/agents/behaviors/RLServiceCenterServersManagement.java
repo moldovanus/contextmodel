@@ -15,7 +15,7 @@ import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
 import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
-import selfoptimizing.utils.Pair;
+import utils.misc.Pair;
 import utils.exceptions.IndividualNotFoundException;
 import utils.logger.LoggerGUI;
 import utils.negotiator.Negotiator;

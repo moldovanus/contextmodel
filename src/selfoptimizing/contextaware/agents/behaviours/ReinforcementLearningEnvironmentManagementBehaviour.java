@@ -20,7 +20,7 @@ import selfoptimizing.actionEnforcement.command.selfHealingCommand.SetCommand;
 import selfoptimizing.contextaware.GlobalVars;
 import selfoptimizing.contextaware.agents.ReinforcementLearningAgent;
 import selfoptimizing.ontologyRepresentations.selfHealingOntology.*;
-import selfoptimizing.utils.Pair;
+import utils.misc.Pair;
 import selfoptimizing.utils.X3DMessageDispatcher;
 import selfoptimizing.utils.context.ContextSnapshot;
 import selfoptimizing.utils.context.EnvironmentMemory;
