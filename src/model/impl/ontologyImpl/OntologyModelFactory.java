@@ -699,6 +699,9 @@ public class OntologyModelFactory implements ModelFactory {
         RDFResource owlIndividual;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
             owlIndividual = (RDFResource) it.next();
+            if (owlModel.getFrame(owlIndividual.getFrameID()) == null) {
+                continue;
+            }
             result.add(new DefaultServiceCenterITComputingResource(owlModel, owlIndividual.getFrameID()));
         }
         return result;
@@ -785,6 +788,9 @@ public class OntologyModelFactory implements ModelFactory {
         RDFResource owlIndividual;
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
             owlIndividual = (RDFResource) it.next();
+            if (owlModel.getFrame(owlIndividual.getFrameID()) == null) {
+                continue;
+            }
             result.add(new DefaultServiceCenterServer(owlModel, owlIndividual.getFrameID()));
         }
         return result;

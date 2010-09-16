@@ -319,10 +319,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         }
 
         System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
-                + ",  Reward: " + newContext.getRewardFunction()
+//                  + ",  Reward: " + newContext.getRewardFunction()
                 + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()) + "\n");
-        sendLogToGUI("\n Entropy: "
-                + entropyAndPolicy.getFirst() + ",  Reward: " + newContext.getRewardFunction()
+        sendLogToGUI("\n Entropy: " + entropyAndPolicy.getFirst()
+//                + ",  Reward: " + newContext.getRewardFunction()
                 + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()) + "\n");
         System.out.println("------------------------------");
 
@@ -613,12 +613,15 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         ContextSnapshot initialContext = new ContextSnapshot(new LinkedList());
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
+
         System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
                 + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
-        sendLogToGUI("\n Entropy: "
-                + entropyAndPolicy.getFirst()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
 
+        if (entropyAndPolicy.getFirst() > 0) {
+            sendLogToGUI("\n Entropy: "
+                    + entropyAndPolicy.getFirst()
+                    + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
+        }
 
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
         initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));

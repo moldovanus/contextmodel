@@ -27,13 +27,17 @@ public class ResourceMonitorBarChartPlotter extends ResourceMonitorPlotter {
 
     private XYSeries series;
     private CategoryPlot plot;
+    private String resourceName;
     private String xAxisLabel;
+    private String yAxisLabel;
     private DefaultCategoryDataset dataset;
 
-    public ResourceMonitorBarChartPlotter(String resourceName, String xAxisLabel, int minimumValue, int maximumValue) {
+    public ResourceMonitorBarChartPlotter(String resourceName, String xAxisLabel, String yAxisLabel, int minimumValue, int maximumValue) {
         super(resourceName);
+        this.resourceName = resourceName;
 
         this.xAxisLabel = xAxisLabel;
+        this.yAxisLabel = yAxisLabel;
         series = new XYSeries(xAxisLabel);
         setup(minimumValue, maximumValue);
     }
@@ -45,9 +49,9 @@ public class ResourceMonitorBarChartPlotter extends ResourceMonitorPlotter {
         dataset = new DefaultCategoryDataset();
         dataset.addValue(0, xAxisLabel, "");
         JFreeChart chart = ChartFactory.createBarChart(
-                "",  // Title
+                resourceName,  // Title
                 xAxisLabel,    // X-Axis label
-                "",    // Y-Axis label
+                yAxisLabel,    // Y-Axis label
                 dataset,     // Dataset
                 PlotOrientation.VERTICAL,
                 false,                // Show legend
