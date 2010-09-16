@@ -130,9 +130,13 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            socket.getOutputStream().write(content.getBytes());
 //            System.out.println(header);
 //            System.out.println(content);
-
+            File file1 = new File(path1);
+            File file2 = new File(path2);
+            file1.mkdir();
+            file2.mkdir();
+            copyDirectory(new File(path1+"/"+vmName), new File(path2+"/"+vmName));
             URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions?path1="
-                    + path1 + "&path2=" + path2 + "&vmName=" + vmName);
+                    + path2 + "&path2=" + path2 + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
             System.out.println(url);
 //            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions");
@@ -192,6 +196,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            socket.getOutputStream().write(content.getBytes());
 //            System.out.println(header);
 //            System.out.println(content);
+            
             URL url = new URL("http://" + hostName + "/Service1.asmx/MoveSourceActions?path="
                     + path + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
@@ -230,28 +235,29 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     }
 
     public void deployVirtualMachine(String from, String to, String vmName, String newName) {
-        try {
-            //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
-            URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachine?from="
-                    + from + "&to=" + to + "&vmName=" + GlobalVars.BASE_VM_NAME + "&vmCopyName=" + newName + "");
-            URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
-
-            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            if (DEBUG) {
-
-                // Response
-                String line;
-                while ((line = rd.readLine()) != null) {
-
-                    System.out.println(line);
-                }
-            }
-            startVirtualMachine(newName);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
+//            URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachine?from="
+//                    + from + "&to=" + to + "&vmName=" + GlobalVars.BASE_VM_NAME + "&vmCopyName=" + newName + "");
+//            URLConnection connection = url.openConnection();
+//            connection.setDoInput(true);
+//
+//            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            if (DEBUG) {
+//
+//                // Response
+//                String line;
+//                while ((line = rd.readLine()) != null) {
+//
+//                    System.out.println(line);
+//                }
+//            }
+//            startVirtualMachine(newName);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        throw new UnsupportedOperationException("Nu folosi");
 
     }
 
@@ -343,7 +349,38 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         }
     }
 
-    public void deployVirtualMachineWithCustomResources(String from, String to,
+    public  void copyDirectory(File sourceLocation , File targetLocation)
+    throws IOException {
+
+        if (sourceLocation.isDirectory()) {
+            if (!targetLocation.exists()) {
+                boolean ok =targetLocation.mkdir();
+                System.out.println(ok);
+            }
+
+            String[] children = sourceLocation.list();
+            for (int i=0; i<children.length; i++) {
+                copyDirectory(new File(sourceLocation, children[i]),
+                        new File(targetLocation, children[i]));
+            }
+        } else {
+
+            InputStream in = new FileInputStream(sourceLocation);
+            OutputStream out = new FileOutputStream(targetLocation);
+
+            // Copy the bits from instream to outstream
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        }
+    }
+
+
+    public void deployVirtualMachineWithCustomResources(String from, String to,String serverName,
                                                         String vmName, String vmCopyName,
                                                         int memory, int processorPercentage, int nrCores) {
         try {
@@ -381,17 +418,18 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            socket.getOutputStream().write(content.getBytes());
 //            System.out.println(header);
 //            System.out.println(content);
-
+             File targetFile = new File(GlobalVars.PHISICAL_PATH+serverName);
+            targetFile.mkdir();
+              copyDirectory(new File(GlobalVars.PHISICAL_PATH+GlobalVars.BASE_VM_NAME),new File(GlobalVars.PHISICAL_PATH+serverName+"/"+vmCopyName));
+            
 //            //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
             URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachineWithModify?from="
                     + from + "&to=" + to + "&vmName=" + GlobalVars.BASE_VM_NAME + "&vmCopyName=" + vmCopyName
                     + "&memory=" + memory + "&procSpeed=" + processorPercentage + "&nrCores=" + nrCores);
             URLConnection connection = url.openConnection();
             System.out.println(url.toString());
-//            connection.setDoInput(false);
-//            connection.setDoOutput(false);
-//            connection.setReadTimeout(0);
-//            connection.setConnectTimeout(0);
+            connection.setDoInput(true);
+//            connection.setReadTimeout(900000);
 //            connection.connect();
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -486,9 +524,9 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
             String content = "";
             while ((line = rd.readLine()) != null) {
-                // if (DEBUG) {
+                if (DEBUG) {
                 System.out.println(line);
-                // }
+                }
                 if (line.length() > 0 && line.charAt(1) != '?') {
                     content += "\n" + line;
                 }

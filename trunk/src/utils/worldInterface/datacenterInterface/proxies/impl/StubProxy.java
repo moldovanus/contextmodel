@@ -67,7 +67,7 @@ public class StubProxy extends ServerManagementProxy {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void deployVirtualMachineWithCustomResources(String from, String to, String vmName, String vmCopyName, int memory, int processorPercentage, int nrCores) {
+    public void deployVirtualMachineWithCustomResources(String from, String to,String serverName, String vmName, String vmCopyName, int memory, int processorPercentage, int nrCores) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
