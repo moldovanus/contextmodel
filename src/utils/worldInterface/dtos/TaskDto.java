@@ -56,8 +56,6 @@ public class TaskDto implements Serializable {
             if (requestedMemoryMin != taskDto.getRequestedMemoryMin()) return false;
             if (requestedStorageMax != taskDto.getRequestedStorageMax()) return false;
             if (requestedStorageMin != taskDto.getRequestedMemoryMin()) return false;
-
-
             if (receivedCores != taskDto.getReceivedCores()) return false;
             if (receivedCPU != taskDto.getReceivedCPU()) return false;
             if (receivedMemory != taskDto.getReceivedMemory()) return false;

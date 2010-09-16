@@ -5,7 +5,6 @@ import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
-import utils.worldInterface.datacenterInterface.proxies.impl.ServerManagementProxy;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 
 import java.util.Collection;
@@ -19,7 +18,7 @@ import java.util.Collection;
  */
 public class EnergyEstimator implements EnergyConsumption {
     private ModelAccess modelAccess;
-    public static final int POWER_CONSUMPTION = 115;
+    public static final int BASE_POWER_CONSUMPTION = 115;
 
     public EnergyEstimator(ModelAccess modelAccess) {
         this.modelAccess = modelAccess;
@@ -32,7 +31,7 @@ public class EnergyEstimator implements EnergyConsumption {
             if (server.getIsActive()) {
                 ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
                 if (proxy instanceof StubProxy) {
-                    totalEnergyConsumed += POWER_CONSUMPTION;
+                    totalEnergyConsumed += BASE_POWER_CONSUMPTION;
                 } else {
                     String energyConsumption = proxy.getEnergyConsumptionInfo();
                     double d = Integer.parseInt(energyConsumption);
@@ -44,6 +43,22 @@ public class EnergyEstimator implements EnergyConsumption {
     }
 
     public int getValueWithoutAlgorithm() {
-        return modelAccess.getAllServiceCenterServerInstances().size() * POWER_CONSUMPTION;
+        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+        int totalEnergyConsumed = 0;
+        for (ServiceCenterServer server : servers) {
+            if (server.getIsActive()) {
+                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+                if (proxy instanceof StubProxy) {
+                    totalEnergyConsumed += BASE_POWER_CONSUMPTION;
+                } else {
+                    String energyConsumption = proxy.getEnergyConsumptionInfo();
+                    double d = Integer.parseInt(energyConsumption);
+                    totalEnergyConsumed += d;
+                }
+            } else {
+                totalEnergyConsumed += BASE_POWER_CONSUMPTION;
+            }
+        }
+        return totalEnergyConsumed;
     }
 }

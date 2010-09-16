@@ -155,12 +155,12 @@ public class ExpertConfigurationGUIController implements Observer {
 
                 expertGui.setTimerProgress(scheduleCount);
 
-                List<String> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
+                List<Pair<String, Integer>> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
 //                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
 ////                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
                 String taskNames = "";
-                for (String name : scheduledTasks) {
-                    taskNames += name + ", ";
+                for (Pair<String, Integer> entry : scheduledTasks) {
+                    taskNames += entry.getFirst() + ", ";
 //                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
 //                    //TODO; remove if other solution for templates implemented
 //                    if (activity.getLocalName().toLowerCase().contains("template")) {
@@ -202,15 +202,14 @@ public class ExpertConfigurationGUIController implements Observer {
                         JOptionPane.showMessageDialog(null, "Tasks: " + taskNames + " added");
                     }
                 }
-                jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
-                try {
-                    msg.setContentObject(new Object[]{"Create clones", scheduledTasks});
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
-                agent.send(msg);
-
+//                jade.lang.acl.ACLMessage msg = new jade.lang.acl.ACLMessage(jade.lang.acl.ACLMessage.INFORM);
+//                try {
+//                    msg.setContentObject(new Object[]{"Create clones", scheduledTasks});
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                }
+//                msg.addReceiver(new AID(GlobalVars.RLAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+//                agent.send(msg);
 
                 scheduleCount++;
             }
@@ -255,7 +254,7 @@ public class ExpertConfigurationGUIController implements Observer {
 
         expertGui.addScheduleButtonActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                workloadSchedulerController.scheduleSelectedTasks(expertGui.getScheduleDelay());
+                workloadSchedulerController.scheduleSelectedTasks(expertGui.getCreationTime(), expertGui.getDestroyTime());
             }
         });
 
@@ -318,7 +317,7 @@ public class ExpertConfigurationGUIController implements Observer {
                         taskConfigurationController.generateEntities(agent);
 
                         workloadSchedulerController.refreshAvailableTasks();
-                        workloadSchedulerController.setSchedule((List<Pair<String, Integer>>) data[2]);
+                        workloadSchedulerController.setSchedule((List<Pair<String, Pair<Integer, Integer>>>) data[2]);
                         expertGui.repaintSchedule();
                     } catch (Exception e1) {
                         JOptionPane.showMessageDialog(null, "Invalid file", "Load error", JOptionPane.WARNING_MESSAGE);

@@ -1,27 +1,33 @@
 package globalLoop.agents;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import edu.stanford.smi.protege.exception.OntologyLoadException;
-import edu.stanford.smi.protegex.owl.ProtegeOWL;
+import com.hp.hpl.jena.ontology.Individual;
+import edu.stanford.smi.protege.model.Instance;
+import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFResource;
+import edu.stanford.smi.protegex.owl.swrl.exceptions.SWRLFactoryException;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
-import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
 import globalLoop.agents.behaviors.RLServiceCenterServersManagement;
 import globalLoop.agents.behaviors.ReceiveMessageRLBehaviour;
 import globalLoop.utils.GlobalVars;
-import gui.datacenterConfiguration.impl.ConfigurationGUI;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import model.impl.ontologyImpl.OntologyModelFactory;
 import model.impl.util.ModelAccess;
+import model.interfaces.policies.QoSPolicy;
+import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.misc.Pair;
+import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
+import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.TaskDto;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,6 +38,7 @@ import java.util.Collection;
  */
 public class RLAgent extends Agent {
     private ModelAccess modelAccess;
+    private List<Pair<String, Integer>> toKill;
 
     public void sendAllTasksToClient() {
         Collection<ApplicationActivity> tasks = modelAccess.getAllApplicationActivityInstances();
@@ -91,6 +98,75 @@ public class RLAgent extends Agent {
 
     }
 
+    public void addTaskToKill(Pair<String, Integer> taskInfo) {
+        taskInfo.setSecond(new Long(new java.util.Date().getTime() + (taskInfo.getSecond() * 1000)).intValue());
+        toKill.add(taskInfo);
+    }
+
+    public void killScheduledTasks() {
+        int currentTimeInMillis = new Long(new Date().getTime()).intValue();
+        Object[] entries = toKill.toArray();
+        OWLModel model = modelAccess.getOntologyModelFactory().getOwlModel();
+        for (Object entryObject : entries) {
+            Pair<String, Integer> entry = (Pair<String, Integer>) entryObject;
+            if (currentTimeInMillis >= entry.getSecond()) {
+                ApplicationActivity activity = modelAccess.getApplicationActivity(entry.getFirst());
+                for (Object p : activity.getActivityPolicies()) {
+                    QoSPolicy policy = (QoSPolicy) p;
+                    SWRLFactory factory = new SWRLFactory(model);
+                    try {
+                        SWRLImp imp = factory.getImp(policy.getLocalName() + "_Rule");
+                        imp.disable();
+                        imp.deleteImp();
+                    } catch (SWRLFactoryException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
+                    OWLIndividual i = model.getOWLIndividual(policy.getName());
+                    Individual ontIndividual = model.getOntModel().getIndividual(policy.getName());
+                    ontIndividual.remove();
+                    RDFResource resource = model.getRDFResource(policy.getName());
+                    resource.getKnowledgeBase().deleteFrame(resource);
+                    resource.getKnowledgeBase().deleteInstance(resource);
+                    resource.delete();
+                    i.getKnowledgeBase().deleteFrame(i);
+                    i.getKnowledgeBase().deleteInstance(i);
+                    i.delete();
+                    model.deleteInstance(model.getInstance(i.getName()));
+                    Instance instance = model.getInstance(policy.getName());
+                    instance.getKnowledgeBase().deleteFrame(instance);
+                    instance.getKnowledgeBase().deleteInstance(instance);
+                    instance.delete();
+                    policy.delete();
+
+                }
+                ServiceCenterServer server = activity.getAssociatedServer();
+                server.removeRunningActivity(activity);
+                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+                proxy.stopVirtualMachine(activity.getLocalName());
+                proxy.deleteVirtualMachine(activity.getLocalName());
+                Instance instance = model.getInstance(activity.getName());
+                instance.getKnowledgeBase().deleteFrame(instance);
+                instance.getKnowledgeBase().deleteInstance(instance);
+                instance.delete();
+                activity.delete();
+                OWLIndividual i = model.getOWLIndividual(activity.getName());
+                i.delete();
+                i.getKnowledgeBase().deleteFrame(i);
+                i.getKnowledgeBase().deleteInstance(i);
+                model.deleteInstance(model.getInstance(i.getName()));
+                Individual ontIndividual = model.getOntModel().getIndividual(activity.getName());
+                ontIndividual.remove();
+                RDFResource resource = model.getRDFResource(activity.getName());
+                resource.delete();
+                resource.getKnowledgeBase().deleteFrame(resource);
+                resource.getKnowledgeBase().deleteInstance(resource);
+                toKill.remove(entry);
+                System.out.println("Deleted " + activity.getName());
+            }
+
+        }
+    }
+
     @Override
     protected void setup() {
         System.out.println("RLAgent " + getLocalName() + " started.");
@@ -102,6 +178,8 @@ public class RLAgent extends Agent {
             this.doDelete();
             return;
         }
+
+        toKill = new ArrayList<Pair<String, Integer>>();
 //        ConfigurationGUI gui = new ConfigurationGUI(modelAccess);
 //        gui.setVisible(true);
 

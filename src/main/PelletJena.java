@@ -14,6 +14,7 @@ import edu.stanford.smi.protegex.owl.jena.JenaOWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.RDFSNamedClass;
+import edu.stanford.smi.protegex.owl.swrl.exceptions.SWRLFactoryException;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import edu.stanford.smi.protegex.owl.swrl.model.SWRLImp;
 import edu.stanford.smi.protegex.owl.swrl.parser.SWRLParseException;
@@ -142,7 +143,7 @@ public class PelletJena {
 
                 System.out.println(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");
                 ;//+ " ^ ComplexResource(?x) ^ ResourceID(?x," + compResource.getResourceID() + ") ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maximumWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
-                SWRLImp imp = factory.createImp(currentPolicy.getPolicySubject().get(0).getName(),swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");//  " ^ ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
+                SWRLImp imp = factory.createImp(currentPolicy.getLocalName() + "_Rule", swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");//  " ^ ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
                 imp.enable();
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -172,7 +173,12 @@ public class PelletJena {
                         " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
                         " -> isRespected(" + businessPolicy.getName() + ", true)";
                 System.out.println(swrlRule);
-                SWRLImp imp = factory.createImp(swrlRule);
+                SWRLImp imp = factory.createImp(businessPolicy.getLocalName() + "_Rule", swrlRule);
+                try {
+                    factory.getImp(businessPolicy.getLocalName());
+                } catch (SWRLFactoryException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
                 imp.enable();
             } catch (SWRLParseException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -195,7 +201,7 @@ public class PelletJena {
                     " ^ cpuAllocatedValue(?x,?cpuAllocated) ^ cpuRequiredMaxValue(?x, ?cpuMax) ^ cpuRequiredMinValue(?x,?cpuMin) ^ swrlb:lessThanOrEqual(?cpuMin, ?cpuAllocated) ^ swrlb:lessThanOrEqual(?cpuAllocated,?cpuMax) " +
                     " -> isRespected(" + businessPolicy.getName() + ", true)";
             System.out.println(swrlRule);
-            SWRLImp imp = factory.createImp(swrlRule);
+            SWRLImp imp = factory.createImp(businessPolicy.getLocalName() + "_Rule", swrlRule);
             imp.enable();
         } catch (SWRLParseException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -260,7 +266,7 @@ public class PelletJena {
         System.out.println(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");
         SWRLImp imp = null;//  " ^ ComplexResource(?x) ^  currentWorkload(?x, ?cWorkload) ^  maximumWorkload(?x, ?maxWorkload) ^  swrlb:lessThanOrEqual(?cWorkload, ?maxWorkload) -> isRespected(" + currentPolicy.getName() + ", true)");
         try {
-            imp = factory.createImp(swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");
+            imp = factory.createImp(currentPolicy.getLocalName() + "_Rule", swrlRule + "-> isRespected(" + currentPolicy.getName() + ", true)");
         } catch (SWRLParseException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

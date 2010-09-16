@@ -40,7 +40,6 @@ public class ContextSnapshot implements Comparable {
     public void executeActions(ModelAccess modelAccess) {
         for (ContextAction command : actions) {
             command.execute(modelAccess);
-            System.out.println("Executing " + command.toString());
         }
     }
 //    // TODO: de scris metodele
@@ -129,9 +128,10 @@ public class ContextSnapshot implements Comparable {
 //            ContextAction.executeOnX3D(agent);
         }
     }
-    public void executeOnServiceCenter(ModelAccess modelAccess){
-        for (ContextAction contextAction : actions){
-              contextAction.executeOnServiceCenter(modelAccess);
+
+    public void executeOnServiceCenter(ModelAccess modelAccess) {
+        for (ContextAction contextAction : actions) {
+            contextAction.executeOnServiceCenter(modelAccess);
         }
     }
 

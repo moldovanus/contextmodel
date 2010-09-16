@@ -158,11 +158,20 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         duplicateScheduleRowButton.addActionListener(repaintScheduleTableListener);
         deleteScheduleRowButton.addActionListener(repaintScheduleTableListener);
         scheduleDelaySpinner.setValue(1);
+        timeToLiveSpinner.setValue(2);
 
         scheduleDelaySpinner.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 if ((Integer) scheduleDelaySpinner.getValue() < 1) {
                     scheduleDelaySpinner.setValue(1);
+                }
+            }
+        });
+
+        timeToLiveSpinner.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                if ((Integer) timeToLiveSpinner.getValue() < (Integer) scheduleDelaySpinner.getValue() + 1) {
+                    timeToLiveSpinner.setValue((Integer) scheduleDelaySpinner.getValue() + 1);
                 }
             }
         });
@@ -202,9 +211,14 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     }
 
 
-    public int getScheduleDelay() {
+    public int getCreationTime() {
         return (Integer) scheduleDelaySpinner.getValue();
     }
+
+    public int getDestroyTime() {
+        return (Integer) timeToLiveSpinner.getValue();
+    }
+
 
     public void addScheduleTableModel(TableModel tableModel) {
         workloadScheduleTable.setModel(tableModel);
@@ -302,6 +316,8 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         scheduleButton = new javax.swing.JButton();
         scheduleDelaySpinner = new javax.swing.JSpinner();
         timeDelayLabel = new javax.swing.JLabel();
+        timeToLiveSpinner = new javax.swing.JSpinner();
+        timeToLiveLabel = new javax.swing.JLabel();
         existingWorkloadLable = new javax.swing.JLabel();
         scheduleWorkloadBasePanel = new javax.swing.JPanel();
         scheduleWorkloadScrollPane = new javax.swing.JScrollPane();
@@ -486,7 +502,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weightx = 1.0;
         jPanel1.add(scheduleButton, gridBagConstraints);
 
         scheduleDelaySpinner.setPreferredSize(new java.awt.Dimension(50, 20));
@@ -495,10 +511,20 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.5;
         jPanel1.add(scheduleDelaySpinner, gridBagConstraints);
 
-        timeDelayLabel.setText("Time Delay");
+        timeDelayLabel.setText("Creation time");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weightx = 1.0;
         jPanel1.add(timeDelayLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(timeToLiveSpinner, gridBagConstraints);
+
+        timeToLiveLabel.setText("          Destroy Time");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(timeToLiveLabel, gridBagConstraints);
 
         existingWorkloadBasePanel.add(jPanel1, java.awt.BorderLayout.SOUTH);
 
@@ -752,6 +778,8 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
     private javax.swing.JButton stopButton;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JLabel timeDelayLabel;
+    private javax.swing.JLabel timeToLiveLabel;
+    private javax.swing.JSpinner timeToLiveSpinner;
     private javax.swing.JPanel timerControlPanel;
     private javax.swing.JLabel timerLabel;
     private javax.swing.JLabel timerProgressLabel;

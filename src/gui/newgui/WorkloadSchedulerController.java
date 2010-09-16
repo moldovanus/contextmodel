@@ -26,23 +26,23 @@ public class WorkloadSchedulerController {
     private Agent agent;
     private WorkloadTreeDisplay workloadTreeDisplay;
     private ModelAccess modelAccess;
-    private List<Pair<String, Integer>> schedule;
+    private List<Pair<String, Pair<Integer, Integer>>> schedule;
     private TableModel scheduleTableModel;
 
     public WorkloadSchedulerController(ModelAccess modelAccess) {
         this.modelAccess = modelAccess;
         List<TaskDto> availableTasks = new ArrayList<TaskDto>();
-        schedule = new ArrayList<Pair<String, Integer>>();
+        schedule = new ArrayList<Pair<String, Pair<Integer, Integer>>>();
         workloadTreeDisplay = new WorkloadTreeDisplay(availableTasks);
         refreshAvailableTasks();
         initTableModel();
     }
 
-    public List<Pair<String, Integer>> getSchedule() {
+    public List<Pair<String, Pair<Integer, Integer>>> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(List<Pair<String, Integer>> schedule) {
+    public void setSchedule(List<Pair<String, Pair<Integer, Integer>>> schedule) {
         this.schedule.clear();
         this.schedule.addAll(schedule);
     }
@@ -55,18 +55,21 @@ public class WorkloadSchedulerController {
             }
 
             public int getColumnCount() {
-                return 2;
+                return 3;
             }
 
             public Object getValueAt(int rowIndex, int columnIndex) {
-                Pair<String, Integer> pair = schedule.get(rowIndex);
+                Pair<String, Pair<Integer, Integer>> pair = schedule.get(rowIndex);
                 Object value = null;
                 switch (columnIndex) {
                     case 0:
                         value = pair.getFirst();
                         break;
                     case 1:
-                        value = pair.getSecond();
+                        value = pair.getSecond().getFirst();
+                        break;
+                    case 2:
+                        value = pair.getSecond().getSecond();
                         break;
                 }
                 return value;
@@ -85,10 +88,30 @@ public class WorkloadSchedulerController {
                         value = "Activity name";
                         break;
                     case 1:
-                        value = "Schedule delay";
+                        value = "Creation time";
+                        break;
+                    case 2:
+                        value = "Destroy time";
                         break;
                 }
                 return value;
+            }
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return columnIndex > 0;
+            }
+
+            @Override
+            public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+                switch (columnIndex) {
+                    case 1:
+                        schedule.get(rowIndex).getSecond().setFirst(new Integer(aValue.toString()));
+                        break;
+                    case 2:
+                        schedule.get(rowIndex).getSecond().setSecond(new Integer(aValue.toString()));
+                        break;
+                }
             }
         };
     }
@@ -107,7 +130,7 @@ public class WorkloadSchedulerController {
         schedule.remove(rowIndex);
     }
 
-    public void scheduleSelectedTasks(int scheduleDelay) {
+    public void scheduleSelectedTasks(int scheduleDelay, int destroyTime) {
         TreePath[] paths = workloadTreeDisplay.getTree().getSelectionPaths();
         if (paths == null) {
             return;
@@ -116,9 +139,9 @@ public class WorkloadSchedulerController {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
             if (node.isLeaf() && !node.isRoot()) {
                 DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-                schedule.add(new Pair<String, Integer>(parent.toString(), scheduleDelay));
+                schedule.add(new Pair<String, Pair<Integer, Integer>>(parent.toString(), new Pair<Integer, Integer>(scheduleDelay, destroyTime)));
             } else {
-                schedule.add(new Pair<String, Integer>(node.toString(), scheduleDelay));
+                schedule.add(new Pair<String, Pair<Integer, Integer>>(node.toString(), new Pair<Integer, Integer>(scheduleDelay, destroyTime)));
             }
         }
     }
@@ -128,11 +151,11 @@ public class WorkloadSchedulerController {
         return workloadTreeDisplay.getTree();
     }
 
-    public List<String> getScheduledTasksFor(int scheduleTime) {
-        List<String> list = new ArrayList<String>();
-        for (Pair<String, Integer> pair : schedule) {
-            if (pair.getSecond().equals(scheduleTime)) {
-                list.add(pair.getFirst());
+    public List<Pair<String, Integer>> getScheduledTasksFor(int scheduleTime) {
+        List<Pair<String, Integer>> list = new ArrayList<Pair<String, Integer>>();
+        for (Pair<String, Pair<Integer, Integer>> pair : schedule) {
+            if (pair.getSecond().getFirst().equals(scheduleTime)) {
+                list.add(new Pair<String, Integer>(pair.getFirst(), pair.getSecond().getSecond()));
             }
         }
         return list;
@@ -146,18 +169,19 @@ public class WorkloadSchedulerController {
                 List<TaskDto> availableTasks = new ArrayList<TaskDto>();
                 Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
                 for (ApplicationActivity activity : activities) {
+                    if (activity.getLocalName().matches("Template_[0-9]*")) {
+                        TaskDto taskDto = new TaskDto();
+                        taskDto.setTaskName(activity.getLocalName());
+                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
 
-                    TaskDto taskDto = new TaskDto();
-                    taskDto.setTaskName(activity.getLocalName());
-                    taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
-                    taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
-                    taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
-                    taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
-                    taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
-                    taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
-                    taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
-
-                    availableTasks.add(taskDto);
+                        availableTasks.add(taskDto);
+                    }
                 }
                 workloadTreeDisplay.setTasks(availableTasks);
             }
