@@ -24,7 +24,7 @@ public class EnergyEstimator implements EnergyConsumption {
         this.modelAccess = modelAccess;
     }
 
-    public int getValueWithRunningAlgorithm() {
+    public Number getValueWithRunningAlgorithm() {
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         double totalEnergyConsumed = 0;
         for (ServiceCenterServer server : servers) {
@@ -34,15 +34,15 @@ public class EnergyEstimator implements EnergyConsumption {
                     totalEnergyConsumed += BASE_POWER_CONSUMPTION;
                 } else {
                     String energyConsumption = proxy.getEnergyConsumptionInfo();
-                    double d = Integer.parseInt(energyConsumption);
+                    double d = Float.parseFloat(energyConsumption);
                     totalEnergyConsumed += d;
                 }
             }
         }
-        return (int) totalEnergyConsumed;
+        return totalEnergyConsumed;
     }
 
-    public int getValueWithoutAlgorithm() {
+    public Number getValueWithoutAlgorithm() {
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         int totalEnergyConsumed = 0;
         for (ServiceCenterServer server : servers) {
@@ -52,7 +52,7 @@ public class EnergyEstimator implements EnergyConsumption {
                     totalEnergyConsumed += BASE_POWER_CONSUMPTION;
                 } else {
                     String energyConsumption = proxy.getEnergyConsumptionInfo();
-                    double d = Integer.parseInt(energyConsumption);
+                    double d = Float.parseFloat(energyConsumption);
                     totalEnergyConsumed += d;
                 }
             } else {

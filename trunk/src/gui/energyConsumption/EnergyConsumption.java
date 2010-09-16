@@ -1,7 +1,5 @@
 package gui.energyConsumption;
 
-import model.impl.util.ModelAccess;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -10,6 +8,7 @@ import model.impl.util.ModelAccess;
  * To change this template use File | Settings | File Templates.
  */
 public interface EnergyConsumption {
-    public int getValueWithRunningAlgorithm();
-    public int getValueWithoutAlgorithm();
+    public Number getValueWithRunningAlgorithm();
+
+    public Number getValueWithoutAlgorithm();
 }

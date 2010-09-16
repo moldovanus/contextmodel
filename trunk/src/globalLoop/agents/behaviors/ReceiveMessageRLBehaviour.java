@@ -212,6 +212,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 task.setHddWeight(0.3f);
                                 task.setResourceID(task.getFrameID().getName());
 
+
 //                                SWRLFactory factory = new SWRLFactory(modelAccess.getOntologyModelFactory().getOwlModel());
 //                                String swrlRule = "";
 //                                PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
@@ -219,6 +220,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             sendMessageToGUI("Tasks added", tasks);
                         } else if (dataType.equals("Create clones")) {
                             List<Pair<String, Integer>> entryies = (List<Pair<String, Integer>>) contentData[1];
+                            List<ExtendedTaskDto> tasks = new ArrayList<ExtendedTaskDto>();
                             int count = entryies.size();
                             for (int i = 0; i < count; i++) {
                                 ApplicationActivity template = modelAccess.getApplicationActivity(entryies.get(i).getFirst());
@@ -249,13 +251,27 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 task.setResourceID(task.getFrameID().getName());
                                 PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                                 agent.addTaskToKill(new Pair<String, Integer>(task.getLocalName(), entryies.get(i).getSecond()));
+
+                                ExtendedTaskDto taskDto = new ExtendedTaskDto();
+                                taskDto.setTaskName(task.getLocalName());
+                                taskDto.setRequestedCores((int) task.getNumberOfCoresRequiredValue());
+                                taskDto.setCpuWeight(task.getCPUWeight());
+                                taskDto.setMemWeight(task.getMEMWeight());
+                                taskDto.setHddWeight(task.getHDDWeight());
+                                taskDto.setRequestedCPUMin((int) task.getCpuRequiredMinValue());
+                                taskDto.setRequestedCPUMax((int) task.getCpuRequiredMaxValue());
+                                taskDto.setRequestedMemoryMin((int) task.getMemRequiredMinValue());
+                                taskDto.setRequestedMemoryMax((int) task.getMemRequiredMaxValue());
+                                taskDto.setRequestedStorageMin((int) task.getHddRequiredMinValue());
+                                taskDto.setRequestedStorageMax((int) task.getHddRequiredMaxValue());
+                                tasks.add(taskDto);
                             }
                             if (count > 0) {
-                                List<String> names = new ArrayList<String>();
-                                for (Pair<String, Integer> entry : entryies) {
-                                    names.add(entry.getFirst());
-                                }
-                                sendMessageToGUI("TaskStatusChanged", names);
+//                                List<String> names = new ArrayList<String>();
+//                                for (Pair<String, Integer> entry : entryies) {
+//                                    names.add(entry.getFirst());
+//                                }
+                                sendMessageToGUI("Clones added", tasks);
                             }
                         } else if (dataType.equals("Delete all")) {
                             Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();

@@ -442,8 +442,8 @@ public class ExpertConfigurationGUIController implements Observer {
         }
         EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
         EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
-        energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm();
-        energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm();
+        energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm().intValue();
+        energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm().intValue();
         System.out.println("After refresh  " + energyEstimateWithoutAlg + " ___ " + energyEstimateWithAlg);
     }
 
@@ -469,7 +469,7 @@ public class ExpertConfigurationGUIController implements Observer {
                         "Time(s)", "Energy Consumed (W)", 0, 200);
         final ResourceMonitorXYChartPlotter plotter2 =
                 new ResourceMonitorXYChartPlotter("Energy Consumption with GAMES infrastructure",
-                        "Time(s)", "Energy Consumed (W)", 0, 2000);
+                        "Time(s)", "Energy Consumed (W)", 0, 200);
         plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         plotter2.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         ActionListener actionListener = new ActionListener() {

@@ -148,10 +148,10 @@ public class MultipleResourceMonitorXYChartPlotter extends ResourceMonitorPlotte
         Range valueRange = value.getRange();
         int count = series.length;
         for (int i = 0; i < count; i++) {
-            if (valueRange.getUpperBound() <= (Integer) currentValues[i]) {
-                value.setRange(valueRange.getLowerBound(), (Integer) currentValues[i] + 10);
+            if (valueRange.getUpperBound() <= ((Number) currentValues[i]).intValue()) {
+                value.setRange(valueRange.getLowerBound(), ((Number) currentValues[i]).intValue() + 10);
             }
-            series[i].add(snapshotCount, (Integer) currentValues[i]);
+            series[i].add(snapshotCount, ((Number) currentValues[i]).intValue());
         }
         snapshotCount += snapshotIncrement;
         scrollBar.repaint();

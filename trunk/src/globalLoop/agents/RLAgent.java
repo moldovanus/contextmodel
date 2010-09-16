@@ -21,6 +21,7 @@ import model.interfaces.resources.applications.ApplicationActivity;
 import utils.misc.Pair;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
+import utils.worldInterface.dtos.ExtendedTaskDto;
 import utils.worldInterface.dtos.TaskDto;
 
 import java.io.IOException;
@@ -107,10 +108,29 @@ public class RLAgent extends Agent {
         int currentTimeInMillis = new Long(new Date().getTime()).intValue();
         Object[] entries = toKill.toArray();
         OWLModel model = modelAccess.getOntologyModelFactory().getOwlModel();
+        List<ExtendedTaskDto> tasks = new ArrayList<ExtendedTaskDto>();
+
+        List<String> deletedEntries = new ArrayList<String>();
         for (Object entryObject : entries) {
             Pair<String, Integer> entry = (Pair<String, Integer>) entryObject;
             if (currentTimeInMillis >= entry.getSecond()) {
                 ApplicationActivity activity = modelAccess.getApplicationActivity(entry.getFirst());
+
+                ExtendedTaskDto taskDto = new ExtendedTaskDto();
+                taskDto.setTaskName(activity.getLocalName());
+                taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+                taskDto.setCpuWeight(activity.getCPUWeight());
+                taskDto.setMemWeight(activity.getMEMWeight());
+                taskDto.setHddWeight(activity.getHDDWeight());
+                taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+                taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+                taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+                taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+                taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+                taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+                tasks.add(taskDto);
+
+                deletedEntries.add(entry.getFirst());
                 for (Object p : activity.getActivityPolicies()) {
                     QoSPolicy policy = (QoSPolicy) p;
                     SWRLFactory factory = new SWRLFactory(model);
@@ -165,6 +185,18 @@ public class RLAgent extends Agent {
             }
 
         }
+
+        if (deletedEntries.size() > 0) {
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            try {
+                msg.setContentObject(new Object[]{"Clones deleted", tasks});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + this.getContainerController().getPlatformName()));
+            this.send(msg);
+        }
+
     }
 
     @Override

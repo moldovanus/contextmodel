@@ -53,8 +53,12 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private int decisionTime = 0;
     private int decisionTimeRefreshRateInMillis = 1000;
 
-    private int energyEstimateWithoutAlg = 0;
-    private int energyEstimateWithAlg = 0;
+    private Number energyEstimateWithoutAlg = 0;
+    private Number energyEstimateWithAlg = 0;
+    private int totalEnergyGain = 0;
+
+    private List<Number> energyEstimatesWithoutAlg;
+    private List<Number> energyEstimatesWithAlg;
 
     private ServerConfigurationController serverConfigurationController;
     private TaskConfigurationController taskConfigurationController;
@@ -125,6 +129,13 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         refreshApplicationActivities();
     }
 
+    public void setApplicationActivitiesStatus(Collection<TaskDto> activities, String status) {
+        for (TaskDto taskDto : activities) {
+            applicationActivitiesList.put(taskDto, status + " ..> " + taskDto.getTaskName());
+        }
+        refreshApplicationActivities();
+    }
+
 
     public void setApplicationActivityStatus(TaskDto taskDto, String status) {
         applicationActivitiesList.put(taskDto, status);
@@ -152,6 +163,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                     task.add(taskRequestedCpu);
                     task.add(taskRequestedMem);
                     task.add(taskRequestedHdd);
+
                     root.add(task);
                 }
                 workloadScheduleJTree = new JTree(root);
@@ -159,7 +171,28 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 //                model.setRoot(root);
                 workLoadScheduleScrollPane.setViewportView(workloadScheduleJTree);
                 workLoadScheduleScrollPane.repaint();
+
+                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
+                applicationActivitiesList.clear();
+                for (ApplicationActivity activity : activities) {
+                    if (activity.getLocalName().matches("Template_[0-9]*")) {
+                        continue;
+                    }
+                    TaskDto taskDto = new TaskDto();
+                    taskDto.setTaskName(activity.getLocalName());
+                    taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+                    taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+                    taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+                    taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+                    taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+                    taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+                    taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+                    applicationActivitiesList.put(taskDto, activity.getLocalName());
+                }
+
             }
+
+
         };
         thread.start();
     }
@@ -221,9 +254,10 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         agent.addObserver(this);
         this.modelAccess = modelAccess;
         selfReference = this;
+        energyEstimatesWithoutAlg = new ArrayList<Number>();
+        energyEstimatesWithAlg = new ArrayList<Number>();
         initComponents();
         initComponents_2();
-
     }
 
     private void initComponents_2() {
@@ -510,7 +544,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         Timer refreshDecisionTimeTimer = new Timer(decisionTimeRefreshRateInMillis, actionListener);
         refreshDecisionTimeTimer.start();
 //        this.energyConsumptionPanel.setLayout(new BorderLayout());
-        decisionTimePanel.add(plotter.getGraphPanel(), "Center");
+//        decisionTimePanel.add(plotter.getGraphPanel(), "Center");
     }
 
     private void refreshEnergyEstimate() {
@@ -519,10 +553,28 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+
         EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
         EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
+
         energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm();
         energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm();
+
+        energyEstimatesWithoutAlg.add(energyEstimateWithoutAlg);
+        energyEstimatesWithAlg.add(energyEstimateWithAlg);
+
+        int count = energyEstimatesWithAlg.size();
+
+        int averageWithAlg = 0;
+        int averageWithoutAlg = 0;
+        for (int i = 0; i < count; i++) {
+            averageWithoutAlg += energyEstimatesWithoutAlg.get(i).floatValue();
+            averageWithAlg += energyEstimatesWithAlg.get(i).floatValue();
+        }
+        if (count > 0 && averageWithoutAlg > 0) {
+            totalEnergyGain = (averageWithAlg / count * 100) / (averageWithoutAlg / count);
+        }
+
         System.out.println("After refresh  " + energyEstimateWithoutAlg + " ___ " + energyEstimateWithAlg);
     }
 
@@ -532,7 +584,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 new MultipleResourceMonitorXYChartPlotter("Energy Consumption",
                         new String[]{"With GAMES infrastructure", "Without GAMES infrastructure"},
                         "Time(s)", "Energy Consumed (W)", 0, 200);
-        final ResourceMonitorBarChartPlotter barChartPlotter = new ResourceMonitorBarChartPlotter("Energy Reduction", "Improvement", 0, 100);
+        final ResourceMonitorBarChartPlotter barChartPlotter = new ResourceMonitorBarChartPlotter("Energy Reduction", "Improvement", "%", 0, 100);
 
         plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         barChartPlotter.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
@@ -540,8 +592,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 plotter1.setCurrentValue(new Object[]{energyEstimateWithAlg, energyEstimateWithoutAlg});
-                if (energyEstimateWithoutAlg > 0) {
-                    barChartPlotter.setCurrentValue(100 - (energyEstimateWithAlg * 100) / energyEstimateWithoutAlg);
+                if (energyEstimateWithoutAlg.intValue() > 0) {
+                    barChartPlotter.setCurrentValue(100 - totalEnergyGain);
                 } else {
                     barChartPlotter.setCurrentValue(0);
                 }
@@ -596,8 +648,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         energyConsumptionPanel = new javax.swing.JPanel();
         energyEfficiencyXYPanel = new javax.swing.JPanel();
         energyEfficiencyBarPanel = new javax.swing.JPanel();
-        energyEfficiencyLabel = new javax.swing.JLabel();
-        decisionTimePanel = new javax.swing.JPanel();
         treesPanel = new javax.swing.JPanel();
         computingResourcesPanel = new javax.swing.JPanel();
         computingResourcesScroolPanel = new javax.swing.JScrollPane();
@@ -660,7 +710,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                         .addGroup(logControlPaneLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(logControlPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(logBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 975, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(logBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 634, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(logControlPaneLayout.createSequentialGroup()
                                 .addComponent(logLabel)
                                 .addGap(10, 10, 10)
@@ -711,37 +761,27 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         energyConsumptionPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        energyEfficiencyXYPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         energyEfficiencyXYPanel.setLayout(new java.awt.BorderLayout());
 
-        energyEfficiencyBarPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         energyEfficiencyBarPanel.setLayout(new java.awt.BorderLayout());
-
-        energyEfficiencyLabel.setText("     Energy Efficiency Gain");
-        energyEfficiencyBarPanel.add(energyEfficiencyLabel, java.awt.BorderLayout.PAGE_START);
-
-        decisionTimePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        decisionTimePanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout energyConsumptionPanelLayout = new javax.swing.GroupLayout(energyConsumptionPanel);
         energyConsumptionPanel.setLayout(energyConsumptionPanelLayout);
         energyConsumptionPanelLayout.setHorizontalGroup(
                 energyConsumptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, energyConsumptionPanelLayout.createSequentialGroup()
-                        .addComponent(energyEfficiencyXYPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(energyEfficiencyBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(decisionTimePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(energyConsumptionPanelLayout.createSequentialGroup()
+                        .addComponent(energyEfficiencyXYPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(energyEfficiencyBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(308, 308, 308))
         );
         energyConsumptionPanelLayout.setVerticalGroup(
                 energyConsumptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(energyConsumptionPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(energyConsumptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(energyEfficiencyBarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                        .addComponent(decisionTimePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                        .addComponent(energyEfficiencyXYPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)))
+                        .addComponent(energyEfficiencyBarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                        .addComponent(energyEfficiencyXYPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -782,7 +822,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 
         workloadSchedulePanel.add(workLoadScheduleScrollPane, java.awt.BorderLayout.CENTER);
 
-        workloadScheduleLabel.setText("Workload Schedule");
+        workloadScheduleLabel.setText("Current workload activities");
         workloadSchedulePanel.add(workloadScheduleLabel, java.awt.BorderLayout.PAGE_START);
 
         treesPanel.add(workloadSchedulePanel);
@@ -795,49 +835,46 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         gridBagConstraints.weighty = 1.0;
         centerPanel.add(treesPanel, gridBagConstraints);
 
-        upperPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         upperPanel.setMinimumSize(new java.awt.Dimension(0, 50));
 
         javax.swing.GroupLayout imageLogoPanelLayout = new javax.swing.GroupLayout(imageLogoPanel);
         imageLogoPanel.setLayout(imageLogoPanelLayout);
         imageLogoPanelLayout.setHorizontalGroup(
                 imageLogoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 377, Short.MAX_VALUE)
+                        .addGap(0, 279, Short.MAX_VALUE)
         );
         imageLogoPanelLayout.setVerticalGroup(
                 imageLogoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 87, Short.MAX_VALUE)
+                        .addGap(0, 100, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout imageLogoPanel1Layout = new javax.swing.GroupLayout(imageLogoPanel1);
         imageLogoPanel1.setLayout(imageLogoPanel1Layout);
         imageLogoPanel1Layout.setHorizontalGroup(
                 imageLogoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 393, Short.MAX_VALUE)
+                        .addGap(0, 362, Short.MAX_VALUE)
         );
         imageLogoPanel1Layout.setVerticalGroup(
                 imageLogoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 87, Short.MAX_VALUE)
+                        .addGap(0, 100, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
         upperPanel.setLayout(upperPanelLayout);
         upperPanelLayout.setHorizontalGroup(
                 upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
-                        .addContainerGap(92, Short.MAX_VALUE)
+                        .addGroup(upperPanelLayout.createSequentialGroup()
                         .addComponent(imageLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(imageLogoPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(123, 123, 123))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(imageLogoPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         upperPanelLayout.setVerticalGroup(
                 upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(upperPanelLayout.createSequentialGroup()
                         .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(imageLogoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(imageLogoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(imageLogoPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -863,11 +900,9 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(logControlPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(centerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1005, Short.MAX_VALUE)
-                        .addComponent(upperPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(centerPanel, 0, 0, Short.MAX_VALUE)
+                        .addComponent(logControlPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(upperPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -877,7 +912,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                         .addComponent(centerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(logControlPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -901,10 +936,8 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JScrollPane computingResourcesScroolPanel;
     private javax.swing.JTree computingResourcesTree;
     private javax.swing.JMenu configurationMenuItem;
-    private javax.swing.JPanel decisionTimePanel;
     private javax.swing.JPanel energyConsumptionPanel;
     private javax.swing.JPanel energyEfficiencyBarPanel;
-    private javax.swing.JLabel energyEfficiencyLabel;
     private javax.swing.JPanel energyEfficiencyXYPanel;
     private javax.swing.JMenu fileMenuItem;
     private javax.swing.JPanel imageLogoPanel;
@@ -989,6 +1022,49 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
 //        }
 //    }
 
+    private void refreshTasksList() {
+        Thread thread = new Thread() {
+            public void run() {
+                DefaultMutableTreeNode root = new DefaultMutableTreeNode("Activities");
+                for (ApplicationActivity taskDto : modelAccess.getAllApplicationActivityInstances()) {
+                    if (taskDto.getLocalName().matches("Template_[0-9]*")) {
+                        continue;
+                    }
+                    DefaultMutableTreeNode task = new DefaultMutableTreeNode(taskDto.getLocalName());
+                    DefaultMutableTreeNode taskRequestedCores = new DefaultMutableTreeNode("requested cores: " + taskDto.getNumberOfCoresRequiredValue());
+                    DefaultMutableTreeNode taskRequestedCpu =
+                            new DefaultMutableTreeNode("requested CPU min: " + taskDto.getCpuRequiredMinValue()
+                                    + ", CPU max: " + taskDto.getCpuRequiredMaxValue());
+                    DefaultMutableTreeNode taskRequestedMem =
+                            new DefaultMutableTreeNode("requested MEM min: " + taskDto.getMemRequiredMinValue()
+                                    + ", MEM max: " + taskDto.getMemRequiredMaxValue());
+                    DefaultMutableTreeNode taskRequestedHdd =
+                            new DefaultMutableTreeNode("requested HDD min: " + taskDto.getHddRequiredMinValue()
+                                    + ", HDD max: " + taskDto.getHddRequiredMaxValue());
+
+                    task.add(taskRequestedCores);
+                    task.add(taskRequestedCpu);
+                    task.add(taskRequestedMem);
+                    task.add(taskRequestedHdd);
+
+                    if (taskDto.isRunning()) {
+                        DefaultMutableTreeNode hosted =
+                                new DefaultMutableTreeNode("Hosted by: " + taskDto.getAssociatedServer().getLocalName());
+                        task.add(hosted);
+                    }
+
+                    root.add(task);
+                }
+                workloadScheduleJTree = new JTree(root);
+//                DefaultTreeModel model = (DefaultTreeModel) workloadScheduleJTree.getModel();
+//                model.setRoot(root);
+                workLoadScheduleScrollPane.setViewportView(workloadScheduleJTree);
+                workLoadScheduleScrollPane.repaint();
+            }
+        };
+        thread.start();
+    }
+
     public void update(Observable o, Object arg) {
         Object[] data = (Object[]) arg;
         Object dataType = data[0];
@@ -997,13 +1073,17 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
             if (data[1].toString().startsWith("Executing")) {
                 refreshEnergyEstimate();
             }
-        } else if (dataType.equals("Tasks added")) {
+        } else if (dataType.equals("Clones added")) {
             List<TaskDto> availableTasks = (List<TaskDto>) data[1];
-            setApplicationActivities(availableTasks);
+            setApplicationActivitiesStatus(availableTasks, "Received");
+        } else if (dataType.equals("Clones deleted")) {
+            List<TaskDto> availableTasks = (List<TaskDto>) data[1];
+            setApplicationActivitiesStatus(availableTasks, "Destroyed");
         } else if (dataType.equals("Servers added")) {
             refreshComputingResourcesTree();
         } else if (data[0].equals("Running time")) {
             decisionTime = ((Long) data[1]).intValue();
+            refreshTasksList();
         } else if (dataType.equals("TaskStatusChanged")) {
             List<String> names = (List<String>) data[1];
             for (TaskDto taskDto : applicationActivitiesList.keySet()) {
@@ -1011,6 +1091,22 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 for (String name : names) {
                     if (taskDto.getTaskName().equals(name)) {
                         setApplicationActivityStatus(taskDto, "->>..Received ->>.." + taskDto.getTaskName());
+                        names.remove(name);
+                        taskMarked = true;
+                        break;
+                    }
+                }
+                if (!taskMarked) {
+                    setApplicationActivityStatus(taskDto, taskDto.getTaskName());
+                }
+            }
+        } else if (dataType.equals("Tasks Deleted")) {
+            List<String> names = (List<String>) data[1];
+            for (TaskDto taskDto : applicationActivitiesList.keySet()) {
+                boolean taskMarked = false;
+                for (String name : names) {
+                    if (taskDto.getTaskName().equals(name)) {
+                        setApplicationActivityStatus(taskDto, "->>..Destroyed ->>.." + taskDto.getTaskName());
                         names.remove(name);
                         taskMarked = true;
                         break;

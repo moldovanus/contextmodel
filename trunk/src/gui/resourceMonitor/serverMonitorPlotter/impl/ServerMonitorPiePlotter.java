@@ -64,7 +64,7 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
 //        for (Object o : cores) {
 //            Core core = (Core) o;
         Core core = (Core) cores.iterator().next();
-        ResourceMonitorPlotter plotter = new ResourceMonitorPieChartPlotter("CPU", 0, core.getMaximumWorkLoad().intValue());
+        ResourceMonitorPlotter plotter = new ResourceMonitorPieChartPlotter("CPU usage", 0, core.getMaximumWorkLoad().intValue());
         plotter.setSnapshotIncrement(refreshRate / 1000);
         JPanel graphPanel = plotter.getGraphPanel();
         graphPanel.setSize(250, 150);
@@ -75,7 +75,7 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
         //monitorPanel.add(coresPanel);
 
         MEM memory = server.getMemResources().iterator().next();
-        memoryMonitor = new ResourceMonitorPieChartPlotter("Memory", 0, memory.getMaximumWorkLoad().intValue());
+        memoryMonitor = new ResourceMonitorPieChartPlotter("Memory usage", 0, memory.getMaximumWorkLoad().intValue());
         memoryMonitor.setSnapshotIncrement(refreshRate / 1000);
         monitorPanel.add(memoryMonitor.getGraphPanel());
 
