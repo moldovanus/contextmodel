@@ -173,8 +173,11 @@ public class GUIAgent extends Agent {
                             ProxyFactory.createServerManagementProxy(server.getIpAddress());
                     Collection<ApplicationActivity> runningTasks = server.getRunningActivities();
                     for (ApplicationActivity task : runningTasks) {
-                        serverManagementProxyInterface.stopVirtualMachine(task.getLocalName());
-                        serverManagementProxyInterface.deleteVirtualMachine(task.getLocalName());
+
+                        if (task.isRunning()) {
+                            serverManagementProxyInterface.stopVirtualMachine(task.getLocalName());
+                            serverManagementProxyInterface.deleteVirtualMachine(task.getLocalName());
+                        }
                     }
                 }
                 shutdownPlatform();

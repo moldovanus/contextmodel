@@ -7,6 +7,7 @@ import globalLoop.utils.GlobalVars;
 import model.impl.util.ModelAccess;
 import model.interfaces.actions.MigrateActivity;
 import model.interfaces.resources.ContextResource;
+import model.interfaces.resources.Core;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
@@ -134,12 +135,7 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
         return activityAction.getName().equals(this.getName())
                 || activityAction.getResourceFrom().equals(this.getResourceFrom())
                 && activityAction.getResourceTo().equals(this.getResourceTo())
-                && activityAction.getActivity().equals(this.getActivity())
-
-                || activityAction.getResourceFrom().equals(this.getResourceTo())
-                && activityAction.getResourceTo().equals(this.getResourceFrom())
-                && activityAction.getActivity().equals(this.getActivity()
-        );
+                && activityAction.getActivity().equals(this.getActivity());
 
     }
 
@@ -151,11 +147,19 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
         ServerManagementProxyInterface newServerProxy = ProxyFactory.createServerManagementProxy(newServer.getIpAddress());
         if (oldServerProxy != null && newServerProxy != null) {
             String path = newServer.getHddResources().iterator().next().getPhysicalPath();
-            oldServerProxy.moveSourceActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
-                    task.getLocalName());
-            newServerProxy.moveDestinationActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
-                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + newServer.getLocalName(),
-                    task.getLocalName());
+            int procTime = ((int) task.getCpuRequiredMaxValue() * 100) /
+                          ((Core) newServer.getCpuResources().iterator().next().getAssociatedCores().iterator().next()).getMaximumWorkLoad().intValue();
+                
+            newServerProxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
+                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + newServer.getLocalName(), newServer.getLocalName(),
+                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
+                    procTime, (int) task.getNumberOfCoresAllocatedValue());
+            oldServerProxy.deleteVirtualMachine(task.getLocalName());
+//            oldServerProxy.moveSourceActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
+//                    task.getLocalName());
+//            newServerProxy.moveDestinationActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
+//                     GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH+newServer.getLocalName() ,
+//                    task.getLocalName());
 
         } else {
             System.err.println("Proxy is null");
