@@ -1,14 +1,6 @@
 package reasoning.impl;
 
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.reasoner.ValidityReport;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
-import globalLoop.utils.GlobalVars;
-import model.impl.ontologyImpl.resources.applications.DefaultApplicationActivity;
 import model.interfaces.policies.BusinessPolicy;
 import model.interfaces.policies.ContextPolicy;
 import model.interfaces.policies.ITComputingContextPolicy;
@@ -19,10 +11,7 @@ import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
 import reasoning.Evaluator;
 import utils.exceptions.IndividualNotFoundException;
-import utils.misc.RuntimeEvaluator;
 
-import java.io.*;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,31 +32,32 @@ public class PelletEvaluator implements Evaluator {
         boolean respected = true;
         if (policy instanceof BusinessPolicy) {
             BusinessPolicy businessPolicy = (BusinessPolicy) policy;
+            if (businessPolicy.getPolicySubject().size() == 0) {
+                return true;
+            }
             ApplicationActivity activity = (ApplicationActivity) businessPolicy.getPolicySubject().get(0);
             respected = activity.getNumberOfCoresRequiredValue() == activity.getNumberOfCoresAllocatedValue()
-                    && ( activity.getCpuRequiredMaxValue() >=  activity.getCpuAllocatedValue()
-                        && activity.getCpuRequiredMinValue() <=  activity.getCpuAllocatedValue() )
-                    && ( activity.getMemRequiredMaxValue() >=  activity.getMemAllocatedValue()
-                        && activity.getMemRequiredMinValue() <=  activity.getMemAllocatedValue() );
+                    && (activity.getCpuRequiredMaxValue() >= activity.getCpuAllocatedValue()
+                    && activity.getCpuRequiredMinValue() <= activity.getCpuAllocatedValue())
+                    && (activity.getMemRequiredMaxValue() >= activity.getMemAllocatedValue()
+                    && activity.getMemRequiredMinValue() <= activity.getMemAllocatedValue());
         } else if (policy instanceof ITComputingContextPolicy) {
             ITComputingContextPolicy contextPolicy = (ITComputingContextPolicy) policy;
             ServiceCenterServer server = (ServiceCenterServer) contextPolicy.getPolicySubject().get(0);
             CPU cpu = server.getCpuResources().iterator().next();
             MEM mem = server.getMemResources().iterator().next();
             List<Core> cores = cpu.getAssociatedCores();
-            for (Core core : cores){
-              if ((core.getCurrentWorkLoad()>core.getMaximumWorkLoad()-(core.getMaximumWorkLoad()-core.getOptimalWorkLoad())/2.0)
-                ||(core.getCurrentWorkLoad()<core.getOptimalWorkLoad()/2.0))
-              {
-                  return false;
-              }
+            for (Core core : cores) {
+                if ((core.getCurrentWorkLoad() > core.getMaximumWorkLoad() - (core.getMaximumWorkLoad() - core.getOptimalWorkLoad()) / 2.0)
+                        || (core.getCurrentWorkLoad() < core.getOptimalWorkLoad() / 2.0)) {
+                    return false;
+                }
 
             }
-            if ((mem.getCurrentWorkLoad()>mem.getMaximumWorkLoad()-(mem.getMaximumWorkLoad()-mem.getOptimalWorkLoad())/2.0)
-                    ||(mem.getCurrentWorkLoad()<mem.getOptimalWorkLoad()/2.0))
-              {
-                  return false;
-              }
+            if ((mem.getCurrentWorkLoad() > mem.getMaximumWorkLoad() - (mem.getMaximumWorkLoad() - mem.getOptimalWorkLoad()) / 2.0)
+                    || (mem.getCurrentWorkLoad() < mem.getOptimalWorkLoad() / 2.0)) {
+                return false;
+            }
 
         }
         return respected;

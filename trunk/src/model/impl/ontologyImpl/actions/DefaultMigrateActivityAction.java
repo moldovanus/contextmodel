@@ -134,7 +134,12 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
         return activityAction.getName().equals(this.getName())
                 || activityAction.getResourceFrom().equals(this.getResourceFrom())
                 && activityAction.getResourceTo().equals(this.getResourceTo())
-                && activityAction.getActivity().equals(this.getActivity());
+                && activityAction.getActivity().equals(this.getActivity())
+
+                || activityAction.getResourceFrom().equals(this.getResourceTo())
+                && activityAction.getResourceTo().equals(this.getResourceFrom())
+                && activityAction.getActivity().equals(this.getActivity()
+        );
 
     }
 
@@ -149,7 +154,7 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
             oldServerProxy.moveSourceActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
                     task.getLocalName());
             newServerProxy.moveDestinationActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
-                     GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH+newServer.getLocalName() ,
+                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + newServer.getLocalName(),
                     task.getLocalName());
 
         } else {

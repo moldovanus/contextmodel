@@ -498,8 +498,12 @@ public class OntologyModelFactory implements ModelFactory {
         Collection<ApplicationActivity> result = new ArrayList<ApplicationActivity>();
         final RDFSNamedClass cls = getApplicationActivityClass();
         RDFResource owlIndividual;
+
         for (Iterator it = cls.getInstances(transitive).iterator(); it.hasNext();) {
             owlIndividual = (RDFResource) it.next();
+            if (owlModel.getFrame(owlIndividual.getFrameID()) == null) {
+                continue;
+            }
             result.add(new DefaultApplicationActivity(owlModel, owlIndividual.getFrameID()));
         }
         return result;
@@ -1129,7 +1133,7 @@ public class OntologyModelFactory implements ModelFactory {
         }
         return result;
     }
-    
+
 
     public RDFSNamedClass getApplicationRedesignClass() {
         final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#ApplicationRedesign";

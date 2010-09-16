@@ -64,7 +64,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     private Timer scheduleTimer;
 
     private int scheduleCount = 0;
-    private List<Pair<String, Integer>> schedule;
+    private List<Pair<String, Pair<Integer, Integer>>> schedule;
 
     private ExpertConfigurationGUIController controller;
 
@@ -264,20 +264,20 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         final ActionListener scheduleTimerListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (schedule == null) {
-                    return;
+                    schedule = workloadSchedulerController.getSchedule();
                 }
-                List<String> scheduledTasks = new ArrayList<String>();
-                for (Pair<String, Integer> entry : schedule) {
-                    if (entry.getSecond().equals(scheduleCount)) {
-                        scheduledTasks.add(entry.getFirst());
+                List<Pair<String, Integer>> scheduledTasks = new ArrayList<Pair<String, Integer>>();
+                for (Pair<String, Pair<Integer, Integer>> entry : schedule) {
+                    if (entry.getSecond().getFirst().equals(scheduleCount)) {
+                        scheduledTasks.add(new Pair<String, Integer>(entry.getFirst(), entry.getSecond().getSecond()));
                     }
                 }
-                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
+                List<Pair<TaskDto, Integer>> availableTasks = new ArrayList<Pair<TaskDto, Integer>>();
 //                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
                 String taskNames = "";
-                for (String name : scheduledTasks) {
-                    taskNames += name + ", ";
-                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
+                for (Pair<String, Integer> entry : scheduledTasks) {
+                    taskNames += entry.getFirst() + ", ";
+                    ApplicationActivity activity = modelAccess.getApplicationActivity(entry.getFirst());
                     //TODO; remove if other solution for templates implemented
                     if (activity.getLocalName().toLowerCase().contains("template")) {
 
@@ -291,7 +291,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                         taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
                         taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
 
-                        availableTasks.add(taskDto);
+                        availableTasks.add(new Pair<TaskDto, Integer>(taskDto, entry.getSecond()));
                     }
                 }
 
@@ -402,7 +402,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                         serverConfigurationController.generateEntities(agent);
                         taskConfigurationController.generateEntities(agent);
 
-                        schedule = (List<Pair<String, Integer>>) data[2];
+                        schedule = (List<Pair<String, Pair<Integer, Integer>>>) data[2];
                         workloadSchedulerController.setSchedule(schedule);
                     } catch (Exception e1) {
                         JOptionPane.showMessageDialog(null, "Invalid file", "Load error", JOptionPane.WARNING_MESSAGE);

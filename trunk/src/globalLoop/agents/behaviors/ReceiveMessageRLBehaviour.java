@@ -18,6 +18,7 @@ import model.interfaces.policies.ITComputingContextPolicy;
 import model.interfaces.policies.QoSPolicy;
 import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.misc.Pair;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.ExtendedServerDto;
@@ -217,11 +218,11 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             }
                             sendMessageToGUI("Tasks added", tasks);
                         } else if (dataType.equals("Create clones")) {
-                            List<String> names = (List<String>) contentData[1];
-                            int count = names.size();
+                            List<Pair<String, Integer>> entryies = (List<Pair<String, Integer>>) contentData[1];
+                            int count = entryies.size();
                             for (int i = 0; i < count; i++) {
-                                ApplicationActivity template = modelAccess.getApplicationActivity(names.get(i));
-                                ApplicationActivity task = modelAccess.createApplicationActivity(names.get(i));
+                                ApplicationActivity template = modelAccess.getApplicationActivity(entryies.get(i).getFirst());
+                                ApplicationActivity task = modelAccess.createApplicationActivity(entryies.get(i).getFirst());
                                 QoSPolicy policy = modelAccess.createQoSPolicy(task.getLocalName() + "_QoSPolicy");
                                 System.out.println(policy);
                                 List<ContextResource> subjects = new ArrayList<ContextResource>(1);
@@ -247,9 +248,13 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 task.setHddWeight(0.3f);
                                 task.setResourceID(task.getFrameID().getName());
                                 PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
-
+                                agent.addTaskToKill(new Pair<String, Integer>(task.getLocalName(), entryies.get(i).getSecond()));
                             }
-                            if ( count > 0 ){
+                            if (count > 0) {
+                                List<String> names = new ArrayList<String>();
+                                for (Pair<String, Integer> entry : entryies) {
+                                    names.add(entry.getFirst());
+                                }
                                 sendMessageToGUI("TaskStatusChanged", names);
                             }
                         } else if (dataType.equals("Delete all")) {

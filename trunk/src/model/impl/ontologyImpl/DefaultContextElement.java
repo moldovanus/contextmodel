@@ -1,15 +1,8 @@
 package model.impl.ontologyImpl;
 
-import com.hp.hpl.jena.ontology.Individual;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
-import edu.stanford.smi.protegex.owl.swrl.exceptions.SWRLFactoryException;
-import edu.stanford.smi.protegex.owl.swrl.model.SWRLFactory;
 import model.interfaces.ContextElement;
 
 
@@ -28,6 +21,7 @@ public class DefaultContextElement extends DefaultOWLIndividual
         super(owlModel, id);
         this.owlModel = owlModel;
     }
+
 
     public Integer getId() {
         return null;

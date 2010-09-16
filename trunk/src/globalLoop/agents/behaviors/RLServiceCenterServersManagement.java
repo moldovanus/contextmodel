@@ -1,8 +1,8 @@
 package globalLoop.agents.behaviors;
 
+import globalLoop.agents.RLAgent;
 import globalLoop.utils.GlobalVars;
 import jade.core.AID;
-import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
@@ -15,9 +15,9 @@ import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
 import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
-import utils.misc.Pair;
 import utils.exceptions.IndividualNotFoundException;
 import utils.logger.LoggerGUI;
+import utils.misc.Pair;
 import utils.negotiator.Negotiator;
 import utils.negotiator.impl.NegotiatorFactory;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
@@ -39,14 +39,14 @@ import java.util.Queue;
  * To change this template use File | Settings | File Templates.
  */
 public class RLServiceCenterServersManagement extends TickerBehaviour {
-    private Agent agent;
+    private RLAgent agent;
     ModelAccess modelAccess;
     private ContextSnapshot smallestEntropyContext;
     private LoggerGUI logger;
     private int stackDepth = 0;
     private static final int MAXIMUM_STACK_DEPTH = 100;
 
-    public RLServiceCenterServersManagement(Agent a, ModelAccess modelAccess, long period) {
+    public RLServiceCenterServersManagement(RLAgent a, ModelAccess modelAccess, long period) {
         super(a, period);
         agent = a;
         this.modelAccess = modelAccess;
@@ -279,8 +279,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
             Queue<ContextAction> commands = smallestEntropyContext.getActions();
             for (ContextAction command : commands) {
-                System.out.println(command.toString());
-                sendLogToGUI(command.toString());
+                System.out.println("Simulating " + command.toString());
+                sendLogToGUI("Simulating " + command.toString());
             }
             sendLogToGUI("\n");
 //            System.out.println("Broken " + entropyAndPolicy.getSecond().getLocalName() + "\n Referenced " + entropyAndPolicy.getSecond().getReferenced().toString());
@@ -298,6 +298,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         for (ContextAction action : actions) {
             message.add("Simulating: " + action.toString());
             sendLogToGUI("Simulating:  " + action.toString());
+            System.out.println("Simulating " + action.toString());
         }
 
         logger.log(Color.BLACK, "Current try", message);
@@ -329,7 +330,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         ArrayList<String> simulationResultMessage = new ArrayList<String>();
         simulationResultMessage.add("\n Entropy: " + entropyAndPolicy.getFirst()
                 + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()) + "\n");
         logger.log(Color.black, "Simulation result context", simulationResultMessage);
 
         Collection<ContextResource> associatedTasks = null;
@@ -554,6 +555,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     @Override
     protected void onTick() {
+//        agent.killScheduledTasks();
         stackDepth = 0;
 //        refresh server information
         System.out.println("New configuration");
@@ -612,10 +614,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
 
         System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()))        ;
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
         sendLogToGUI("\n Entropy: "
                 + entropyAndPolicy.getFirst()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()))        ;
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
 
 
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
@@ -644,6 +646,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             ArrayList<String> newMessage = new ArrayList<String>();
             Queue<ContextAction> actions = result.getActions();
             for (ContextAction action : actions) {
+                System.out.println("Executing: " + action.toString());
                 sendLogToGUI("Executing: " + action.toString());
                 newMessage.add(action.toString());
                 action.execute(modelAccess);
@@ -662,69 +665,70 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
                     Negotiator negotiator = (Negotiator) NegotiatorFactory.getNashNegotiator();
                     ServiceCenterServer server = getMinDistanceServer(activity);
-
-                    negotiationMessage.add("Negotiating between " + activity.getLocalName() + " and " + server.getLocalName());
-                    sendLogToGUI("Negotiating between " + activity.getLocalName() + " and " + server.getLocalName());
                     if (server != null) {
-                        CPU cpu = server.getCpuResources().iterator().next();
-                        MEM mem = server.getMemResources().iterator().next();
-                        Map<String, Double> negotiatedValues = negotiator.negotiate(server, activity);
-                        double optimalCpu = cpu.getAssociatedCores().get(0).getOptimalWorkLoad();
-                        double totalCpu = cpu.getAssociatedCores().get(0).getMaximumWorkLoad();
-                        double currentCpu = cpu.getAssociatedCores().get(0).getCurrentWorkLoad();
-                        double optimalMem = mem.getOptimalWorkLoad();
 
-                        if (negotiatedValues.get(Negotiator.NEGOTIATED_CPU) + currentCpu > (optimalCpu + totalCpu) / 2.0) {
-                            double current = negotiatedValues.get(Negotiator.NEGOTIATED_CPU) + currentCpu;
-                            optimalCpu = 2 * current - cpu.getMaximumWorkLoad();
+                        negotiationMessage.add("Negotiating between " + activity.getLocalName() + " and " + server.getLocalName());
+                        sendLogToGUI("Negotiating between " + activity.getLocalName() + " and " + server.getLocalName());
+                        if (server != null) {
+                            CPU cpu = server.getCpuResources().iterator().next();
+                            MEM mem = server.getMemResources().iterator().next();
+                            Map<String, Double> negotiatedValues = negotiator.negotiate(server, activity);
+                            double optimalCpu = cpu.getAssociatedCores().get(0).getOptimalWorkLoad();
+                            double totalCpu = cpu.getAssociatedCores().get(0).getMaximumWorkLoad();
+                            double currentCpu = cpu.getAssociatedCores().get(0).getCurrentWorkLoad();
+                            double optimalMem = mem.getOptimalWorkLoad();
+
+                            if (negotiatedValues.get(Negotiator.NEGOTIATED_CPU) + currentCpu > (optimalCpu + totalCpu) / 2.0) {
+                                double current = negotiatedValues.get(Negotiator.NEGOTIATED_CPU) + currentCpu;
+                                optimalCpu = 2 * current - cpu.getMaximumWorkLoad();
+                            }
+                            if (negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY) + mem.getCurrentWorkLoad() > (mem.getOptimalWorkLoad() + mem.getMaximumWorkLoad()) / 2.0) {
+                                double current = negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY) + mem.getCurrentWorkLoad();
+                                optimalMem = 2 * current - mem.getMaximumWorkLoad();
+                            }
+                            SetServerStateActivity newActivity =
+                                    modelAccess.createSetServerStateActivity("Set_state_for_" + server.getName()
+                                            + "_to_" + 1);
+                            newActivity.execute(modelAccess);
+                            newActivity.executeOnServiceCenter(modelAccess);
+                            result.getActions().add(newActivity);
+
+                            ServerAdaptationAction defaultServerAdaptationAction = modelAccess.createServerAdaptationAction("ServerAdaptationAction_" + server);
+                            //new DefaultServerAdaptationAction(server,(int)optimalCpu,(int)optimalMem);
+                            defaultServerAdaptationAction.setNewOptimalValueForCpu((int) optimalCpu);
+                            defaultServerAdaptationAction.setNewOptimalValueForMem((int) optimalMem);
+                            defaultServerAdaptationAction.setServer(server);
+
+                            negotiationMessage.add(defaultServerAdaptationAction.toString());
+
+                            defaultServerAdaptationAction.execute(modelAccess);
+                            result.getActions().add(defaultServerAdaptationAction);
+
+                            ApplicationAdaptationAction applicationAdaptationAction = modelAccess.createApplicationAdaptationAction("ApplicationAdaptationAction_" + activity.getLocalName());
+                            applicationAdaptationAction.setActivity(activity);
+                            applicationAdaptationAction.setCpuMin((int) activity.getCpuRequiredMinValue());
+                            applicationAdaptationAction.setCpuMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
+                            applicationAdaptationAction.setMemMin((int) activity.getMemRequiredMinValue());
+                            applicationAdaptationAction.setMemMax(negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY).intValue());
+
+                            negotiationMessage.add(applicationAdaptationAction.toString());
+
+                            applicationAdaptationAction.execute(modelAccess);
+                            result.getActions().add(applicationAdaptationAction);
+                            DeployActivity deployActivityAction = modelAccess.createDeployActivity("Deploy_"
+                                    + activity.getName() + "_to_" + server.getName());
+                            deployActivityAction.setActivity(activity);
+                            deployActivityAction.setResourceTo(server);
+                            deployActivityAction.execute(modelAccess);
+                            deployActivityAction.executeOnServiceCenter(modelAccess);
+                            result.getActions().add(deployActivityAction);
+                            entropyAndPolicy = computeEntropy();
+                            result.setContextEntropy(entropyAndPolicy.getFirst());
+
+                            negotiationMessage.add(deployActivityAction.toString());
+                            sendLogToGUI(deployActivityAction.toString());
+                            logger.log(Color.ORANGE, "Negotiation result", negotiationMessage);
                         }
-                        if (negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY) + mem.getCurrentWorkLoad() > (mem.getOptimalWorkLoad() + mem.getMaximumWorkLoad()) / 2.0) {
-                            double current = negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY) + mem.getCurrentWorkLoad();
-                            optimalMem = 2 * current - mem.getMaximumWorkLoad();
-                        }
-                        SetServerStateActivity newActivity =
-                                modelAccess.createSetServerStateActivity("Set_state_for_" + server.getName()
-                                        + "_to_" + 1);
-                        newActivity.execute(modelAccess);
-                        newActivity.executeOnServiceCenter(modelAccess);
-                        result.getActions().add(newActivity);
-
-                        ServerAdaptationAction defaultServerAdaptationAction = modelAccess.createServerAdaptationAction("ServerAdaptationAction_" + server);
-                        //new DefaultServerAdaptationAction(server,(int)optimalCpu,(int)optimalMem);
-                        defaultServerAdaptationAction.setNewOptimalValueForCpu((int) optimalCpu);
-                        defaultServerAdaptationAction.setNewOptimalValueForMem((int) optimalMem);
-                        defaultServerAdaptationAction.setServer(server);
-
-                        negotiationMessage.add(defaultServerAdaptationAction.toString());
-
-                        defaultServerAdaptationAction.execute(modelAccess);
-                        result.getActions().add(defaultServerAdaptationAction);
-
-                        ApplicationAdaptationAction applicationAdaptationAction = modelAccess.createApplicationAdaptationAction("ApplicationAdaptationAction_" + activity.getLocalName());
-                        applicationAdaptationAction.setActivity(activity);
-                        applicationAdaptationAction.setCpuMin((int) activity.getCpuRequiredMinValue());
-                        applicationAdaptationAction.setCpuMax(negotiatedValues.get(Negotiator.NEGOTIATED_CPU).intValue());
-                        applicationAdaptationAction.setMemMin((int) activity.getMemRequiredMinValue());
-                        applicationAdaptationAction.setMemMax(negotiatedValues.get(Negotiator.NEGOTIATED_MEMORY).intValue());
-
-                        negotiationMessage.add(applicationAdaptationAction.toString());
-
-                        applicationAdaptationAction.execute(modelAccess);
-                        result.getActions().add(applicationAdaptationAction);
-                        DeployActivity deployActivityAction = modelAccess.createDeployActivity("Deploy_"
-                                + activity.getName() + "_to_" + server.getName());
-                        deployActivityAction.setActivity(activity);
-                        deployActivityAction.setResourceTo(server);
-                        deployActivityAction.execute(modelAccess);
-                        deployActivityAction.executeOnServiceCenter(modelAccess);
-                        result.getActions().add(deployActivityAction);
-                        entropyAndPolicy = computeEntropy();
-                        result.setContextEntropy(entropyAndPolicy.getFirst());
-
-                        negotiationMessage.add(deployActivityAction.toString());
-                        sendLogToGUI(deployActivityAction.toString());
-                        logger.log(Color.ORANGE, "Negotiation result", negotiationMessage);
-
                     }
                 } else {
 
@@ -750,7 +754,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //            System.exit(1);
         }
         smallestEntropyContext = null;
-
+        agent.killScheduledTasks();
+        System.out.println(modelAccess.getAllApplicationActivityInstances().size());
     }
 
     private void sendLogToGUI(String message) {
