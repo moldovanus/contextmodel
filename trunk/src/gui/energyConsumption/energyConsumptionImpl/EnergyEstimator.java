@@ -53,7 +53,11 @@ public class EnergyEstimator implements EnergyConsumption {
                 } else {
                     String energyConsumption = proxy.getEnergyConsumptionInfo();
                     double d = Float.parseFloat(energyConsumption);
-                    totalEnergyConsumed += d;
+                    if (d - BASE_POWER_CONSUMPTION > 0) {
+                        totalEnergyConsumed += d;
+                    } else {
+                        totalEnergyConsumed += BASE_POWER_CONSUMPTION;
+                    }
                 }
             } else {
                 totalEnergyConsumed += BASE_POWER_CONSUMPTION;

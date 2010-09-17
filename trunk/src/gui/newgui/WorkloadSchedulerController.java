@@ -1,5 +1,6 @@
 package gui.newgui;
 
+import globalLoop.utils.GlobalVars;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.applications.ApplicationActivity;
 import org.apache.log4j.jmx.Agent;
@@ -91,7 +92,7 @@ public class WorkloadSchedulerController {
                         value = "Creation time";
                         break;
                     case 2:
-                        value = "Destroy time";
+                        value = "Life duration";
                         break;
                 }
                 return value;
@@ -169,7 +170,7 @@ public class WorkloadSchedulerController {
                 List<TaskDto> availableTasks = new ArrayList<TaskDto>();
                 Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
                 for (ApplicationActivity activity : activities) {
-                    if (activity.getLocalName().matches("Template_[0-9]*")) {
+                    if (activity.getLocalName().matches(GlobalVars.TASK_TEMPLATE_NAME + "_[0-9]*")) {
                         TaskDto taskDto = new TaskDto();
                         taskDto.setTaskName(activity.getLocalName());
                         taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());

@@ -45,10 +45,11 @@ public class TaskDto implements Serializable {
             if (receivedCPU != activity.getCpuAllocatedValue()) return false;
             if (receivedMemory != activity.getMemAllocatedValue()) return false;
             if (receivedStorage != activity.getHddAllocatedValue()) return false;
-            if (activity.isRunning() == isRunning()) return false;
+            if (activity.isRunning() != isRunning()) return false;
         }
         if (task instanceof TaskDto) {
             TaskDto taskDto = (TaskDto) task;
+            if (!taskName.equals(taskDto.getTaskName())) return false;
             if (requestedCores != taskDto.getRequestedCores()) return false;
             if (requestedCPUMax != taskDto.getRequestedCPUMax()) return false;
             if (requestedCPUMin != taskDto.getRequestedCPUMin()) return false;
@@ -60,7 +61,7 @@ public class TaskDto implements Serializable {
             if (receivedCPU != taskDto.getReceivedCPU()) return false;
             if (receivedMemory != taskDto.getReceivedMemory()) return false;
             if (receivedStorage != taskDto.getReceivedStorage()) return false;
-            if (taskDto.isRunning() == isRunning()) return false;
+            if (taskDto.isRunning() != isRunning()) return false;
         }
 
         return true;

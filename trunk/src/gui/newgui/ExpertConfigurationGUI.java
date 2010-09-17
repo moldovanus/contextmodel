@@ -83,6 +83,10 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         catch (IllegalAccessException e) {
             // handle exception
         }
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation((int) screenSize.getWidth() / 2 - this.getWidth() / 2, (int) screenSize.getHeight() / 2 - this.getHeight() / 2);
+
         simulateChoiceRadio.setSelected(true);
 
         serverMonitorTabbedPane = new JTabbedPane();
@@ -520,7 +524,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(timeToLiveSpinner, gridBagConstraints);
 
-        timeToLiveLabel.setText("          Destroy Time");
+        timeToLiveLabel.setText("          Live time");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;

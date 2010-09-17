@@ -380,7 +380,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     }
 
 
-    public void deployVirtualMachineWithCustomResources(String from, String to,String serverName,
+    public void deployVirtualMachineWithCustomResources(String from, String to,String serverName,String base,
                                                         String vmName, String vmCopyName,
                                                         int memory, int processorPercentage, int nrCores) {
         try {
@@ -420,11 +420,11 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            System.out.println(content);
              File targetFile = new File(GlobalVars.PHISICAL_PATH+serverName);
             targetFile.mkdir();
-              copyDirectory(new File(GlobalVars.PHISICAL_PATH+GlobalVars.BASE_VM_NAME),new File(GlobalVars.PHISICAL_PATH+serverName+"/"+vmCopyName));
+              copyDirectory(new File(GlobalVars.PHISICAL_PATH+base),new File(GlobalVars.PHISICAL_PATH+serverName+"/"+vmCopyName));
             
 //            //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
             URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachineWithModify?from="
-                    + from + "&to=" + to + "&vmName=" + GlobalVars.BASE_VM_NAME + "&vmCopyName=" + vmCopyName
+                    + from + "&to=" + to + "&vmName=" + base + "&vmCopyName=" + vmCopyName
                     + "&memory=" + memory + "&procSpeed=" + processorPercentage + "&nrCores=" + nrCores);
             URLConnection connection = url.openConnection();
             System.out.println(url.toString());
@@ -552,10 +552,10 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     }
 
     public static void main(String[] args) {
-//        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.2.13");
-//       // proxy.moveSourceActions("\\\\192.168.2.10\\VirtualMachines\\Source","Empty");
-//        proxy.moveDestinationActions("\\\\192.168.2.10\\VirtualMachines\\Source","\\\\192.168.2.10\\VirtualMachines\\Dest","Empty");
-
+//        ProxyFactory.setReturnStub(false);
+//        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.2.11");
+//        proxy.stopVirtualMachine("A");
+//        proxy.deleteVirtualMachine("A");
     }
 
 }

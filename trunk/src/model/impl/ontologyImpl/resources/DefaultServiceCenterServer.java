@@ -19,12 +19,34 @@ import java.util.List;
 public class DefaultServiceCenterServer extends DefaultComplexResource
         implements ServiceCenterServer {
 
+    private Double optimumCPU;
+    private Double optimumMEM;
+
+
     public DefaultServiceCenterServer(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
     }
 
 
     public DefaultServiceCenterServer() {
+    }
+
+    public void markInitialValues() {
+        optimumCPU = ((CPU) getCpuResources().iterator().next()).getOptimalWorkLoad();
+        optimumMEM = ((MEM) getMemResources().iterator().next()).getOptimalWorkLoad();
+    }
+
+    public void resetInitialValues() {
+        if ( optimumCPU == null){
+            markInitialValues();
+        }
+        CPU cpu = (CPU) this.getCpuResources().iterator().next();
+        for (Core core : cpu.getAssociatedCores()) {
+            core.setOptimalWorkLoad(optimumCPU);
+        }
+        cpu.setOptimalWorkLoad(optimumCPU);
+        MEM mem = (MEM) this.getMemResources().iterator().next();
+        mem.setOptimalWorkLoad(optimumMEM);
     }
 
     public boolean hostsActivity(ApplicationActivity activity) {

@@ -662,7 +662,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 ArrayList<String> negotiationMessage = new ArrayList<String>();
 
                 entropyAndPolicy = computeEntropy();
-                if (entropyAndPolicy.getSecond().getPolicySubject().get(0) instanceof ApplicationActivity) {
+
+                if (entropyAndPolicy.getSecond()!= null && entropyAndPolicy.getSecond().getPolicySubject().get(0) instanceof ApplicationActivity) {
 
                     ApplicationActivity activity = (ApplicationActivity) entropyAndPolicy.getSecond().getPolicySubject().get(0);
 
@@ -736,7 +737,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 } else {
 
                     for (ServiceCenterServer server : modelAccess.getAllServiceCenterServerInstances()) {
-                        if (server.getIsActive()) {
+                        if (server.getIsActive() && server.getRunningActivities().size() > 0) {
                             adjustPolicies(server);
                             sendLogToGUI("Server " + server.getLocalName() + " underused. Decreasing optimum load indicators");
                         }
