@@ -2,14 +2,8 @@ package main;
 
 import globalLoop.agents.CMAAgent;
 import globalLoop.utils.GlobalVars;
-import gui.datacenterConfiguration.impl.ConfigurationGUI;
-import model.impl.ontologyImpl.OntologyModelFactory;
-import model.interfaces.resources.applications.ApplicationActivity;
 
-
-import java.io.*;
-import java.util.Collection;
-import java.util.Iterator;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,9 +13,21 @@ import java.util.Iterator;
  * To change this template use File | Settings | File Templates.
  */
 public class Main {
-
     public static void main(String args[]) {
+        com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Green", "", "TUC-N");
 
+        // select the Look and Feel
+        try {
+            UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         String[] jadeArgs = new String[]{"-mtp jamr.jademtp.http.MessageTransportProtocol", "-gui", GlobalVars.CMAGENT_NAME + ":" + CMAAgent.class.getName()};
         jade.Boot.main(jadeArgs);
 
