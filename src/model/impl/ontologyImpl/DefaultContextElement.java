@@ -1,7 +1,11 @@
 package model.impl.ontologyImpl;
 
+import com.hp.hpl.jena.ontology.Individual;
 import edu.stanford.smi.protege.model.FrameID;
+import edu.stanford.smi.protege.model.Instance;
+import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
+import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import model.interfaces.ContextElement;
 
@@ -38,7 +42,21 @@ public class DefaultContextElement extends DefaultOWLIndividual
         return (o instanceof ContextElement) && (((ContextElement) o).getFrameID().equals(this.getFrameID()));
     }
 
-//    @Override
+    @Override
+    public void delete() {
+        super.delete();
+//        OWLIndividual i = owlModel.getOWLIndividual(this.getName());
+//        i.getKnowledgeBase().deleteFrame(i);
+//        i.getKnowledgeBase().deleteInstance(i);
+//        owlModel.deleteInstance(owlModel.getInstance(i.getName()));
+//        Individual ontIndividual = owlModel.getOntModel().getIndividual(this.getName());
+//        ontIndividual.remove();
+//        RDFResource resource = owlModel.getRDFResource(this.getName());
+//        resource.delete();
+//        resource.getKnowledgeBase().deleteFrame(resource);
+//        resource.getKnowledgeBase().deleteInstance(resource);
+    }
+    //    @Override
 //    public void setPropertyValue(RDFProperty property, Object value) {
 //        OntModel ontModel = getOWLModel().getOntModel();
 //        this.setPropertyValue(property, value, ontModel);

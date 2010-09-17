@@ -109,9 +109,23 @@ public class DefaultDeployActivityAction extends DefaultConsolidationAction
             int procTime = ((int) task.getCpuRequiredMaxValue() * 100) /
                     ((Core) server.getCpuResources().iterator().next().getAssociatedCores().iterator().next()).getMaximumWorkLoad().intValue();
             String path = server.getHddResources().iterator().next().getPhysicalPath();
+            String base = "";
+            if ((task.getCPUWeight() >= task.getMEMWeight() ) && (task.getCPUWeight()>= task.getHDDWeight())){
+                base = GlobalVars.BASE_VM_NAME_CPU;                                                           }
+            else{
+                if ((task.getMEMWeight()>= task.getHDDWeight()) &&(task.getMEMWeight()>= task.getCPUWeight()))
+                {
+                    base = GlobalVars.BASE_VM_NAME_MEM;
+                }
+                else
+                {
+                    base = GlobalVars.BASE_VM_NAME_HDD;
+                }
+            }
+
             System.out.println("Deploying ...");
             proxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
-                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + server.getLocalName(), server.getLocalName(),
+                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + server.getLocalName(), server.getLocalName(),base,
                     task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
                     procTime, (int) task.getNumberOfCoresAllocatedValue());
         } else {

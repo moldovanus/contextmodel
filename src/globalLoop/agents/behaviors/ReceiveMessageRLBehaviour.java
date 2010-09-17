@@ -145,6 +145,8 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                     core.setCurrentEnergyState(0);
                                 }
                                 cpu.setEnergyStates(energyStates);
+                                cpu.setMaximumWorkLoad((double) maximumCPU);
+                                cpu.setOptimalWorkLoad((double) optimumCPU);
                                 server.addCpuResource(cpu);
 
                                 MEM memory = modelAccess.createMEM(serverName + "_Memory");
@@ -179,6 +181,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 cpu.addPartOf(server);
                                 memory.addPartOf(server);
                                 storage.addPartOf(server);
+                                server.markInitialValues();
                                 PelletJena.generateEnergyRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                             }
                             sendMessageToGUI("Servers added", null);
@@ -218,6 +221,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
 //                                PelletJena.generateBusinessRule((modelAccess.getOntologyModelFactory()).getOwlModel(), policy);
                             }
                             sendMessageToGUI("Tasks added", tasks);
+
                         } else if (dataType.equals("Create clones")) {
                             List<Pair<String, Integer>> entryies = (List<Pair<String, Integer>>) contentData[1];
                             List<ExtendedTaskDto> tasks = new ArrayList<ExtendedTaskDto>();
@@ -265,6 +269,10 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 taskDto.setRequestedStorageMin((int) task.getHddRequiredMinValue());
                                 taskDto.setRequestedStorageMax((int) task.getHddRequiredMaxValue());
                                 tasks.add(taskDto);
+                            }
+                            Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+                            for (ServiceCenterServer server : servers) {
+                                server.resetInitialValues();
                             }
                             if (count > 0) {
 //                                List<String> names = new ArrayList<String>();

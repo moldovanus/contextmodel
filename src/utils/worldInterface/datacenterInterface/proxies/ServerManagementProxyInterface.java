@@ -28,7 +28,7 @@ public interface ServerManagementProxyInterface {
 
     void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores);
 
-    void deployVirtualMachineWithCustomResources(String from, String to,String serverName, String vmName, String vmCopyName,
+    void deployVirtualMachineWithCustomResources(String from, String to,String serverName, String base,String vmName, String vmCopyName,
                                                  int memory, int processorPercentage, int nrCores);
 
     /**

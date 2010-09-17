@@ -160,6 +160,9 @@ public class RLAgent extends Agent {
 
                 }
                 ServiceCenterServer server = activity.getAssociatedServer();
+                if ( server == null){
+                    continue;
+                }
                 server.removeRunningActivity(activity);
                 ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
                 proxy.stopVirtualMachine(activity.getLocalName());
