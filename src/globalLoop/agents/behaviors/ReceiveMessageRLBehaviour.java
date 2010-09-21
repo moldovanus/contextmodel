@@ -270,16 +270,18 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 taskDto.setRequestedStorageMax((int) task.getHddRequiredMaxValue());
                                 tasks.add(taskDto);
                             }
-                            Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
-                            for (ServiceCenterServer server : servers) {
-                                server.resetInitialValues();
-                            }
+
                             if (count > 0) {
 //                                List<String> names = new ArrayList<String>();
 //                                for (Pair<String, Integer> entry : entryies) {
 //                                    names.add(entry.getFirst());
 //                                }
+                                 Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+                                for (ServiceCenterServer server : servers) {
+                                    server.resetInitialValues();
+                                }
                                 sendMessageToGUI("Clones added", tasks);
+
                             }
                         } else if (dataType.equals("Delete all")) {
                             Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
