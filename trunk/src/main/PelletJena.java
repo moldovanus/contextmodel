@@ -28,6 +28,8 @@ import model.interfaces.resources.applications.ApplicationActivity;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -148,6 +150,7 @@ public class PelletJena {
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
+
         }
 
     }
@@ -271,6 +274,13 @@ public class PelletJena {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         imp.enable();
+//        try {
+//                    model.getOntModel().write(new FileWriter(new File("D:\\ontology.owl")));
+//                    System.exit(1);
+//                } catch (IOException e) {
+//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//                }
+        
     }
 
     public void checkRespected() {

@@ -19,10 +19,6 @@ import java.util.List;
 public class DefaultServiceCenterServer extends DefaultComplexResource
         implements ServiceCenterServer {
 
-    private Double optimumCPU;
-    private Double optimumMEM;
-
-
     public DefaultServiceCenterServer(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
     }
@@ -32,21 +28,23 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
     }
 
     public void markInitialValues() {
-        optimumCPU = ((CPU) getCpuResources().iterator().next()).getOptimalWorkLoad();
-        optimumMEM = ((MEM) getMemResources().iterator().next()).getOptimalWorkLoad();
+        setOptimumCPU(((CPU) getCpuResources().iterator().next()).getOptimalWorkLoad().floatValue());
+        setOptimumMEM(((MEM) getMemResources().iterator().next()).getOptimalWorkLoad().floatValue());
     }
 
     public void resetInitialValues() {
-        if ( optimumCPU == null){
+        if (!hasOptimumCPU()) {
             markInitialValues();
         }
+        float optimumCPU = getOptimumCPU();
+        float optimumMEM = getOptimumMEM();
         CPU cpu = (CPU) this.getCpuResources().iterator().next();
         for (Core core : cpu.getAssociatedCores()) {
-            core.setOptimalWorkLoad(optimumCPU);
+            core.setOptimalWorkLoad((double) optimumCPU);
         }
-        cpu.setOptimalWorkLoad(optimumCPU);
+        cpu.setOptimalWorkLoad((double) optimumCPU);
         MEM mem = (MEM) this.getMemResources().iterator().next();
-        mem.setOptimalWorkLoad(optimumMEM);
+        mem.setOptimalWorkLoad((double) optimumMEM);
     }
 
     public boolean hostsActivity(ApplicationActivity activity) {
@@ -57,6 +55,54 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
             }
         }
         return false;
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#optimumCPU
+
+    public float getOptimumCPU() {
+        return getPropertyValueLiteral(getOptimumCPUProperty()).getFloat();
+    }
+
+
+    public RDFProperty getOptimumCPUProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#optimumCPU";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasOptimumCPU() {
+        return getPropertyValueCount(getOptimumCPUProperty()) > 0;
+    }
+
+
+    public void setOptimumCPU(float newOptimumCPU) {
+        setPropertyValue(getOptimumCPUProperty(), new java.lang.Float(newOptimumCPU));
+    }
+
+
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#optimumMEM
+
+    public float getOptimumMEM() {
+        return getPropertyValueLiteral(getOptimumMEMProperty()).getFloat();
+    }
+
+
+    public RDFProperty getOptimumMEMProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#optimumMEM";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
+
+
+    public boolean hasOptimumMEM() {
+        return getPropertyValueCount(getOptimumMEMProperty()) > 0;
+    }
+
+
+    public void setOptimumMEM(float newOptimumMEM) {
+        setPropertyValue(getOptimumMEMProperty(), new java.lang.Float(newOptimumMEM));
     }
 
     @Override

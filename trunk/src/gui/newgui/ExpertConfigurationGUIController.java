@@ -510,7 +510,7 @@ public class ExpertConfigurationGUIController implements Observer {
     private void createDecisionTimeChart() {
         final ResourceMonitorXYChartPlotter plotter = new ResourceMonitorXYChartPlotter("DecisionTime", "Time (s)", "Decision Making Time (milliseconds)", 0, 100);
         plotter.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
-
+//        plotter.setMaxTimeRange(3000);
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new Thread() {

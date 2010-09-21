@@ -18,7 +18,7 @@ import java.util.Collection;
  */
 public class EnergyEstimator implements EnergyConsumption {
     private ModelAccess modelAccess;
-    public static final int BASE_POWER_CONSUMPTION = 115;
+    public static final int BASE_POWER_CONSUMPTION = 140;
 
     public EnergyEstimator(ModelAccess modelAccess) {
         this.modelAccess = modelAccess;
@@ -58,6 +58,7 @@ public class EnergyEstimator implements EnergyConsumption {
                     } else {
                         totalEnergyConsumed += BASE_POWER_CONSUMPTION;
                     }
+
                 }
             } else {
                 totalEnergyConsumed += BASE_POWER_CONSUMPTION;
