@@ -368,28 +368,28 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout upperPanelLayout = new javax.swing.GroupLayout(upperPanel);
         upperPanel.setLayout(upperPanelLayout);
         upperPanelLayout.setHorizontalGroup(
-                upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(upperPanelLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(runOnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(simulateChoiceRadio)
-                                .addComponent(realChoiceRadio))
-                        .addContainerGap(704, Short.MAX_VALUE))
+            upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(upperPanelLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(runOnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(simulateChoiceRadio)
+                    .addComponent(realChoiceRadio))
+                .addContainerGap(704, Short.MAX_VALUE))
         );
         upperPanelLayout.setVerticalGroup(
-                upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(upperPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(simulateChoiceRadio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(realChoiceRadio)
-                                .addContainerGap(9, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
-                        .addContainerGap(16, Short.MAX_VALUE)
-                        .addComponent(runOnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))
+            upperPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(upperPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(simulateChoiceRadio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(realChoiceRadio)
+                .addContainerGap(9, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, upperPanelLayout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(runOnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         logLabel3.setText("Log");
@@ -403,27 +403,27 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout logControlPane3Layout = new javax.swing.GroupLayout(logControlPane3);
         logControlPane3.setLayout(logControlPane3Layout);
         logControlPane3Layout.setHorizontalGroup(
-                logControlPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(logControlPane3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(logControlPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(logScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 913, Short.MAX_VALUE)
-                                .addGroup(logControlPane3Layout.createSequentialGroup()
-                                .addComponent(logLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(showLogButton)))
-                        .addContainerGap())
+            logControlPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(logControlPane3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(logControlPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(logScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 913, Short.MAX_VALUE)
+                    .addGroup(logControlPane3Layout.createSequentialGroup()
+                        .addComponent(logLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showLogButton)))
+                .addContainerGap())
         );
         logControlPane3Layout.setVerticalGroup(
-                logControlPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(logControlPane3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(logControlPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(logLabel3)
-                                .addComponent(showLogButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(logScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            logControlPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(logControlPane3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(logControlPane3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(logLabel3)
+                    .addComponent(showLogButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(logScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         decisionTimeBasePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -434,12 +434,12 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout decisionTimePanelLayout = new javax.swing.GroupLayout(decisionTimePanel);
         decisionTimePanel.setLayout(decisionTimePanelLayout);
         decisionTimePanelLayout.setHorizontalGroup(
-                decisionTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 587, Short.MAX_VALUE)
+            decisionTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 587, Short.MAX_VALUE)
         );
         decisionTimePanelLayout.setVerticalGroup(
-                decisionTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 333, Short.MAX_VALUE)
+            decisionTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 330, Short.MAX_VALUE)
         );
 
         decisionTimeBasePanel.add(decisionTimePanel, java.awt.BorderLayout.CENTER);
@@ -452,12 +452,12 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout memoryUsagePanelLayout = new javax.swing.GroupLayout(memoryUsagePanel);
         memoryUsagePanel.setLayout(memoryUsagePanelLayout);
         memoryUsagePanelLayout.setHorizontalGroup(
-                memoryUsagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 327, Short.MAX_VALUE)
+            memoryUsagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 327, Short.MAX_VALUE)
         );
         memoryUsagePanelLayout.setVerticalGroup(
-                memoryUsagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 333, Short.MAX_VALUE)
+            memoryUsagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 330, Short.MAX_VALUE)
         );
 
         memoryUsageBasePanel.add(memoryUsagePanel, java.awt.BorderLayout.CENTER);
@@ -465,20 +465,20 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout generalInfoTabPanelLayout = new javax.swing.GroupLayout(generalInfoTabPanel);
         generalInfoTabPanel.setLayout(generalInfoTabPanelLayout);
         generalInfoTabPanelLayout.setHorizontalGroup(
-                generalInfoTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(generalInfoTabPanelLayout.createSequentialGroup()
-                        .addComponent(decisionTimeBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(memoryUsageBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
-                        .addContainerGap())
+            generalInfoTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generalInfoTabPanelLayout.createSequentialGroup()
+                .addComponent(decisionTimeBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(memoryUsageBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                .addContainerGap())
         );
         generalInfoTabPanelLayout.setVerticalGroup(
-                generalInfoTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalInfoTabPanelLayout.createSequentialGroup()
-                        .addGroup(generalInfoTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(memoryUsageBasePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
-                                .addComponent(decisionTimeBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
-                        .addContainerGap())
+            generalInfoTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalInfoTabPanelLayout.createSequentialGroup()
+                .addGroup(generalInfoTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(memoryUsageBasePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                    .addComponent(decisionTimeBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         tabbedPane.addTab("General Info", generalInfoTabPanel);
@@ -487,7 +487,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         tabbedPane.addTab("Server Configuration", serverConfigurationTabPanel);
 
         workloadConfigurationPanel.setLayout(new java.awt.BorderLayout());
-        tabbedPane.addTab("Workload Configuration", workloadConfigurationPanel);
+        tabbedPane.addTab("Task Type Configuration", workloadConfigurationPanel);
 
         workloadSchedulerPanel.setLayout(new java.awt.BorderLayout(0, 5));
 
@@ -524,7 +524,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(timeToLiveSpinner, gridBagConstraints);
 
-        timeToLiveLabel.setText("          Live time");
+        timeToLiveLabel.setText("          Destroy Time");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -539,15 +539,15 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         scheduleWorkloadBasePanel.setLayout(new java.awt.BorderLayout());
 
         workloadScheduleTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null}
-                },
-                new String[]{
-                        "Title 1", "Title 2", "Title 3", "Title 4"
-                }
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
         ));
         scheduleWorkloadScrollPane.setViewportView(workloadScheduleTable);
 
@@ -572,21 +572,21 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout centerWorkloadSchedulerTimerLayout = new javax.swing.GroupLayout(centerWorkloadSchedulerTimer);
         centerWorkloadSchedulerTimer.setLayout(centerWorkloadSchedulerTimerLayout);
         centerWorkloadSchedulerTimerLayout.setHorizontalGroup(
-                centerWorkloadSchedulerTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(centerWorkloadSchedulerTimerLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(existingWorkloadBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(scheduleWorkloadBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
-                        .addContainerGap())
+            centerWorkloadSchedulerTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(centerWorkloadSchedulerTimerLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(existingWorkloadBasePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scheduleWorkloadBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
+                .addContainerGap())
         );
         centerWorkloadSchedulerTimerLayout.setVerticalGroup(
-                centerWorkloadSchedulerTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(centerWorkloadSchedulerTimerLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(centerWorkloadSchedulerTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(scheduleWorkloadBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
-                        .addComponent(existingWorkloadBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)))
+            centerWorkloadSchedulerTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(centerWorkloadSchedulerTimerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(centerWorkloadSchedulerTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scheduleWorkloadBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                    .addComponent(existingWorkloadBasePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)))
         );
 
         workloadSchedulerPanel.add(centerWorkloadSchedulerTimer, java.awt.BorderLayout.CENTER);
@@ -664,12 +664,12 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout panelEnergyConsumptionWithoutAlgLayout = new javax.swing.GroupLayout(panelEnergyConsumptionWithoutAlg);
         panelEnergyConsumptionWithoutAlg.setLayout(panelEnergyConsumptionWithoutAlgLayout);
         panelEnergyConsumptionWithoutAlgLayout.setHorizontalGroup(
-                panelEnergyConsumptionWithoutAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 469, Short.MAX_VALUE)
+            panelEnergyConsumptionWithoutAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 469, Short.MAX_VALUE)
         );
         panelEnergyConsumptionWithoutAlgLayout.setVerticalGroup(
-                panelEnergyConsumptionWithoutAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 348, Short.MAX_VALUE)
+            panelEnergyConsumptionWithoutAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 345, Short.MAX_VALUE)
         );
 
         eneryEfficiencyPanel.add(panelEnergyConsumptionWithoutAlg);
@@ -677,12 +677,12 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout panelEnergyConsumptionWithAlgLayout = new javax.swing.GroupLayout(panelEnergyConsumptionWithAlg);
         panelEnergyConsumptionWithAlg.setLayout(panelEnergyConsumptionWithAlgLayout);
         panelEnergyConsumptionWithAlgLayout.setHorizontalGroup(
-                panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 469, Short.MAX_VALUE)
+            panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 469, Short.MAX_VALUE)
         );
         panelEnergyConsumptionWithAlgLayout.setVerticalGroup(
-                panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 348, Short.MAX_VALUE)
+            panelEnergyConsumptionWithAlgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 345, Short.MAX_VALUE)
         );
 
         eneryEfficiencyPanel.add(panelEnergyConsumptionWithAlg);
@@ -697,22 +697,22 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(upperPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 943, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                        .addComponent(logControlPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(upperPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 943, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(logControlPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                        .addComponent(upperPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(logControlPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(upperPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(logControlPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();

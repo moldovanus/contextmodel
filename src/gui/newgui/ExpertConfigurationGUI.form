@@ -210,8 +210,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="memoryUsageBasePanel" alignment="0" pref="337" max="32767" attributes="0"/>
-                          <Component id="decisionTimeBasePanel" alignment="1" pref="337" max="32767" attributes="0"/>
+                          <Component id="memoryUsageBasePanel" alignment="0" pref="334" max="32767" attributes="0"/>
+                          <Component id="decisionTimeBasePanel" alignment="1" pref="334" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -252,7 +252,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="333" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="330" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -292,7 +292,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="333" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="330" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -315,8 +315,8 @@
         <Container class="javax.swing.JPanel" name="workloadConfigurationPanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Workload Configuration">
-                <Property name="tabTitle" type="java.lang.String" value="Workload Configuration"/>
+              <JTabbedPaneConstraints tabName="Task Type Configuration">
+                <Property name="tabTitle" type="java.lang.String" value="Task Type Configuration"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -360,8 +360,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="scheduleWorkloadBasePanel" alignment="0" pref="282" max="32767" attributes="0"/>
-                              <Component id="existingWorkloadBasePanel" alignment="0" pref="282" max="32767" attributes="0"/>
+                              <Component id="scheduleWorkloadBasePanel" alignment="0" pref="279" max="32767" attributes="0"/>
+                              <Component id="existingWorkloadBasePanel" alignment="0" pref="279" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -711,7 +711,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="348" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="345" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -726,7 +726,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="348" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="345" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>

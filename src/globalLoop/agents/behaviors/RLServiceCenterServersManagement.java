@@ -44,7 +44,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     private ContextSnapshot smallestEntropyContext;
     private LoggerGUI logger;
     private int stackDepth = 0;
-    private static final int MAXIMUM_STACK_DEPTH = 100;
+    private static final int MAXIMUM_STACK_DEPTH = 40;
 
     public RLServiceCenterServersManagement(RLAgent a, ModelAccess modelAccess, long period) {
         super(a, period);
@@ -555,6 +555,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     @Override
     protected void onTick() {
+        modelAccess.setSimulation(true);
 //        agent.killScheduledTasks();
         stackDepth = 0;
 //        refresh server information
@@ -626,8 +627,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
         initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));
         queue.add(initialContext);
-
+        
         if (entropyAndPolicy.getFirst() > 0) {
+
             ArrayList<String> message = new ArrayList<String>();
             message.add("Entropy: " + entropyAndPolicy.getFirst()
                     + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
@@ -636,6 +638,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             java.util.Date before = new java.util.Date();
             ContextSnapshot result = reinforcementLearning(queue);
             java.util.Date after = new java.util.Date();
+            modelAccess.setSimulation(false);
 
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             try {
@@ -756,18 +759,20 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //            }
 //
 //            System.exit(1);
-        } else {
-            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-            try {
-                msg.setContentObject(new Object[]{"Refresh Energy", ""});
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
-            agent.send(msg);
         }
+//        else {
+//            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+//            try {
+//                msg.setContentObject(new Object[]{"Refresh Energy", ""});
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+//            agent.send(msg);
+//        }
         smallestEntropyContext = null;
         agent.killScheduledTasks();
+
         System.out.println(modelAccess.getAllApplicationActivityInstances().size());
     }
 

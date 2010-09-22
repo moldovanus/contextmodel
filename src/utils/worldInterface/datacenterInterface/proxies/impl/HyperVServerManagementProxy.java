@@ -134,7 +134,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
             File file2 = new File(path2);
             file1.mkdir();
             file2.mkdir();
-            copyDirectory(new File(path1+"/"+vmName), new File(path2+"/"+vmName));
+            copyDirectory(new File(path1 + "/" + vmName), new File(path2 + "/" + vmName));
             URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions?path1="
                     + path2 + "&path2=" + path2 + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
@@ -196,7 +196,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            socket.getOutputStream().write(content.getBytes());
 //            System.out.println(header);
 //            System.out.println(content);
-            
+
             URL url = new URL("http://" + hostName + "/Service1.asmx/MoveSourceActions?path="
                     + path + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
@@ -349,17 +349,17 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         }
     }
 
-    public  void copyDirectory(File sourceLocation , File targetLocation)
-    throws IOException {
+    public void copyDirectory(File sourceLocation, File targetLocation)
+            throws IOException {
 
         if (sourceLocation.isDirectory()) {
             if (!targetLocation.exists()) {
-                boolean ok =targetLocation.mkdir();
+                boolean ok = targetLocation.mkdir();
                 System.out.println(ok);
             }
 
             String[] children = sourceLocation.list();
-            for (int i=0; i<children.length; i++) {
+            for (int i = 0; i < children.length; i++) {
                 copyDirectory(new File(sourceLocation, children[i]),
                         new File(targetLocation, children[i]));
             }
@@ -380,7 +380,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     }
 
 
-    public void deployVirtualMachineWithCustomResources(String from, String to,String serverName,String base,
+    public void deployVirtualMachineWithCustomResources(String from, String to, String serverName, String base,
                                                         String vmName, String vmCopyName,
                                                         int memory, int processorPercentage, int nrCores) {
         try {
@@ -418,10 +418,10 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            socket.getOutputStream().write(content.getBytes());
 //            System.out.println(header);
 //            System.out.println(content);
-             File targetFile = new File(GlobalVars.PHISICAL_PATH+serverName);
+            File targetFile = new File(GlobalVars.PHISICAL_PATH + serverName);
             targetFile.mkdir();
-              copyDirectory(new File(GlobalVars.PHISICAL_PATH+base),new File(GlobalVars.PHISICAL_PATH+serverName+"/"+vmCopyName));
-            
+            copyDirectory(new File(GlobalVars.PHISICAL_PATH + base), new File(GlobalVars.PHISICAL_PATH + serverName + "/" + vmCopyName));
+
 //            //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
             URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachineWithModify?from="
                     + from + "&to=" + to + "&vmName=" + base + "&vmCopyName=" + vmCopyName
@@ -494,8 +494,8 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
     public String getEnergyConsumptionInfo() {
         try {
             Calendar cal = Calendar.getInstance();
-            //H = 24H, h = 12h 
-            String DATE_FORMAT_NOW = "M/dd/yyyy h:mm";  // aici am pus cu dd k si la minute are 2 mm nu 1 ( adik arata si 01 nu numa 1)
+            //H = 24H, h = 12h
+            String DATE_FORMAT_NOW = "M/dd/yyyy h:mm:ss";  // aici am pus cu dd k si la minute are 2 mm nu 1 ( adik arata si 01 nu numa 1)
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
             String date = sdf.format(cal.getTime());
 //            String theDate ="";
@@ -512,9 +512,50 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //                theTime = date.split(" ")[1].substring(0,5);
 //            if (theTime.split(":")[1].charAt(0)=='0')
 //                theTime = theTime.split(":")[0]+":"+theTime.split(":")[1].substring(1);
+            String time = date.split(" ")[1];
+            String newTime = time.split(":")[0];
+            if (time.split(":")[2].equalsIgnoreCase("00") ||time.split(":")[2].equalsIgnoreCase("01") ||time.split(":")[2].equalsIgnoreCase("02") ||time.split(":")[2].equalsIgnoreCase("03") ) {
+                if (Integer.parseInt(time.split(":")[1]) - 1 < 10) {
+                            newTime += ":0" + (Integer.parseInt(time.split(":")[1]) - 1);
+                        } else {
+                            newTime += ":" + (Integer.parseInt(time.split(":")[1]) - 1);
+                        }
+            } else {
+                     newTime +=":"+time.split(":")[1];
+//                        if (Integer.parseInt(time.split(":")[1]) - 1 < 10) {
+//                            newTime += ":0" + (Integer.parseInt(time.split(":")[1]) - 1);
+//                        } else {
+//                            newTime += ":" + (Integer.parseInt(time.split(":")[1]) - 1);
+//                        }
+
+
+                
+            }
+            if (time.split(":")[2].equalsIgnoreCase( "00")) {
+                newTime += ":56";
+            } else {
+                if (time.split(":")[2].equalsIgnoreCase("01")) {
+                    newTime += ":57";
+                } else {
+                    if (time.split(":")[2].equalsIgnoreCase("02")) {
+                        newTime += ":58";
+                    }else
+                    if (time.split(":")[2].equalsIgnoreCase("03")) {
+                        newTime += ":59";
+                    }
+                    else {
+                        if (Integer.parseInt(time.split(":")[2]) - 4 < 10) {
+                            newTime += ":0" + (Integer.parseInt(time.split(":")[2]) - 4);
+                        } else {
+                            newTime += ":" + (Integer.parseInt(time.split(":")[2]) - 4);
+                        }
+
+                    }
+                }
+            }
 
             URL url = new URL("http://" + hostName + "/Service1.asmx/GetPowerConsumption?"
-                    + "time=" + date.split(" ")[1] + "&date=" + date.split(" ")[0]);
+                    + "time=" + newTime + "&date=" + date.split(" ")[0]);
 
             URLConnection connection = url.openConnection();
             connection.setDoInput(true);
@@ -525,7 +566,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
             String content = "";
             while ((line = rd.readLine()) != null) {
                 if (DEBUG) {
-                System.out.println(line);
+                    System.out.println(line);
                 }
                 if (line.length() > 0 && line.charAt(1) != '?') {
                     content += "\n" + line;

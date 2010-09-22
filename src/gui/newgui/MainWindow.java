@@ -274,7 +274,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
         this.setLocation((int) screenSize.getWidth() / 2 - this.getWidth() / 2, (int) screenSize.getHeight() / 2 - this.getHeight() / 2);
-        Image image = toolkit.getImage("./logo_games.jpg");
+        Image image = toolkit.getImage("./logo_games.png");
         ImageIcon icon = new ImageIcon(image.getScaledInstance(imageLogoPanel.getWidth(), imageLogoPanel.getHeight(), Image.SCALE_SMOOTH));
         JLabel label = new JLabel();
         label.setIcon(icon);
@@ -556,7 +556,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
+        if (! modelAccess.isSimulation()){
         EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
         EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
 
@@ -579,6 +579,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         }
 
         System.out.println("After refresh  " + energyEstimateWithoutAlg + " ___ " + energyEstimateWithAlg);
+        }
     }
 
     private void createEnergyConsumptionCharts() {
@@ -586,7 +587,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         final MultipleResourceMonitorXYChartPlotter plotter1 =
                 new MultipleResourceMonitorXYChartPlotter("Energy Consumption",
                         new String[]{"With GAMES infrastructure", "Without GAMES infrastructure"},
-                        "Time(s)", "Energy Consumed (W)", 0, 200);
+                        "Time(s)", "Power Required (W)", 0, 200);
 //        final ResourceMonitorBarChartPlotter barChartPlotter = new ResourceMonitorBarChartPlotter("Energy Reduction", "Improvement", "%", 0, 100);
 //        plotter1.setMaxTimeRange(3000);
         plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
@@ -596,6 +597,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         decimalFormat.setMinimumFractionDigits(1);
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                refreshEnergyEstimate();
                 plotter1.setCurrentValue(new Object[]{energyEstimateWithAlg, energyEstimateWithoutAlg});
                 if (energyEstimateWithoutAlg.intValue() > 0) {
                     energySavingLabel.setText("" + decimalFormat.format((100 - totalEnergyGain.floatValue())) + "%");
@@ -606,7 +608,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 }
             }
         };
-        Timer refreshTimerEnergyConsumption = new Timer(decisionTimeRefreshRateInMillis, actionListener);
+        Timer refreshTimerEnergyConsumption = new Timer(2500, actionListener);
         refreshTimerEnergyConsumption.start();
         energyEfficiencyXYPanel.add(plotter1.getGraphPanel(), "Center");
 //        JPanel panel = barChartPlotter.getGraphPanel();
@@ -1110,7 +1112,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         if (dataType.equals("Log")) {
             this.logMessage(data[1].toString());
             if (data[1].toString().startsWith("Executing")) {
-                refreshEnergyEstimate();
+              //  refreshEnergyEstimate();
             }
         } else if (dataType.equals("Refresh Energy")) {
             refreshEnergyEstimate();
