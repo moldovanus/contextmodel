@@ -118,7 +118,7 @@ public class ExpertConfigurationGUI extends javax.swing.JFrame {
         logButtonListener.actionPerformed(new ActionEvent(this, 0, ""));
 
 
-        this.setTitle("Configuration Generator");
+        this.setTitle("Configuration Window");
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         ButtonGroup radioGroup = new ButtonGroup();
         radioGroup.add(realChoiceRadio);

@@ -76,6 +76,7 @@ public class MultipleResourceMonitorXYChartPlotter extends ResourceMonitorPlotte
 
         for (int i = 0; i < count; i++) {
             renderer.setSeriesPaint(i, new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+            renderer.setSeriesStroke(i, new BasicStroke(3));
         }
 
         if (count == 2) {
