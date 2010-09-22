@@ -18,7 +18,8 @@ import java.util.Collection;
  */
 public class EnergyEstimator implements EnergyConsumption {
     private ModelAccess modelAccess;
-    public static final int BASE_POWER_CONSUMPTION = 140;
+    public static final int BASE_POWER_CONSUMPTION = 90;
+    private double previousPowerConsumption = 0;
 
     public EnergyEstimator(ModelAccess modelAccess) {
         this.modelAccess = modelAccess;
@@ -27,18 +28,36 @@ public class EnergyEstimator implements EnergyConsumption {
     public Number getValueWithRunningAlgorithm() {
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         double totalEnergyConsumed = 0;
+        if (modelAccess.isSimulation()) {
+            System.err.println("Previous energy consumed:" + previousPowerConsumption);
+            if (previousPowerConsumption != 0)
+                return previousPowerConsumption;
+        }
+        int i = 0;
         for (ServiceCenterServer server : servers) {
             if (server.getIsActive()) {
                 ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
-                if (proxy instanceof StubProxy) {
+                if ((proxy instanceof StubProxy)) {
                     totalEnergyConsumed += BASE_POWER_CONSUMPTION;
                 } else {
                     String energyConsumption = proxy.getEnergyConsumptionInfo();
-                    double d = Float.parseFloat(energyConsumption);
-                    totalEnergyConsumed += d;
+                    if (energyConsumption != "") {
+                        double d = Float.parseFloat(energyConsumption);
+                        totalEnergyConsumed += d;
+                        if (d == 0) totalEnergyConsumed += BASE_POWER_CONSUMPTION;
+                    } else {
+                        totalEnergyConsumed += BASE_POWER_CONSUMPTION;
+                    }
                 }
+                i++;
             }
         }
+        if (modelAccess.isSimulation())
+            return (BASE_POWER_CONSUMPTION * i);
+        else
+            previousPowerConsumption = totalEnergyConsumed;
+        System.err.println("Total energy consumed:" + totalEnergyConsumed);
+        System.err.println("PREV Total energy consumed:" + previousPowerConsumption);
         return totalEnergyConsumed;
     }
 
@@ -48,11 +67,21 @@ public class EnergyEstimator implements EnergyConsumption {
         for (ServiceCenterServer server : servers) {
             if (server.getIsActive()) {
                 ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
-                if (proxy instanceof StubProxy) {
+                if ((proxy instanceof StubProxy)) {
                     totalEnergyConsumed += BASE_POWER_CONSUMPTION;
                 } else {
-                    String energyConsumption = proxy.getEnergyConsumptionInfo();
-                    double d = Float.parseFloat(energyConsumption);
+
+                    double d = 0;
+                    if (modelAccess.isSimulation()) {
+                        d = previousPowerConsumption;
+                    } else {
+                        String energyConsumption = proxy.getEnergyConsumptionInfo();
+                        if (energyConsumption != "") {
+                            d = Float.parseFloat(energyConsumption);
+                        } else {
+                            d = BASE_POWER_CONSUMPTION;
+                        }
+                    }
                     if (d - BASE_POWER_CONSUMPTION > 0) {
                         totalEnergyConsumed += d;
                     } else {

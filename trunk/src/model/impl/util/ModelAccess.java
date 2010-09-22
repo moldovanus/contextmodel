@@ -30,7 +30,7 @@ public class ModelAccess implements ModelFactory {
     private PrevailerModelFactory prevailerModelFactory;
 
     public int accessType = 0;
-
+    private boolean simulation = false;
     public OntologyModelFactory getOntologyModelFactory() {
         return ontologyModelFactory;
     }
@@ -1311,4 +1311,13 @@ public class ModelAccess implements ModelFactory {
     }
 
 
+    public boolean isSimulation() {
+        System.err.println("GET is sim:" + simulation);
+        return simulation;
+    }
+
+    public void setSimulation(boolean simulation) {
+        System.err.println("SET is sim: " + simulation);
+        this.simulation = simulation;
+    }
 }
