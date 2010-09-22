@@ -16,7 +16,6 @@ import globalLoop.utils.GlobalVars;
 import gui.energyConsumption.EnergyConsumption;
 import gui.energyConsumption.EnergyConsumptionFactory;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.MultipleResourceMonitorXYChartPlotter;
-import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorBarChartPlotter;
 import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlotter;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
@@ -608,7 +607,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 }
             }
         };
-        Timer refreshTimerEnergyConsumption = new Timer(2500, actionListener);
+        Timer refreshTimerEnergyConsumption = new Timer(1000, actionListener);
         refreshTimerEnergyConsumption.start();
         energyEfficiencyXYPanel.add(plotter1.getGraphPanel(), "Center");
 //        JPanel panel = barChartPlotter.getGraphPanel();
@@ -927,7 +926,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         loadConfigMenuItem.setText("Load Configuration");
         configurationMenuItem.add(loadConfigMenuItem);
 
-        showExpertConfigMenuItem.setText("Show Expert Configuration Window");
+        showExpertConfigMenuItem.setText("Show Configuration Window");
         configurationMenuItem.add(showExpertConfigMenuItem);
 
         menuBar.add(configurationMenuItem);
@@ -1112,7 +1111,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         if (dataType.equals("Log")) {
             this.logMessage(data[1].toString());
             if (data[1].toString().startsWith("Executing")) {
-              //  refreshEnergyEstimate();
+                refreshEnergyEstimate();
             }
         } else if (dataType.equals("Refresh Energy")) {
             refreshEnergyEstimate();

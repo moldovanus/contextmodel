@@ -64,7 +64,8 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
         plot.setBackgroundPaint(Color.BLACK);
         XYItemRenderer renderer = plot.getRenderer();
         renderer.setPaint(Color.GREEN);
-
+        renderer.setStroke(new BasicStroke(3));
+        
         ValueAxis yAxis = plot.getRangeAxis();
         yAxis.setLabelFont(LABEL_FONT);
         yAxis.setRange(minimumValue, maximumValue);
@@ -72,6 +73,8 @@ public class ResourceMonitorXYChartPlotter extends ResourceMonitorPlotter {
         ValueAxis xAxis = plot.getDomainAxis();
         xAxis.setLabelFont(LABEL_FONT);
         xAxis.setRange(minTimeRange, maxTimeRange);
+
+
 
         ChartPanel chartPanel = new ChartPanel(chart);
         JPanel panel = new JPanel();

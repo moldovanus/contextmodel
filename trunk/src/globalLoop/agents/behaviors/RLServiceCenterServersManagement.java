@@ -760,16 +760,16 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //
 //            System.exit(1);
         }
-//        else {
-//            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-//            try {
-//                msg.setContentObject(new Object[]{"Refresh Energy", ""});
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
-//            agent.send(msg);
-//        }
+        else {
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            try {
+                msg.setContentObject(new Object[]{"Refresh Energy", ""});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            msg.addReceiver(new AID(GlobalVars.GUIAGENT_NAME + "@" + agent.getContainerController().getPlatformName()));
+            agent.send(msg);
+        }
         smallestEntropyContext = null;
         agent.killScheduledTasks();
 
