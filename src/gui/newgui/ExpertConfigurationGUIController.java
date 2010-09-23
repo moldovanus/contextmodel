@@ -258,7 +258,7 @@ public class ExpertConfigurationGUIController implements Observer {
             }
         });
 
-        AbstractAction saveConfiguration = new AbstractAction("Save entire configuration") {
+        AbstractAction saveConfiguration = new AbstractAction("Save complete configuration") {
             public void actionPerformed(ActionEvent e) {
                 fileChooser.setFileFilter(generalConfigFilter);
                 Object[] data = new Object[3];
@@ -466,10 +466,10 @@ public class ExpertConfigurationGUIController implements Observer {
         refreshEnergyEstimate();
         final ResourceMonitorXYChartPlotter plotter1 =
                 new ResourceMonitorXYChartPlotter("Energy Consumption without GAMES infrastructure",
-                        "Time(s)", "Energy Consumed (W)", 0, 200);
+                        "Time(s)", "Power Consumed (W)", 0, 300);
         final ResourceMonitorXYChartPlotter plotter2 =
                 new ResourceMonitorXYChartPlotter("Energy Consumption with GAMES infrastructure",
-                        "Time(s)", "Energy Consumed (W)", 0, 200);
+                        "Time(s)", "Power Consumed (W)", 0, 300);
         plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         plotter2.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         ActionListener actionListener = new ActionListener() {
