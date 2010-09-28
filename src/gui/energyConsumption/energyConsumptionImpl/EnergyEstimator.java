@@ -29,7 +29,7 @@ public class EnergyEstimator implements EnergyConsumption {
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         double totalEnergyConsumed = 0;
         if (modelAccess.isSimulation()) {
-            System.err.println("Previous energy consumed:" + previousPowerConsumption);
+//            System.err.println("Previous energy consumed:" + previousPowerConsumption);
             if (previousPowerConsumption != 0)
                 return previousPowerConsumption;
         }
@@ -56,8 +56,8 @@ public class EnergyEstimator implements EnergyConsumption {
             return (BASE_POWER_CONSUMPTION * i);
         else
             previousPowerConsumption = totalEnergyConsumed;
-        System.err.println("Total energy consumed:" + totalEnergyConsumed);
-        System.err.println("PREV Total energy consumed:" + previousPowerConsumption);
+//        System.err.println("Total energy consumed:" + totalEnergyConsumed);
+//        System.err.println("PREV Total energy consumed:" + previousPowerConsumption);
         return totalEnergyConsumed;
     }
 

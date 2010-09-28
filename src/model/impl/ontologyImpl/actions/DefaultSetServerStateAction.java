@@ -105,8 +105,8 @@ public class DefaultSetServerStateAction extends DefaultConsolidationAction
     }
 
     public int getCost() {
-            if (oldServerState==0) return 600;
-                else return 400;
+            if (oldServerState==0) return 1200;
+                else return 100;
     }
 
     @Override

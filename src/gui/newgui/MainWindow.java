@@ -589,7 +589,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                         "Time(s)", "Power Required (W)", 0, 200);
 //        final ResourceMonitorBarChartPlotter barChartPlotter = new ResourceMonitorBarChartPlotter("Energy Reduction", "Improvement", "%", 0, 100);
 //        plotter1.setMaxTimeRange(3000);
-        plotter1.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
+        plotter1.setSnapshotIncrement(3);
 //        barChartPlotter.setSnapshotIncrement(decisionTimeRefreshRateInMillis / 1000);
         final DecimalFormat decimalFormat = new DecimalFormat();
         decimalFormat.setMaximumFractionDigits(1);
@@ -607,7 +607,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                 }
             }
         };
-        Timer refreshTimerEnergyConsumption = new Timer(1000, actionListener);
+        Timer refreshTimerEnergyConsumption = new Timer(3000, actionListener);
         refreshTimerEnergyConsumption.start();
         energyEfficiencyXYPanel.add(plotter1.getGraphPanel(), "Center");
 //        JPanel panel = barChartPlotter.getGraphPanel();
