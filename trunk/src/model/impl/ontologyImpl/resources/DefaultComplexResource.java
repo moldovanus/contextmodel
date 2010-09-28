@@ -386,7 +386,7 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
             for (Object coreInst : cores) {
 
                 Core core = (Core) coreInst;
-                if (core.getCurrentWorkLoad() + task.getCpuRequiredMaxValue() > core.getMaximumWorkLoad() - (core.getMaximumWorkLoad() - core.getOptimalWorkLoad()) / 2.0) {
+                if (core.getCurrentWorkLoad() + task.getCpuRequiredMaxValue() >  (core.getMaximumWorkLoad() + core.getOptimalWorkLoad()) / 2.0) {
                     continue;
                 } else {
                     requestedCores--;
@@ -400,14 +400,14 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
         Collection<MEM> memories = this.getMemResources();
         for (MEM mem : memories) {
 
-            if (mem.getCurrentWorkLoad() + task.getMemRequiredMaxValue() > mem.getMaximumWorkLoad()) {
+            if (mem.getCurrentWorkLoad() + task.getMemRequiredMaxValue() > (mem.getMaximumWorkLoad()+mem.getOptimalWorkLoad())/2.0) {
                 return false;
             }
         }
         Collection<HDD> hdds = this.getHddResources();
         for (HDD hdd : hdds) {
 
-            if (hdd.getCurrentWorkLoad() + task.getHddRequiredMaxValue() > hdd.getMaximumWorkLoad()) {
+            if (hdd.getCurrentWorkLoad() + task.getHddRequiredMaxValue() > (hdd.getMaximumWorkLoad()+hdd.getOptimalWorkLoad())/2.0) {
                 return false;
             }
         }

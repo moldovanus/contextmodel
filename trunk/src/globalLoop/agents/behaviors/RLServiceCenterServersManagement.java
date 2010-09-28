@@ -151,7 +151,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         return respectance;
     }
 
-    private Pair<Double, GPI_KPI_Policy> computeEntropy() {
+    private Pair<Double, List<GPI_KPI_Policy>> computeEntropy() {
+        List<GPI_KPI_Policy> brokenPolicies = new ArrayList<GPI_KPI_Policy>();
         GPI_KPI_Policy brokenPolicy = null;
         double entropy = 0.0;
         Collection<QoSPolicy> qosPolicies = modelAccess.getAllQoSPolicyInstances();
@@ -165,6 +166,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
             try {
                 if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
+                    brokenPolicies.add(policy);
                     if (brokenPolicy == null) {
                         brokenPolicy = policy;
                     }
@@ -188,6 +190,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                     try {
                         if (!evaluator.evaluatePolicy(policy, policy.getIsRespectedPropertyName())) {
 //                            System.out.println("Broken server : " + server.getLocalName());
+                            brokenPolicies.add(policy);
                             if (brokenPolicy == null) {
                                 brokenPolicy = policy;
                             }
@@ -202,7 +205,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
         }
 
-        return new Pair<Double, GPI_KPI_Policy>(entropy, brokenPolicy);
+        return new Pair<Double, List<GPI_KPI_Policy>>(entropy, brokenPolicies);
     }
 
 
@@ -271,7 +274,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
         ContextSnapshot newContext = queue.poll();
         if (newContext == null || (stackDepth >= MAXIMUM_STACK_DEPTH)) {
-            Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
+            Pair<Double, List<GPI_KPI_Policy>> entropyAndPolicy = computeEntropy();
 
             System.out.println("Could not repair the context totally. Returning best solution:");
             sendLogToGUI("Could not repair the context totally. Returning best solution:\n");
@@ -309,7 +312,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //            System.out.println("Remembered...!!");
 //            newContext.addActions(commands);
 //        }
-        Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
+        Pair<Double, List<GPI_KPI_Policy>> entropyAndPolicy = computeEntropy();
 
         if (smallestEntropyContext != null) {
             if (newContext.getContextEntropy() < smallestEntropyContext.getContextEntropy())
@@ -320,64 +323,65 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
         System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
 //                  + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
         sendLogToGUI("\n Entropy: " + entropyAndPolicy.getFirst()
 //                + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
         System.out.println("------------------------------");
 
 
         ArrayList<String> simulationResultMessage = new ArrayList<String>();
         simulationResultMessage.add("\n Entropy: " + entropyAndPolicy.getFirst()
                 + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
         logger.log(Color.black, "Simulation result context", simulationResultMessage);
 
-        Collection<ContextResource> associatedTasks = null;
-        Collection<ContextResource> associatedServers = null;
-        ServiceCenterServer server = null;
+        List<ContextResource> associatedTasks = new ArrayList<ContextResource>();
+        List<ContextResource> associatedServers = new ArrayList<ContextResource>();
+
 
         if (entropyAndPolicy.getFirst() > 0) {
             if (entropyAndPolicy.getSecond() != null) {
-                GPI_KPI_Policy policy = entropyAndPolicy.getSecond();
-
-                if (policy.getPolicySubject().get(0) instanceof ApplicationActivity) {
-                    associatedTasks = policy.getPolicySubject();
-                } else {
-                    associatedServers = policy.getPolicySubject();
+                List<GPI_KPI_Policy> policies = entropyAndPolicy.getSecond();
+                for (GPI_KPI_Policy policy : policies) {
+                    if (policy.getPolicySubject().get(0) instanceof ApplicationActivity) {
+                        associatedTasks.add(policy.getPolicySubject().get(0));
+                    } else {
+                        associatedServers.add(policy.getPolicySubject().get(0));
+                    }
                 }
             }
-            boolean deployed = false;     /// sa zica daca ii  deployed sau nu
+
             if (associatedTasks != null) {
                 // deploy actions
-                for (ServiceCenterServer serverInstance : servers) {
+                for (ContextResource activity : associatedTasks) {
+                    ApplicationActivity task = (ApplicationActivity) activity;
+                    for (ServiceCenterServer serverInstance : servers) {
 
-                    //  for (ContextResource res : associatedTasks) {
-                    // TODO: punem mai multe later on cand consideram ca avem nevoie de mai multe taskuri asociate unei politici
-                    ApplicationActivity task = (ApplicationActivity) associatedTasks.iterator().next();
+                        //  for (ContextResource res : associatedTasks) {
+                        // TODO: punem mai multe later on cand consideram ca avem nevoie de mai multe taskuri asociate unei politici
 
-                    if ((serverInstance.getCurrentEnergyState() != 0) && serverInstance.hasResourcesFor(task)
-                            && !serverInstance.hostsActivity(task) && !task.isRunning()) {
-                        DeployActivity newAction = modelAccess.createDeployActivity("Deploy_"
-                                + task.getName() + "_to_" + serverInstance.getName());
-                        newAction.addResource(serverInstance);
-                        newAction.setActivity(task);
+                        if ((serverInstance.getCurrentEnergyState() != 0) && serverInstance.hasResourcesFor(task)
+                                && !serverInstance.hostsActivity(task) && !task.isRunning()) {
+                            DeployActivity newAction = modelAccess.createDeployActivity("Deploy_"
+                                    + task.getName() + "_to_" + serverInstance.getName());
+                            newAction.addResource(serverInstance);
+                            newAction.setActivity(task);
 
-                        if (!newContext.getActions().contains(newAction)) {
+                            if (!newContext.getActions().contains(newAction)) {
 
-                            ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-                            cs.getActions().add(newAction);
-                            deployed = true;
-                            newAction.execute(modelAccess);
+                                ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                                cs.getActions().add(newAction);
+                                newAction.execute(modelAccess);
+                                Double afterExecuteEntropy = computeEntropy().getFirst();
+                                cs.setContextEntropy(afterExecuteEntropy);
+                                cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
+                                newAction.undo(modelAccess);
 
-                            Double afterExecuteEntropy = computeEntropy().getFirst();
-                            cs.setContextEntropy(afterExecuteEntropy);
-                            cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-                            newAction.undo(modelAccess);
+                                queue.add(cs);
+                            }
 
-                            queue.add(cs);
                         }
-
                     }
                 }
 
@@ -420,31 +424,34 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                     }
                 }
             }
-            if (server != null) {
-                Iterator it = server.getRunningActivities().iterator();
-                // move tasks from server
-                while (it.hasNext()) {
-                    ApplicationActivity myTask = (ApplicationActivity) it.next();
-                    for (ServiceCenterServer destinationServer : servers) {
-                        if (destinationServer.getIsActive() && !destinationServer.hostsActivity(myTask)
-                                && destinationServer.hasResourcesFor(myTask)) {
-                            MigrateActivity newAction = modelAccess.createMigrateActivity("Migrate_from_"
-                                    + server.getName()
-                                    + "_to_" + myTask.getName() + "_Activity");
-                            newAction.setResourceFrom(server);
-                            newAction.setResourceTo(destinationServer);
-                            newAction.setActivity(myTask);
-                            if (!newContext.getActions().contains(newAction)) {
+            if (associatedServers.size() != 0) {
+                for (ContextResource contextResource : associatedServers) {
+                    ServiceCenterServer server = (ServiceCenterServer) contextResource;
+                    Iterator it = server.getRunningActivities().iterator();
+                    // move tasks from server
+                    while (it.hasNext()) {
+                        ApplicationActivity myTask = (ApplicationActivity) it.next();
+                        for (ServiceCenterServer destinationServer : servers) {
+                            if (destinationServer.getIsActive() && !destinationServer.hostsActivity(myTask)
+                                    && destinationServer.hasResourcesFor(myTask)) {
+                                MigrateActivity newAction = modelAccess.createMigrateActivity("Migrate_from_"
+                                        + server.getName()
+                                        + "_to_" + myTask.getName() + "_Activity");
+                                newAction.setResourceFrom(server);
+                                newAction.setResourceTo(destinationServer);
+                                newAction.setActivity(myTask);
+                                if (!newContext.getActions().contains(newAction)) {
 
-                                ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-                                cs.getActions().add(newAction);
+                                    ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
+                                    cs.getActions().add(newAction);
 
-                                newAction.execute(modelAccess);
-                                cs.setContextEntropy(computeEntropy().getFirst());
-                                cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
-                                newAction.undo(modelAccess);
+                                    newAction.execute(modelAccess);
+                                    cs.setContextEntropy(computeEntropy().getFirst());
+                                    cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
+                                    newAction.undo(modelAccess);
 
-                                queue.add(cs);
+                                    queue.add(cs);
+                                }
                             }
                         }
                     }
@@ -452,7 +459,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
 //             wake up
             for (ServiceCenterServer serverInstance : servers) {
-                if ((!serverInstance.getIsActive()) && (associatedTasks != null) && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
+                if ((!serverInstance.getIsActive()) && associatedTasks.size()!=0 && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
 //                    System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
                     SetServerStateActivity newActivity =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
@@ -612,27 +619,27 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         });
 
         ContextSnapshot initialContext = new ContextSnapshot(new LinkedList());
-        Pair<Double, GPI_KPI_Policy> entropyAndPolicy = computeEntropy();
+        Pair<Double, List<GPI_KPI_Policy>> entropyAndPolicy = computeEntropy();
 
 
         System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond().size() == 0) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()));
 
         if (entropyAndPolicy.getFirst() > 0) {
             sendLogToGUI("\n Entropy: "
                     + entropyAndPolicy.getFirst()
-                    + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
+                    + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond().size() == 0) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()));
         }
 
         initialContext.setContextEntropy(entropyAndPolicy.getFirst());
         initialContext.setRewardFunction(computeRewardFunction(null, initialContext, null));
         queue.add(initialContext);
-        
+
         if (entropyAndPolicy.getFirst() > 0) {
 
             ArrayList<String> message = new ArrayList<String>();
             message.add("Entropy: " + entropyAndPolicy.getFirst()
-                    + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().getLocalName()));
+                    + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()));
             logger.log(Color.black, "Resulting context", message);
             logContext(Color.RED);
             java.util.Date before = new java.util.Date();
@@ -666,9 +673,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
                 entropyAndPolicy = computeEntropy();
 
-                if (entropyAndPolicy.getSecond() != null && entropyAndPolicy.getSecond().getPolicySubject().get(0) instanceof ApplicationActivity) {
+                if (entropyAndPolicy.getSecond() != null && entropyAndPolicy.getSecond().get(0).getPolicySubject() instanceof ApplicationActivity) {
 
-                    ApplicationActivity activity = (ApplicationActivity) entropyAndPolicy.getSecond().getPolicySubject().get(0);
+                    ApplicationActivity activity = (ApplicationActivity) entropyAndPolicy.getSecond().get(0).getPolicySubject();
 
                     Negotiator negotiator = (Negotiator) NegotiatorFactory.getNashNegotiator();
                     ServiceCenterServer server = getMinDistanceServer(activity);
@@ -759,8 +766,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //            }
 //
 //            System.exit(1);
-        }
-        else {
+        } else {
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             try {
                 msg.setContentObject(new Object[]{"Refresh Energy", ""});

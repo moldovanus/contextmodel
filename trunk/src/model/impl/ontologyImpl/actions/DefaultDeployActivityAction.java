@@ -23,7 +23,7 @@ import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
  */
 public class DefaultDeployActivityAction extends DefaultConsolidationAction
         implements DeployActivity {
-    private int cost = 100;
+    private int cost = 200;
 
     public DefaultDeployActivityAction(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
