@@ -125,7 +125,7 @@ public class DefaultDeployActivityAction extends DefaultConsolidationAction
 
             System.out.println("Deploying ...");
             proxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
-                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + server.getLocalName(), server.getLocalName(),base,
+                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH , server.getLocalName(),base,
                     task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
                     procTime, (int) task.getNumberOfCoresAllocatedValue());
         } else {

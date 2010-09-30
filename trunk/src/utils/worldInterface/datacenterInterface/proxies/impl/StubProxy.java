@@ -47,6 +47,14 @@ public class StubProxy extends ServerManagementProxy {
 //        new HyperVServerManagementProxy(hostName).moveSourceActions(path,vmName);
     }
 
+    public void moveAction1(String path, String vmName) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void moveAction2(String path, String vmName) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public void deployVirtualMachine(String from, String to, String vmName, String newName) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -70,7 +78,9 @@ public class StubProxy extends ServerManagementProxy {
     public void deployVirtualMachineWithCustomResources(String from, String to,String serverName,String base, String vmName, String vmCopyName, int memory, int processorPercentage, int nrCores) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
-
+     public void moveAction(String path, String vmName){
+         
+     }
     public void wakeUpServer(String mac, String ipAddress, int port) {
 //        new HyperVServerManagementProxy(hostName).wakeUpServer(mac,ipAddress,port);
     }

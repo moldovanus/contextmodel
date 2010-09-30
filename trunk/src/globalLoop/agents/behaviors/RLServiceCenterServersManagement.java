@@ -17,6 +17,7 @@ import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
 import utils.exceptions.IndividualNotFoundException;
 import utils.logger.LoggerGUI;
+import utils.misc.DecisionTreeNode;
 import utils.misc.Pair;
 import utils.negotiator.Negotiator;
 import utils.negotiator.impl.NegotiatorFactory;
@@ -25,6 +26,11 @@ import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ServerDto;
 
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.IOException;
 import java.util.*;
@@ -46,12 +52,16 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
     private int stackDepth = 0;
     private static final int MAXIMUM_STACK_DEPTH = 40;
 
+    private DecisionTreeNode rootDecisionTreeNode;
+
+
     public RLServiceCenterServersManagement(RLAgent a, ModelAccess modelAccess, long period) {
         super(a, period);
         agent = a;
         this.modelAccess = modelAccess;
         logger = new LoggerGUI("Service_Center_Log");
         logger.setLogPath("./logs/");
+
     }
 
 
@@ -298,10 +308,18 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         newContext.executeActions(modelAccess);
         Queue<ContextAction> actions = newContext.getActions();
         ArrayList<String> message = new ArrayList<String>();
+
         for (ContextAction action : actions) {
             message.add("Simulating: " + action.toString());
             sendLogToGUI("Simulating:  " + action.toString());
             System.out.println("Simulating " + action.toString());
+        }
+
+        DecisionTreeNode currentStep;
+        if (actions.size() == 0) {
+            currentStep = rootDecisionTreeNode;
+        } else {
+            currentStep = newContext.getDecisionTreeNode();
         }
 
         logger.log(Color.BLACK, "Current try", message);
@@ -339,7 +357,6 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         List<ContextResource> associatedTasks = new ArrayList<ContextResource>();
         List<ContextResource> associatedServers = new ArrayList<ContextResource>();
 
-
         if (entropyAndPolicy.getFirst() > 0) {
             if (entropyAndPolicy.getSecond() != null) {
                 List<GPI_KPI_Policy> policies = entropyAndPolicy.getSecond();
@@ -374,6 +391,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                                 cs.getActions().add(newAction);
                                 newAction.execute(modelAccess);
                                 Double afterExecuteEntropy = computeEntropy().getFirst();
+                                DecisionTreeNode node = new DecisionTreeNode("Step " + stackDepth
+                                        , newAction.toString(), "" + afterExecuteEntropy);
+                                cs.setDecisionTreeNode(node);
+                                currentStep.addChild(node);
                                 cs.setContextEntropy(afterExecuteEntropy);
                                 cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
                                 newAction.undo(modelAccess);
@@ -412,7 +433,12 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                                         cs.getActions().add(newAction);
                                         newAction.execute(modelAccess);
 
-                                        cs.setContextEntropy(computeEntropy().getFirst());
+                                        Double afterExecuteEntropy = computeEntropy().getFirst();
+                                        DecisionTreeNode node = new DecisionTreeNode("Step " + stackDepth
+                                                , newAction.toString(), "" + afterExecuteEntropy);
+                                        cs.setDecisionTreeNode(node);
+                                        currentStep.addChild(node);
+                                        cs.setContextEntropy(afterExecuteEntropy);
                                         cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
                                         newAction.undo(modelAccess);
 
@@ -444,9 +470,13 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
                                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
                                     cs.getActions().add(newAction);
-
                                     newAction.execute(modelAccess);
-                                    cs.setContextEntropy(computeEntropy().getFirst());
+                                    Double afterExecuteEntropy = computeEntropy().getFirst();
+                                    DecisionTreeNode node = new DecisionTreeNode("Step " + stackDepth
+                                            , newAction.toString(), "" + afterExecuteEntropy);
+                                    cs.setDecisionTreeNode(node);
+                                    currentStep.addChild(node);
+                                    cs.setContextEntropy(afterExecuteEntropy);
                                     cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
                                     newAction.undo(modelAccess);
 
@@ -459,23 +489,28 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
 //             wake up
             for (ServiceCenterServer serverInstance : servers) {
-                if ((!serverInstance.getIsActive()) && associatedTasks.size()!=0 && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
+                if ((!serverInstance.getIsActive()) && associatedTasks.size() != 0 && serverInstance.hasResourcesFor((ApplicationActivity) associatedTasks.iterator().next())) { //&& (task!=null) && serverInstance.hasResourcesFor(task)) {
 //                    System.out.println(serverInstance.getLocalName() + " " + serverInstance.getIsActive() + " is waking up");
-                    SetServerStateActivity newActivity =
+                    SetServerStateActivity newAction =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
                                     + "_to_" + 1);
                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-                    newActivity.setTargetServerState(1);
-                    newActivity.addResource(serverInstance);
+                    newAction.setTargetServerState(1);
+                    newAction.addResource(serverInstance);
 
                     //if action is not already in the actions list
-                    if (!cs.getActions().contains(newActivity)) {
-                        cs.getActions().add(newActivity);
+                    if (!cs.getActions().contains(newAction)) {
+                        cs.getActions().add(newAction);
 
-                        newActivity.execute(modelAccess);
-                        cs.setContextEntropy(computeEntropy().getFirst());
-                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newActivity));
-                        newActivity.undo(modelAccess);
+                        newAction.execute(modelAccess);
+                        Double afterExecuteEntropy = computeEntropy().getFirst();
+                        DecisionTreeNode node = new DecisionTreeNode("Step " + stackDepth
+                                , newAction.toString(), "" + afterExecuteEntropy);
+                        cs.setDecisionTreeNode(node);
+                        currentStep.addChild(node);
+                        cs.setContextEntropy(afterExecuteEntropy);
+                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
+                        newAction.undo(modelAccess);
 
                         queue.add(cs);
                     }
@@ -485,21 +520,26 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             // sleep
             for (ServiceCenterServer serverInstance : servers) {
                 if (serverInstance.getIsActive() && (!serverInstance.hasRunningActivities())) {
-                    SetServerStateActivity newActivity =
+                    SetServerStateActivity newAction =
                             modelAccess.createSetServerStateActivity("Set_state_for_" + serverInstance.getName()
                                     + "_to_" + 0);
                     ContextSnapshot cs = new ContextSnapshot(new LinkedList(newContext.getActions()));
-                    newActivity.setTargetServerState(0);
-                    newActivity.addResource(serverInstance);
+                    newAction.setTargetServerState(0);
+                    newAction.addResource(serverInstance);
 
-                    if (!cs.getActions().contains(newActivity)) {
+                    if (!cs.getActions().contains(newAction)) {
 
-                        cs.getActions().add(newActivity);
+                        cs.getActions().add(newAction);
 
-                        newActivity.execute(modelAccess);
-                        cs.setContextEntropy(computeEntropy().getFirst());
-                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newActivity));
-                        newActivity.undo(modelAccess);
+                        newAction.execute(modelAccess);
+                        Double afterExecuteEntropy = computeEntropy().getFirst();
+                        DecisionTreeNode node = new DecisionTreeNode("Step " + stackDepth
+                                , newAction.toString(), "" + afterExecuteEntropy);
+                        cs.setDecisionTreeNode(node);
+                        currentStep.addChild(node);
+                        cs.setContextEntropy(afterExecuteEntropy);
+                        cs.setRewardFunction(computeRewardFunction(newContext, cs, newAction));
+                        newAction.undo(modelAccess);
 
                         queue.add(cs);
                     }
@@ -643,6 +683,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             logger.log(Color.black, "Resulting context", message);
             logContext(Color.RED);
             java.util.Date before = new java.util.Date();
+
+            rootDecisionTreeNode = new DecisionTreeNode("Initial", "No action", "" + entropyAndPolicy.getFirst());
+
             ContextSnapshot result = reinforcementLearning(queue);
             java.util.Date after = new java.util.Date();
             modelAccess.setSimulation(false);
@@ -754,8 +797,25 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
                     }
                 }
+                JFrame frame = new JFrame("Decision tree");
+                frame.setLayout(new BorderLayout());
+                JTree tree = new JTree();
+                DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Initial state");
+
+                DecisionTreeNode rootDecisionNode = rootDecisionTreeNode;
+                rootNode.add(new DefaultMutableTreeNode("Entropy: " + rootDecisionNode.getEntropy()));
+                buildTree(rootNode, rootDecisionNode);
+
+                tree.setModel(new DefaultTreeModel(rootNode));
+                expandAll(tree, new TreePath(rootNode));
+                JScrollPane scrollPane = new JScrollPane(tree);
+                scrollPane.setViewportView(tree);
+                frame.add(scrollPane, BorderLayout.CENTER);
+                frame.setSize(500, 500);
+                frame.setVisible(true);
 
             }
+
             logContext(Color.GREEN);
 //            OntModel ontModel = ModelFactory.createOntologyModel(org.mindswap.pellet.jena.PelletReasonerFactory.THE_SPEC);
 //            ontModel.add(modelAccess.getOntologyModelFactory().getOwlModel().getJenaModel());
@@ -822,6 +882,31 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
         }
         logger.log(color, "Application Activities", message_1);
+
+    }
+
+    private void buildTree(DefaultMutableTreeNode root, DecisionTreeNode decisionTreeNode) {
+        for (DecisionTreeNode decisionNode : decisionTreeNode.getChildren()) {
+            DefaultMutableTreeNode muttableNode = new DefaultMutableTreeNode(decisionNode.getNodeName());
+            muttableNode.add(new DefaultMutableTreeNode("Entropy: " + decisionNode.getEntropy()));
+            muttableNode.add(new DefaultMutableTreeNode("Action: " + decisionNode.getActionName()));
+            buildTree(muttableNode, decisionNode);
+            root.add(muttableNode);
+        }
+    }
+
+    private void expandAll(JTree tree, TreePath parent) {
+        // Traverse children
+        TreeNode node = (TreeNode) parent.getLastPathComponent();
+        if (node.getChildCount() >= 0) {
+            for (Enumeration e = node.children(); e.hasMoreElements();) {
+                TreeNode n = (TreeNode) e.nextElement();
+                TreePath path = parent.pathByAddingChild(n);
+                expandAll(tree, path);
+            }
+        }
+
+        tree.expandPath(parent);
 
     }
 

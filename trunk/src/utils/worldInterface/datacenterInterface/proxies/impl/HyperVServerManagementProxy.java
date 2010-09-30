@@ -4,20 +4,15 @@ import globalLoop.utils.GlobalVars;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
 import utils.worldInterface.dtos.ServerDto;
 
-import java.awt.*;
 import java.io.*;
-import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -173,6 +168,102 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
     }
 
+    public void waitForOperationToFinish() {
+        try {
+            boolean ok = false;
+            while (!ok) {
+                URL url = new URL("http://" + hostName + "/Service1.asmx/IsJobCompleted");
+
+
+                URLConnection connection = url.openConnection();
+                connection.setDoInput(true);
+
+                BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+
+                String content = "";
+                while ((line = rd.readLine()) != null) {
+                    if (DEBUG) {
+                        System.out.println(line);
+                    }
+                    if (line.length() > 0 && line.charAt(1) != '?') {
+                        content += "\n" + line;
+                    }
+                }
+
+
+                XMLReader reader = XMLReaderFactory.createXMLReader();
+                ServerInfoSAXHandler handler = new ServerInfoSAXHandler();
+                reader.setContentHandler(handler);
+                ByteArrayInputStream in = new ByteArrayInputStream(content.getBytes());
+                InputSource source = new InputSource(in);
+                reader.parse(source);
+
+                ok = handler.isBooleanValue();
+                if (ok == true) break;
+                Thread.sleep(5000);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void moveAction1(String path, String vmName) {
+        try {
+            URL url = new URL("http://" + hostName + "/Service1.asmx/CreateVirtualSystemSnapshot?vmName=" + vmName);
+            URLConnection connection = url.openConnection();
+
+            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println(url);
+
+            File file = new File(GlobalVars.PHYSICAL_PATH + "Config");
+            file.mkdir();
+            stopVirtualMachine(vmName);
+            url = new URL("http://" + hostName + "/Service1.asmx/ExportVirtualMachineConfig?" +
+                    "vmName=" + vmName + "&exportDirectory=" + GlobalVars.PHYSICAL_PATH + "Config");
+
+            connection = url.openConnection();
+            System.out.println(url);
+            rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            deleteVirtualMachine(vmName);
+            copyDirectory(new File(GlobalVars.PHYSICAL_PATH + "Config/" + vmName)
+                    ,new File(GlobalVars.PHYSICAL_PATH + vmName));
+//            InputStream in = new FileInputStream(GlobalVars.PHYSICAL_PATH + "Config/" + vmName + "/config.xml");
+//            OutputStream out = new FileOutputStream(GlobalVars.PHYSICAL_PATH + vmName + "/config.xml");
+//
+//            // Copy the bits from instream to outstream
+//            byte[] buf = new byte[1024];
+//            int len;
+//            while ((len = in.read(buf)) > 0) {
+//                out.write(buf, 0, len);
+//            }
+//            in.close();
+//            out.flush();
+//            out.close();
+
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void moveAction2(String path, String vmName) {
+        try {
+//            copyDirectory(new File(GlobalVars.PHYSICAL_PATH + "Config" + "/" + vmName), new File(GlobalVars.PHYSICAL_PATH + "/" + vmName));
+            URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachine?folder="
+                    + path + "&vmName=" + vmName);
+            URLConnection connection = url.openConnection();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println(url);
+
+            startVirtualMachine(vmName);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void moveSourceActions(String path, String vmName) {
         try {
 
@@ -265,8 +356,8 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         try {
             URL url = new URL("http://" + hostName + "/Service1.asmx/StartVirtualMachine?vmName=" + vmName);
             URLConnection connection = url.openConnection();
-            connection.setDoInput(true);
-
+            //connection.setDoInput(true);
+            System.out.println(url);
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             if (DEBUG) {
 
@@ -358,7 +449,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
                 System.out.println(ok);
             }
 
-            String[] children = sourceLocation.list();
+             String[] children = sourceLocation.list();
             for (int i = 0; i < children.length; i++) {
                 copyDirectory(new File(sourceLocation, children[i]),
                         new File(targetLocation, children[i]));
@@ -375,6 +466,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
                 out.write(buf, 0, len);
             }
             in.close();
+            out.flush();
             out.close();
         }
     }
@@ -418,13 +510,13 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            socket.getOutputStream().write(content.getBytes());
 //            System.out.println(header);
 //            System.out.println(content);
-            File targetFile = new File(GlobalVars.PHISICAL_PATH + serverName);
+            File targetFile = new File(GlobalVars.PHYSICAL_PATH);
             targetFile.mkdir();
-            copyDirectory(new File(GlobalVars.PHISICAL_PATH + base), new File(GlobalVars.PHISICAL_PATH + serverName + "/" + vmCopyName));
+            copyDirectory(new File(GlobalVars.PHYSICAL_PATH + base), new File(GlobalVars.PHYSICAL_PATH + vmCopyName));
 
 //            //TODO: remove the hardcoded vmName when multiple reference vm's can be defined
-            URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachineWithModify?from="
-                    + from + "&to=" + to + "&vmName=" + base + "&vmCopyName=" + vmCopyName
+            URL url = new URL("http://" + hostName + "/Service1.asmx/DeployVirtualMachineWithModify?folder="
+                    + from + "&vmName=" + base + "&vmCopyName=" + vmCopyName
                     + "&memory=" + memory + "&procSpeed=" + processorPercentage + "&nrCores=" + nrCores);
             URLConnection connection = url.openConnection();
             System.out.println(url.toString());
@@ -440,8 +532,14 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
                     System.out.println(line);
                 }
             }
+            // waitForOperationToFinish();
+            url = new URL("http://" + hostName + "/Service1.asmx/ModifyVirtualMachineName?vmName=" + base + "&vmNewName=" + vmCopyName);
+            connection = url.openConnection();
+            //  waitForOperationToFinish();
+            //rename virtual machine
+            rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             startVirtualMachine(vmCopyName);
-
+            // waitForOperationToFinish();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -514,14 +612,14 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //                theTime = theTime.split(":")[0]+":"+theTime.split(":")[1].substring(1);
             String time = date.split(" ")[1];
             String newTime = time.split(":")[0];
-            if (time.split(":")[2].equalsIgnoreCase("00") ||time.split(":")[2].equalsIgnoreCase("01") ||time.split(":")[2].equalsIgnoreCase("02") ||time.split(":")[2].equalsIgnoreCase("03") ) {
+            if (time.split(":")[2].equalsIgnoreCase("00") || time.split(":")[2].equalsIgnoreCase("01") || time.split(":")[2].equalsIgnoreCase("02") || time.split(":")[2].equalsIgnoreCase("03")) {
                 if (Integer.parseInt(time.split(":")[1]) - 1 < 10) {
-                            newTime += ":0" + (Integer.parseInt(time.split(":")[1]) - 1);
-                        } else {
-                            newTime += ":" + (Integer.parseInt(time.split(":")[1]) - 1);
-                        }
+                    newTime += ":0" + (Integer.parseInt(time.split(":")[1]) - 1);
+                } else {
+                    newTime += ":" + (Integer.parseInt(time.split(":")[1]) - 1);
+                }
             } else {
-                     newTime +=":"+time.split(":")[1];
+                newTime += ":" + time.split(":")[1];
 //                        if (Integer.parseInt(time.split(":")[1]) - 1 < 10) {
 //                            newTime += ":0" + (Integer.parseInt(time.split(":")[1]) - 1);
 //                        } else {
@@ -529,9 +627,8 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //                        }
 
 
-                
             }
-            if (time.split(":")[2].equalsIgnoreCase( "00")) {
+            if (time.split(":")[2].equalsIgnoreCase("00")) {
                 newTime += ":56";
             } else {
                 if (time.split(":")[2].equalsIgnoreCase("01")) {
@@ -539,11 +636,9 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
                 } else {
                     if (time.split(":")[2].equalsIgnoreCase("02")) {
                         newTime += ":58";
-                    }else
-                    if (time.split(":")[2].equalsIgnoreCase("03")) {
+                    } else if (time.split(":")[2].equalsIgnoreCase("03")) {
                         newTime += ":59";
-                    }
-                    else {
+                    } else {
                         if (Integer.parseInt(time.split(":")[2]) - 4 < 10) {
                             newTime += ":0" + (Integer.parseInt(time.split(":")[2]) - 4);
                         } else {
@@ -588,14 +683,17 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
             ex.printStackTrace();
         }
 
-
         return "";
     }
 
     public static void main(String[] args) {
-//        ProxyFactory.setReturnStub(false);
-//        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.2.11");
-//        proxy.stopVirtualMachine("A");
+        ProxyFactory.setReturnStub(false);
+        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.1.13");
+        ServerManagementProxyInterface proxy1 = ProxyFactory.createServerManagementProxy("192.168.1.11");
+
+        proxy.moveAction1("\\\\192.168.1.10\\VirtualMachines\\Config\\CPUIntensive", "CPUIntensive");
+//        proxy1.startVirtualMachine("CPUIntensive");
+        proxy1.moveAction2("\\\\192.168.1.10\\VirtualMachines\\", "CPUIntensive");
 //        proxy.deleteVirtualMachine("A");
     }
 
