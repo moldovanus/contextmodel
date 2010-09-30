@@ -17,7 +17,8 @@ public interface ServerManagementProxyInterface {
     void moveDestinationActions(String path1, String path2, String vmName);
 
     void moveSourceActions(String path, String vmName);
-
+    void moveAction1(String path, String vmName);
+    void moveAction2(String path, String vmName);
     void deployVirtualMachine(String from, String to, String vmName, String newName);
 
     void startVirtualMachine(String vmName);

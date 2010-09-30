@@ -163,12 +163,13 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
                 }
             }
             System.out.println("Moving ...");
-            newServerProxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
-                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + newServer.getLocalName(), newServer.getLocalName(),base,
-                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
-                    procTime, (int) task.getNumberOfCoresAllocatedValue());
-            oldServerProxy.stopVirtualMachine(task.getLocalName());
-            oldServerProxy.deleteVirtualMachine(task.getLocalName());
+            newServerProxy.moveAction1(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + task.getLocalName(),task.getLocalName());
+//            newServerProxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
+//                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + newServer.getLocalName(), newServer.getLocalName(),base,
+//                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
+//                    procTime, (int) task.getNumberOfCoresAllocatedValue());
+            oldServerProxy.moveAction2(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + task.getLocalName(),task.getLocalName());
+
 //            oldServerProxy.moveSourceActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
 //                    task.getLocalName());
 //            newServerProxy.moveDestinationActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),

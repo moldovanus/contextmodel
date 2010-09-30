@@ -167,6 +167,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                     root.add(task);
                 }
                 workloadScheduleJTree = new JTree(root);
+                
 //                DefaultTreeModel model = (DefaultTreeModel) workloadScheduleJTree.getModel();
 //                model.setRoot(root);
                 workLoadScheduleScrollPane.setViewportView(workloadScheduleJTree);

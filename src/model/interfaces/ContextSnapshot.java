@@ -3,6 +3,7 @@ package model.interfaces;
 import jade.core.Agent;
 import model.impl.util.ModelAccess;
 import model.interfaces.actions.ContextAction;
+import utils.misc.DecisionTreeNode;
 
 import java.util.Queue;
 
@@ -15,12 +16,14 @@ import java.util.Queue;
  */
 public class ContextSnapshot implements Comparable {
     private Queue<ContextAction> actions;
+    private  DecisionTreeNode decisionTreeNode;
     private double contextEntropy = 0;
     private double rewardFunction = 0;
     public final static double gamma = 0.5d;
 
     public ContextSnapshot(final Queue<ContextAction> actions) {
         this.actions = actions;
+
     }
 
     public double getContextEntropy() {
@@ -42,7 +45,16 @@ public class ContextSnapshot implements Comparable {
             command.execute(modelAccess);
         }
     }
-//    // TODO: de scris metodele
+
+    public DecisionTreeNode getDecisionTreeNode() {
+        return decisionTreeNode;
+    }
+
+    public void setDecisionTreeNode(DecisionTreeNode decisionTreeNode) {
+        this.decisionTreeNode = decisionTreeNode;
+    }
+
+    //    // TODO: de scris metodele
 //    public void executeActionsOnOWL() {
 //        for (ContextAction command : actions) {
 //            command.executeOnWebService();

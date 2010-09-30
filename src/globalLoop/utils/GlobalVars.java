@@ -40,11 +40,11 @@ public final class GlobalVars {
     public static final String VIRTUAL_MACHINES_NETWORK_PATH = "\\\\WINDOWSSS2008\\VirtualMachines\\";
     public static final String GLOBAL_LOOP_CONTROLLER_IP = "192.168.1.10";
     public static final String BASE_VM_NAME_CPU = "CPUIntensive";//"Empty";
-    public static final String BASE_VM_NAME_MEM ="MEMntensive";
+    public static final String BASE_VM_NAME_MEM = "MEMntensive";
     public static final String BASE_VM_NAME_HDD = "IOIntensive";//"Empty";
     public static final String BROADCAST_IP_ADDRESS = "192.168.1.255";
     public static final String WAKE_UP_PORT = "0";
-    public static final String PHISICAL_PATH ="E:/VirtualMachines/";
+    public static final String PHYSICAL_PATH = "\\\\" + GLOBAL_LOOP_CONTROLLER_IP + "\\VirtualMachines\\";
     public static final int MAX_NAME_LENGTH = 10;
     public static final int MAX_TASK_LIFE_IN_MINUTES = 5;
     public static final String TASK_TEMPLATE_NAME = "TaskType";
@@ -53,7 +53,7 @@ public final class GlobalVars {
     public static final int INDIVIDUAL_DELETED = 0;
     public static final int INDIVIDUAL_CREATED = 1;
     public static final int INDIVIDUAL_MODIFIED = 2;
-   
+
     private static String x3DPlatformName = "acasa-25f3f1aa5:1099/JADE";
     private static String x3DPlatformAddress = "http://acasa-25f3f1aa5:7778/acc";
 

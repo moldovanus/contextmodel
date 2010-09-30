@@ -55,7 +55,8 @@ public class ServerInfoSAXHandler extends DefaultHandler {
     private static final String TOTAL_MEMORY = "TotalMemory";
     private static final String FREE_MEMORY = "FreeMemory";
     private static final String STRING ="string";
-
+    private static final String BOOL= "bool";
+    private static final String BOOLEAN = "boolean";
     private boolean inTotalCPU = false;
     private boolean inCoreCount = false;
     private boolean inFreeCPUVal = false;
@@ -70,6 +71,8 @@ public class ServerInfoSAXHandler extends DefaultHandler {
     private boolean energyInfo = false ;
     private String energyContent ;
     private String text;
+    private boolean booleanResponse = false;
+    private boolean booleanValue ;
 
 
     private final NumberFormat numberFormat = NumberFormat.getIntegerInstance();
@@ -94,6 +97,8 @@ public class ServerInfoSAXHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
+        if (localName.equals(BOOL)|| (localName.equals(BOOLEAN)))
+            booleanResponse =true;
         if (localName.equals(STRING))
             energyInfo = true;
         if (localName.equals(TOTAL_CPU)) {
@@ -120,6 +125,10 @@ public class ServerInfoSAXHandler extends DefaultHandler {
 
     public void endElement(String namespaceURI, String localName, String qualifiedName)
             throws SAXException {
+        if (localName.equals(BOOL)|| localName.equals(BOOLEAN)){
+            booleanResponse = false;
+            setBooleanValue(Boolean.getBoolean(text));
+        }
         if (localName.equals(STRING))
         {
              energyInfo = false;
@@ -191,8 +200,16 @@ public class ServerInfoSAXHandler extends DefaultHandler {
 
         if (inTotalCPU || inCoreCount
                 || inFreeCPUVal || inTotalMemory || inFreeMemory
-                || inStorageName || inStorageFreeSpace || inStorageSize || energyInfo) {
+                || inStorageName || inStorageFreeSpace || inStorageSize || energyInfo || booleanResponse) {
             text = new String(ch, start, length);
         }
+    }
+
+    public boolean isBooleanValue() {
+        return booleanValue;
+    }
+
+    public void setBooleanValue(boolean booleanValue) {
+        this.booleanValue = booleanValue;
     }
 }

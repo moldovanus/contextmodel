@@ -28,8 +28,6 @@ import model.interfaces.resources.applications.ApplicationActivity;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -209,6 +207,7 @@ public class PelletJena {
         } catch (SWRLParseException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+
     }
 
     public static void generateEnergyRule(OWLModel model, ITComputingContextPolicy currentPolicy) {
@@ -280,7 +279,7 @@ public class PelletJena {
 //                } catch (IOException e) {
 //                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 //                }
-        
+
     }
 
     public void checkRespected() {
