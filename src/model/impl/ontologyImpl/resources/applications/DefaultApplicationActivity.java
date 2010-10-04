@@ -85,41 +85,41 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
 
     // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf
 
-       public Collection getPartOf() {
-           return getPropertyValuesAs(getPartOfProperty(), ContextElement.class);
-       }
+    public Collection getPartOf() {
+        return getPropertyValuesAs(getPartOfProperty(), ContextElement.class);
+    }
 
 
-       public RDFProperty getPartOfProperty() {
-           final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf";
-           final String name = getOWLModel().getResourceNameForURI(uri);
-           return getOWLModel().getRDFProperty(name);
-       }
+    public RDFProperty getPartOfProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#partOf";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
+    }
 
 
-       public boolean hasPartOf() {
-           return getPropertyValueCount(getPartOfProperty()) > 0;
-       }
+    public boolean hasPartOf() {
+        return getPropertyValueCount(getPartOfProperty()) > 0;
+    }
 
 
-       public Iterator listPartOf() {
-           return listPropertyValuesAs(getPartOfProperty(), ContextElement.class);
-       }
+    public Iterator listPartOf() {
+        return listPropertyValuesAs(getPartOfProperty(), ContextElement.class);
+    }
 
 
-       public void addPartOf(ContextElement newPartOf) {
-           addPropertyValue(getPartOfProperty(), newPartOf);
-       }
+    public void addPartOf(ContextElement newPartOf) {
+        addPropertyValue(getPartOfProperty(), newPartOf);
+    }
 
 
-       public void removePartOf(ContextElement oldPartOf) {
-           removePropertyValue(getPartOfProperty(), oldPartOf);
-       }
+    public void removePartOf(ContextElement oldPartOf) {
+        removePropertyValue(getPartOfProperty(), oldPartOf);
+    }
 
 
-       public void setPartOf(Collection newPartOf) {
-           setPropertyValues(getPartOfProperty(), newPartOf);
-       }
+    public void setPartOf(Collection newPartOf) {
+        setPropertyValues(getPartOfProperty(), newPartOf);
+    }
 
     public void addReceivedCoreIndex(int i) {
         receivedCoresIndex.add(i);
@@ -130,11 +130,12 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
     }
 
     public void removeAllReceivedCoreIndex() {
-        receivedCoresIndex.clear();;
+        receivedCoresIndex.clear();
+        ;
     }
 
     public List<Integer> getReceivedCoreIndexes() {
-       return receivedCoresIndex;
+        return receivedCoresIndex;
     }
 
 
@@ -162,6 +163,25 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
     }
 
     public void removeAssociatedServer(ServiceCenterServer newAssociatedServer) {
-        removePropertyValue(getAssociatedServerProperty(),newAssociatedServer);
+        removePropertyValue(getAssociatedServerProperty(), newAssociatedServer);
+    }
+
+    public double getDistance(ApplicationActivity task2) {
+        double minDistance = 1000000f;
+        double memory1[] = {this.getMemRequiredMinValue(), this.getMemRequiredMaxValue(), this.getMemRequiredMaxValue(), this.getMemRequiredMinValue(), this.getMemRequiredMinValue(), this.getMemRequiredMaxValue(), this.getMemRequiredMaxValue(), this.getMemRequiredMinValue()};
+        double cpu1[] = {this.getCpuRequiredMinValue(), this.getCpuRequiredMinValue(), this.getCpuRequiredMaxValue(), this.getCpuRequiredMaxValue(), this.getCpuRequiredMinValue(), this.getCpuRequiredMinValue(), this.getCpuRequiredMaxValue(), this.getCpuRequiredMaxValue()};
+        double hdd1[] = {this.getHddRequiredMaxValue(), this.getHddRequiredMaxValue(), this.getHddRequiredMaxValue(), this.getHddRequiredMaxValue(), this.getHddRequiredMinValue(), this.getHddRequiredMinValue(), this.getHddRequiredMinValue(), this.getHddRequiredMinValue()};
+        double memory2[] = {task2.getMemRequiredMinValue(), task2.getMemRequiredMaxValue(), task2.getMemRequiredMaxValue(), task2.getMemRequiredMinValue(), task2.getMemRequiredMinValue(), task2.getMemRequiredMaxValue(), task2.getMemRequiredMaxValue(), task2.getMemRequiredMinValue()};
+        double cpu2[] = {task2.getCpuRequiredMinValue(), task2.getCpuRequiredMinValue(), task2.getCpuRequiredMaxValue(), task2.getCpuRequiredMaxValue(), task2.getCpuRequiredMinValue(), task2.getCpuRequiredMinValue(), task2.getCpuRequiredMaxValue(), task2.getCpuRequiredMaxValue()};
+        double hdd2[] = {task2.getHddRequiredMaxValue(), task2.getHddRequiredMaxValue(), task2.getHddRequiredMaxValue(), task2.getHddRequiredMaxValue(), task2.getHddRequiredMinValue(), task2.getHddRequiredMinValue(), task2.getHddRequiredMinValue(), task2.getHddRequiredMinValue()};
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                double dist = Math.sqrt((Math.pow(memory1[i] - memory2[j], 2) + Math.pow((cpu1[i] - cpu2[j]), 2) + Math.pow((hdd1[i] - hdd2[j]), 2)));
+                if (dist < minDistance) {
+                    dist = minDistance;
+                }
+            }
+        }
+        return minDistance;
     }
 }
