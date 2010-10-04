@@ -27,4 +27,5 @@ public interface ServiceCenterServer extends ComplexResource {
     public void resetInitialValues();
 
     public void markInitialValues();
+    public double distanceTo(ServiceCenterServer server);
 }

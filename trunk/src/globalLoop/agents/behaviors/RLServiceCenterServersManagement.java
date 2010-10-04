@@ -407,7 +407,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 }
 
 
-//             move actions
+//              move actions
                 Collection<ServiceCenterServer> servers1 = modelAccess.getAllServiceCenterServerInstances();
                 for (ServiceCenterServer sourceServer : servers) {
                     if (sourceServer.getIsActive()) {
@@ -904,9 +904,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                 TreePath path = parent.pathByAddingChild(n);
                 expandAll(tree, path);
             }
-        }
 
-        tree.expandPath(parent);
+        }
+        if ( node.getChildCount() > 2){
+            tree.expandPath(parent);
+        }
 
     }
 

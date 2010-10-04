@@ -32,6 +32,31 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
         setOptimumMEM(((MEM) getMemResources().iterator().next()).getOptimalWorkLoad().floatValue());
     }
 
+    public double distanceTo(ServiceCenterServer server) {
+        double totalMem = 0;
+        double minDistance = 100000;
+        for (Object mem : this.getMemResources())
+            totalMem += ((MEM) mem).getMaximumWorkLoad();
+
+        double memory1[] = {this.getOptimumMEM(), totalMem, totalMem, this.getOptimumMEM()};
+        double cpu1[] = {this.getOptimumCPU(), this.getOptimumCPU(), ((CPU) (this.getCpuResources().iterator().next())).getMaximumWorkLoad(), ((CPU) (this.getCpuResources().iterator().next())).getMaximumWorkLoad()};
+        totalMem = 0;
+        for (Object mem : server.getMemResources())
+            totalMem += ((MEM) mem).getMaximumWorkLoad();
+        double memory2[] = {((MEM)(server.getMemResources().iterator().next())).getOptimalWorkLoad(), totalMem, totalMem, ((MEM)(server.getMemResources().iterator().next())).getOptimalWorkLoad()};
+        double cpu2[] = {((CPU) (server.getCpuResources().iterator().next())).getOptimalWorkLoad(),((CPU) (server.getCpuResources().iterator().next())).getOptimalWorkLoad(), ((CPU) (server.getCpuResources().iterator().next())).getMaximumWorkLoad(), ((CPU) (server.getCpuResources().iterator().next())).getMaximumWorkLoad()};
+    for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                double dist = Math.sqrt((Math.pow(memory1[i] - memory2[j], 2) + Math.pow((cpu1[i] - cpu2[j]), 2) ));
+                if (dist < minDistance) {
+                    dist = minDistance;
+                }
+            }
+        }
+        return minDistance;
+
+    }
+
     public void resetInitialValues() {
         if (!hasOptimumCPU()) {
             markInitialValues();
