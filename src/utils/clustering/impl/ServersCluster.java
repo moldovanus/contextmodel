@@ -13,11 +13,12 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ServersCluster implements Cluster {
-    List<ServiceCenterServer> servers ;
+    List<ServiceCenterServer> servers;
     ServiceCenterServer clusterCentroid;
+
     public void addToCluster(Object o) {
-        servers.add((ServiceCenterServer)o);
-     }
+        servers.add((ServiceCenterServer) o);
+    }
 
     public void removeFromCluster(Object o) {
         servers.remove(o);
@@ -25,22 +26,27 @@ public class ServersCluster implements Cluster {
 
     public void refreshClusterCenter() {
         double smallestDistance = 0;
-       ServiceCenterServer intermCentroid = null;
-       for (ServiceCenterServer server:servers){
-           double distance = 0.0;
-           for (ServiceCenterServer taskTo:servers){
-              distance += server.distanceTo(taskTo);
-          }
-           if (distance<smallestDistance){
-               smallestDistance = distance;
-               intermCentroid = server;
-           }
-       }
-     clusterCentroid = intermCentroid;
+        ServiceCenterServer intermCentroid = null;
+        for (ServiceCenterServer server : servers) {
+            double distance = 0.0;
+            for (ServiceCenterServer taskTo : servers) {
+                distance += server.distanceTo(taskTo);
+            }
+            if (distance < smallestDistance) {
+                smallestDistance = distance;
+                intermCentroid = server;
+            }
+        }
+        clusterCentroid = intermCentroid;
     }
 
     public List getAllElements() {
         return servers;
     }
 
+    public double distanceToCluster(Object o) {
+        if (!(o instanceof ServiceCenterServer)) return INFINITY;
+        ServiceCenterServer task = (ServiceCenterServer) o;
+        return task.distanceTo(clusterCentroid);
+    }
 }
