@@ -28,22 +28,32 @@ public class TasksCluster implements Cluster {
 
     public void removeFromCluster(Object o) {
         tasks.remove(o);
+        if (o.equals(clusterCentroid)) refreshClusterCentroid();
     }
 
-    public void refreshClusterCenter() {
-        double smallestDistance = 0;
+    public boolean refreshClusterCentroid() {
+        double smallestDistance = Cluster.INFINITY;
         ApplicationActivity intermCentroid = null;
         for (ApplicationActivity task : tasks) {
             double distance = 0.0;
+            int i = 0;
             for (ApplicationActivity taskTo : tasks) {
                 distance += task.getDistance(taskTo);
+                i++;
             }
-            if (distance < smallestDistance) {
+
+            if ((distance / i) < smallestDistance) {
                 smallestDistance = distance;
                 intermCentroid = task;
             }
         }
-        clusterCentroid = intermCentroid;
+        boolean ok = false;
+        if (clusterCentroid != null && clusterCentroid.equals(intermCentroid)) {
+            ok = true;
+        } else {
+            clusterCentroid = intermCentroid;
+        }
+        return ok;
     }
 
     public List getAllElements() {
@@ -53,6 +63,32 @@ public class TasksCluster implements Cluster {
     public double distanceToCluster(Object o) {
         if (!(o instanceof ApplicationActivity)) return INFINITY;
         ApplicationActivity task = (ApplicationActivity) o;
+        if (clusterCentroid == null) refreshClusterCentroid();
+            if (tasks.size()==0) return 0;
         return task.getDistance(clusterCentroid);
+    }
+
+    public Object getClusterCentroid() {
+        return clusterCentroid;
+    }
+
+    public boolean equals(Object o) {
+        if (!(o instanceof Cluster || o instanceof TasksCluster)) return false;
+        TasksCluster tasksCluster = (TasksCluster) o;
+        //TODO: Check if need the same centroids
+        if (tasksCluster.getAllElements().size()!=tasks.size()) return false;
+        if (tasksCluster.getAllElements().size()==0 && tasks.size()==0) return true;
+        if (!clusterCentroid.equals(tasksCluster.getClusterCentroid())) return false;
+        for (Object task : tasksCluster.getAllElements()) {
+            if (!(task instanceof ApplicationActivity)) return false;
+            if (!tasksCluster.contains(task)) return false;
+        }
+        return true;
+    }
+
+    public boolean contains(Object o) {
+        if (!(o instanceof ApplicationActivity)) return false;
+        if (tasks.contains(o)) return true;
+        return false;
     }
 }

@@ -24,7 +24,7 @@ public class ServersCluster implements Cluster {
         servers.remove(o);
     }
 
-    public void refreshClusterCenter() {
+    public boolean refreshClusterCentroid() {
         double smallestDistance = 0;
         ServiceCenterServer intermCentroid = null;
         for (ServiceCenterServer server : servers) {
@@ -37,7 +37,10 @@ public class ServersCluster implements Cluster {
                 intermCentroid = server;
             }
         }
+        boolean ok = false;
+        if (clusterCentroid.equals(intermCentroid))ok = true;
         clusterCentroid = intermCentroid;
+        return ok;
     }
 
     public List getAllElements() {
@@ -49,4 +52,27 @@ public class ServersCluster implements Cluster {
         ServiceCenterServer task = (ServiceCenterServer) o;
         return task.distanceTo(clusterCentroid);
     }
+
+    public Object getClusterCentroid() {
+        return clusterCentroid;
+    }
+    public boolean equals(Object o){
+      if (!(o instanceof Cluster || o instanceof ServersCluster)) return false;
+        ServersCluster serversCluster= (ServersCluster) o;
+        //TODO: Check if need the same centroids
+      if (!clusterCentroid.equals(serversCluster.getClusterCentroid())) return false;
+      for (Object sv : serversCluster.getAllElements()){
+            if (!(sv instanceof ServiceCenterServer)) return false;
+          if (! servers.contains(sv)) return false;
+      }
+        return true;
+    }
+    public boolean contains ( Object o){
+        if (!(o instanceof ServiceCenterServer)) return false;
+        if (servers.contains(o)) return true;
+        return false;
+    }
+
+
+
 }
