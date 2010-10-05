@@ -1,5 +1,6 @@
 package utils.clustering.impl;
 
+import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
 import utils.clustering.Cluster;
 import utils.clustering.ClusteringAlgorithm;
@@ -16,16 +17,34 @@ import java.util.List;
  */
 public class KMeansClustering implements ClusteringAlgorithm {
     List objects;
+    List<Cluster> clusters;
     public static int K = 10;
-    public static int maxNrSteps = 100;
+    public static final int MAXNRSTEPS = 100;
+    public KMeansClustering(){
+        
+    }
     public KMeansClustering(int k) {
         K = k;
     }
 
+    public Cluster getNearestCluster(Object o) {
+        double smallestDist = Cluster.INFINITY;
+        Cluster closestCluster = null;
+        for (Cluster cl : clusters) {
+            double dist = cl.distanceToCluster(o);
+            if (dist < smallestDist) {
+                smallestDist = dist;
+                closestCluster = cl;
+            }
+        }
+        return closestCluster;
+    }
+
     public void initializeClusters(List objects) {
+        this.objects = objects;
         if (objects.get(0) instanceof ApplicationActivity) {
             List<ApplicationActivity> tasks = (List<ApplicationActivity>) objects;
-            List<Cluster> clusters = new ArrayList<Cluster>();
+            clusters = new ArrayList<Cluster>();
             int nr = 0;
             for (int i = 0; i < K; i++) {
                 Cluster cl = new TasksCluster();
@@ -35,25 +54,70 @@ public class KMeansClustering implements ClusteringAlgorithm {
                     step++;
                     nr++;
                 }
-
+                clusters.add(i, cl);
             }
-            boolean changed = true;
-
-            while (changed){
-
+        } else {
+            List<ServiceCenterServer> tasks = (List<ServiceCenterServer>) objects;
+            clusters = new ArrayList<Cluster>();
+            int nr = 0;
+            for (int i = 0; i < K; i++) {
+                Cluster cl = new ServersCluster();
+                int step = 0;
+                while (step < tasks.size() / K && nr < tasks.size()) {
+                    cl.addToCluster(tasks.get(nr));
+                    step++;
+                    nr++;
+                }
+                clusters.add(i, cl);
             }
+
         }
+        for (Cluster cl : clusters) cl.refreshClusterCentroid();
+        refreshClusters();
+
     }
 
-    public void getClosestCluster(Object object) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     public void addObjectToKnowledgeBase(Object object) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        objects.add(object);
+        getNearestCluster(object).addToCluster(object);
+        refreshClusters();
+    }
+
+    public void addObjectsToKnowledgeBase(List objects) {
+        objects.addAll(objects);
+        for (Object o:objects){
+                getNearestCluster(o).addToCluster(o);
+          }
+
     }
 
     public void refreshClusters() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        boolean changed = true;
+        int i = 0;
+        while (changed && MAXNRSTEPS > i) {
+            changed = false;
+            for (Cluster cl : clusters) {
+                List elements = cl.getAllElements();
+                List objectsToBeRemoved = new ArrayList();
+                for (Object o : elements) {
+                    if (o==null)
+                    System.out.println("BAi here!");
+                    Cluster nearest = getNearestCluster(o);
+                    if (!nearest.equals(cl)) {
+                        objectsToBeRemoved.add(o);
+                        nearest.addToCluster(o);
+                        changed = true;
+                    }
+                }
+                for (Object o : objectsToBeRemoved){
+                    cl.removeFromCluster(o);
+                }
+            }
+            if (changed) {
+                for (Cluster cl : clusters) cl.refreshClusterCentroid();
+            }
+            i++;
+        }
     }
 }

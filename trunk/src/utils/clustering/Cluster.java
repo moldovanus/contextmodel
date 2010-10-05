@@ -13,7 +13,11 @@ public interface Cluster {
     public final int INFINITY= 100000;
     public void addToCluster (Object o);
     public void removeFromCluster (Object o);
-    public void refreshClusterCenter();
+    public boolean refreshClusterCentroid();
     public List getAllElements();
     public double distanceToCluster(Object o);
-}
+    public Object getClusterCentroid();
+    public boolean equals(Object o);
+    public boolean contains(Object o);
+
+   }

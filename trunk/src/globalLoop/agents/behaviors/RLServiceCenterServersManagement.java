@@ -15,6 +15,9 @@ import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
 import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
+import utils.clustering.Cluster;
+import utils.clustering.ClusteringAlgorithm;
+import utils.clustering.ClusteringAlgorithmFactory;
 import utils.exceptions.IndividualNotFoundException;
 import utils.logger.LoggerGUI;
 import utils.misc.DecisionTreeNode;
@@ -689,6 +692,18 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             ContextSnapshot result = reinforcementLearning(queue);
             java.util.Date after = new java.util.Date();
             modelAccess.setSimulation(false);
+            Collection<ApplicationActivity> tasks =modelAccess.getAllApplicationActivityInstances();
+            ClusteringAlgorithmFactory factory = new ClusteringAlgorithmFactory();
+            Object [] data = new Object[1];
+            data[0]=3;
+            try {
+                ClusteringAlgorithm kMeans = factory.createAlgorithm(ClusteringAlgorithm.KMEANS,data);
+                kMeans.initializeClusters((List)tasks);
+                Cluster cl = kMeans.getNearestCluster(tasks.iterator().next());
+                System.out.println (cl.toString());
+            } catch (Exception e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
 
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             try {

@@ -10,11 +10,13 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface ClusteringAlgorithm {
+    public static final String KMEANS = "KMeans";
+    public static final String HIERARCHICAL="Hierarhical";
     public void initializeClusters(List objects);
 
-    public void getClosestCluster(Object object);
+    public Cluster getNearestCluster(Object object);
 
     public void addObjectToKnowledgeBase(Object object);
-
+    public void addObjectsToKnowledgeBase(List objects);
     public void refreshClusters();
 }
