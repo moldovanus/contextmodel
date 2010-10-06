@@ -4,7 +4,6 @@ import globalLoop.utils.GlobalVars;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
 import utils.worldInterface.dtos.ServerDto;
 
@@ -100,7 +99,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         return serverDto;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void moveDestinationActions(String path1, String path2, String vmName) {
+    public void moveDestinationActions(String from, String to, String vmName) {
         try {
             //Socket sock = new Socket(hostName, 80);
 
@@ -108,8 +107,8 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //                    "<soap12:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">\n" +
 //                    "  <soap12:Body>\n" +
 //                    "    <MoveDestinationActions  xmlns=\"http://www.SelfOptimizingDatacenter.edu/\">\n" +
-//                    "      <path1>" + path1 + "</path1>\n" +
-//                    "      <path2>" + path2 + "</path2>\n" +
+//                    "      <from>" + from + "</from>\n" +
+//                    "      <to>" + to + "</to>\n" +
 //                    "      <vmName>" + vmName + "</vmName>\n" +
 //                    "    </MoveDestinationActions >\n" +
 //                    "  </soap12:Body>\n" +
@@ -125,13 +124,13 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            socket.getOutputStream().write(content.getBytes());
 //            System.out.println(header);
 //            System.out.println(content);
-            File file1 = new File(path1);
-            File file2 = new File(path2);
+            File file1 = new File(from);
+            File file2 = new File(to);
             file1.mkdir();
             file2.mkdir();
-            copyDirectory(new File(path1 + "/" + vmName), new File(path2 + "/" + vmName));
-            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions?path1="
-                    + path2 + "&path2=" + path2 + "&vmName=" + vmName);
+            copyDirectory(new File(from + "/" + vmName + "/"), new File(to + "/" + vmName));
+            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions?from="
+                    + to + "&to=" + to + "&vmName=" + vmName);
             URLConnection connection = url.openConnection();
             System.out.println(url);
 //            URL url = new URL("http://" + hostName + "/Service1.asmx/MoveDestinationActions");
@@ -140,7 +139,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 //            connection.setDoOutput(true);
 //
 //            //Send header
-//            String data = "path1=" + path1 + "&path2=" + path2 + "&vmName=" + vmName;
+//            String data = "from=" + from + "&to=" + to + "&vmName=" + vmName;
 //            BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "utf-8"));
 //            wr.write("POST /Service1.asmx/MoveDestinationActions HTTP/1.1\r\n");
 //            wr.write("Host: " + hostName + "\r\n");
@@ -229,7 +228,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
 
             deleteVirtualMachine(vmName);
             copyDirectory(new File(GlobalVars.PHYSICAL_PATH + "Config/" + vmName)
-                    ,new File(GlobalVars.PHYSICAL_PATH + vmName));
+                    , new File(GlobalVars.PHYSICAL_PATH + vmName));
 //            InputStream in = new FileInputStream(GlobalVars.PHYSICAL_PATH + "Config/" + vmName + "/config.xml");
 //            OutputStream out = new FileOutputStream(GlobalVars.PHYSICAL_PATH + vmName + "/config.xml");
 //
@@ -449,7 +448,7 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
                 System.out.println(ok);
             }
 
-             String[] children = sourceLocation.list();
+            String[] children = sourceLocation.list();
             for (int i = 0; i < children.length; i++) {
                 copyDirectory(new File(sourceLocation, children[i]),
                         new File(targetLocation, children[i]));
@@ -686,15 +685,15 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         return "";
     }
 
-    public static void main(String[] args) {
-        ProxyFactory.setReturnStub(false);
-        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.1.13");
-        ServerManagementProxyInterface proxy1 = ProxyFactory.createServerManagementProxy("192.168.1.11");
-
-        proxy.moveAction1("\\\\192.168.1.10\\VirtualMachines\\Config\\CPUIntensive", "CPUIntensive");
-//        proxy1.startVirtualMachine("CPUIntensive");
-        proxy1.moveAction2("\\\\192.168.1.10\\VirtualMachines\\", "CPUIntensive");
-//        proxy.deleteVirtualMachine("A");
-    }
+//    public static void main(String[] args) {
+//        ProxyFactory.setReturnStub(false);
+//        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy("192.168.1.13");
+//        ServerManagementProxyInterface proxy1 = ProxyFactory.createServerManagementProxy("192.168.1.11");
+//
+//        proxy.moveAction1("\\\\192.168.1.10\\VirtualMachines\\Config\\CPUIntensive", "CPUIntensive");
+////        proxy1.startVirtualMachine("CPUIntensive");
+//        proxy1.moveAction2("\\\\192.168.1.10\\VirtualMachines\\", "CPUIntensive");
+////        proxy.deleteVirtualMachine("A");
+//    }
 
 }

@@ -18,6 +18,7 @@ import reasoning.impl.PelletEvaluator;
 import utils.clustering.Cluster;
 import utils.clustering.ClusteringAlgorithm;
 import utils.clustering.ClusteringAlgorithmFactory;
+import utils.contextSituationsAccess.*;
 import utils.exceptions.IndividualNotFoundException;
 import utils.logger.LoggerGUI;
 import utils.misc.DecisionTreeNode;
@@ -35,6 +36,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -679,6 +681,17 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         queue.add(initialContext);
 
         if (entropyAndPolicy.getFirst() > 0) {
+            ContextSituationDto situationDto = new ContextSituationDto();
+            Collection<ServiceCenterServer> serversList = modelAccess.getAllServiceCenterServerInstances();
+            Collection<ApplicationActivity> tasks = modelAccess.getAllApplicationActivityInstances();
+
+            for (ServiceCenterServer server : serversList) {
+                situationDto.addServerDto(ServerToDtoMapper.map(server));
+            }
+
+            for (ApplicationActivity activity : tasks) {
+                situationDto.addTaskDto(TaskToDtoMapper.map(activity));
+            }
 
             ArrayList<String> message = new ArrayList<String>();
             message.add("Entropy: " + entropyAndPolicy.getFirst()
@@ -692,15 +705,15 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             ContextSnapshot result = reinforcementLearning(queue);
             java.util.Date after = new java.util.Date();
             modelAccess.setSimulation(false);
-            Collection<ServiceCenterServer> servers1 =modelAccess.getAllServiceCenterServerInstances();
+            Collection<ServiceCenterServer> servers1 = modelAccess.getAllServiceCenterServerInstances();
             ClusteringAlgorithmFactory factory = new ClusteringAlgorithmFactory();
-            Object [] data = new Object[1];
-            data[0]=3;
+            Object[] data = new Object[1];
+            data[0] = 3;
             try {
-                ClusteringAlgorithm kMeans = factory.createAlgorithm(ClusteringAlgorithm.KMEANS,data);
-                kMeans.initializeClusters((List)servers1);
+                ClusteringAlgorithm kMeans = factory.createAlgorithm(ClusteringAlgorithm.KMEANS, data);
+                kMeans.initializeClusters((List) servers1);
                 Cluster cl = kMeans.getNearestCluster(servers1.iterator().next());
-                System.out.println (cl.toString());
+                System.out.println(cl.toString());
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -717,11 +730,18 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             ArrayList<String> newMessage = new ArrayList<String>();
             Queue<ContextAction> actions = result.getActions();
             for (ContextAction action : actions) {
+                situationDto.addActionDto(ActionToDtoMapper.map(action));
                 System.out.println("Executing: " + action.toString());
                 sendLogToGUI("Executing: " + action.toString());
                 newMessage.add(action.toString());
                 action.execute(modelAccess);
                 action.executeOnServiceCenter(modelAccess);
+            }
+
+            try {
+                ContextSituationAccess.saveContextSituation(situationDto);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
             logger.log(Color.ORANGE, "Decision result", newMessage);
 
@@ -921,7 +941,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
 
         }
-        if ( node.getChildCount() > 2){
+        if (node.getChildCount() > 2) {
             tree.expandPath(parent);
         }
 
