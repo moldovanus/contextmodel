@@ -3,6 +3,7 @@ package utils.clustering.impl;
 import model.interfaces.resources.ServiceCenterServer;
 import utils.clustering.Cluster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,9 @@ import java.util.List;
 public class ServersCluster implements Cluster {
     List<ServiceCenterServer> servers;
     ServiceCenterServer clusterCentroid;
-
+    public ServersCluster (){
+        servers = new ArrayList<ServiceCenterServer>();
+    }
     public void addToCluster(Object o) {
         servers.add((ServiceCenterServer) o);
     }
@@ -25,7 +28,11 @@ public class ServersCluster implements Cluster {
     }
 
     public boolean refreshClusterCentroid() {
-        double smallestDistance = 0;
+        double smallestDistance = Cluster.INFINITY;
+        if (servers.size()==1){
+            clusterCentroid=servers.get(0);
+            return true;
+        }
         ServiceCenterServer intermCentroid = null;
         for (ServiceCenterServer server : servers) {
             double distance = 0.0;
@@ -38,8 +45,12 @@ public class ServersCluster implements Cluster {
             }
         }
         boolean ok = false;
-        if (clusterCentroid.equals(intermCentroid))ok = true;
-        clusterCentroid = intermCentroid;
+        if (clusterCentroid != null && clusterCentroid.equals(intermCentroid)) {
+            ok = true;
+        } else {
+            clusterCentroid = intermCentroid;
+        }
+
         return ok;
     }
 
@@ -49,8 +60,13 @@ public class ServersCluster implements Cluster {
 
     public double distanceToCluster(Object o) {
         if (!(o instanceof ServiceCenterServer)) return INFINITY;
-        ServiceCenterServer task = (ServiceCenterServer) o;
-        return task.distanceTo(clusterCentroid);
+        ServiceCenterServer server = (ServiceCenterServer) o;
+         if (clusterCentroid == null){
+             refreshClusterCentroid();
+         }
+            if (servers.size()==0) return 0;
+       System.out.println(clusterCentroid);
+        return server.distanceTo(clusterCentroid);
     }
 
     public Object getClusterCentroid() {

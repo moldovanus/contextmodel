@@ -692,14 +692,14 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             ContextSnapshot result = reinforcementLearning(queue);
             java.util.Date after = new java.util.Date();
             modelAccess.setSimulation(false);
-            Collection<ApplicationActivity> tasks =modelAccess.getAllApplicationActivityInstances();
+            Collection<ServiceCenterServer> servers1 =modelAccess.getAllServiceCenterServerInstances();
             ClusteringAlgorithmFactory factory = new ClusteringAlgorithmFactory();
             Object [] data = new Object[1];
             data[0]=3;
             try {
                 ClusteringAlgorithm kMeans = factory.createAlgorithm(ClusteringAlgorithm.KMEANS,data);
-                kMeans.initializeClusters((List)tasks);
-                Cluster cl = kMeans.getNearestCluster(tasks.iterator().next());
+                kMeans.initializeClusters((List)servers1);
+                Cluster cl = kMeans.getNearestCluster(servers1.iterator().next());
                 System.out.println (cl.toString());
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

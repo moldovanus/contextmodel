@@ -49,7 +49,7 @@ public class DefaultServiceCenterServer extends DefaultComplexResource
             for (int j = 0; j < 4; j++) {
                 double dist = Math.sqrt((Math.pow(memory1[i] - memory2[j], 2) + Math.pow((cpu1[i] - cpu2[j]), 2) ));
                 if (dist < minDistance) {
-                    dist = minDistance;
+                   minDistance = dist;
                 }
             }
         }
