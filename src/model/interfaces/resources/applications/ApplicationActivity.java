@@ -65,5 +65,5 @@ public interface ApplicationActivity extends BusinessContextResource {
 
     void setAssociatedServer(ServiceCenterServer newAssociatedServer);
     void removeAssociatedServer(ServiceCenterServer newAssociatedServer);
-    double getDistance( ApplicationActivity task2);
+   
 }

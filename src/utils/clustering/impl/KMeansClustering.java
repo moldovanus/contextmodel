@@ -4,6 +4,8 @@ import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
 import utils.clustering.Cluster;
 import utils.clustering.ClusteringAlgorithm;
+import utils.worldInterface.dtos.ExtendedServerDto;
+import utils.worldInterface.dtos.ExtendedTaskDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,11 @@ public class KMeansClustering implements ClusteringAlgorithm {
     List<Cluster> clusters;
     public static int K = 10;
     public static final int MAXNRSTEPS = 100;
-    public KMeansClustering(){
-        
+
+    public KMeansClustering() {
+
     }
+
     public KMeansClustering(int k) {
         K = k;
     }
@@ -41,9 +45,9 @@ public class KMeansClustering implements ClusteringAlgorithm {
     }
 
     public int getBelongingCluster(Object object) {
-        int i=0;
-        for (Cluster cl:clusters){
-            if (cl.contains(object))return i;
+        int i = 0;
+        for (Cluster cl : clusters) {
+            if (cl.contains(object)) return i;
             i++;
         }
         return -1;
@@ -51,8 +55,8 @@ public class KMeansClustering implements ClusteringAlgorithm {
 
     public void initializeClusters(List objects) {
         this.objects = objects;
-        if (objects.get(0) instanceof ApplicationActivity) {
-            List<ApplicationActivity> tasks = (List<ApplicationActivity>) objects;
+        if (objects.get(0) instanceof ExtendedTaskDto) {
+            List<ExtendedTaskDto> tasks = (List<ExtendedTaskDto>) objects;
             clusters = new ArrayList<Cluster>();
             int nr = 0;
             for (int i = 0; i < K; i++) {
@@ -66,22 +70,24 @@ public class KMeansClustering implements ClusteringAlgorithm {
                 clusters.add(i, cl);
             }
         } else {
-            List<ServiceCenterServer> tasks = (List<ServiceCenterServer>) objects;
+            List<ExtendedServerDto> tasks = (List<ExtendedServerDto>) objects;
             clusters = new ArrayList<Cluster>();
             int nr = 0;
             for (int i = 0; i < K; i++) {
-                Cluster cl = new ServersCluster();
+                Cluster cluster = new ServersCluster();
                 int step = 0;
                 while (step < tasks.size() / K && nr < tasks.size()) {
-                    cl.addToCluster(tasks.get(nr));
+                    cluster.addToCluster(tasks.get(nr));
                     step++;
                     nr++;
                 }
-                clusters.add(i, cl);
+                clusters.add(i, cluster);
             }
 
         }
-        for (Cluster cl : clusters) cl.refreshClusterCentroid();
+        for (Cluster cl : clusters) {
+            cl.refreshClusterCentroid();
+        }
         refreshClusters();
 
     }
@@ -99,9 +105,12 @@ public class KMeansClustering implements ClusteringAlgorithm {
 
     public void addObjectsToKnowledgeBase(List objects) {
         objects.addAll(objects);
-        for (Object o:objects){
-                getNearestCluster(o).addToCluster(o);
-          }
+        for (Object o : objects) {
+            Cluster cluster = getNearestCluster(o);
+            if (cluster != null) {
+                cluster.addToCluster(o);
+            }
+        }
 
     }
 
@@ -114,16 +123,16 @@ public class KMeansClustering implements ClusteringAlgorithm {
                 List elements = cl.getAllElements();
                 List objectsToBeRemoved = new ArrayList();
                 for (Object o : elements) {
-                    if (o==null)
-                    System.out.println("BAi here!");
+                    if (o == null)
+                        System.out.println("BAi here!");
                     Cluster nearest = getNearestCluster(o);
-                    if (!nearest.equals(cl)) {
+                    if (nearest != null && !nearest.equals(cl)) {
                         objectsToBeRemoved.add(o);
                         nearest.addToCluster(o);
                         changed = true;
                     }
                 }
-                for (Object o : objectsToBeRemoved){
+                for (Object o : objectsToBeRemoved) {
                     cl.removeFromCluster(o);
                 }
             }
