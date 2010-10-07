@@ -166,22 +166,5 @@ public class DefaultApplicationActivity extends DefaultBusinessContextResource
         removePropertyValue(getAssociatedServerProperty(), newAssociatedServer);
     }
 
-    public double getDistance(ApplicationActivity task2) {
-        double minDistance = 1000000f;
-        double memory1[] = {this.getMemRequiredMinValue(), this.getMemRequiredMaxValue(), this.getMemRequiredMaxValue(), this.getMemRequiredMinValue(), this.getMemRequiredMinValue(), this.getMemRequiredMaxValue(), this.getMemRequiredMaxValue(), this.getMemRequiredMinValue()};
-        double cpu1[] = {this.getCpuRequiredMinValue(), this.getCpuRequiredMinValue(), this.getCpuRequiredMaxValue(), this.getCpuRequiredMaxValue(), this.getCpuRequiredMinValue(), this.getCpuRequiredMinValue(), this.getCpuRequiredMaxValue(), this.getCpuRequiredMaxValue()};
-        double hdd1[] = {this.getHddRequiredMaxValue(), this.getHddRequiredMaxValue(), this.getHddRequiredMaxValue(), this.getHddRequiredMaxValue(), this.getHddRequiredMinValue(), this.getHddRequiredMinValue(), this.getHddRequiredMinValue(), this.getHddRequiredMinValue()};
-        double memory2[] = {task2.getMemRequiredMinValue(), task2.getMemRequiredMaxValue(), task2.getMemRequiredMaxValue(), task2.getMemRequiredMinValue(), task2.getMemRequiredMinValue(), task2.getMemRequiredMaxValue(), task2.getMemRequiredMaxValue(), task2.getMemRequiredMinValue()};
-        double cpu2[] = {task2.getCpuRequiredMinValue(), task2.getCpuRequiredMinValue(), task2.getCpuRequiredMaxValue(), task2.getCpuRequiredMaxValue(), task2.getCpuRequiredMinValue(), task2.getCpuRequiredMinValue(), task2.getCpuRequiredMaxValue(), task2.getCpuRequiredMaxValue()};
-        double hdd2[] = {task2.getHddRequiredMaxValue(), task2.getHddRequiredMaxValue(), task2.getHddRequiredMaxValue(), task2.getHddRequiredMaxValue(), task2.getHddRequiredMinValue(), task2.getHddRequiredMinValue(), task2.getHddRequiredMinValue(), task2.getHddRequiredMinValue()};
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                double dist = Math.sqrt((Math.pow(memory1[i] - memory2[j], 2) + Math.pow((cpu1[i] - cpu2[j]), 2) + Math.pow((hdd1[i] - hdd2[j]), 2)));
-                if (dist < minDistance) {
-                    minDistance = dist;
-                }
-            }
-        }
-        return minDistance;
-    }
+ 
 }
