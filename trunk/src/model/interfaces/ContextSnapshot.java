@@ -98,7 +98,7 @@ public class ContextSnapshot implements Comparable {
         this.rewardFunction = rewardFunction;
     }
 
-    /* public int compareTo(Object o) {
+    /* public int equals(Object o) {
 
   if (o.getClass() != this.getClass())
       return 0;

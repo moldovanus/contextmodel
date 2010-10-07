@@ -5,6 +5,9 @@ import globalLoop.utils.GlobalVars;
 import jade.core.AID;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+import model.impl.ontologyImpl.actions.DefaultDeployActivityAction;
+import model.impl.ontologyImpl.actions.DefaultMigrateActivityAction;
+import model.impl.ontologyImpl.actions.DefaultSetServerStateAction;
 import model.impl.util.ModelAccess;
 import model.interfaces.ContextSnapshot;
 import model.interfaces.actions.*;
@@ -28,6 +31,9 @@ import utils.negotiator.impl.NegotiatorFactory;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
+import utils.worldInterface.dtos.ActionDto;
+import utils.worldInterface.dtos.ExtendedServerDto;
+import utils.worldInterface.dtos.ExtendedTaskDto;
 import utils.worldInterface.dtos.ServerDto;
 
 import javax.swing.*;
@@ -36,7 +42,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -283,7 +288,6 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         return retServer;
     }
 
-
     private ContextSnapshot reinforcementLearning(PriorityQueue<ContextSnapshot> queue) {
         System.out.println("STACK depth: " + stackDepth++);
 
@@ -307,6 +311,65 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             stackDepth = 0;
             return smallestEntropyContext;
         }
+
+        ContextSituationDto contextSituationDto = ContextSituationToDtoMapper.map(modelAccess);
+        Collection<ContextSituationDto> contextSituationDtos;
+        List<ContextAction> actionsList = new ArrayList<ContextAction>();
+
+        try {
+            contextSituationDtos = ContextSituationAccess.getSituations();
+            for (ContextSituationDto situationDto : contextSituationDtos) {
+                if (contextSituationDto.equals(situationDto)) {
+                    System.err.println("Match found");
+                    List<ActionDto> actionDtos = contextSituationDto.getActions();
+                    Map<String, String> serversMatch = contextSituationDto.matchServers(situationDto);
+                    Map<String, String> tasksMatch = contextSituationDto.matchTasks(situationDto);
+                    for (ActionDto actionDto : actionDtos) {
+                        String className = actionDto.getActionClassName();
+                        List<String> resources = actionDto.getContextResources();
+                        ContextAction action = null;
+                        if (className.equals(DefaultDeployActivityAction.class.getName())) {
+                            action =
+                                    (DefaultDeployActivityAction) Class.forName(actionDto.getActionClassName()).newInstance();
+                        } else if (className.equals(DefaultMigrateActivityAction.class.getName())) {
+                            action =
+                                    (DefaultMigrateActivityAction) Class.forName(actionDto.getActionClassName()).newInstance();
+                        } else if (className.equals(DefaultSetServerStateAction.class.getName())) {
+                            action =
+                                    (DefaultSetServerStateAction) Class.forName(actionDto.getActionClassName()).newInstance();
+                        }
+                        if (action == null) {
+                            System.err.println("Something gone wrong la cautat in save");
+
+                        } else {
+                            for (String string : resources) {
+                                if (tasksMatch.containsKey(string)) {
+                                    action.addResource(modelAccess.getContextResource(tasksMatch.get(string)));
+                                } else if (serversMatch.containsKey(string)) {
+                                    action.addResource(modelAccess.getContextResource(serversMatch.get(string)));
+                                }
+                            }
+                            actionsList.add(action);
+                        }
+                    }
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        if (actionsList.size() > 0) {
+            newContext.setActions(new PriorityQueue<ContextAction>(actionsList));
+            return newContext;
+        }
+
         System.out.println("Step no " + stackDepth + " :----------------------------");
         sendLogToGUI("Step no " + stackDepth + "\n :----------------------------");
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
@@ -346,17 +409,17 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
         System.out.println("\n Entropy: " + entropyAndPolicy.getFirst()
 //                  + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond().size() == 0) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
         sendLogToGUI("\n Entropy: " + entropyAndPolicy.getFirst()
 //                + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond().size() == 0) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
         System.out.println("------------------------------");
 
 
         ArrayList<String> simulationResultMessage = new ArrayList<String>();
         simulationResultMessage.add("\n Entropy: " + entropyAndPolicy.getFirst()
                 + ",  Reward: " + newContext.getRewardFunction()
-                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond() == null) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
+                + ",  BrokenPolicy: " + ((entropyAndPolicy.getSecond().size() == 0) ? "none" : entropyAndPolicy.getSecond().get(0).getLocalName()) + "\n");
         logger.log(Color.black, "Simulation result context", simulationResultMessage);
 
         List<ContextResource> associatedTasks = new ArrayList<ContextResource>();
@@ -710,10 +773,18 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Object[] data = new Object[1];
             data[0] = 3;
             try {
-                ClusteringAlgorithm kMeans = factory.createAlgorithm(ClusteringAlgorithm.KMEANS, data);
-                kMeans.initializeClusters((List) servers1);
-                Cluster cl = kMeans.getNearestCluster(servers1.iterator().next());
-                System.out.println(cl.toString());
+                ClusteringAlgorithm kMeans = factory.getKMeansAlgorithm(3);
+                List<ExtendedServerDto> extendedServerDtos = new ArrayList<ExtendedServerDto>();
+                for (ServiceCenterServer serviceCenterServer : servers) {
+                    extendedServerDtos.add(ServerToDtoMapper.map(serviceCenterServer));
+                }
+                kMeans.initializeClusters(extendedServerDtos);
+                Cluster cl = kMeans.getNearestCluster(ServerToDtoMapper.map(servers1.iterator().next()));
+                if (cl != null) {
+                    System.out.println(cl.toString());
+                } else {
+                    System.out.println("CLuster null");
+                }
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
