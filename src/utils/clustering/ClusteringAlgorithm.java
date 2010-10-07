@@ -13,9 +13,9 @@ public interface ClusteringAlgorithm {
     public static final String KMEANS = "KMeans";
     public static final String HIERARCHICAL="Hierarhical";
     public void initializeClusters(List objects);
-
+    public int getNrOfClusters();
     public Cluster getNearestCluster(Object object);
-
+    public int getBelongingCluster(Object object);
     public void addObjectToKnowledgeBase(Object object);
     public void addObjectsToKnowledgeBase(List objects);
     public void refreshClusters();

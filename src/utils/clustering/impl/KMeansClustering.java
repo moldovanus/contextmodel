@@ -40,6 +40,15 @@ public class KMeansClustering implements ClusteringAlgorithm {
         return closestCluster;
     }
 
+    public int getBelongingCluster(Object object) {
+        int i=0;
+        for (Cluster cl:clusters){
+            if (cl.contains(object))return i;
+            i++;
+        }
+        return -1;
+    }
+
     public void initializeClusters(List objects) {
         this.objects = objects;
         if (objects.get(0) instanceof ApplicationActivity) {
@@ -75,6 +84,10 @@ public class KMeansClustering implements ClusteringAlgorithm {
         for (Cluster cl : clusters) cl.refreshClusterCentroid();
         refreshClusters();
 
+    }
+
+    public int getNrOfClusters() {
+        return clusters.size();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
 

@@ -2,10 +2,7 @@ package utils.contextSituationsAccess;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,7 +20,10 @@ public class ContextSituationAccess {
     private ContextSituationAccess() {
     }
 
-    public static Collection<ContextSituationDto> getSituations() throws FileNotFoundException {
+    public static Collection<ContextSituationDto> getSituations() throws IOException {
+        if (!file.exists()) {
+            return new ArrayList<ContextSituationDto>();
+        }
         XMLDecoder xmlDecoder = new XMLDecoder(new FileInputStream(file));
         Object content = xmlDecoder.readObject();
         return (content != null && content instanceof Collection) ? (Collection<ContextSituationDto>) content : new ArrayList<ContextSituationDto>();
@@ -38,7 +38,7 @@ public class ContextSituationAccess {
     }
 
 
-    public static void saveContextSituation(ContextSituationDto situationDto) throws FileNotFoundException {
+    public static void saveContextSituation(ContextSituationDto situationDto) throws IOException {
         Collection<ContextSituationDto> situationDtos = getSituations();
         situationDtos.add(situationDto);
         XMLEncoder xmlEncoder = new XMLEncoder(new FileOutputStream(file));

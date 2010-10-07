@@ -2,6 +2,7 @@ package utils.clustering.impl;
 
 import model.interfaces.resources.ServiceCenterServer;
 import utils.clustering.Cluster;
+import utils.worldInterface.dtos.ExtendedServerDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +15,13 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ServersCluster implements Cluster {
-    List<ServiceCenterServer> servers;
-    ServiceCenterServer clusterCentroid;
+    List<ExtendedServerDto> servers;
+    ExtendedServerDto clusterCentroid;
     public ServersCluster (){
-        servers = new ArrayList<ServiceCenterServer>();
+        servers = new ArrayList<ExtendedServerDto>();
     }
     public void addToCluster(Object o) {
-        servers.add((ServiceCenterServer) o);
+        servers.add((ExtendedServerDto) o);
     }
 
     public void removeFromCluster(Object o) {
@@ -33,10 +34,10 @@ public class ServersCluster implements Cluster {
             clusterCentroid=servers.get(0);
             return true;
         }
-        ServiceCenterServer intermCentroid = null;
-        for (ServiceCenterServer server : servers) {
+        ExtendedServerDto intermCentroid = null;
+        for (ExtendedServerDto server : servers) {
             double distance = 0.0;
-            for (ServiceCenterServer taskTo : servers) {
+            for (ExtendedServerDto taskTo : servers) {
                 distance += server.distanceTo(taskTo);
             }
             if (distance < smallestDistance) {
@@ -60,7 +61,7 @@ public class ServersCluster implements Cluster {
 
     public double distanceToCluster(Object o) {
         if (!(o instanceof ServiceCenterServer)) return INFINITY;
-        ServiceCenterServer server = (ServiceCenterServer) o;
+        ExtendedServerDto server = (ExtendedServerDto) o;
          if (clusterCentroid == null){
              refreshClusterCentroid();
          }

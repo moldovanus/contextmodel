@@ -2,6 +2,7 @@ package utils.clustering.impl;
 
 import model.interfaces.resources.applications.ApplicationActivity;
 import utils.clustering.Cluster;
+import utils.worldInterface.dtos.ExtendedTaskDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,16 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TasksCluster implements Cluster {
-    List<ApplicationActivity> tasks;
+    List<ExtendedTaskDto> tasks;
 
-    ApplicationActivity clusterCentroid;
+    ExtendedTaskDto clusterCentroid;
 
     public TasksCluster() {
-        tasks = new ArrayList<ApplicationActivity>();
+        tasks = new ArrayList<ExtendedTaskDto>();
     }
 
     public void addToCluster(Object o) {
-        tasks.add((ApplicationActivity) o);
+        tasks.add((ExtendedTaskDto) o);
     }
 
     public void removeFromCluster(Object o) {
@@ -33,12 +34,12 @@ public class TasksCluster implements Cluster {
 
     public boolean refreshClusterCentroid() {
         double smallestDistance = Cluster.INFINITY;
-        ApplicationActivity intermCentroid = null;
-        for (ApplicationActivity task : tasks) {
+        ExtendedTaskDto intermCentroid = null;
+        for (ExtendedTaskDto task : tasks) {
             double distance = 0.0;
             int i = 0;
-            for (ApplicationActivity taskTo : tasks) {
-                distance += task.getDistance(taskTo);
+            for (ExtendedTaskDto taskTo : tasks) {
+                distance += task.distanceTo(taskTo);
                 i++;
             }
 
@@ -62,10 +63,10 @@ public class TasksCluster implements Cluster {
 
     public double distanceToCluster(Object o) {
         if (!(o instanceof ApplicationActivity)) return INFINITY;
-        ApplicationActivity task = (ApplicationActivity) o;
+        ExtendedTaskDto task = (ExtendedTaskDto) o;
         if (clusterCentroid == null) refreshClusterCentroid();
             if (tasks.size()==0) return 0;
-        return task.getDistance(clusterCentroid);
+        return task.distanceTo(clusterCentroid);
     }
 
     public Object getClusterCentroid() {

@@ -739,8 +739,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
 
             try {
-                ContextSituationAccess.saveContextSituation(situationDto);
-            } catch (FileNotFoundException e) {
+                if (actions.size() > 0) {
+                    ContextSituationAccess.saveContextSituation(situationDto);
+                }
+            } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
             logger.log(Color.ORANGE, "Decision result", newMessage);

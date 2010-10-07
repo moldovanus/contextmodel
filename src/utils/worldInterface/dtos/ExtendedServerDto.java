@@ -82,4 +82,23 @@ public class ExtendedServerDto extends ServerDto {
     public void setOptimumStorage(int optimumStorage) {
         this.optimumStorage = optimumStorage;
     }
+     public double distanceTo(ExtendedServerDto server) {
+        double minDistance = 100000;   
+        double memory1[] = {this.getOptimalMemory(), this.getTotalMemory(), this.getTotalMemory(), this.getOptimalMemory()};
+        double cpu1[] = {this.getOptimalCPU(), this.getOptimalCPU(),this.getTotalCPU(),this.getTotalCPU()};
+
+     double memory2[] = {server.getOptimalMemory(), server.getTotalMemory(), server.getTotalMemory(), server.getOptimalMemory()};
+        double cpu2[] = {server.getOptimalCPU(), server.getOptimalCPU(),server.getTotalCPU(),server.getTotalCPU()};
+         for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                double dist = Math.sqrt((Math.pow(memory1[i] - memory2[j], 2) + Math.pow((cpu1[i] - cpu2[j]), 2) ));
+                if (dist < minDistance) {
+                   minDistance = dist;
+                }
+            }
+        }
+        return minDistance;
+
+    }
+    
 }
