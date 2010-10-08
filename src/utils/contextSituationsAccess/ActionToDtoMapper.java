@@ -3,6 +3,7 @@ package utils.contextSituationsAccess;
 import model.interfaces.actions.ContextAction;
 import model.interfaces.actions.DeployActivity;
 import model.interfaces.actions.MigrateActivity;
+import model.interfaces.actions.SetServerStateActivity;
 import model.interfaces.resources.ContextResource;
 import utils.worldInterface.dtos.ActionDto;
 
@@ -31,6 +32,8 @@ public class ActionToDtoMapper {
             resources.add(((DeployActivity) action).getActivity().getLocalName());
         } else if (action instanceof MigrateActivity) {
             resources.add(((MigrateActivity) action).getActivity().getLocalName());
+        } else if (action instanceof SetServerStateActivity) {
+            dto.setTargetServerState(((SetServerStateActivity) action).getTargetServerState());
         }
 
         for (ContextResource resource : action.getResources()) {
