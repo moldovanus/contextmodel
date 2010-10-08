@@ -40,6 +40,9 @@ public class ContextSituationAccess {
 
     public static void saveContextSituation(ContextSituationDto situationDto) throws IOException {
         Collection<ContextSituationDto> situationDtos = getSituations();
+        if (situationDtos.contains(situationDto)) {
+            return;
+        }
         situationDtos.add(situationDto);
         XMLEncoder xmlEncoder = new XMLEncoder(new FileOutputStream(file));
         xmlEncoder.writeObject(situationDtos);
