@@ -48,7 +48,8 @@ public class Main {
 //    private Event triggerEvent;
 //        ContextPolicyImpl contextPolicy = new ContextPolicyImpl();
 //        contextPolicy.setPolicyName("Test name");
-//        contextPolicy.setEvaluationCondition("EVALUATION");
+//        contextPolicy.s
+// etEvaluationCondition("EVALUATION");
 //        contextPolicy.setRespected(true);
 //        List<ContextResource> contextResourceList_1 = new ArrayList<ContextResource>();
 //        List<ContextResource> contextResourceList_2 = new ArrayList<ContextResource>();

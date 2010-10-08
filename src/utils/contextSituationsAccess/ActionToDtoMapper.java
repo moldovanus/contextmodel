@@ -1,6 +1,8 @@
 package utils.contextSituationsAccess;
 
 import model.interfaces.actions.ContextAction;
+import model.interfaces.actions.DeployActivity;
+import model.interfaces.actions.MigrateActivity;
 import model.interfaces.resources.ContextResource;
 import utils.worldInterface.dtos.ActionDto;
 
@@ -25,9 +27,16 @@ public class ActionToDtoMapper {
         dto.setActionName(action.getLocalName());
         dto.setCost(action.getCost());
         List<String> resources = new ArrayList<String>();
+        if (action instanceof DeployActivity) {
+            resources.add(((DeployActivity) action).getActivity().getLocalName());
+        } else if (action instanceof MigrateActivity) {
+            resources.add(((MigrateActivity) action).getActivity().getLocalName());
+        }
+
         for (ContextResource resource : action.getResources()) {
             resources.add(resource.getLocalName());
         }
+
         dto.setContextResources(resources);
 
         return dto;

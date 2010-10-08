@@ -33,7 +33,6 @@ import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ActionDto;
 import utils.worldInterface.dtos.ExtendedServerDto;
-import utils.worldInterface.dtos.ExtendedTaskDto;
 import utils.worldInterface.dtos.ServerDto;
 
 import javax.swing.*;
@@ -330,22 +329,39 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                         ContextAction action = null;
                         if (className.equals(DefaultDeployActivityAction.class.getName())) {
                             action = modelAccess.createDeployActivity(actionDto.getActionName());
+                            for (String string : resources) {
+                                if (tasksMatch.containsKey(string)) {
+                                    ((DefaultDeployActivityAction) action).setActivity(modelAccess.getApplicationActivity(tasksMatch.get(string)));
+                                } else if (serversMatch.containsKey(string)) {
+                                    action.addResource(modelAccess.getContextResource(serversMatch.get(string)));
+                                } else {
+                                    System.err.println("Something wrong happened cand am create ActionDto sau nu face clusteringu match");
+                                }
+                            }
                         } else if (className.equals(DefaultMigrateActivityAction.class.getName())) {
                             action = modelAccess.createMigrateActivity(actionDto.getActionName());
+                            for (String string : resources) {
+                                if (tasksMatch.containsKey(string)) {
+                                    ((DefaultMigrateActivityAction) action).setActivity(modelAccess.getApplicationActivity(tasksMatch.get(string)));
+                                } else if (serversMatch.containsKey(string)) {
+                                    action.addResource(modelAccess.getContextResource(serversMatch.get(string)));
+                                } else {
+                                    System.err.println("Something wrong happened cand am create ActionDto  sau nu face clusteringu match");
+                                }
+                            }
                         } else if (className.equals(DefaultSetServerStateAction.class.getName())) {
                             action = modelAccess.createSetServerStateActivity(actionDto.getActionName());
+                            for (String string : resources) {
+                                if (serversMatch.containsKey(string)) {
+                                    action.addResource(modelAccess.getContextResource(serversMatch.get(string)));
+                                } else {
+                                    System.err.println("Something wrong happened cand am create ActionDto  sau nu face clusteringu match");
+                                }
+                            }
                         }
                         if (action == null) {
                             System.err.println("Something gone wrong la cautat in save  -sau la luat actiunile de pe contextu curent nu cel salvat :)) dai vina pe mine >:P [-( ");
-
                         } else {
-                            for (String string : resources) {
-                                if (tasksMatch.containsKey(string)) {
-                                    action.addResource(modelAccess.getContextResource(tasksMatch.get(string)));
-                                } else if (serversMatch.containsKey(string)) {
-                                    action.addResource(modelAccess.getContextResource(serversMatch.get(string)));
-                                }
-                            }
                             actionsList.add(action);
                         }
                     }
@@ -354,7 +370,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }  
+        }
 
         if (actionsList.size() > 0) {
             newContext.setActions(new PriorityQueue<ContextAction>(actionsList));
@@ -815,7 +831,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
                 entropyAndPolicy = computeEntropy();
 
-                if (entropyAndPolicy.getSecond() != null && entropyAndPolicy.getSecond().get(0).getPolicySubject() instanceof ApplicationActivity) {
+                if (entropyAndPolicy.getSecond().size() > 0 && entropyAndPolicy.getSecond().get(0).getPolicySubject() instanceof ApplicationActivity) {
 
                     ApplicationActivity activity = (ApplicationActivity) entropyAndPolicy.getSecond().get(0).getPolicySubject();
 
