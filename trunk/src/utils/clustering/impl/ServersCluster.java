@@ -34,6 +34,8 @@ public class ServersCluster implements Cluster {
             clusterCentroid=servers.get(0);
             return true;
         }
+          boolean ok = false;
+        if (servers.size()!=0){
         ExtendedServerDto intermCentroid = null;
         for (ExtendedServerDto server : servers) {
             double distance = 0.0;
@@ -45,13 +47,13 @@ public class ServersCluster implements Cluster {
                 intermCentroid = server;
             }
         }
-        boolean ok = false;
+
         if (clusterCentroid != null && clusterCentroid.equals(intermCentroid)) {
             ok = true;
         } else {
             clusterCentroid = intermCentroid;
         }
-
+        }
         return ok;
     }
 
