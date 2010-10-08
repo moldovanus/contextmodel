@@ -354,6 +354,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                             for (String string : resources) {
                                 if (serversMatch.containsKey(string)) {
                                     action.addResource(modelAccess.getContextResource(serversMatch.get(string)));
+                                    ((DefaultSetServerStateAction) action).setTargetServerState(actionDto.getTargetServerState());
                                 } else {
                                     System.err.println("Something wrong happened cand am create ActionDto  sau nu face clusteringu match");
                                 }

@@ -15,9 +15,18 @@ public class ActionDto implements Serializable {
     private float cost;
     private String actionClassName;
     private String actionName;
+    private Integer targetServerState;
 
     public String getActionName() {
         return actionName;
+    }
+
+    public Integer getTargetServerState() {
+        return targetServerState;
+    }
+
+    public void setTargetServerState(Integer targetServerState) {
+        this.targetServerState = targetServerState;
     }
 
     public void setActionName(String actionName) {
