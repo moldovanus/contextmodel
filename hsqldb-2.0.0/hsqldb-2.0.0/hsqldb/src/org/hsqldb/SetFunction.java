@@ -504,7 +504,7 @@ public class SetFunction implements Serializable {
         BigInteger result = (bighi.multiply(multiplier)).add(biglo);
 
 /*
-            if ( result.compareTo(bigint) != 0 ){
+            if ( result.equals(bigint) != 0 ){
                  throw Trace.error(Trace.GENERAL_ERROR, "longSum mismatch");
             }
 */

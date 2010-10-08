@@ -1,7 +1,6 @@
 package utils.clustering.impl;
 
-import model.interfaces.resources.ServiceCenterServer;
-import model.interfaces.resources.applications.ApplicationActivity;
+
 import utils.clustering.Cluster;
 import utils.clustering.ClusteringAlgorithm;
 import utils.worldInterface.dtos.ExtendedServerDto;
@@ -24,10 +23,13 @@ public class KMeansClustering implements ClusteringAlgorithm {
     public static final int MAXNRSTEPS = 100;
 
     public KMeansClustering() {
-
+         objects = new ArrayList();
+        clusters = new ArrayList();
     }
 
     public KMeansClustering(int k) {
+         objects = new ArrayList();
+        clusters = new ArrayList();
         K = k;
     }
 
@@ -54,7 +56,7 @@ public class KMeansClustering implements ClusteringAlgorithm {
     }
 
     public void initializeClusters(List objects) {
-        this.objects = objects;
+        this.objects.addAll(objects);
         if (objects.get(0) instanceof ExtendedTaskDto) {
             List<ExtendedTaskDto> tasks = (List<ExtendedTaskDto>) objects;
             clusters = new ArrayList<Cluster>();
@@ -104,7 +106,7 @@ public class KMeansClustering implements ClusteringAlgorithm {
     }
 
     public void addObjectsToKnowledgeBase(List objects) {
-        objects.addAll(objects);
+        this.objects.addAll(objects);
         for (Object o : objects) {
             Cluster cluster = getNearestCluster(o);
             if (cluster != null) {

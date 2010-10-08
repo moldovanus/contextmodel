@@ -321,7 +321,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             for (ContextSituationDto situationDto : contextSituationDtos) {
                 if (contextSituationDto.equals(situationDto)) {
                     System.err.println("Match found");
-                    List<ActionDto> actionDtos = contextSituationDto.getActions();
+                    List<ActionDto> actionDtos = situationDto.getActions();
                     Map<String, String> serversMatch = contextSituationDto.matchServers(situationDto);
                     Map<String, String> tasksMatch = contextSituationDto.matchTasks(situationDto);
                     for (ActionDto actionDto : actionDtos) {
@@ -329,14 +329,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                         List<String> resources = actionDto.getContextResources();
                         ContextAction action = null;
                         if (className.equals(DefaultDeployActivityAction.class.getName())) {
-                            action =
-                                    (DefaultDeployActivityAction) Class.forName(actionDto.getActionClassName()).newInstance();
+                            action = modelAccess.createDeployActivity(actionDto.getActionName());
                         } else if (className.equals(DefaultMigrateActivityAction.class.getName())) {
-                            action =
-                                    (DefaultMigrateActivityAction) Class.forName(actionDto.getActionClassName()).newInstance();
+                            action = modelAccess.createMigrateActivity(actionDto.getActionName());
                         } else if (className.equals(DefaultSetServerStateAction.class.getName())) {
-                            action =
-                                    (DefaultSetServerStateAction) Class.forName(actionDto.getActionClassName()).newInstance();
+                            action = modelAccess.createSetServerStateActivity(actionDto.getActionName());
                         }
                         if (action == null) {
                             System.err.println("Something gone wrong la cautat in save");
@@ -357,13 +354,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        }  
 
         if (actionsList.size() > 0) {
             newContext.setActions(new PriorityQueue<ContextAction>(actionsList));

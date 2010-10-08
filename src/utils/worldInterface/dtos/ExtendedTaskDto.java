@@ -56,4 +56,12 @@ public class ExtendedTaskDto extends TaskDto{
         }
         return minDistance;
     }
+    public  boolean equals(ExtendedTaskDto dto){
+        boolean ok = super.equals(dto);
+        if (!ok ) return false;
+        if (dto.getCpuWeight()!= cpuWeight) return false;
+        if (dto.getHddWeight()!= hddWeight) return false;
+        if (dto.getMemWeight() != memWeight) return false;
+        return true;
+    }
 }

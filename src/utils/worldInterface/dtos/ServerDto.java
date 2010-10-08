@@ -70,9 +70,13 @@ public class ServerDto implements Serializable {
             for (Integer freeCpu : freeCpus) {
                 if (!freeCPU.contains(freeCpu)) return false;
             }
+
             List<StorageDto> storages = sDto.getStorage();
+            if (!(storage==null && storages==null ))   {
+                if (storages == null) return false;
             for (StorageDto st : storages) {
                 if (!storage.contains(st)) return false;
+            }
             }
             if (totalMemory != sDto.getTotalMemory()) return false;
             if (freeMemory != sDto.getFreeMemory()) return false;

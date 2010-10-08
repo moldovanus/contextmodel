@@ -1,6 +1,6 @@
 package utils.clustering.impl;
 
-import model.interfaces.resources.applications.ApplicationActivity;
+
 import utils.clustering.Cluster;
 import utils.worldInterface.dtos.ExtendedTaskDto;
 
@@ -35,6 +35,8 @@ public class TasksCluster implements Cluster {
     public boolean refreshClusterCentroid() {
         double smallestDistance = Cluster.INFINITY;
         ExtendedTaskDto intermCentroid = null;
+        boolean ok = false;
+        if (tasks.size()!=0){
         for (ExtendedTaskDto task : tasks) {
             double distance = 0.0;
             int i = 0;
@@ -48,13 +50,15 @@ public class TasksCluster implements Cluster {
                 intermCentroid = task;
             }
         }
-        boolean ok = false;
+
         if (clusterCentroid != null && clusterCentroid.equals(intermCentroid)) {
             ok = true;
         } else {
             clusterCentroid = intermCentroid;
-        }
+        }       }
         return ok;
+
+                
     }
 
     public List getAllElements() {
@@ -62,7 +66,7 @@ public class TasksCluster implements Cluster {
     }
 
     public double distanceToCluster(Object o) {
-        if (!(o instanceof ApplicationActivity)) return INFINITY;
+        if (!(o instanceof ExtendedTaskDto)) return INFINITY;
         ExtendedTaskDto task = (ExtendedTaskDto) o;
         if (clusterCentroid == null) refreshClusterCentroid();
             if (tasks.size()==0) return 0;
@@ -81,14 +85,14 @@ public class TasksCluster implements Cluster {
         if (tasksCluster.getAllElements().size()==0 && tasks.size()==0) return true;
         if (!clusterCentroid.equals(tasksCluster.getClusterCentroid())) return false;
         for (Object task : tasksCluster.getAllElements()) {
-            if (!(task instanceof ApplicationActivity)) return false;
+            if (!(task instanceof ExtendedTaskDto)) return false;
             if (!tasksCluster.contains(task)) return false;
         }
         return true;
     }
 
     public boolean contains(Object o) {
-        if (!(o instanceof ApplicationActivity)) return false;
+        if (!(o instanceof ExtendedTaskDto)) return false;
         if (tasks.contains(o)) return true;
         return false;
     }

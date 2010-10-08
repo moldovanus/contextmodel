@@ -80,13 +80,14 @@ public class ContextSituationDto implements Serializable {
     public Map<String, String> matchTasks(ContextSituationDto contextSituationDto) {
         HashMap<String, String> associatedTask = new HashMap<String, String>();
 
-        for (ExtendedTaskDto dto : tasks) {
-            if (!associatedTask.containsKey(dto)) {
-                for (ExtendedTaskDto dto1 : contextSituationDto.getTasks()) {
+        for (ExtendedTaskDto dto : contextSituationDto.getTasks()) {
+
+                for (ExtendedTaskDto dto1 : tasks) {
+                    if (!associatedTask.containsKey(dto.getTaskName())) {
                     if (clusteringAlgorithmForTasks.getBelongingCluster(dto) ==
                             clusteringAlgorithmForTasks.getBelongingCluster(dto1)
-                            && !associatedTask.containsValue(dto1)) {
-                        associatedTask.put(dto1.getTaskName(), dto.getTaskName());
+                            && !associatedTask.containsValue(dto1.getTaskName())) {
+                        associatedTask.put(dto.getTaskName(), dto1.getTaskName());
                     }
                 }
             }
@@ -102,12 +103,12 @@ public class ContextSituationDto implements Serializable {
     public Map<String, String> matchServers(ContextSituationDto contextSituationDto) {
         HashMap<String, String> associatedServer = new HashMap<String, String>();
 
-        for (ExtendedServerDto dto : servers) {
-            if (!associatedServer.containsKey(dto)) {
-                for (ExtendedServerDto dto1 : contextSituationDto.getServers()) {
-                    if (clusteringAlgorithmForServers.getBelongingCluster(dto) == clusteringAlgorithmForServers.getBelongingCluster(dto1) &&
-                            !associatedServer.containsValue(dto1)) {
-                        associatedServer.put(dto1.getServerName(), dto.getServerName());
+        for (ExtendedServerDto dto : contextSituationDto.getServers()) {
+                for (ExtendedServerDto dto1 : servers){
+                    if (!associatedServer.containsKey(dto.getServerName())) {
+                    if ((clusteringAlgorithmForServers.getBelongingCluster(dto) == clusteringAlgorithmForServers.getBelongingCluster(dto1) )&& !associatedServer.containsValue(dto1.getServerName())) {
+                       System.out.println("Match: "+dto.getServerName()+ " and "+ dto1.getServerName());
+                        associatedServer.put(dto.getServerName(), dto1.getServerName());
                     }
                 }
             }
@@ -121,8 +122,6 @@ public class ContextSituationDto implements Serializable {
         ClusteringAlgorithmFactory factory = new ClusteringAlgorithmFactory();
         clusteringAlgorithmForTasks = factory.getKMeansAlgorithm(tasks.size() / COMPARISON_ACCURACY_FOR_TASKS);
         clusteringAlgorithmForServers = factory.getKMeansAlgorithm(servers.size() / COMPARISON_ACCURACY_FOR_SERVERS);
-        clusteringAlgorithmForTasks.initializeClusters(tasks);
-        clusteringAlgorithmForServers.initializeClusters(servers);
         clusteringAlgorithmForTasks.initializeClusters(tasks);
         clusteringAlgorithmForServers.initializeClusters(servers);
         clusteringAlgorithmForTasks.addObjectsToKnowledgeBase(contextSituationDto.getTasks());
@@ -170,7 +169,7 @@ public class ContextSituationDto implements Serializable {
                 }
             }
         }
-        return different;
+        return !different;
     }
 
 
