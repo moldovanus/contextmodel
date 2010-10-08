@@ -1,6 +1,6 @@
 package utils.clustering.impl;
 
-import model.interfaces.resources.ServiceCenterServer;
+
 import utils.clustering.Cluster;
 import utils.worldInterface.dtos.ExtendedServerDto;
 
@@ -60,7 +60,7 @@ public class ServersCluster implements Cluster {
     }
 
     public double distanceToCluster(Object o) {
-        if (!(o instanceof ServiceCenterServer)) return INFINITY;
+        if (!(o instanceof ExtendedServerDto)) return INFINITY;
         ExtendedServerDto server = (ExtendedServerDto) o;
          if (clusterCentroid == null){
              refreshClusterCentroid();
@@ -74,18 +74,18 @@ public class ServersCluster implements Cluster {
         return clusterCentroid;
     }
     public boolean equals(Object o){
-      if (!(o instanceof Cluster || o instanceof ServersCluster)) return false;
+      if (!(o instanceof Cluster || o instanceof ExtendedServerDto)) return false;
         ServersCluster serversCluster= (ServersCluster) o;
         //TODO: Check if need the same centroids
-      if (!clusterCentroid.equals(serversCluster.getClusterCentroid())) return false;
+     // if (!clusterCentroid.equals(serversCluster.getClusterCentroid())) return false;
       for (Object sv : serversCluster.getAllElements()){
-            if (!(sv instanceof ServiceCenterServer)) return false;
+            if (!(sv instanceof ExtendedServerDto)) return false;
           if (! servers.contains(sv)) return false;
       }
         return true;
     }
     public boolean contains ( Object o){
-        if (!(o instanceof ServiceCenterServer)) return false;
+        if (!(o instanceof ExtendedServerDto)) return false;
         if (servers.contains(o)) return true;
         return false;
     }

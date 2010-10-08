@@ -99,7 +99,7 @@ public class JavaSystem {
 
 //#else
 /*
-        if (o.compareTo(BD_1) < 0 && o.compareTo(MBD_1) > 0) {
+        if (o.equals(BD_1) < 0 && o.equals(MBD_1) > 0) {
             return o.scale();
         }
 
@@ -137,7 +137,7 @@ public class JavaSystem {
 
 //#else
 /*
-        return a.toUpperCase().compareTo(b.toUpperCase());
+        return a.toUpperCase().equals(b.toUpperCase());
 */
 
 //#endif JAVA2

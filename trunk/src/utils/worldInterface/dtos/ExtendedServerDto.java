@@ -100,5 +100,17 @@ public class ExtendedServerDto extends ServerDto {
         return minDistance;
 
     }
+    public boolean equals(ExtendedServerDto server){
+        if (!server.getIpAddress().equalsIgnoreCase(ipAddress)) return false;
+        if (!server.getMacAddress().equalsIgnoreCase(macAddress)) return false;
+        if (server.getMaximumCPU()!=maximumCPU) return false;
+        if (server.getOptimalCPU()!=optimumCPU) return false;
+        if (server.getMaximumMemory()!= maximumMemory) return false;
+        if (server.getOptimalMemory()!=optimumMemory) return false;
+        if (server.getMaximumStorage()!= maximumStorage) return false;
+        if (server.getOptimalStorage()!=optimumStorage) return false;
+
+        return true;
+    }
     
 }

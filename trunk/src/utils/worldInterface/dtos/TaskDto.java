@@ -170,4 +170,19 @@ public class TaskDto implements Serializable {
     public void setRunning(boolean running) {
         isRunning = running;
     }
+    public boolean equals (TaskDto dto){
+       if (dto.getReceivedCores()!=receivedCores)return false;
+       if (dto.getReceivedCPU()!=receivedCPU) return false;
+        if (dto.getReceivedMemory()!=receivedMemory) return false;
+        if (dto.getReceivedStorage()!= receivedStorage) return false;
+        if (dto.getRequestedCores()!= requestedCores )return false;
+        if (dto.getRequestedCPUMax()!=requestedCPUMax ) return false;
+        if (dto.getRequestedCPUMin() != requestedCPUMin) return false;
+        if (dto.getRequestedMemoryMax()!= requestedMemoryMax) return false;
+        if (dto.getRequestedMemoryMin()!= requestedMemoryMin) return false;
+        if (dto.getRequestedStorageMax()!= requestedStorageMax) return false;
+        if (dto.getRequestedStorageMin()!= requestedStorageMin) return false;
+        if (!dto.getTaskName().equalsIgnoreCase(taskName)) return false;
+        return true;
+    }
 }
