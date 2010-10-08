@@ -336,7 +336,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                             action = modelAccess.createSetServerStateActivity(actionDto.getActionName());
                         }
                         if (action == null) {
-                            System.err.println("Something gone wrong la cautat in save");
+                            System.err.println("Something gone wrong la cautat in save  -sau la luat actiunile de pe contextu curent nu cel salvat :)) dai vina pe mine >:P [-( ");
 
                         } else {
                             for (String string : resources) {
