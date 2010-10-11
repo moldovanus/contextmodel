@@ -46,7 +46,7 @@ public class ServerToDtoMapper {
         dto.setUsedCPU(cpu.getCurrentWorkLoad().intValue());
         dto.setUsedMemory(mem.getCurrentWorkLoad().intValue());
         dto.setServerName(server.getLocalName());
-
+        dto.setCoreNo(cores.size());
         return dto;
     }
 }

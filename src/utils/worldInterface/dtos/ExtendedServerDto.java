@@ -24,6 +24,16 @@ public class ExtendedServerDto extends ServerDto {
     private int optimumStorage;
     private int usedStorage;
 
+    private int coreNo;
+
+    public int getCoreNo() {
+        return coreNo;
+    }
+
+    public void setCoreNo(int coreNo) {
+        this.coreNo = coreNo;
+    }
+
     public int getUsedCPU() {
         return usedCPU;
     }
