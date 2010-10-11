@@ -14,10 +14,39 @@ public class ExtendedServerDto extends ServerDto {
 
     private int maximumCPU;
     private int optimumCPU;
+    private int usedCPU;
+
     private int maximumMemory;
     private int optimumMemory;
+    private int usedMemory;
+
     private int maximumStorage;
     private int optimumStorage;
+    private int usedStorage;
+
+    public int getUsedCPU() {
+        return usedCPU;
+    }
+
+    public void setUsedCPU(int usedCPU) {
+        this.usedCPU = usedCPU;
+    }
+
+    public int getUsedMemory() {
+        return usedMemory;
+    }
+
+    public void setUsedMemory(int usedMemory) {
+        this.usedMemory = usedMemory;
+    }
+
+    public int getUsedStorage() {
+        return usedStorage;
+    }
+
+    public void setUsedStorage(int usedStorage) {
+        this.usedStorage = usedStorage;
+    }
 
     public String getIpAddress() {
         return ipAddress;
