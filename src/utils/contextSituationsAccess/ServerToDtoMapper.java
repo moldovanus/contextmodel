@@ -43,6 +43,8 @@ public class ServerToDtoMapper {
         dto.setOptimumMemory(mem.getOptimalWorkLoad().intValue());
         dto.setTotalCPU(cpu.getMaximumWorkLoad().intValue());
         dto.setTotalCPU(mem.getMaximumWorkLoad().intValue());
+        dto.setUsedCPU(cpu.getCurrentWorkLoad().intValue());
+        dto.setUsedMemory(mem.getCurrentWorkLoad().intValue());
         dto.setServerName(server.getLocalName());
 
         return dto;
