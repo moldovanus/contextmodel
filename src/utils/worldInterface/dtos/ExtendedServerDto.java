@@ -124,11 +124,12 @@ public class ExtendedServerDto extends ServerDto {
 
     public double distanceTo(ExtendedServerDto server) {
         double minDistance = 100000;
-        double memory1[] = {this.getOptimalMemory(), this.getTotalMemory(), this.getTotalMemory(), this.getOptimalMemory()};
-        double cpu1[] = {this.getOptimalCPU(), this.getOptimalCPU(), this.getTotalCPU(), this.getTotalCPU()};
 
-        double memory2[] = {server.getOptimalMemory(), server.getTotalMemory(), server.getTotalMemory(), server.getOptimalMemory()};
-        double cpu2[] = {server.getOptimalCPU(), server.getOptimalCPU(), server.getTotalCPU(), server.getTotalCPU()};
+        double memory1[] = {this.getUsedMemory(), (this.getTotalMemory()+this.getOptimalMemory())/2.0, (this.getTotalMemory()+this.getOptimalMemory())/2.0, this.getUsedMemory()};
+        double cpu1[] = {this.getUsedCPU(), this.getUsedCPU(), (this.getTotalCPU()+this.getOptimalCPU())/2.0, (this.getTotalCPU()+this.getOptimalCPU())/2.0};
+
+        double memory2[] = {server.getUsedMemory(), (server.getTotalMemory()+server.getOptimalMemory())/2.0, (server.getTotalMemory()+server.getOptimalMemory())/2.0, server.getUsedMemory()};
+        double cpu2[] = {server.getUsedCPU(), server.getUsedCPU(), (server.getTotalCPU()+server.getOptimalCPU())/2.0, (server.getTotalCPU()+server.getOptimalCPU())/2.0};
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 double dist = Math.sqrt((Math.pow(memory1[i] - memory2[j], 2) + Math.pow((cpu1[i] - cpu2[j]), 2)));
@@ -136,6 +137,9 @@ public class ExtendedServerDto extends ServerDto {
                     minDistance = dist;
                 }
             }
+        }
+        if (this.getCoreNo()!=server.getCoreNo()){
+            minDistance *= (Math.abs(coreNo-server.getCoreNo())+1);
         }
         return minDistance;
 
@@ -150,7 +154,10 @@ public class ExtendedServerDto extends ServerDto {
         if (server.getOptimalMemory() != optimumMemory) return false;
         if (server.getMaximumStorage() != maximumStorage) return false;
         if (server.getOptimalStorage() != optimumStorage) return false;
-
+        if (server.getUsedCPU()!= usedCPU) return false;
+        if (server.getUsedMemory()!=usedMemory) return false;
+        if (server.getUsedStorage()!= usedStorage) return false;
+        
         return true;
     }
 

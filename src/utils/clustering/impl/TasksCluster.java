@@ -15,9 +15,9 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TasksCluster implements Cluster {
-    List<ExtendedTaskDto> tasks;
+    List tasks;
 
-    ExtendedTaskDto clusterCentroid;
+    Object clusterCentroid;
 
     public TasksCluster() {
         tasks = new ArrayList<ExtendedTaskDto>();
@@ -34,14 +34,19 @@ public class TasksCluster implements Cluster {
 
     public boolean refreshClusterCentroid() {
         double smallestDistance = Cluster.INFINITY;
-        ExtendedTaskDto intermCentroid = null;
+        Object intermCentroid = null;
         boolean ok = false;
         if (tasks.size()!=0){
-        for (ExtendedTaskDto task : tasks) {
+        for (Object task : tasks) {
             double distance = 0.0;
             int i = 0;
-            for (ExtendedTaskDto taskTo : tasks) {
-                distance += task.distanceTo(taskTo);
+            for (Object taskTo : tasks) {
+                if (task instanceof ExtendedTaskDto && taskTo instanceof ExtendedTaskDto)
+                distance += ((ExtendedTaskDto)task).distanceTo((ExtendedTaskDto) taskTo);
+                else if (task instanceof ExtendedTaskDto && taskTo instanceof TasksCluster)
+                  distance += ((TasksCluster)taskTo).distanceToCluster((task));
+                else if (task instanceof TasksCluster )
+                        distance += ((TasksCluster)task).distanceToCluster(taskTo);
                 i++;
             }
 
@@ -66,11 +71,24 @@ public class TasksCluster implements Cluster {
     }
 
     public double distanceToCluster(Object o) {
-        if (!(o instanceof ExtendedTaskDto)) return INFINITY;
+        if (!(o instanceof ExtendedTaskDto || o instanceof TasksCluster)) return INFINITY;
+        if (o instanceof TasksCluster){
+            double minDist =INFINITY;
+            Cluster cluster = (Cluster) o;
+            for (Object o1:cluster.getAllElements()){
+                double d =cluster.distanceToCluster(o1);
+                if (minDist>d) minDist = d;
+            }
+            return minDist;
+        }
         ExtendedTaskDto task = (ExtendedTaskDto) o;
         if (clusterCentroid == null) refreshClusterCentroid();
             if (tasks.size()==0) return 0;
-        return task.distanceTo(clusterCentroid);
+       if (clusterCentroid instanceof ExtendedTaskDto)
+        return task.distanceTo((ExtendedTaskDto) clusterCentroid);
+        else
+           return ((TasksCluster) clusterCentroid).distanceToCluster(task);
+
     }
 
     public Object getClusterCentroid() {

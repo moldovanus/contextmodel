@@ -15,8 +15,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ServersCluster implements Cluster {
-    List<ExtendedServerDto> servers;
-    ExtendedServerDto clusterCentroid;
+    List servers;
+    Object clusterCentroid;
     public ServersCluster (){
         servers = new ArrayList<ExtendedServerDto>();
     }
@@ -36,11 +36,16 @@ public class ServersCluster implements Cluster {
         }
           boolean ok = false;
         if (servers.size()!=0){
-        ExtendedServerDto intermCentroid = null;
-        for (ExtendedServerDto server : servers) {
+        Object intermCentroid = null;
+        for (Object server : servers) {
             double distance = 0.0;
-            for (ExtendedServerDto taskTo : servers) {
-                distance += server.distanceTo(taskTo);
+            for (Object serverTo : servers) {
+                  if (server instanceof ExtendedServerDto && serverTo instanceof ExtendedServerDto)
+                distance += ((ExtendedServerDto)server).distanceTo((ExtendedServerDto) serverTo);
+                else if (server instanceof ExtendedServerDto && serverTo instanceof TasksCluster)
+                  distance += ((TasksCluster) serverTo).distanceToCluster((server));
+                else if (server instanceof TasksCluster )
+                        distance += ((TasksCluster)server).distanceToCluster(serverTo);
             }
             if (distance < smallestDistance) {
                 smallestDistance = distance;
@@ -62,14 +67,24 @@ public class ServersCluster implements Cluster {
     }
 
     public double distanceToCluster(Object o) {
-        if (!(o instanceof ExtendedServerDto)) return INFINITY;
-        ExtendedServerDto server = (ExtendedServerDto) o;
-         if (clusterCentroid == null){
-             refreshClusterCentroid();
-         }
+        if (!(o instanceof ExtendedServerDto || o instanceof ServersCluster)) return INFINITY;
+        if (o instanceof TasksCluster){
+            double minDist =INFINITY;
+            Cluster cluster = (Cluster) o;
+            for (Object o1:cluster.getAllElements()){
+                double d =cluster.distanceToCluster(o1);
+                if (minDist>d) minDist = d;
+            }
+            return minDist;
+        }
+        ExtendedServerDto task = (ExtendedServerDto) o;
+        if (clusterCentroid == null) refreshClusterCentroid();
             if (servers.size()==0) return 0;
-       System.out.println(clusterCentroid);
-        return server.distanceTo(clusterCentroid);
+       if (clusterCentroid instanceof ExtendedServerDto)
+        return task.distanceTo((ExtendedServerDto) clusterCentroid);
+        else
+           return ((TasksCluster) clusterCentroid).distanceToCluster(task);
+
     }
 
     public Object getClusterCentroid() {
