@@ -781,7 +781,7 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             Object[] data = new Object[1];
             data[0] = 3;
             try {
-                ClusteringAlgorithm kMeans = factory.getKMeansAlgorithm(3);
+                ClusteringAlgorithm kMeans = factory.getHierarhicalAlgorithm(3);
                 List<ExtendedServerDto> extendedServerDtos = new ArrayList<ExtendedServerDto>();
                 for (ServiceCenterServer serviceCenterServer : servers) {
                     extendedServerDtos.add(ServerToDtoMapper.map(serviceCenterServer));

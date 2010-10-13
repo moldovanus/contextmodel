@@ -2,6 +2,7 @@ package utils.clustering.impl;
 
 import utils.clustering.Cluster;
 import utils.clustering.ClusteringAlgorithm;
+import utils.worldInterface.dtos.ExtendedServerDto;
 import utils.worldInterface.dtos.ExtendedTaskDto;
 
 import java.util.ArrayList;
@@ -17,13 +18,14 @@ import java.util.PriorityQueue;
  */
 public class HierarhicalClusteringWithDistance implements ClusteringAlgorithm {
     private List allObjects;
+    public static int LEVELS = 3;
     private List<Cluster> clusters;
     private PriorityQueue edges;
     private PriorityQueue treeEdges;
     private double[][] distanceMatrix;
     private double[][] minSpanningTree;
-    
-    public class Edge {
+
+    public class Edge implements Comparable {
         private Object end1;
         private Object end2;
         private double cost;
@@ -52,11 +54,15 @@ public class HierarhicalClusteringWithDistance implements ClusteringAlgorithm {
             this.cost = cost;
         }
 
-        public int compareTo(Edge o) {
-            if (this.getCost() < o.getCost()) return -1;
-            if (this.getCost() > o.getCost()) return 1;
+        public int compareTo(Object o) {
+            if (!(o instanceof Edge)) return Cluster.INFINITY;
+            Edge edge = (Edge) o;
+            if (this.getCost() < edge.getCost()) return -1;
+            if (this.getCost() > edge.getCost()) return 1;
             return 0;
         }
+
+
     }
 
     public HierarhicalClusteringWithDistance() {
@@ -67,14 +73,31 @@ public class HierarhicalClusteringWithDistance implements ClusteringAlgorithm {
 
     }
 
+    public HierarhicalClusteringWithDistance(int levels) {
+        allObjects = new ArrayList();
+        clusters = new ArrayList();
+        edges = new PriorityQueue();
+        treeEdges = new PriorityQueue();
+        LEVELS = levels;
+    }
+
     private void createDistanceMatrix(List objects) {
         for (int i = 0; i < objects.size(); i++) {
             Object o1 = objects.get(i);
             for (int j = 0; j < objects.size(); j++) {
                 Object o2 = objects.get(j);
-                if (o1 instanceof ExtendedTaskDto) {
+                if (o1 instanceof ExtendedTaskDto && (!o1.equals(o2))) {
                     ExtendedTaskDto task = (ExtendedTaskDto) o1;
                     distanceMatrix[i][j] = task.distanceTo((ExtendedTaskDto) o2);
+                    distanceMatrix[j][i] = distanceMatrix[i][j];
+                    Edge edge = new Edge();
+                    edge.setEnd1(o1);
+                    edge.setEnd2(o2);
+                    edge.setCost(distanceMatrix[i][j]);
+                    edges.add(edge);
+                } else {
+                    ExtendedServerDto server = (ExtendedServerDto) o1;
+                    distanceMatrix[i][j] = server.distanceTo((ExtendedServerDto) o2);
                     distanceMatrix[j][i] = distanceMatrix[i][j];
                     Edge edge = new Edge();
                     edge.setEnd1(o1);
@@ -85,32 +108,34 @@ public class HierarhicalClusteringWithDistance implements ClusteringAlgorithm {
             }
         }
     }
-    public void createMinimumSpanningTree(List objects){
-          boolean[] used = new boolean[objects.size()];
+
+    public void createMinimumSpanningTree(List objects) {
+        boolean[] used = new boolean[objects.size()];
         boolean ok = true;
         // create minimum spanning tree between objects(tasks, servers)
         while (ok) {
             Edge e = (Edge) edges.peek();
             int i = objects.indexOf(e.getEnd1());
             int j = objects.indexOf(e.getEnd2());
-            if (!(used[i] && used[j])) {
+            if (!used[i] && !used[j]) {
                 minSpanningTree[i][j] = e.getCost();
                 minSpanningTree[j][i] = e.getCost();
                 used[i] = true;
                 used[j] = true;
-           }
+            }
             ok = false;
-            for (boolean d : used){
-                if (d==false) ok = true;
+            for (boolean d : used) {
+                if (d == false) ok = true;
             }
         }
     }
+
     public void initializeClusters(List objects) {
         allObjects.clear();
         clusters.clear();
         allObjects.addAll(objects);
-        distanceMatrix = new double [objects.size()][objects.size()];
-        minSpanningTree = new double [objects.size()][objects.size()];
+        distanceMatrix = new double[objects.size()][objects.size()];
+        minSpanningTree = new double[objects.size()][objects.size()];
         createDistanceMatrix(objects);
         createMinimumSpanningTree(objects);
         refreshClusters();
@@ -151,9 +176,53 @@ public class HierarhicalClusteringWithDistance implements ClusteringAlgorithm {
 
     public void addObjectsToKnowledgeBase(List objects) {
         this.allObjects.addAll(objects);
+        refreshClusters();
     }
-      //TODO: Write this functiooooon-> distance between clusters 
+    //TODO: Write this functiooooon-> distance between clusters
+
     public void refreshClusters() {
-     
+        clusters = new ArrayList<Cluster>(allObjects.size());
+        if (allObjects.get(0) instanceof ExtendedTaskDto) {
+            for (int i = 0; i < allObjects.size(); i++) {
+                TasksCluster t = new TasksCluster();
+                t.addToCluster(allObjects.get(i));
+                clusters.add(t);
+            }
+        } else {
+            for (int i = 0; i < allObjects.size(); i++) {
+                ServersCluster s = new ServersCluster();
+                s.addToCluster(allObjects.get(i));
+                clusters.add(s);
+            }
+        }
+        int i = 0;
+        while (i < LEVELS) {
+            double minDistance = Cluster.INFINITY;
+            Cluster cluster1 = null;
+            Cluster cluster2 = null;
+            for (Cluster cl1 : clusters) {
+                for (Cluster cl2 : clusters) {
+                    if (!cl1.equals(cl2) && cl1.distanceToCluster(cl2) < minDistance) {
+                        minDistance = cl1.distanceToCluster(cl2);
+                        cluster1 = cl1;
+                        cluster2 = cl2;
+                    }
+                }
+            }
+            if (cluster1 != null && cluster2 != null) {
+                clusters.remove(cluster1);
+                clusters.remove(cluster2);
+                Cluster cl;
+                if (cluster1.getAllElements().get(0) instanceof ExtendedTaskDto) {
+                    cl = new TasksCluster();
+                } else {
+                    cl = new ServersCluster();
+                }
+                cl.addToCluster(cluster1.getAllElements());
+                cl.addToCluster(cluster2.getAllElements());
+                clusters.add(cl);
+            } else break;
+            i++;
+        }
     }
 }
