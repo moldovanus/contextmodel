@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE owlx:Ontology [
+        <!ENTITY a 'http://coned.dsrl.com/contextmodel#'>
+        <!ENTITY xsd 'http://www.w3.org/2001/XMLSchema#'>
+        ]>
+
+<owlx:Ontology owlx:name="http://coned.dsrl.com/database/contextmodel#"
+               xml:base="http://coned.dsrl.com/database/contextmodel#"
+               xmlns:owlx="http://www.w3.org/2003/05/owl-xml#">
+
+    <owlx:Individual owlx:name="&a;id1">
+        <owlx:type owlx:name="&a;ComplexResource"/>
+        <owlx:type owlx:name="&a;ContextEntity"/>
+        <owlx:type owlx:name="&a;ServiceCenterITComputingResource"/>
+        <owlx:DataPropertyValue owlx:property="&a;complexResourceWorkloadProperty">
+            <owlx:DataValue owlx:datatype="&xsd;string">ComplexResource_0Workload_0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;resourceName">
+            <owlx:DataValue owlx:datatype="&xsd;string">ComplexResource_0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceCurrentEnergyState">
+            <owlx:DataValue owlx:datatype="&xsd;null">&lt;null></owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceCurrentWorkLoad">
+            <owlx:DataValue owlx:datatype="&xsd;null">&lt;null></owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceID">
+            <owlx:DataValue owlx:datatype="&xsd;null">&lt;null></owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceMaximumWorkLoad">
+            <owlx:DataValue owlx:datatype="&xsd;null">&lt;null></owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceOptimalWorkLoad">
+            <owlx:DataValue owlx:datatype="&xsd;null">&lt;null></owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:ObjectPropertyValue owlx:property="&a;complexResourceResources">
+            <owlx:Individual owlx:name="&a;id0"/>
+        </owlx:ObjectPropertyValue>
+        <owlx:ObjectPropertyValue owlx:property="&a;serviceCenterITComputingResourceRunningActivities">
+            <owlx:Individual owlx:name="&a;id0"/>
+        </owlx:ObjectPropertyValue>
+    </owlx:Individual>
+
+    <owlx:Individual owlx:name="&a;id2">
+        <owlx:type owlx:name="&a;ContextEntity"/>
+        <owlx:type owlx:name="&a;ServiceCenterITComputingResource"/>
+        <owlx:DataPropertyValue owlx:property="&a;resourceName">
+            <owlx:DataValue owlx:datatype="&xsd;string">ComplexResource_0_SCITCR_0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceCurrentEnergyState">
+            <owlx:DataValue owlx:datatype="&xsd;unsignedInt">0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceCurrentWorkLoad">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceEnergyStates">
+            <owlx:DataValue owlx:datatype="&xsd;unsignedInt">0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceID">
+            <owlx:DataValue owlx:datatype="&xsd;null">&lt;null></owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceMaximumWorkLoad">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;serviceCenterITComputingResourceOptimalWorkLoad">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+    </owlx:Individual>
+
+    <owlx:Individual owlx:name="&a;id3">
+        <owlx:type owlx:name="&a;ApplicationActivity"/>
+        <owlx:type owlx:name="&a;ContextEntity"/>
+        <owlx:DataPropertyValue owlx:property="&a;applicationActivityCPUAllocated">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;applicationActivityCPURequired">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;applicationActivityHDDAllocated">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;applicationActivityHDDRequired">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;applicationActivityMEMAllocated">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;applicationActivityMEMRequired">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;applicationActivityPerformanceDegradation">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;applicationActivityPerformanceEstimation">
+            <owlx:DataValue owlx:datatype="&xsd;double">0.0</owlx:DataValue>
+        </owlx:DataPropertyValue>
+        <owlx:DataPropertyValue owlx:property="&a;resourceName">
+            <owlx:DataValue owlx:datatype="&xsd;string">ComplexResource_0_ComplexResource_0_SCITCR_0_AA_0
+            </owlx:DataValue>
+        </owlx:DataPropertyValue>
+    </owlx:Individual>
+
+</owlx:Ontology>
