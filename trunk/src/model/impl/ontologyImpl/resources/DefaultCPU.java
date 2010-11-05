@@ -56,14 +56,14 @@ public class DefaultCPU extends DefaultSimpleResource
 
     public void addAssociatedCore(Core newAssociatedCores) {
         addPropertyValue(getAssociatedCoresProperty(), newAssociatedCores);
-        this.setCurrentWorkLoad(this.getCurrentWorkLoad()+ newAssociatedCores.getCurrentWorkLoad());
+        this.setCurrentWorkLoad(this.getCurrentWorkLoad() + newAssociatedCores.getCurrentWorkLoad());
 
     }
 
 
     public void removeAssociatedCore(Core oldAssociatedCores) {
         removePropertyValue(getAssociatedCoresProperty(), oldAssociatedCores);
-        this.setCurrentWorkLoad(this.getCurrentWorkLoad()- oldAssociatedCores.getCurrentWorkLoad());
+        this.setCurrentWorkLoad(this.getCurrentWorkLoad() - oldAssociatedCores.getCurrentWorkLoad());
 
     }
 
@@ -72,11 +72,11 @@ public class DefaultCPU extends DefaultSimpleResource
         setPropertyValues(getAssociatedCoresProperty(), newAssociatedCores);
         this.setOptimalWorkLoad(newAssociatedCores.get(0).getOptimalWorkLoad());
         this.setMaximumWorkLoad(newAssociatedCores.get(0).getMaximumWorkLoad());
-        double currentWorkload= 0;
-        for (Core core:newAssociatedCores){
-          currentWorkload+=core.getCurrentWorkLoad();
+        double currentWorkload = 0;
+        for (Core core : newAssociatedCores) {
+            currentWorkload += core.getCurrentWorkLoad();
         }
-        this.setCurrentWorkLoad(currentWorkload*newAssociatedCores.size());
+        this.setCurrentWorkLoad(currentWorkload * newAssociatedCores.size());
 
     }
 
@@ -128,14 +128,20 @@ public class DefaultCPU extends DefaultSimpleResource
 
     @Override
     public boolean hasResourcesFor(ApplicationActivity activity) {
-        List<Core> cores = this.getAssociatedCores();
-        float requestedCoresNo = activity.getNumberOfCoresRequiredValue();
-        if (cores.size() < requestedCoresNo) {
+
+        if (this.getCurrentWorkLoad() + activity.getCpuRequiredMaxValue() * activity.getNumberOfCoresRequiredValue() > this.getMaximumWorkLoad() + this.getOptimalWorkLoad())
             return false;
-        }
-        if (requestedCoresNo * activity.getCpuRequiredMaxValue() <= this.getAssociatedCores().size()*((this.getAssociatedCores().get(0).getMaximumWorkLoad()+ this.getAssociatedCores().get(0).getOptimalWorkLoad()) / 2) - this.getCurrentWorkLoad())
-            return true;
-        else return false;
+        if (this.getCurrentWorkLoad() + activity.getCpuRequiredMaxValue() * activity.getNumberOfCoresRequiredValue() < this.getOptimalWorkLoad() / 2.0)
+            return false;
+        return true;
+//        List<Core> cores = this.getAssociatedCores();
+//        float requestedCoresNo = activity.getNumberOfCoresRequiredValue();
+//        if (cores.size() < requestedCoresNo) {
+//            return false;
+//        }
+//        if (requestedCoresNo * activity.getCpuRequiredMaxValue() <= this.getAssociatedCores().size()*((this.getAssociatedCores().get(0).getMaximumWorkLoad()+ this.getAssociatedCores().get(0).getOptimalWorkLoad()) / 2) - this.getCurrentWorkLoad())
+//            return true;
+//        else return false;
 //            boolean hasResources = false;
 //
 //        for (Core core : cores) {
@@ -153,20 +159,23 @@ public class DefaultCPU extends DefaultSimpleResource
 
     @Override
     public void addRunningActivity(ApplicationActivity activity) {
-        List<Core> cores = this.getAssociatedCores();
-        float requestedCoresNo = activity.getNumberOfCoresRequiredValue();
-        int coreCount = cores.size();
-        for (int i = 0; i < coreCount; i++) {
-            Core core = cores.get(i);
-            if (core.hasResourcesFor(activity)) {
-                core.addRunningActivity(activity);
-                activity.addReceivedCoreIndex(i);
-                requestedCoresNo--;
-            }
-            if (requestedCoresNo == 0) {
-                break;
-            }
-        }
+
+//        List<Core> cores = this.getAssociatedCores();
+//        float requestedCoresNo = activity.getNumberOfCoresRequiredValue();
+//        int coreCount = cores.size();
+//        for (int i = 0; i < coreCount; i++) {
+//            Core core = cores.get(i);
+//            if (core.hasResourcesFor(activity)) {
+//                core.addRunningActivity(activity);
+//                activity.addReceivedCoreIndex(i);
+//                requestedCoresNo--;
+//            }
+//            if (requestedCoresNo == 0) {
+//                break;
+//            }
+//        }
+        //TODO: check if ok
+        this.setCurrentWorkLoad(this.getCurrentWorkLoad() + activity.getCpuRequiredMaxValue());
         super.addRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
@@ -181,6 +190,7 @@ public class DefaultCPU extends DefaultSimpleResource
 
             }
         }
+        this.setCurrentWorkLoad(this.getCurrentWorkLoad() - activity.getCpuAllocatedValue());
         super.removeRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
     }
 }
