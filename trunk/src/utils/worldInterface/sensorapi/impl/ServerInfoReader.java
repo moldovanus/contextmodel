@@ -2,9 +2,12 @@ package utils.worldInterface.sensorapi.impl;
 
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.*;
+import utils.exceptions.ApplicationException;
+import utils.exceptions.ServiceCenterAccessException;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.ServerInfo;
 import utils.worldInterface.dtos.StorageDto;
 
 import javax.swing.*;
@@ -37,7 +40,12 @@ public class ServerInfoReader {
             public void actionPerformed(ActionEvent e) {
                 Thread thread = new Thread() {
                     public void run() {
-                        refreshServerInfo();
+                        try {
+                            refreshServerInfo();
+                        } catch (ApplicationException ex) {
+                            System.out.println(ex.getMessage())
+                            ex.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
                     }
                 };
                 thread.start();
@@ -46,52 +54,39 @@ public class ServerInfoReader {
     }
 
 
-    private void refreshServerInfo() {
-        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+    private void refreshServerInfo() throws ApplicationException {
+        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress(), server.getId());
         //server.setProxy(proxy);
-        ServerDto serverInfo = proxy.getServerInfo();
+        ServerInfo serverInfo;
+        try {
+            serverInfo = proxy.getServerInfo();
+        } catch (ServiceCenterAccessException e) {
+            throw new ApplicationException(e.getMessage(), e.getCause());
+        }
 
         CPU cpu = server.getCpuResources().iterator().next();
-        int coreCount = serverInfo.getCoreCount();
-        List<Core> cores = cpu.getAssociatedCores();
-        /*for (int i = 0; i < coreCount; i++) {
-            cores.add(modelAccess.createCore(server.getLocalName() + "_Core_" + i));
-        }*/
-        //cpu.setAssociatedCore(cores);
-
-        int totalCPU = serverInfo.getTotalCPU();
-        Object[] freeCPUValues = serverInfo.getFreeCPU().toArray();
-        int index = 0;
-        int freeCPU = totalCPU - (Integer) freeCPUValues[0];
-        for (Object item : cores) {
-            Core core = (Core) item;
-            // core.setMaxAcceptableValue(totalCPU);
-            //core.setMinAcceptableValue(1);
-            core.setMaximumWorkLoad((double) totalCPU);
-            core.setCurrentWorkLoad((double) freeCPU);
-        }
+        cpu.setCurrentWorkLoad((double)serverInfo.getUsedCpu());
+        cpu.setMaximumWorkLoad((double)serverInfo.getTotalCpu());
 
         MEM serverMemory = server.getMemResources().iterator().next();
-        int totalMemory = serverInfo.getTotalMemory();
-        //serverMemory.setMaxAcceptableValue(totalMemory);
-        serverMemory.setMaximumWorkLoad((double) totalMemory);
-        serverMemory.setCurrentWorkLoad((double) totalMemory - serverInfo.getFreeMemory());
+        serverMemory.setMaximumWorkLoad((double) serverInfo.getTotalMem());
+        serverMemory.setCurrentWorkLoad((double) serverInfo.getUsedMem());
 
         HDD storage = server.getHddResources().iterator().next();
-        List<StorageDto> storageList = serverInfo.getStorage();
-        StorageDto targetStorage = null;
-        String storagePath = storage.getPhysicalPath();
-        for (StorageDto storageDto : storageList) {
-            if (storageDto.getName().charAt(0) == storagePath.charAt(0)) {
-                targetStorage = storageDto;
-                break;
-            }
-        }
-
-        int storageSize = targetStorage.getSize();
-        // storage.setMaxAcceptableValue(storageSize);
-        storage.setMaximumWorkLoad((double) storageSize);
-        storage.setCurrentWorkLoad((double) storageSize - targetStorage.getFreeSpace());
+//        List<StorageDto> storageList = serverInfo.getStorage();
+//        StorageDto targetStorage = null;
+//        String storagePath = storage.getPhysicalPath();
+//        for (StorageDto storageDto : storageList) {
+//            if (storageDto.getName().charAt(0) == storagePath.charAt(0)) {
+//                targetStorage = storageDto;
+//                break;
+//            }
+//        }
+//
+//        int storageSize = targetStorage.getSize();
+//        storage.setMaxAcceptableValue(storageSize);
+        storage.setMaximumWorkLoad((double) serverInfo.getTotalDisk());
+        storage.setCurrentWorkLoad((double) serverInfo.getUsedDisk());
     }
 
 
