@@ -76,10 +76,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     private double taskRespectanceDegree(ApplicationActivity applicationActivity) {
         double respectance =
-                applicationActivity.getCPUWeight() *
-                        (applicationActivity.getNumberOfCoresRequiredValue()
-                                - applicationActivity.getNumberOfCoresAllocatedValue()
-                                + applicationActivity.getCpuRequiredMaxValue()
+                applicationActivity.getCPUWeight() * (
+//                        applicationActivity.getNumberOfCoresRequiredValue()
+//                                - applicationActivity.getNumberOfCoresAllocatedValue()
+                        +applicationActivity.getCpuRequiredMaxValue()
                                 - applicationActivity.getCpuAllocatedValue())
                         + applicationActivity.getMEMWeight() *
                         (applicationActivity.getMemRequiredMaxValue() - applicationActivity.getMemAllocatedValue())
@@ -93,33 +93,40 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         Collection<ServiceCenterITComputingResource> resources = server.getResources();
 
         CPU associatedCPU = null;
-        Collection<Core> cores = new ArrayList<Core>();
         HDD storage = null;
         MEM memory = null;
-        double diff = 0.0;
         for (CPU cpu : server.getCpuResources()) {
-            double cpuCores = 0.0;
-            cores = cpu.getAssociatedCores();
-            for (Core core : cores) {
-                diff = 0.0;
-                Double usedCore = core.getCurrentWorkLoad();
-                Double coreMaxAcceptableValue = core.getOptimalWorkLoad() + (core.getMaximumWorkLoad() - core.getOptimalWorkLoad()) / 2.0;
-                Double coreMinAcceptableValue = core.getOptimalWorkLoad() / 2.0;
-                if (usedCore > coreMaxAcceptableValue) {
-                    diff = usedCore - coreMaxAcceptableValue;
-                } else if (usedCore < coreMinAcceptableValue) {
-                    diff = coreMinAcceptableValue - usedCore;
-                }
-                cpuCores += diff;
-            }
-            cpuCores /= cores.size();
-            if (server.hasCPUWeight())
-                respectance += server.getCPUWeight() * cpuCores;
-            else
-                respectance += cpuCores;
-
+            Double usedCPU = cpu.getCurrentWorkLoad();
+            Double totalCPU = cpu.getMaximumWorkLoad();
+            Double optimalCPU = cpu.getOptimalWorkLoad();
+            Double cpuMaxAcceptableValue = (optimalCPU + totalCPU) / 2.0;
+            Double cpuMinAcceptableValue = optimalCPU / 2.0;
+            if (usedCPU < cpuMinAcceptableValue) respectance += cpuMinAcceptableValue - usedCPU;
+            if (usedCPU > cpuMaxAcceptableValue) respectance += usedCPU - cpuMaxAcceptableValue;
         }
-        diff = 0.0;
+//        for (CPU cpu : server.getCpuResources()) {
+//            double cpuCores = 0.0;
+//            cores = cpu.getAssociatedCores();
+//            for (Core core : cores) {
+//                diff = 0.0;
+//                Double usedCore = core.getCurrentWorkLoad();
+//                Double coreMaxAcceptableValue = core.getOptimalWorkLoad() + (core.getMaximumWorkLoad() - core.getOptimalWorkLoad()) / 2.0;
+//                Double coreMinAcceptableValue = core.getOptimalWorkLoad() / 2.0;
+//                if (usedCore > coreMaxAcceptableValue) {
+//                    diff = usedCore - coreMaxAcceptableValue;
+//                } else if (usedCore < coreMinAcceptableValue) {
+//                    diff = coreMinAcceptableValue - usedCore;
+//                }
+//                cpuCores += diff;
+//            }
+//            cpuCores /= cores.size();
+//            if (server.hasCPUWeight())
+//                respectance += server.getCPUWeight() * cpuCores;
+//            else
+//                respectance += cpuCores;
+//
+//        }
+        double diff = 0.0;
         double usedMemory = 0.0;
         double total = 0.0;
         double optimal = 0.0;
@@ -253,13 +260,14 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             double total = 0.0;
             Collection<Core> cores = new ArrayList<Core>();
             for (CPU resource : server.getCpuResources()) {
-                cores = resource.getAssociatedCores();
-                for (Core core : cores) {
-                    optimal = core.getOptimalWorkLoad();
-                    total = core.getMaximumWorkLoad();
-                    difference += Math.pow(total - (total - optimal) / 2.0 - core.getCurrentWorkLoad()
-                            - optimal, 2);
-                }
+                difference += Math.pow((resource.getMaximumWorkLoad() + resource.getOptimalWorkLoad()) / 2.0 - resource.getCurrentWorkLoad() - resource.getOptimalWorkLoad(), 2);
+//                cores = resource.getAssociatedCores();
+//                for (Core core : cores) {
+//                    optimal = core.getOptimalWorkLoad();
+//                    total = core.getMaximumWorkLoad();
+//                    difference += Math.pow(total - (total - optimal) / 2.0 - core.getCurrentWorkLoad()
+//                            - optimal, 2);
+//                }
             }
 
 
@@ -657,16 +665,21 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 
     public void adjustPolicies(ServiceCenterServer server) {
         CPU cpu = server.getCpuResources().iterator().next();
-        for (Core core : cpu.getAssociatedCores()) {
-            if ((core.getOptimalWorkLoad() / 2.0) > core.getCurrentWorkLoad()) {
-                core.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2);
-                cpu.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2);
-            }
-            if (((core.getOptimalWorkLoad() + core.getMaximumWorkLoad()) / 2.0) < core.getCurrentWorkLoad()) {
-                core.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2 - core.getMaximumWorkLoad());
-                cpu.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2 - core.getMaximumWorkLoad());
-            }
-        }
+        if ((cpu.getOptimalWorkLoad() / 2.0) > cpu.getCurrentWorkLoad())
+            cpu.setOptimalWorkLoad((cpu.getCurrentWorkLoad() - 100) * 2);
+        if (((cpu.getOptimalWorkLoad() + cpu.getMaximumWorkLoad()) / 2.0) < cpu.getCurrentWorkLoad())
+            cpu.setOptimalWorkLoad((cpu.getCurrentWorkLoad() + 100) * 2 - cpu.getMaximumWorkLoad());
+//        for (Core core : cpu.getAssociatedCores()) {
+//            if ((core.getOptimalWorkLoad() / 2.0) > core.getCurrentWorkLoad()) {
+//                core.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2);
+//                cpu.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2);
+//            }
+//            if (((core.getOptimalWorkLoad() + core.getMaximumWorkLoad()) / 2.0) < core.getCurrentWorkLoad()) {
+//                core.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2 - core.getMaximumWorkLoad());
+//                cpu.setOptimalWorkLoad(core.getCurrentWorkLoad() * 2 - core.getMaximumWorkLoad());
+//            }
+//        }
+
         MEM mem = server.getMemResources().iterator().next();
         if ((mem.getOptimalWorkLoad() / 2.0) > mem.getCurrentWorkLoad()) {
             mem.setOptimalWorkLoad((mem.getCurrentWorkLoad() - 100) * 2);
@@ -695,13 +708,13 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             int totalCPU = dto.getTotalCPU();
 
             //read info only about the number of cores wanted for test
-            List<Integer> integers = dto.getFreeCPU();
-            List<Core> cores = server.getCpuResources().iterator().next().getAssociatedCores();
-            for (int i = 0; i < cores.size(); i++) {
-                Core core = cores.get(i);
-                core.setCurrentWorkLoad(totalCPU - integers.get(i).doubleValue());
-                core.setMaximumWorkLoad((double) totalCPU);
-            }
+//            List<Integer> integers = dto.getFreeCPU();
+//            List<Core> cores = server.getCpuResources().iterator().next().getAssociatedCores();
+//            for (int i = 0; i < cores.size(); i++) {
+//                Core core = cores.get(i);
+//                core.setCurrentWorkLoad(totalCPU - integers.get(i).doubleValue());
+//                core.setMaximumWorkLoad((double) totalCPU);
+//            }
 
 //            List<StorageDto> storageDtos = dto.getStorage();
 //            for(StorageDto storageDto : storageDtos){
@@ -712,6 +725,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //                    break;
 //                }
 //            }
+            CPU cpu = server.getCpuResources().iterator().next();
+            cpu.setCurrentWorkLoad((double) (dto.getTotalCPU() - dto.getFreeCPU().get(0)));
+            cpu.setMaximumWorkLoad((double) dto.getTotalMemory());
 
             MEM memory = server.getMemResources().iterator().next();
             memory.setCurrentWorkLoad((double) dto.getTotalMemory() - dto.getFreeMemory());
@@ -846,9 +862,9 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
                             CPU cpu = server.getCpuResources().iterator().next();
                             MEM mem = server.getMemResources().iterator().next();
                             Map<String, Double> negotiatedValues = negotiator.negotiate(server, activity);
-                            double optimalCpu = cpu.getAssociatedCores().get(0).getOptimalWorkLoad();
-                            double totalCpu = cpu.getAssociatedCores().get(0).getMaximumWorkLoad();
-                            double currentCpu = cpu.getAssociatedCores().get(0).getCurrentWorkLoad();
+                            double optimalCpu = cpu.getOptimalWorkLoad();
+                            double totalCpu = cpu.getMaximumWorkLoad();
+                            double currentCpu = cpu.getCurrentWorkLoad();
                             double optimalMem = mem.getOptimalWorkLoad();
 
                             if (negotiatedValues.get(Negotiator.NEGOTIATED_CPU) + currentCpu > (optimalCpu + totalCpu) / 2.0) {
@@ -975,11 +991,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         for (ServiceCenterServer server : servers) {
             MEM mem = server.getMemResources().iterator().next();
-            Core core = server.getCpuResources().iterator().next().getAssociatedCores().iterator().next();
+            CPU cpu = server.getCpuResources().iterator().next();
             message.add(server.getLocalName());
             message.add("Server state: " + ((server.getIsActive()) ? "active" : "in low power state"));
-            message.add("Cores no: " + server.getCpuResources().iterator().next().getAssociatedCores().size());
-            message.add("CPU total: " + core.getMaximumWorkLoad() + " used: " + core.getCurrentWorkLoad());
+            // message.add("Cores no: " + server.getCpuResources().iterator().next().getAssociatedCores().size());
+            message.add("CPU total: " + cpu.getMaximumWorkLoad() + " used: " + cpu.getCurrentWorkLoad());
             message.add("MEM total: " + mem.getMaximumWorkLoad() + " used: " + mem.getCurrentWorkLoad());
         }
         logger.log(color, "Computing Resources", message);
@@ -987,8 +1003,8 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
         for (ApplicationActivity activity : activities) {
             message_1.add(activity.getLocalName());
-            message_1.add("Cores requested: " + activity.getNumberOfCoresRequiredValue()
-                    + " received: " + activity.getNumberOfCoresAllocatedValue());
+//            message_1.add("Cores requested: " + activity.getNumberOfCoresRequiredValue()
+//                    + " received: " + activity.getNumberOfCoresAllocatedValue());
             message_1.add("CPU maxRequested: " + activity.getCpuRequiredMaxValue()
                     + " minRequested: " + activity.getCpuRequiredMaxValue()
                     + " received: " + activity.getCpuAllocatedValue());
