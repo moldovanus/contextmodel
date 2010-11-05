@@ -1,6 +1,10 @@
 package utils.worldInterface.datacenterInterface.proxies;
 
+import utils.exceptions.ServiceCenterAccessException;
+import utils.worldInterface.dtos.DeployedTaskInfo;
 import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.ServerInfo;
+import utils.worldInterface.dtos.TaskDeployInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,34 +16,26 @@ import utils.worldInterface.dtos.ServerDto;
 public interface ServerManagementProxyInterface {
 
 
-    ServerDto getServerInfo();
+    ServerInfo getServerInfo() throws ServiceCenterAccessException;
 
-    void moveDestinationActions(String path1, String path2, String vmName);
+    DeployedTaskInfo deployVirtualMachine(TaskDeployInfo deployInfo) throws ServiceCenterAccessException;
 
-    void moveSourceActions(String path, String vmName);
-    void moveAction1(String path, String vmName);
-    void moveAction2(String path, String vmName);
-    void deployVirtualMachine(String from, String to, String vmName, String newName);
+    void startVirtualMachine(String vmName) throws ServiceCenterAccessException;
 
-    void startVirtualMachine(String vmName);
+    void stopVirtualMachine(String vmName) throws ServiceCenterAccessException;
 
-    void stopVirtualMachine(String vmName);
+    void deleteVirtualMachine(String vmName) throws ServiceCenterAccessException;
 
-    void deleteVirtualMachine(String vmName);
-
-    void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores);
-
-    void deployVirtualMachineWithCustomResources(String from, String to,String serverName, String base,String vmName, String vmCopyName,
-                                                 int memory, int processorPercentage, int nrCores);
+    void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores) throws ServiceCenterAccessException;
 
     /**
      * @param mac       - mac address of the server to be woken up
      * @param ipAddress - ip of router
      * @param port      - port forwarded to the server to be waken up
      */
-    void wakeUpServer(String mac, String ipAddress, int port);
+    void wakeUpServer(String mac, String ipAddress, int port) throws ServiceCenterAccessException;
 
-    void sendServerToSleep();
-    String getEnergyConsumptionInfo();
+    void sendServerToSleep() throws ServiceCenterAccessException;
+    String getEnergyConsumptionInfo() throws ServiceCenterAccessException;
 
 }

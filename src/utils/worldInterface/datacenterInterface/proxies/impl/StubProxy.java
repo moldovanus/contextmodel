@@ -1,7 +1,7 @@
 package utils.worldInterface.datacenterInterface.proxies.impl;
 
-import utils.worldInterface.dtos.ServerDto;
-import utils.worldInterface.dtos.StorageDto;
+import utils.exceptions.ServiceCenterAccessException;
+import utils.worldInterface.dtos.*;
 
 import java.util.ArrayList;
 
@@ -17,79 +17,39 @@ public class StubProxy extends ServerManagementProxy {
         super(hostName);
     }
 
-    public ServerDto getServerInfo() {
-        ServerDto dto = new ServerDto();
-        StorageDto storageDto = new StorageDto();
-        ArrayList<Integer> cpu = new ArrayList<Integer>();
-        ArrayList<StorageDto> storageDtos = new ArrayList<StorageDto>();
-
-        cpu.add(3000);
-        cpu.add(3000);
-        cpu.add(3000);
-        storageDto.setName("C:");
-
-        cpu.add(3000);
-        storageDtos.add(storageDto);
-
-        dto.setFreeCPU(cpu);
-        dto.setStorage(storageDtos);
-        dto.setCoreCount(1);
-
-        return dto;  //To change body of implemented methods use File | Settings | File Templates.
-//        return new HyperVServerManagementProxy(hostName).getServerInfo();
+    public ServerInfo getServerInfo() throws ServiceCenterAccessException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void moveDestinationActions(String path1, String path2, String vmName) {
+    public DeployedTaskInfo deployVirtualMachine(TaskDeployInfo deployInfo) throws ServiceCenterAccessException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void startVirtualMachine(String vmName) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void moveSourceActions(String path, String vmName) {
-//        new HyperVServerManagementProxy(hostName).moveSourceActions(path,vmName);
-    }
-
-    public void moveAction1(String path, String vmName) {
+    public void stopVirtualMachine(String vmName) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void moveAction2(String path, String vmName) {
+    public void deleteVirtualMachine(String vmName) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void deployVirtualMachine(String from, String to, String vmName, String newName) {
+    public void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void startVirtualMachine(String vmName) {
+    public void wakeUpServer(String mac, String ipAddress, int port) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void stopVirtualMachine(String vmName) {
+    public void sendServerToSleep() throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void deleteVirtualMachine(String vmName) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void deployVirtualMachineWithCustomResources(String from, String to,String serverName,String base, String vmName, String vmCopyName, int memory, int processorPercentage, int nrCores) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-     public void moveAction(String path, String vmName){
-         
-     }
-    public void wakeUpServer(String mac, String ipAddress, int port) {
-//        new HyperVServerManagementProxy(hostName).wakeUpServer(mac,ipAddress,port);
-    }
-
-    public void sendServerToSleep() {
-//        new HyperVServerManagementProxy(hostName).sendServerToSleep();
-    }
-    public String getEnergyConsumptionInfo(){
-        //new HyperVServerManagementProxy(hostName).getEnergyConsumptionInfo();
-        return "0";
+    public String getEnergyConsumptionInfo() throws ServiceCenterAccessException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
