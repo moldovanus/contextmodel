@@ -31,8 +31,7 @@ public class OpennebulaManagementProxy extends ServerManagementProxy {
 
     public static void main(String[] args) {
         try {
-//            ServerDto dto = new OpennebulaManagementProxy().getServerInfo();
-//            System.out.println(dto.getTotalCpu());
+
             VirtualNetworkInfo network = new VirtualNetworkInfo();
             network.setIp("192.168.1.102");
             network.setVncPassword("123456");
@@ -40,7 +39,7 @@ public class OpennebulaManagementProxy extends ServerManagementProxy {
             VirtualDiskInfo diskInfo = new VirtualDiskInfo();
             diskInfo.setFormat("ext3");
             diskInfo.setSize(1024);
-            diskInfo.setSource("./home/oneadmin/Desktop/disk.0");
+            diskInfo.setSource("/home/oneadmin/Desktop/disk.0");
             diskInfo.setType("disk");
             VirtualTaskInfo taskInfo = new VirtualTaskInfo("Test_OCA");
             taskInfo.setNetworkInfo(network);
@@ -55,29 +54,36 @@ public class OpennebulaManagementProxy extends ServerManagementProxy {
 
             OpennebulaManagementProxy opennebulaManagementProxy = new OpennebulaManagementProxy();
             PhysicalHost physicalHost = opennebulaManagementProxy.addHost(host);
-            taskInfo = opennebulaManagementProxy.deployVirtualMachine(taskInfo, physicalHost);
 
+            ServerInfo dto = new OpennebulaManagementProxy().getServerInfo(physicalHost);
+            System.out.println(dto.getTotalCpu());
+//            host.setId(0);
+            taskInfo = opennebulaManagementProxy.deployVirtualMachine(taskInfo, host);
+
+            System.out.println("Deploying");
             try {
                 System.in.read();
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
+//            System.out.println("Disabling host");
+//            opennebulaManagementProxy.disableHost(physicalHost);
+//            try {
+//                System.in.read();
+//            } catch (IOException e) {
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            }
+//
+//            System.out.println("Enabling host");
+//            opennebulaManagementProxy.enableHost(physicalHost);
+//            try {
+//                System.in.read();
+//            } catch (IOException e) {
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            }
 
-            opennebulaManagementProxy.disableHost(physicalHost);
-            try {
-                System.in.read();
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
 
-            opennebulaManagementProxy.enableHost(physicalHost);
-            try {
-                System.in.read();
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-
-
+            System.out.println("Deleting vm");
             opennebulaManagementProxy.deleteVirtualMachine(taskInfo);
 
             try {
@@ -86,6 +92,8 @@ public class OpennebulaManagementProxy extends ServerManagementProxy {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
 
+
+            System.out.println("Removing host");
             opennebulaManagementProxy.removeHost(physicalHost);
 
         } catch (ServiceCenterAccessException e) {
@@ -223,10 +231,18 @@ public class OpennebulaManagementProxy extends ServerManagementProxy {
             throw new ServiceCenterAccessException(e.getMessage(), e.getCause());
         }
         VirtualMachine machine = new VirtualMachine(infoVirtual.getId(), client);
-        OneResponse response = machine.finalizeVM();
+        VirtualNetwork virtualNetwork = new VirtualNetwork(infoVirtual.getNetworkInfo().getId(), client);
+
+        OneResponse response = virtualNetwork.delete();
         if (response.isError()) {
             throw new ServiceCenterAccessException(response.getErrorMessage());
         }
+
+        response = machine.finalizeVM();
+        if (response.isError()) {
+            throw new ServiceCenterAccessException(response.getErrorMessage());
+        }
+
     }
 
     public void migrateVirtualMachine(VirtualTaskInfo taskInfo, PhysicalHost destination) throws ServiceCenterAccessException {
