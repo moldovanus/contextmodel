@@ -7,8 +7,8 @@ package utils.worldInterface.dtos;
  * Time: 5:35:56 PM
  * To change this template use File | Settings | File Templates.
  */
-public class DiskInfo {
-    
+public class VirtualDiskInfo {
+
     private String type;
     private int size = 1024;
     private String format;

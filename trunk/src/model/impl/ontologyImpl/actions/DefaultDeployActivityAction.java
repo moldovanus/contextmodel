@@ -104,30 +104,29 @@ public class DefaultDeployActivityAction extends DefaultConsolidationAction
     public void executeOnServiceCenter(ModelAccess modelAccess) {
         ServiceCenterServer server = (ServiceCenterServer) getResourceTo();
         ApplicationActivity task = getActivity();
-        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
         if (proxy != null) {
             int procTime = ((int) task.getCpuRequiredMaxValue() * 100) /
                     ((Core) server.getCpuResources().iterator().next().getAssociatedCores().iterator().next()).getMaximumWorkLoad().intValue();
             String path = server.getHddResources().iterator().next().getPhysicalPath();
             String base = "";
-            if ((task.getCPUWeight() >= task.getMEMWeight() ) && (task.getCPUWeight()>= task.getHDDWeight())){
-                base = GlobalVars.BASE_VM_NAME_CPU;                                                           }
-            else{
-                if ((task.getMEMWeight()>= task.getHDDWeight()) &&(task.getMEMWeight()>= task.getCPUWeight()))
-                {
+            if ((task.getCPUWeight() >= task.getMEMWeight()) && (task.getCPUWeight() >= task.getHDDWeight())) {
+                base = GlobalVars.BASE_VM_NAME_CPU;
+            } else {
+                if ((task.getMEMWeight() >= task.getHDDWeight()) && (task.getMEMWeight() >= task.getCPUWeight())) {
                     base = GlobalVars.BASE_VM_NAME_MEM;
-                }
-                else
-                {
+                } else {
                     base = GlobalVars.BASE_VM_NAME_HDD;
                 }
             }
 
             System.out.println("Deploying ...");
-            proxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
-                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH , server.getLocalName(),base,
-                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
-                    procTime, (int) task.getNumberOfCoresAllocatedValue());
+            //TODO :DefaultDeployActivity deploy not yet implemented fully
+            System.err.println("DefaultDeployActivity deploy not yet implementef fully. Todo");
+//            proxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
+//                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH , server.getLocalName(),base,
+//                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
+//                    procTime, (int) task.getNumberOfCoresAllocatedValue());
         } else {
             System.err.println("Proxy is null");
         }

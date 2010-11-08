@@ -9,9 +9,11 @@ import model.interfaces.resources.Core;
 import model.interfaces.resources.MEM;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.exceptions.ServiceCenterAccessException;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
-import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.PhysicalHost;
+import utils.worldInterface.dtos.ServerInfo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -165,11 +167,15 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
             memoryMonitor.setCurrentValue(memoryInformation);
 
         } else {
-            ServerDto serverDto = proxyInterface.getServerInfo();
-            java.util.List<Integer> freeCPU = serverDto.getFreeCPU();
-            int totalCPU = serverDto.getTotalCPU();
-            int totalUsedMemory = serverDto.getTotalMemory() - serverDto.getFreeMemory();
-            int totalUsedStorage = 0;
+            PhysicalHost host = new PhysicalHost();
+            host.setId(server.getId());
+            ServerInfo serverDto = null;
+            try {
+                serverDto = proxyInterface.getServerInfo(host);
+            } catch (ServiceCenterAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                return;
+            }
 
             Collection<ApplicationActivity> runningTasks = server.getRunningActivities();
             java.util.List<Map<String, Integer>> coreInformation = new java.util.ArrayList<Map<String, Integer>>();
@@ -191,14 +197,14 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
 //        totalUsedStorage = targetStorage.getSize() - targetStorage.getFreeSpace();
 
 //        storageInformation.put("Free", targetStorage.getFreeSpace());
-            memoryInformation.put("Free", serverDto.getFreeMemory());
+            memoryInformation.put("Free", (int) (serverDto.getTotalMem() - serverDto.getUsedMem()));
 
 
-            int coresCount = coresMonitors.size();
+            int coresCount = 1;
             for (int i = 0; i < coresCount; i++) {
                 //TODO :  after adding info for all cores in C# modify this
                 Map<String, Integer> map = new HashMap<String, Integer>();
-                map.put("Free", freeCPU.get(i));
+                map.put("Free", ((Float) (serverDto.getTotalCpu() - serverDto.getUsedCpu())).intValue());
                 coreInformation.add(map);
             }
 
@@ -232,11 +238,11 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
 
             for (int i = 0; i < coresCount; i++) {
                 Map<String, Integer> map = coreInformation.get(i);
-                map.put("OS", totalCPU - freeCPU.get(i) - totalCPUUsedByTasks[i]);
+                map.put("OS", (int) serverDto.getUsedCpu() - totalCPUUsedByTasks[i]);
                 coresMonitors.get(i).setCurrentValue(map);
             }
 
-            memoryInformation.put("OS", totalUsedMemory - totalMemoryUsedByTasks);
+            memoryInformation.put("OS", (int) serverDto.getUsedMem() - totalMemoryUsedByTasks);
             memoryMonitor.setCurrentValue(memoryInformation);
 
 //        storageInformation.put("OS", totalUsedStorage - totalStorageUsedByTasks);

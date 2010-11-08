@@ -1,20 +1,20 @@
 package utils.worldInterface.sensorapi.impl;
 
 import model.impl.util.ModelAccess;
-import model.interfaces.resources.*;
+import model.interfaces.resources.CPU;
+import model.interfaces.resources.HDD;
+import model.interfaces.resources.MEM;
+import model.interfaces.resources.ServiceCenterServer;
 import utils.exceptions.ApplicationException;
 import utils.exceptions.ServiceCenterAccessException;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
-import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.PhysicalHost;
 import utils.worldInterface.dtos.ServerInfo;
-import utils.worldInterface.dtos.StorageDto;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,7 +43,7 @@ public class ServerInfoReader {
                         try {
                             refreshServerInfo();
                         } catch (ApplicationException ex) {
-                            System.out.println(ex.getMessage())
+                            System.out.println(ex.getMessage());
                             ex.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }
                     }
@@ -55,18 +55,21 @@ public class ServerInfoReader {
 
 
     private void refreshServerInfo() throws ApplicationException {
-        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress(), server.getId());
+        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
         //server.setProxy(proxy);
         ServerInfo serverInfo;
         try {
-            serverInfo = proxy.getServerInfo();
+            PhysicalHost host = new PhysicalHost();
+            host.setId(server.getId());
+
+            serverInfo = proxy.getServerInfo(host);
         } catch (ServiceCenterAccessException e) {
             throw new ApplicationException(e.getMessage(), e.getCause());
         }
 
         CPU cpu = server.getCpuResources().iterator().next();
-        cpu.setCurrentWorkLoad((double)serverInfo.getUsedCpu());
-        cpu.setMaximumWorkLoad((double)serverInfo.getTotalCpu());
+        cpu.setCurrentWorkLoad((double) serverInfo.getUsedCpu());
+        cpu.setMaximumWorkLoad((double) serverInfo.getTotalCpu());
 
         MEM serverMemory = server.getMemResources().iterator().next();
         serverMemory.setMaximumWorkLoad((double) serverInfo.getTotalMem());

@@ -7,9 +7,11 @@ import model.impl.util.ModelAccess;
 import model.interfaces.resources.Core;
 import model.interfaces.resources.MEM;
 import model.interfaces.resources.ServiceCenterServer;
+import utils.exceptions.ServiceCenterAccessException;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
-import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.PhysicalHost;
+import utils.worldInterface.dtos.ServerInfo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -94,14 +96,21 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
                     memory.getMaximumWorkLoad().intValue()
                             - (memory.getMaximumWorkLoad().intValue() - memory.getCurrentWorkLoad().intValue()));
         } else {
-            ServerDto serverDto = proxyInterface.getServerInfo();
-            List<Integer> freeCPU = serverDto.getFreeCPU();
-            int totalCPU = serverDto.getTotalCPU();
+            PhysicalHost physicalHost = new PhysicalHost();
+            physicalHost.setId(server.getId());
+            ServerInfo serverDto = null;
+            try {
+                serverDto = proxyInterface.getServerInfo(physicalHost);
+            } catch (ServiceCenterAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            int usedCPU = (int) (serverDto.getUsedCpu());
+            int totalCPU = serverDto.getTotalCpu();
             int coresCount = coresMonitors.size();
             for (int i = 0; i < coresCount; i++) {
-                coresMonitors.get(i).setCurrentValue(totalCPU - freeCPU.get(i));
+                coresMonitors.get(i).setCurrentValue(usedCPU);
             }
-            memoryMonitor.setCurrentValue(serverDto.getTotalMemory() - serverDto.getFreeMemory());
+            memoryMonitor.setCurrentValue(serverDto.getUsedMem());
 
         }
 

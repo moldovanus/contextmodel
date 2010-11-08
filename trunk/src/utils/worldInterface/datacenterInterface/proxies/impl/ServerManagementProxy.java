@@ -11,15 +11,6 @@ import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInt
  */
 public abstract class ServerManagementProxy implements ServerManagementProxyInterface {
     public static boolean DEBUG = false;
-    protected String hostName;
-
-    public ServerManagementProxy(String hostName) {
-        this.hostName = hostName;
-    }
-
-    public String getHostName() {
-        return hostName;
-    }
 
 
 }

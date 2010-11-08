@@ -7,14 +7,7 @@ import gui.datacenterConfiguration.TableCellValueValidator;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
-import main.PelletJena;
-import model.impl.ontologyImpl.OntologyModelFactory;
-import model.impl.util.ModelAccess;
-import model.interfaces.policies.ITComputingContextPolicy;
-import model.interfaces.resources.*;
-import model.interfaces.resources.applications.ApplicationActivity;
 import utils.worldInterface.dtos.ExtendedServerDto;
-import utils.worldInterface.dtos.ServerDto;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -22,7 +15,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -185,7 +181,6 @@ public class ServerConfigurator extends AbstractConfigurator {
                 dto.setMacAddress(data[2].trim());
                 dto.setMaximumCPU(Integer.parseInt(data[5].trim()));
                 dto.setOptimumCPU(Integer.parseInt(data[6].trim()));
-                dto.setCoreCount(Integer.parseInt(data[4].trim()));
                 dto.setMaximumMemory(Integer.parseInt(data[8].trim()));
                 dto.setOptimumMemory(Integer.parseInt(data[9].trim()));
                 dto.setMaximumStorage(Integer.parseInt(data[11].trim()));
@@ -218,7 +213,7 @@ public class ServerConfigurator extends AbstractConfigurator {
         }
     }
 
-    public ServerConfigurator( ) {
+    public ServerConfigurator() {
         configurationTable = new JTable();
         tableModel = new ServerInfoTableModel();
         configurationTable.setModel(tableModel);

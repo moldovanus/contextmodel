@@ -23,6 +23,7 @@ import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInt
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.ExtendedServerDto;
 import utils.worldInterface.dtos.ExtendedTaskDto;
+import utils.worldInterface.dtos.VirtualTaskInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,23 +132,23 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 cpu.setCurrentEnergyState(0);
 
                                 server.setCPUWeight(0.5f);
-                                int coreCount = dto.getCoreCount();
-                                int maximumCPU = dto.getMaximumCPU();
-                                int optimumCPU = dto.getOptimalCPU();
-                                for (int i = 0; i < coreCount; i++) {
-                                    Core core = modelAccess.createCore(serverName + "_Core_" + i);
-                                    core.setMaximumWorkLoad((double) maximumCPU);
-                                    core.setOptimalWorkLoad((double) optimumCPU);
-                                    cpu.addAssociatedCore(core);
-                                    core.setEnergyStates(energyStates);
-                                    core.setResourceID(core.getName());
-                                    core.addPartOf(cpu);
-                                    core.setCurrentEnergyState(0);
-                                }
-                                cpu.setEnergyStates(energyStates);
-                                cpu.setMaximumWorkLoad((double) maximumCPU);
-                                cpu.setOptimalWorkLoad((double) optimumCPU);
-                                server.addCpuResource(cpu);
+//                                int coreCount = dto.getCoreCount();
+//                                int maximumCPU = dto.getMaximumCPU();
+//                                int optimumCPU = dto.getOptimalCPU();
+//                                for (int i = 0; i < coreCount; i++) {
+//                                    Core core = modelAccess.createCore(serverName + "_Core_" + i);
+//                                    core.setMaximumWorkLoad((double) maximumCPU);
+//                                    core.setOptimalWorkLoad((double) optimumCPU);
+//                                    cpu.addAssociatedCore(core);
+//                                    core.setEnergyStates(energyStates);
+//                                    core.setResourceID(core.getName());
+//                                    core.addPartOf(cpu);
+//                                    core.setCurrentEnergyState(0);
+//                                }
+//                                cpu.setEnergyStates(energyStates);
+//                                cpu.setMaximumWorkLoad((double) maximumCPU);
+//                                cpu.setOptimalWorkLoad((double) optimumCPU);
+//                                server.addCpuResource(cpu);
 
                                 MEM memory = modelAccess.createMEM(serverName + "_Memory");
                                 memory.setResourceID(memory.getName());
@@ -276,7 +277,7 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
 //                                for (Pair<String, Integer> entry : entryies) {
 //                                    names.add(entry.getFirst());
 //                                }
-                                 Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+                                Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
                                 for (ServiceCenterServer server : servers) {
                                     server.resetInitialValues();
                                 }
@@ -321,8 +322,10 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                     ApplicationActivity selectedTask = modelAccess.getApplicationActivity("http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#" + message.getContent());
                     if (selectedTask.hasAssociatedServer()) {
                         selectedTask.getAssociatedServer().removeRunningActivity(selectedTask);
-                        ServerManagementProxyInterface management = ProxyFactory.createServerManagementProxy(selectedTask.getAssociatedServer().getIpAddress());
-                        management.deleteVirtualMachine(selectedTask.getLocalName());
+                        ServerManagementProxyInterface management = ProxyFactory.createServerManagementProxy();
+                        VirtualTaskInfo info = new VirtualTaskInfo(selectedTask.getLocalName());
+                        info.setId(selectedTask.getId());
+                        management.deleteVirtualMachine(info);
                         agent.sendAllTasksToClient();
                     } else {
                         agent.sendRefuseMessage();

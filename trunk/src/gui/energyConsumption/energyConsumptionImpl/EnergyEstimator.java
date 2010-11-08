@@ -3,6 +3,8 @@ package gui.energyConsumption.energyConsumptionImpl;
 import gui.energyConsumption.EnergyConsumption;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
+import utils.exceptions.ApplicationException;
+import utils.exceptions.ServiceCenterAccessException;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
@@ -25,7 +27,7 @@ public class EnergyEstimator implements EnergyConsumption {
         this.modelAccess = modelAccess;
     }
 
-    public Number getValueWithRunningAlgorithm() {
+    public Number getValueWithRunningAlgorithm() throws ApplicationException {
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         double totalEnergyConsumed = 0;
         if (modelAccess.isSimulation()) {
@@ -36,11 +38,16 @@ public class EnergyEstimator implements EnergyConsumption {
         int i = 0;
         for (ServiceCenterServer server : servers) {
             if (server.getIsActive()) {
-                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
                 if ((proxy instanceof StubProxy)) {
                     totalEnergyConsumed += BASE_POWER_CONSUMPTION;
                 } else {
-                    String energyConsumption = proxy.getEnergyConsumptionInfo();
+                    String energyConsumption = null;
+                    try {
+                        energyConsumption = proxy.getEnergyConsumptionInfo();
+                    } catch (ServiceCenterAccessException e) {
+                        throw new ApplicationException(e.getMessage(), e.getCause());
+                    }
                     if (energyConsumption != "") {
                         double d = Float.parseFloat(energyConsumption);
                         totalEnergyConsumed += d;
@@ -61,12 +68,12 @@ public class EnergyEstimator implements EnergyConsumption {
         return totalEnergyConsumed;
     }
 
-    public Number getValueWithoutAlgorithm() {
+    public Number getValueWithoutAlgorithm() throws ApplicationException {
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         int totalEnergyConsumed = 0;
         for (ServiceCenterServer server : servers) {
             if (server.getIsActive()) {
-                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
                 if ((proxy instanceof StubProxy)) {
                     totalEnergyConsumed += BASE_POWER_CONSUMPTION;
                 } else {
@@ -75,7 +82,12 @@ public class EnergyEstimator implements EnergyConsumption {
                     if (modelAccess.isSimulation()) {
                         d = previousPowerConsumption;
                     } else {
-                        String energyConsumption = proxy.getEnergyConsumptionInfo();
+                        String energyConsumption = null;
+                        try {
+                            energyConsumption = proxy.getEnergyConsumptionInfo();
+                        } catch (ServiceCenterAccessException e) {
+                            throw new ApplicationException(e.getMessage(), e.getCause());
+                        }
                         if (energyConsumption != "") {
                             d = Float.parseFloat(energyConsumption);
                         } else {

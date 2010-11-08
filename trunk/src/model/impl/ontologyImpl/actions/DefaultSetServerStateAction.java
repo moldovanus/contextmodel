@@ -3,7 +3,6 @@ package model.impl.ontologyImpl.actions;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import globalLoop.utils.GlobalVars;
 import model.impl.util.ModelAccess;
 import model.interfaces.actions.SetServerStateActivity;
 import model.interfaces.resources.ContextResource;
@@ -77,12 +76,16 @@ public class DefaultSetServerStateAction extends DefaultConsolidationAction
     public void executeOnServiceCenter(ModelAccess modelAccess) {
         for (ContextResource resource : getResources()) {
             ServiceCenterServer server = (ServiceCenterServer) resource;
+//            if (getTargetServerState() == 0) {
+//                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+//                proxy.sendServerToSleep();
+//            } else {
+//                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(GlobalVars.GLOBAL_LOOP_CONTROLLER_IP);
+//                proxy.wakeUpServer(server.getMacAddress(), server.getIpAddress(), 9);
+//            }
+            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
             if (getTargetServerState() == 0) {
-                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
-                proxy.sendServerToSleep();
-            } else {
-                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(GlobalVars.GLOBAL_LOOP_CONTROLLER_IP);
-                proxy.wakeUpServer(server.getMacAddress(), server.getIpAddress(), 9);
+
             }
         }
     }
@@ -105,8 +108,8 @@ public class DefaultSetServerStateAction extends DefaultConsolidationAction
     }
 
     public int getCost() {
-            if (oldServerState==0) return 1200;
-                else return 100;
+        if (oldServerState == 0) return 1200;
+        else return 100;
     }
 
     @Override
