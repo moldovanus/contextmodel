@@ -40,7 +40,7 @@ public abstract class ServerMonitor extends AbstractMonitor {
     }
 
     protected ServerManagementProxyInterface getProxy() {
-        return ProxyFactory.createServerManagementProxy(server.getIpAddress());
+        return ProxyFactory.createServerManagementProxy();
     }
 
     public void executeStandaloneWindow() {

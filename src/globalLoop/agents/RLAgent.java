@@ -18,11 +18,14 @@ import model.impl.util.ModelAccess;
 import model.interfaces.policies.QoSPolicy;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.exceptions.ApplicationException;
+import utils.exceptions.ServiceCenterAccessException;
 import utils.misc.Pair;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.ExtendedTaskDto;
 import utils.worldInterface.dtos.TaskDto;
+import utils.worldInterface.dtos.VirtualTaskInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -104,7 +107,7 @@ public class RLAgent extends Agent {
         toKill.add(taskInfo);
     }
 
-    public void killScheduledTasks() {
+    public void killScheduledTasks() throws ApplicationException {
         int currentTimeInMillis = new Long(new Date().getTime()).intValue();
         Object[] entries = toKill.toArray();
         OWLModel model = modelAccess.getOntologyModelFactory().getOwlModel();
@@ -160,13 +163,21 @@ public class RLAgent extends Agent {
 
                 }
                 ServiceCenterServer server = activity.getAssociatedServer();
-                if ( server == null){
+                if (server == null) {
                     continue;
                 }
                 server.removeRunningActivity(activity);
-                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
-                proxy.stopVirtualMachine(activity.getLocalName());
-                proxy.deleteVirtualMachine(activity.getLocalName());
+                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
+                VirtualTaskInfo virtualTaskInfo = new VirtualTaskInfo(activity.getLocalName());
+                virtualTaskInfo.setId(activity.getId());
+
+                try {
+                    proxy.stopVirtualMachine(virtualTaskInfo);
+                    proxy.deleteVirtualMachine(virtualTaskInfo);
+                } catch (ServiceCenterAccessException e) {
+                    throw new ApplicationException(e.getMessage(), e.getCause());
+                }
+
                 Instance instance = model.getInstance(activity.getName());
                 instance.getKnowledgeBase().deleteFrame(instance);
                 instance.getKnowledgeBase().deleteInstance(instance);

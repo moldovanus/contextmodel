@@ -3,11 +3,9 @@ package model.impl.ontologyImpl.actions;
 import edu.stanford.smi.protege.model.FrameID;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
-import globalLoop.utils.GlobalVars;
 import model.impl.util.ModelAccess;
 import model.interfaces.actions.MigrateActivity;
 import model.interfaces.resources.ContextResource;
-import model.interfaces.resources.Core;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
@@ -143,32 +141,34 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
         ServiceCenterServer oldServer = (ServiceCenterServer) getResourceFrom();
         ServiceCenterServer newServer = (ServiceCenterServer) getResourceTo();
         ApplicationActivity task = getActivity();
-        ServerManagementProxyInterface oldServerProxy = ProxyFactory.createServerManagementProxy(oldServer.getIpAddress());
-        ServerManagementProxyInterface newServerProxy = ProxyFactory.createServerManagementProxy(newServer.getIpAddress());
-        if (oldServerProxy != null && newServerProxy != null) {
-            String path = newServer.getHddResources().iterator().next().getPhysicalPath();
-            int procTime = ((int) task.getCpuRequiredMaxValue() * 100) /
-                          ((Core) newServer.getCpuResources().iterator().next().getAssociatedCores().iterator().next()).getMaximumWorkLoad().intValue();
-                String base = "";
-            if ((task.getCPUWeight() >= task.getMEMWeight() ) && (task.getCPUWeight()>= task.getHDDWeight())){
-                base = GlobalVars.BASE_VM_NAME_CPU;                                                           }
-            else{
-                if ((task.getMEMWeight()>= task.getHDDWeight()) &&(task.getMEMWeight()>= task.getCPUWeight()))
-                {
-                    base = GlobalVars.BASE_VM_NAME_MEM;
-                }
-                else
-                {
-                    base = GlobalVars.BASE_VM_NAME_HDD;
-                }
-            }
-            System.out.println("Moving ...");
-            newServerProxy.moveAction1(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + task.getLocalName(),task.getLocalName());
-//            newServerProxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
-//                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + newServer.getLocalName(), newServer.getLocalName(),base,
-//                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
-//                    procTime, (int) task.getNumberOfCoresAllocatedValue());
-            oldServerProxy.moveAction2(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + task.getLocalName(),task.getLocalName());
+        ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
+        if (proxy != null) {
+            //TODO :DefaultDeployActivity deploy not yet implemente fully
+            System.err.println("DefaultDeployActivity deploy not yet implementef fully. Todo");
+            throw new UnsupportedOperationException("");
+//            String path = newServer.getHddResources().iterator().next().getPhysicalPath();
+//            int procTime = ((int) task.getCpuRequiredMaxValue() * 100) /
+//                          ((Core) newServer.getCpuResources().iterator().next().getAssociatedCores().iterator().next()).getMaximumWorkLoad().intValue();
+//                String base = "";
+//            if ((task.getCPUWeight() >= task.getMEMWeight() ) && (task.getCPUWeight()>= task.getHDDWeight())){
+//                base = GlobalVars.BASE_VM_NAME_CPU;                                                           }
+//            else{
+//                if ((task.getMEMWeight()>= task.getHDDWeight()) &&(task.getMEMWeight()>= task.getCPUWeight()))
+//                {
+//                    base = GlobalVars.BASE_VM_NAME_MEM;
+//                }
+//                else
+//                {
+//                    base = GlobalVars.BASE_VM_NAME_HDD;
+//                }
+//            }
+//            System.out.println("Moving ...");
+//            newServerProxy.moveAction1(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + task.getLocalName(),task.getLocalName());
+////            newServerProxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
+////                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + newServer.getLocalName(), newServer.getLocalName(),base,
+////                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
+////                    procTime, (int) task.getNumberOfCoresAllocatedValue());
+//            oldServerProxy.moveAction2(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + task.getLocalName(),task.getLocalName());
 
 //            oldServerProxy.moveSourceActions(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH + oldServer.getLocalName() + task.getLocalName(),
 //                    task.getLocalName());

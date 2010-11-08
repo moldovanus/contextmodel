@@ -1,10 +1,9 @@
 package utils.worldInterface.datacenterInterface.proxies;
 
 import utils.exceptions.ServiceCenterAccessException;
-import utils.worldInterface.dtos.DeployedTaskInfo;
-import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.PhysicalHost;
 import utils.worldInterface.dtos.ServerInfo;
-import utils.worldInterface.dtos.TaskDeployInfo;
+import utils.worldInterface.dtos.VirtualTaskInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,26 +15,33 @@ import utils.worldInterface.dtos.TaskDeployInfo;
 public interface ServerManagementProxyInterface {
 
 
-    ServerInfo getServerInfo() throws ServiceCenterAccessException;
+    ServerInfo getServerInfo(PhysicalHost physicalHost) throws ServiceCenterAccessException;
 
-    DeployedTaskInfo deployVirtualMachine(TaskDeployInfo deployInfo) throws ServiceCenterAccessException;
+    VirtualTaskInfo deployVirtualMachine(VirtualTaskInfo infoVirtual, PhysicalHost physicalHost) throws ServiceCenterAccessException;
 
-    void startVirtualMachine(String vmName) throws ServiceCenterAccessException;
+    void startVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException;
 
-    void stopVirtualMachine(String vmName) throws ServiceCenterAccessException;
+    void stopVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException;
 
-    void deleteVirtualMachine(String vmName) throws ServiceCenterAccessException;
+    void migrateVirtualMachine(VirtualTaskInfo info, PhysicalHost destination) throws ServiceCenterAccessException;
 
-    void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores) throws ServiceCenterAccessException;
+    PhysicalHost addHost(PhysicalHost host) throws ServiceCenterAccessException;
 
-    /**
-     * @param mac       - mac address of the server to be woken up
-     * @param ipAddress - ip of router
-     * @param port      - port forwarded to the server to be waken up
-     */
-    void wakeUpServer(String mac, String ipAddress, int port) throws ServiceCenterAccessException;
+    void removeHost(PhysicalHost host) throws ServiceCenterAccessException;
 
-    void sendServerToSleep() throws ServiceCenterAccessException;
+    void enableHost(PhysicalHost host) throws ServiceCenterAccessException;
+
+    void disableHost(PhysicalHost host) throws ServiceCenterAccessException;
+
+    void deleteVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException;
+
+//    void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores) throws ServiceCenterAccessException;
+//
+
+    void wakeUpServer(PhysicalHost host) throws ServiceCenterAccessException;
+
+    void sendServerToSleep(PhysicalHost host) throws ServiceCenterAccessException;
+
     String getEnergyConsumptionInfo() throws ServiceCenterAccessException;
 
 }

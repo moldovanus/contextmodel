@@ -1,5 +1,7 @@
 package gui.energyConsumption;
 
+import utils.exceptions.ApplicationException;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -8,7 +10,7 @@ package gui.energyConsumption;
  * To change this template use File | Settings | File Templates.
  */
 public interface EnergyConsumption {
-    public Number getValueWithRunningAlgorithm();
+    public Number getValueWithRunningAlgorithm() throws ApplicationException;
 
-    public Number getValueWithoutAlgorithm();
+    public Number getValueWithoutAlgorithm() throws ApplicationException;
 }

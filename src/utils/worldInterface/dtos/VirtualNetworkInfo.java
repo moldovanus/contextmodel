@@ -7,10 +7,19 @@ package utils.worldInterface.dtos;
  * Time: 2:18:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class NetworkInfo {
+public class VirtualNetworkInfo {
+    private int id;
     private String ip;
     private Integer vncPort;
     private String vncPassword;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getIp() {
         return ip;

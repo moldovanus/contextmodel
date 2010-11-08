@@ -1,9 +1,9 @@
 package utils.worldInterface.datacenterInterface.proxies.impl;
 
 import utils.exceptions.ServiceCenterAccessException;
-import utils.worldInterface.dtos.*;
-
-import java.util.ArrayList;
+import utils.worldInterface.dtos.PhysicalHost;
+import utils.worldInterface.dtos.ServerInfo;
+import utils.worldInterface.dtos.VirtualTaskInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,39 +13,53 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class StubProxy extends ServerManagementProxy {
-    public StubProxy(String hostName) {
-        super(hostName);
-    }
 
-    public ServerInfo getServerInfo() throws ServiceCenterAccessException {
+
+    public ServerInfo getServerInfo(PhysicalHost physicalHost) throws ServiceCenterAccessException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public DeployedTaskInfo deployVirtualMachine(TaskDeployInfo deployInfo) throws ServiceCenterAccessException {
+    public VirtualTaskInfo deployVirtualMachine(VirtualTaskInfo infoVirtual, PhysicalHost physicalHost) throws ServiceCenterAccessException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void startVirtualMachine(String vmName) throws ServiceCenterAccessException {
+    public void startVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void stopVirtualMachine(String vmName) throws ServiceCenterAccessException {
+    public void stopVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void deleteVirtualMachine(String vmName) throws ServiceCenterAccessException {
+    public void migrateVirtualMachine(VirtualTaskInfo info, PhysicalHost destination) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores) throws ServiceCenterAccessException {
+    public PhysicalHost addHost(PhysicalHost host) throws ServiceCenterAccessException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void removeHost(PhysicalHost host) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void wakeUpServer(String mac, String ipAddress, int port) throws ServiceCenterAccessException {
+    public void enableHost(PhysicalHost host) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void sendServerToSleep() throws ServiceCenterAccessException {
+    public void disableHost(PhysicalHost host) throws ServiceCenterAccessException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void deleteVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void wakeUpServer(PhysicalHost host) throws ServiceCenterAccessException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void sendServerToSleep(PhysicalHost host) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

@@ -9,17 +9,12 @@ import jade.core.Agent;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import model.impl.util.ModelAccess;
-import model.interfaces.resources.ServiceCenterServer;
-import model.interfaces.resources.applications.ApplicationActivity;
 import utils.logger.LoggerGUI;
-import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
-import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Observer;
 
 public class GUIAgent extends Agent {
@@ -167,19 +162,19 @@ public class GUIAgent extends Agent {
         AbstractAction exitAction = new AbstractAction("Exit") {
 
             public void actionPerformed(ActionEvent e) {
-                Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
-                for (ServiceCenterServer server : servers) {
-                    ServerManagementProxyInterface serverManagementProxyInterface =
-                            ProxyFactory.createServerManagementProxy(server.getIpAddress());
-                    Collection<ApplicationActivity> runningTasks = server.getRunningActivities();
-                    for (ApplicationActivity task : runningTasks) {
-
-                        if (task.isRunning()) {
-                            serverManagementProxyInterface.stopVirtualMachine(task.getLocalName());
-                            serverManagementProxyInterface.deleteVirtualMachine(task.getLocalName());
-                        }
-                    }
-                }
+//                Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+//                for (ServiceCenterServer server : servers) {
+//                    ServerManagementProxyInterface serverManagementProxyInterface =
+//                            ProxyFactory.createServerManagementProxy(server.getIpAddress());
+//                    Collection<ApplicationActivity> runningTasks = server.getRunningActivities();
+//                    for (ApplicationActivity task : runningTasks) {
+//
+//                        if (task.isRunning()) {
+//                            serverManagementProxyInterface.stopVirtualMachine(task.getLocalName());
+//                            serverManagementProxyInterface.deleteVirtualMachine(task.getLocalName());
+//                        }
+//                    }
+//                }
                 shutdownPlatform();
             }
         };

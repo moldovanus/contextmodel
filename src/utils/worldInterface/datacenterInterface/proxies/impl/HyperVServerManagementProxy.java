@@ -1,21 +1,9 @@
 package utils.worldInterface.datacenterInterface.proxies.impl;
 
-import globalLoop.utils.GlobalVars;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 import utils.exceptions.ServiceCenterAccessException;
-import utils.worldInterface.datacenterInterface.xmlParsers.ServerInfoSAXHandler;
-import utils.worldInterface.dtos.DeployedTaskInfo;
-import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.PhysicalHost;
 import utils.worldInterface.dtos.ServerInfo;
-import utils.worldInterface.dtos.TaskDeployInfo;
-
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import utils.worldInterface.dtos.VirtualTaskInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,9 +14,7 @@ import java.util.Calendar;
  */
 public class HyperVServerManagementProxy extends ServerManagementProxy {
 
-    public HyperVServerManagementProxy(String hostName) {
-        super(hostName);
-    }
+
 //
 //    private void waitUntilTargetIsAlive(String ip) {
 //        String pingCmd = "ping " + ip;
@@ -705,31 +691,51 @@ public class HyperVServerManagementProxy extends ServerManagementProxy {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public DeployedTaskInfo deployVirtualMachine(TaskDeployInfo deployInfo) throws ServiceCenterAccessException {
+    public ServerInfo getServerInfo(PhysicalHost physicalHost) throws ServiceCenterAccessException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void startVirtualMachine(String vmName) throws ServiceCenterAccessException {
+    public VirtualTaskInfo deployVirtualMachine(VirtualTaskInfo infoVirtual, PhysicalHost physicalHost) throws ServiceCenterAccessException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void startVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void stopVirtualMachine(String vmName) throws ServiceCenterAccessException {
+    public void stopVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void deleteVirtualMachine(String vmName) throws ServiceCenterAccessException {
+    public void migrateVirtualMachine(VirtualTaskInfo info, PhysicalHost destination) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void modifyVirtualMachine(String vmName, int memory, int procPercentage, int cores) throws ServiceCenterAccessException {
+    public PhysicalHost addHost(PhysicalHost host) throws ServiceCenterAccessException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void removeHost(PhysicalHost host) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void wakeUpServer(String mac, String ipAddress, int port) throws ServiceCenterAccessException {
+    public void enableHost(PhysicalHost host) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void sendServerToSleep() throws ServiceCenterAccessException {
+    public void disableHost(PhysicalHost host) throws ServiceCenterAccessException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void deleteVirtualMachine(VirtualTaskInfo info) throws ServiceCenterAccessException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void wakeUpServer(PhysicalHost host) throws ServiceCenterAccessException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void sendServerToSleep(PhysicalHost host) throws ServiceCenterAccessException {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

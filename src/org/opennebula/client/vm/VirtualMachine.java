@@ -25,94 +25,93 @@ import org.w3c.dom.Node;
  * This class represents an OpenNebula VM.
  * It also offers static XML-RPC call wrappers.
  */
-public class VirtualMachine extends PoolElement{
+public class VirtualMachine extends PoolElement {
 
     private static final String METHOD_PREFIX = "vm.";
     private static final String ALLOCATE = METHOD_PREFIX + "allocate";
-    private static final String INFO     = METHOD_PREFIX + "info";
-    private static final String DEPLOY   = METHOD_PREFIX + "deploy";
-    private static final String ACTION   = METHOD_PREFIX + "action";
-    private static final String MIGRATE  = METHOD_PREFIX + "migrate";
+    private static final String INFO = METHOD_PREFIX + "info";
+    private static final String DEPLOY = METHOD_PREFIX + "deploy";
+    private static final String ACTION = METHOD_PREFIX + "action";
+    private static final String MIGRATE = METHOD_PREFIX + "migrate";
     private static final String SAVEDISK = METHOD_PREFIX + "savedisk";
 
     private static final String[] VM_STATES =
-    {
-        "INIT",
-        "PENDING",
-        "HOLD",
-        "ACTIVE",
-        "STOPPED",
-        "SUSPENDED",
-        "DONE",
-        "FAILED" };
+            {
+                    "INIT",
+                    "PENDING",
+                    "HOLD",
+                    "ACTIVE",
+                    "STOPPED",
+                    "SUSPENDED",
+                    "DONE",
+                    "FAILED"};
 
     private static final String[] SHORT_VM_STATES =
-    {
-        "init",
-        "pend",
-        "hold",
-        "actv",
-        "stop",
-        "susp",
-        "done",
-        "fail" };
+            {
+                    "init",
+                    "pend",
+                    "hold",
+                    "actv",
+                    "stop",
+
+                    "susp",
+                    "done",
+                    "fail"};
 
     private static final String[] LCM_STATE =
-    {
-        "LCM_INIT",
-        "PROLOG",
-        "BOOT",
-        "RUNNING",
-        "MIGRATE",
-        "SAVE_STOP",
-        "SAVE_SUSPEND",
-        "SAVE_MIGRATE",
-        "PROLOG_MIGRATE",
-        "PROLOG_RESUME",
-        "EPILOG_STOP",
-        "EPILOG",
-        "SHUTDOWN",
-        "CANCEL",
-        "FAILURE",
-        "DELETE",
-        "UNKNOWN" };
+            {
+                    "LCM_INIT",
+                    "PROLOG",
+                    "BOOT",
+                    "RUNNING",
+                    "MIGRATE",
+                    "SAVE_STOP",
+                    "SAVE_SUSPEND",
+                    "SAVE_MIGRATE",
+                    "PROLOG_MIGRATE",
+                    "PROLOG_RESUME",
+                    "EPILOG_STOP",
+                    "EPILOG",
+                    "SHUTDOWN",
+                    "CANCEL",
+                    "FAILURE",
+                    "DELETE",
+                    "UNKNOWN"};
 
     private static final String[] SHORT_LCM_STATES =
-    {
-        null,
-        "prol",
-        "boot",
-        "runn",
-        "migr",
-        "save",
-        "save",
-        "save",
-        "migr",
-        "prol",
-        "epil",
-        "epil",
-        "shut",
-        "shut",
-        "fail",
-        "dele",
-        "unkn" };
+            {
+                    null,
+                    "prol",
+                    "boot",
+                    "runn",
+                    "migr",
+                    "save",
+                    "save",
+                    "save",
+                    "migr",
+                    "prol",
+                    "epil",
+                    "epil",
+                    "shut",
+                    "shut",
+                    "fail",
+                    "dele",
+                    "unkn"};
 
     /**
      * Creates a new VM representation.
      *
-     * @param id The virtual machine Id (vid).
+     * @param id     The virtual machine Id (vid).
      * @param client XML-RPC Client.
      */
-    public VirtualMachine(int id, Client client)
-    {
+    public VirtualMachine(int id, Client client) {
         super(id, client);
     }
 
     /**
      * @see PoolElement
      */
-    protected VirtualMachine(Node xmlElement, Client client)
-    {
+    protected VirtualMachine(Node xmlElement, Client client) {
         super(xmlElement, client);
     }
 
@@ -124,13 +123,12 @@ public class VirtualMachine extends PoolElement{
     /**
      * Allocates a new VM in OpenNebula.
      *
-     * @param client XML-RPC Client.
+     * @param client      XML-RPC Client.
      * @param description A string containing the template of the vm.
      * @return If successful the message contains the associated
-     * id generated for this VM.
+     *         id generated for this VM.
      */
-    public static OneResponse allocate(Client client, String description)
-    {
+    public static OneResponse allocate(Client client, String description) {
         return client.call(ALLOCATE, description);
     }
 
@@ -138,12 +136,11 @@ public class VirtualMachine extends PoolElement{
      * Retrieves the information of the given VM.
      *
      * @param client XML-RPC Client.
-     * @param id The virtual machine id (vid) of the target instance.
+     * @param id     The virtual machine id (vid) of the target instance.
      * @return If successful the message contains the string
-     * with the information returned by OpenNebula.
+     *         with the information returned by OpenNebula.
      */
-    public static OneResponse info(Client client, int id)
-    {
+    public static OneResponse info(Client client, int id) {
         return client.call(INFO, id);
     }
 
@@ -158,8 +155,7 @@ public class VirtualMachine extends PoolElement{
      *
      * @see VirtualMachine#info(Client, int)
      */
-    public OneResponse info()
-    {
+    public OneResponse info() {
         OneResponse response = info(client, id);
         super.processInfo(response);
         return response;
@@ -169,11 +165,10 @@ public class VirtualMachine extends PoolElement{
      * Initiates the instance of the VM on the target host.
      *
      * @param hostId The host id (hid) of the target host where
-     * the VM will be instantiated.
+     *               the VM will be instantiated.
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse deploy(int hostId)
-    {
+    public OneResponse deploy(int hostId) {
         return client.call(DEPLOY, id, hostId);
     }
 
@@ -194,12 +189,11 @@ public class VirtualMachine extends PoolElement{
      * </ul>
      *
      * @param action The action name to be performed, can be:<br/>
-     * "shutdown", "hold", "release", "stop", "cancel", "suspend",
-     * "resume", "restart", "finalize".
+     *               "shutdown", "hold", "release", "stop", "cancel", "suspend",
+     *               "resume", "restart", "finalize".
      * @return If an error occurs the error message contains the reason.
      */
-    protected OneResponse action(String action)
-    {
+    protected OneResponse action(String action) {
         return client.call(ACTION, action, id);
     }
 
@@ -207,26 +201,24 @@ public class VirtualMachine extends PoolElement{
      * Migrates the virtual machine to the target host (hid).
      *
      * @param hostId The target host id (hid) where we want to migrate
-     * the vm.
-     * @param live If true we are indicating that we want livemigration,
-     * otherwise false.
+     *               the vm.
+     * @param live   If true we are indicating that we want livemigration,
+     *               otherwise false.
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse migrate(int hostId, boolean live)
-    {
+    public OneResponse migrate(int hostId, boolean live) {
         return client.call(MIGRATE, id, hostId, live);
     }
 
     /**
      * Sets the specified vm's disk to be saved in a new image when the
      * VirtualMachine shutdowns.
-     * 
-     * @param diskId ID of the disk to be saved.
+     *
+     * @param diskId  ID of the disk to be saved.
      * @param imageId ID of the image where the disk will be saved.
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse savedisk(int diskId, int imageId)
-    {
+    public OneResponse savedisk(int diskId, int imageId) {
         return client.call(SAVEDISK, diskId, imageId);
     }
 
@@ -236,85 +228,85 @@ public class VirtualMachine extends PoolElement{
 
     /**
      * Shuts down the already deployed VM.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse shutdown()
-    {
+    public OneResponse shutdown() {
         return action("shutdown");
     }
 
     /**
      * Cancels the running VM.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse cancel()
-    {
+    public OneResponse cancel() {
         return action("cancel");
     }
 
     /**
      * Sets the VM to hold state. The VM will not be scheduled until it is
      * released.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse hold()
-    {
+    public OneResponse hold() {
         return action("hold");
     }
 
     /**
      * Releases a virtual machine from hold state.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse release()
-    {
+    public OneResponse release() {
         return action("release");
     }
 
     /**
      * Stops the virtual machine. The virtual machine state is transferred back
      * to OpenNebula for a possible reschedule.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse stop()
-    {
+    public OneResponse stop() {
         return action("stop");
     }
 
     /**
      * Suspends the virtual machine. The virtual machine state is left in the
      * cluster node for resuming.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse suspend()
-    {
+    public OneResponse suspend() {
         return action("suspend");
     }
 
     /**
      * Resumes the execution of a saved VM.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse resume()
-    {
+    public OneResponse resume() {
         return action("resume");
     }
 
     /**
      * Deletes the VM from the pool and database.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse finalizeVM()
-    {
+    public OneResponse finalizeVM() {
         return action("finalize");
     }
 
     /**
      * Resubmits the virtual machine after failure.
+     *
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse restart()
-    {
+    public OneResponse restart() {
         return action("shutdown");
     }
 
@@ -325,11 +317,10 @@ public class VirtualMachine extends PoolElement{
      * with live set to false.
      *
      * @param hostId The target host id (hid) where we want to migrate
-     * the vm.
+     *               the vm.
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse migrate(int hostId)
-    {
+    public OneResponse migrate(int hostId) {
         return migrate(hostId, false);
     }
 
@@ -341,64 +332,60 @@ public class VirtualMachine extends PoolElement{
      * with live set to true.
      *
      * @param hostId The target host id (hid) where we want to migrate
-     * the vm.
+     *               the vm.
      * @return If an error occurs the error message contains the reason.
      */
-    public OneResponse liveMigrate(int hostId)
-    {
+    public OneResponse liveMigrate(int hostId) {
         return migrate(hostId, true);
     }
 
-    public int state()
-    {
+    public int state() {
         return super.state();
     }
 
     /**
      * Returns the VM state of the VirtualMachine (string value).
+     *
      * @return The VM state of the VirtualMachine (string value).
      */
-    public String stateStr()
-    {
+    public String stateStr() {
         int state = state();
         return state != -1 ? VM_STATES[state()] : null;
     }
 
     /**
      * Returns the LCM state of the VirtualMachine (numeric value).
+     *
      * @return The LCM state of the VirtualMachine (numeric value).
      */
-    public int lcmState()
-    {
+    public int lcmState() {
         String state = xpath("LCM_STATE");
         return state != null ? Integer.parseInt(state) : -1;
     }
 
     /**
      * Returns the LCM state of the VirtualMachine (string value).
+     *
      * @return The LCM state of the VirtualMachine (string value).
      */
-    public String lcmStateStr()
-    {
+    public String lcmStateStr() {
         int state = lcmState();
         return state != -1 ? LCM_STATE[state] : null;
     }
 
     /**
      * Returns the short status string for the VirtualMachine.
+     *
      * @return The short status string for the VirtualMachine.
      */
-    public String status()
-    {
+    public String status() {
         int state = state();
         String shortStateStr = null;
-        if(state != -1)
-        {
+        if (state != -1) {
             shortStateStr = SHORT_VM_STATES[state];
-            if(shortStateStr.equals("actv"))
-            {
+            if (shortStateStr.equals("actv")) {
                 int lcmState = lcmState();
-                if(lcmState != -1)
+                if (lcmState != -1)
                     shortStateStr = SHORT_LCM_STATES[lcmState];
             }
         }

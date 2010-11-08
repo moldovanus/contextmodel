@@ -15,8 +15,8 @@ public class ProxyFactory {
     private ProxyFactory() {
     }
 
-    public static ServerManagementProxyInterface createServerManagementProxy(String hostName, int hostId) {
-        return (returnStub) ? new StubProxy(hostName) : new OpennebulaManagementProxy(hostName,hostId);
+    public static ServerManagementProxyInterface createServerManagementProxy() {
+        return (returnStub) ? new StubProxy() : new OpennebulaManagementProxy();
     }
 
     public static void setReturnStub(boolean returnStub) {

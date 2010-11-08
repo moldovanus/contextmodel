@@ -22,7 +22,9 @@ import utils.clustering.Cluster;
 import utils.clustering.ClusteringAlgorithm;
 import utils.clustering.ClusteringAlgorithmFactory;
 import utils.contextSituationsAccess.*;
+import utils.exceptions.ApplicationException;
 import utils.exceptions.IndividualNotFoundException;
+import utils.exceptions.ServiceCenterAccessException;
 import utils.logger.LoggerGUI;
 import utils.misc.DecisionTreeNode;
 import utils.misc.Pair;
@@ -33,7 +35,8 @@ import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ActionDto;
 import utils.worldInterface.dtos.ExtendedServerDto;
-import utils.worldInterface.dtos.ServerDto;
+import utils.worldInterface.dtos.PhysicalHost;
+import utils.worldInterface.dtos.ServerInfo;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -698,14 +701,20 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         System.out.println("New configuration");
         Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
         for (ServiceCenterServer server : servers) {
-            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy(server.getIpAddress());
+            ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
             if (!server.getIsActive() || (proxy instanceof StubProxy)) {
                 continue;
             }
+            PhysicalHost physicalHost = new PhysicalHost();
+            physicalHost.setId(server.getId());
+            ServerInfo serverInfo = null;
+            try {
+                serverInfo = proxy.getServerInfo(physicalHost);
+            } catch (ServiceCenterAccessException e) {
+                e.printStackTrace();
+            }
 
-            ServerDto dto = proxy.getServerInfo();
-            int coreCount = dto.getCoreCount();
-            int totalCPU = dto.getTotalCPU();
+            int totalCPU = serverInfo.getTotalCpu();
 
             //read info only about the number of cores wanted for test
 //            List<Integer> integers = dto.getFreeCPU();
@@ -726,12 +735,12 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
 //                }
 //            }
             CPU cpu = server.getCpuResources().iterator().next();
-            cpu.setCurrentWorkLoad((double) (dto.getTotalCPU() - dto.getFreeCPU().get(0)));
-            cpu.setMaximumWorkLoad((double) dto.getTotalMemory());
+            cpu.setCurrentWorkLoad((double) (serverInfo.getUsedCpu()));
+            cpu.setMaximumWorkLoad((double) totalCPU);
 
             MEM memory = server.getMemResources().iterator().next();
-            memory.setCurrentWorkLoad((double) dto.getTotalMemory() - dto.getFreeMemory());
-            memory.setMaximumWorkLoad((double) dto.getTotalMemory());
+            memory.setCurrentWorkLoad((double) serverInfo.getUsedMem());
+            memory.setMaximumWorkLoad((double) serverInfo.getTotalMem());
             System.out.println(server.toString());
             System.out.println(server.getCpuResources().iterator().next().toString());
             System.out.println(memory.toString());
@@ -969,7 +978,11 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             agent.send(msg);
         }
         smallestEntropyContext = null;
-        agent.killScheduledTasks();
+        try {
+            agent.killScheduledTasks();
+        } catch (ApplicationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
         System.out.println(modelAccess.getAllApplicationActivityInstances().size());
     }

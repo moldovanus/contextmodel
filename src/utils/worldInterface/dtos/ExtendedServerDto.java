@@ -7,27 +7,63 @@ package utils.worldInterface.dtos;
  * Time: 11:00:47 AM
  * Adds IP, MAC fields to the standard ServerDto
  */
-public class ExtendedServerDto extends ServerDto {
+public class ExtendedServerDto {
 
     private String ipAddress;
     private String macAddress;
+    private String serverName;
 
     private int maximumCPU;
+    private int totalCPU;
     private int optimumCPU;
     private int usedCPU;
 
     private int maximumMemory;
     private int optimumMemory;
+    private int totalMemory;
     private int usedMemory;
 
     private int maximumStorage;
     private int optimumStorage;
+    private int totalStorage;
     private int usedStorage;
 
     private int coreNo;
 
     public int getCoreNo() {
         return coreNo;
+    }
+
+    public int getTotalCPU() {
+        return totalCPU;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public void setTotalCPU(int totalCPU) {
+        this.totalCPU = totalCPU;
+    }
+
+    public int getTotalMemory() {
+        return totalMemory;
+    }
+
+    public void setTotalMemory(int totalMemory) {
+        this.totalMemory = totalMemory;
+    }
+
+    public int getTotalStorage() {
+        return totalStorage;
+    }
+
+    public void setTotalStorage(int totalStorage) {
+        this.totalStorage = totalStorage;
     }
 
     public void setCoreNo(int coreNo) {
@@ -125,11 +161,11 @@ public class ExtendedServerDto extends ServerDto {
     public double distanceTo(ExtendedServerDto server) {
         double minDistance = 100000;
 
-        double memory1[] = {this.getUsedMemory(), (this.getTotalMemory()+this.getOptimalMemory())/2.0, (this.getTotalMemory()+this.getOptimalMemory())/2.0, this.getUsedMemory()};
-        double cpu1[] = {this.getUsedCPU(), this.getUsedCPU(), (this.getTotalCPU()+this.getOptimalCPU())/2.0, (this.getTotalCPU()+this.getOptimalCPU())/2.0};
+        double memory1[] = {this.getUsedMemory(), (this.getTotalMemory() + this.getOptimalMemory()) / 2.0, (this.getTotalMemory() + this.getOptimalMemory()) / 2.0, this.getUsedMemory()};
+        double cpu1[] = {this.getUsedCPU(), this.getUsedCPU(), (this.getTotalCPU() + this.getOptimalCPU()) / 2.0, (this.getTotalCPU() + this.getOptimalCPU()) / 2.0};
 
-        double memory2[] = {server.getUsedMemory(), (server.getTotalMemory()+server.getOptimalMemory())/2.0, (server.getTotalMemory()+server.getOptimalMemory())/2.0, server.getUsedMemory()};
-        double cpu2[] = {server.getUsedCPU(), server.getUsedCPU(), (server.getTotalCPU()+server.getOptimalCPU())/2.0, (server.getTotalCPU()+server.getOptimalCPU())/2.0};
+        double memory2[] = {server.getUsedMemory(), (server.getTotalMemory() + server.getOptimalMemory()) / 2.0, (server.getTotalMemory() + server.getOptimalMemory()) / 2.0, server.getUsedMemory()};
+        double cpu2[] = {server.getUsedCPU(), server.getUsedCPU(), (server.getTotalCPU() + server.getOptimalCPU()) / 2.0, (server.getTotalCPU() + server.getOptimalCPU()) / 2.0};
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 double dist = Math.sqrt((Math.pow(memory1[i] - memory2[j], 2) + Math.pow((cpu1[i] - cpu2[j]), 2)));
@@ -138,8 +174,8 @@ public class ExtendedServerDto extends ServerDto {
                 }
             }
         }
-        if (this.getCoreNo()!=server.getCoreNo()){
-            minDistance *= (Math.abs(coreNo-server.getCoreNo())+1);
+        if (this.getCoreNo() != server.getCoreNo()) {
+            minDistance *= (Math.abs(coreNo - server.getCoreNo()) + 1);
         }
         return minDistance;
 
@@ -154,10 +190,10 @@ public class ExtendedServerDto extends ServerDto {
         if (server.getOptimalMemory() != optimumMemory) return false;
         if (server.getMaximumStorage() != maximumStorage) return false;
         if (server.getOptimalStorage() != optimumStorage) return false;
-        if (server.getUsedCPU()!= usedCPU) return false;
-        if (server.getUsedMemory()!=usedMemory) return false;
-        if (server.getUsedStorage()!= usedStorage) return false;
-        
+        if (server.getUsedCPU() != usedCPU) return false;
+        if (server.getUsedMemory() != usedMemory) return false;
+        if (server.getUsedStorage() != usedStorage) return false;
+
         return true;
     }
 

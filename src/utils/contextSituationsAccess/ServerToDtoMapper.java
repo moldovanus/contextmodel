@@ -27,14 +27,15 @@ public class ServerToDtoMapper {
         CPU cpu = server.getCpuResources().iterator().next();
         MEM mem = server.getMemResources().iterator().next();
         Collection<Core> cores = cpu.getAssociatedCores();
-        dto.setCoreCount(cores.size());
         List<Integer> freeCPU = new ArrayList<Integer>();
         for (Core core : cores) {
             freeCPU.add(core.getMaximumWorkLoad().intValue() - core.getCurrentWorkLoad().intValue());
         }
-        dto.setFreeCPU(freeCPU);
 
-        dto.setFreeMemory(mem.getMaximumWorkLoad().intValue() - mem.getCurrentWorkLoad().intValue());
+        //TODO: de gandit ce facem cu DTO-urile. Daca tinem core-uri, daca nu, cum facem
+//        dto.setFreeCPU(freeCPU);
+
+//        dto.setFreeMemory(mem.getMaximumWorkLoad().intValue() - mem.getCurrentWorkLoad().intValue());
         dto.setIpAddress(server.getIpAddress());
         dto.setMacAddress(server.getMacAddress());
         dto.setMaximumCPU(cpu.getMaximumWorkLoad().intValue());
