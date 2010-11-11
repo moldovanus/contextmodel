@@ -18,8 +18,6 @@ import model.interfaces.resources.*;
 import model.interfaces.resources.applications.ApplicationActivity;
 import reasoning.Evaluator;
 import reasoning.impl.PelletEvaluator;
-import utils.clustering.Cluster;
-import utils.clustering.ClusteringAlgorithm;
 import utils.clustering.ClusteringAlgorithmFactory;
 import utils.contextSituationsAccess.*;
 import utils.exceptions.ApplicationException;
@@ -34,7 +32,6 @@ import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInt
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.datacenterInterface.proxies.impl.StubProxy;
 import utils.worldInterface.dtos.ActionDto;
-import utils.worldInterface.dtos.ExtendedServerDto;
 import utils.worldInterface.dtos.PhysicalHost;
 import utils.worldInterface.dtos.ServerInfo;
 
@@ -135,7 +132,6 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
         double optimal = 0.0;
         double memoryMaxAcceptableValue = 0.0;
 
-        //TODO: de verificat daca e ok rangeu
         double memoryMinAcceptableValue = optimal / 2.0;
         Collection<MEM> memories = server.getMemResources();
         for (MEM mem : memories) {
@@ -707,6 +703,10 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             }
             PhysicalHost physicalHost = new PhysicalHost();
             physicalHost.setId(server.getId());
+            physicalHost.setHostname(server.getIpAddress());
+            physicalHost.setIm(PhysicalHost.IM_KVM);
+            physicalHost.setTm(PhysicalHost.TM_SSH);
+            physicalHost.setVmm(PhysicalHost.VMM_KVM);
             ServerInfo serverInfo = null;
             try {
                 serverInfo = proxy.getServerInfo(physicalHost);
@@ -805,22 +805,22 @@ public class RLServiceCenterServersManagement extends TickerBehaviour {
             ClusteringAlgorithmFactory factory = new ClusteringAlgorithmFactory();
             Object[] data = new Object[1];
             data[0] = 3;
-            try {
-                ClusteringAlgorithm kMeans = factory.getHierarhicalAlgorithm(3);
-                List<ExtendedServerDto> extendedServerDtos = new ArrayList<ExtendedServerDto>();
-                for (ServiceCenterServer serviceCenterServer : servers) {
-                    extendedServerDtos.add(ServerToDtoMapper.map(serviceCenterServer));
-                }
-                kMeans.initializeClusters(extendedServerDtos);
-                Cluster cl = kMeans.getNearestCluster(ServerToDtoMapper.map(servers1.iterator().next()));
-                if (cl != null) {
-                    System.out.println(cl.toString());
-                } else {
-                    System.out.println("CLuster null");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
+//            try {
+//                ClusteringAlgorithm kMeans = factory.getHierarhicalAlgorithm(3);
+//                List<ExtendedServerDto> extendedServerDtos = new ArrayList<ExtendedServerDto>();
+//                for (ServiceCenterServer serviceCenterServer : servers) {
+//                    extendedServerDtos.add(ServerToDtoMapper.map(serviceCenterServer));
+//                }
+//                kMeans.initializeClusters(extendedServerDtos);
+//                Cluster cl = kMeans.getNearestCluster(ServerToDtoMapper.map(servers1.iterator().next()));
+//                if (cl != null) {
+//                    System.out.println(cl.toString());
+//                } else {
+//                    System.out.println("CLuster null");
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            }
 
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             try {

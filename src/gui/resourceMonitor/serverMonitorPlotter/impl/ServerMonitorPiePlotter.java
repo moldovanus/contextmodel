@@ -17,8 +17,10 @@ import utils.worldInterface.dtos.ServerInfo;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,12 +51,12 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
         // JPanel coresPanel = new JPanel();
         //JPanel storageAndMemoryPanel = new JPanel();
 
-        Collection cores = server.getCpuResources().iterator().next().getAssociatedCores();
-        int coresCount = cores.size();
-        if (coresCount % 2 != 0) {
-            coresCount++;
-        }
-        coresMonitors = new ArrayList<ResourceMonitorPlotter>();
+//        Collection cores = server.getCpuResources().iterator().next().getAssociatedCores();
+//        int coresCount = cores.size();
+//        if (coresCount % 2 != 0) {
+//            coresCount++;
+//        }
+//        coresMonitors = new ArrayList<ResourceMonitorPlotter>();
 
 //        monitorPanel.setLayout(new GridLayout(coresCount / 2 + 1, coresCount / (coresCount / 2) + 2));
 
@@ -65,13 +67,13 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
 
 //        for (Object o : cores) {
 //            Core core = (Core) o;
-        Core core = (Core) cores.iterator().next();
-        ResourceMonitorPlotter plotter = new ResourceMonitorPieChartPlotter("CPU usage", 0, core.getMaximumWorkLoad().intValue());
+//        Core core = (Core) cores.iterator().next();
+        ResourceMonitorPlotter plotter = new ResourceMonitorPieChartPlotter("CPU usage", 0, server.getCpuResources().iterator().next().getCurrentWorkLoad().intValue());
         plotter.setSnapshotIncrement(refreshRate / 1000);
         JPanel graphPanel = plotter.getGraphPanel();
         graphPanel.setSize(250, 150);
         monitorPanel.add(graphPanel);
-        coresMonitors.add(plotter);
+//        coresMonitors.add(plotter);
 //        }
 
         //monitorPanel.add(coresPanel);
@@ -239,7 +241,7 @@ public class ServerMonitorPiePlotter extends ServerMonitor {
             for (int i = 0; i < coresCount; i++) {
                 Map<String, Integer> map = coreInformation.get(i);
                 map.put("OS", (int) serverDto.getUsedCpu() - totalCPUUsedByTasks[i]);
-                coresMonitors.get(i).setCurrentValue(map);
+                //  coresMonitors.get(i).setCurrentValue(map);
             }
 
             memoryInformation.put("OS", (int) serverDto.getUsedMem() - totalMemoryUsedByTasks);

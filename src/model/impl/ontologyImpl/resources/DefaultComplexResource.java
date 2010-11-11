@@ -345,31 +345,31 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
             return false;
         }
         int freeCores = cores.size();
-        for (Core core: cores){
+        for (Core core : cores) {
             List<ApplicationActivity> runningActivities = core.getRunningActivities();
-            int usedCore = 0 ;
-            for (ApplicationActivity activity:runningActivities){
-                usedCore+=activity.getCpuAllocatedValue();
+            int usedCore = 0;
+            for (ApplicationActivity activity : runningActivities) {
+                usedCore += activity.getCpuAllocatedValue();
             }
-            if (usedCore+task.getCpuRequiredMinValue()>core.getMaximumWorkLoad()) freeCores--;
+            if (usedCore + task.getCpuRequiredMinValue() > core.getMaximumWorkLoad()) freeCores--;
         }
 
-        if (freeCores<task.getNumberOfCoresRequiredValue()) return false;
+        if (freeCores < task.getNumberOfCoresRequiredValue()) return false;
         for (Core core : cores) {
-            if (core.getCurrentWorkLoad()+task.getCpuRequiredMinValue()>core.getMaximumWorkLoad()){
+            if (core.getCurrentWorkLoad() + task.getCpuRequiredMinValue() > core.getMaximumWorkLoad()) {
                 continue;
-            }else{
+            } else {
                 requestedCores--;
             }
         }
-        if (requestedCores>0){
+        if (requestedCores > 0) {
             return false;
         }
         MEM memory = (MEM) this.getMemResources().iterator().next();
-         if (memory.getCurrentWorkLoad() + task.getMemRequiredMinValue() > memory.getMaximumWorkLoad()) {
+        if (memory.getCurrentWorkLoad() + task.getMemRequiredMinValue() > memory.getMaximumWorkLoad()) {
             return false;
         }
-       
+
         return true;
     }
 
@@ -378,36 +378,39 @@ public class DefaultComplexResource extends DefaultServiceCenterITComputingResou
 
         Collection<CPU> cpus = this.getCpuResources();
         for (CPU cpu : cpus) {
-            Collection cores = cpu.getAssociatedCores();
-            double requestedCores = task.getNumberOfCoresRequiredValue();
-            if (cores.size() < requestedCores) {
+            if (cpu.getCurrentWorkLoad() + task.getCpuRequiredMaxValue() > (cpu.getMaximumWorkLoad() + cpu.getOptimalWorkLoad()) / 2.0) {
                 return false;
             }
-            for (Object coreInst : cores) {
-
-                Core core = (Core) coreInst;
-                if (core.getCurrentWorkLoad() + task.getCpuRequiredMaxValue() >  (core.getMaximumWorkLoad() + core.getOptimalWorkLoad()) / 2.0) {
-                    continue;
-                } else {
-                    requestedCores--;
-                }
-            }
-
-            if (requestedCores > 0) {
-                return false;
-            }
+//            Collection cores = cpu.getAssociatedCores();
+//            double requestedCores = task.getNumberOfCoresRequiredValue();
+//            if (cores.size() < requestedCores) {
+//                return false;
+//            }
+//            for (Object coreInst : cores) {
+//
+//                Core core = (Core) coreInst;
+//                if (core.getCurrentWorkLoad() + task.getCpuRequiredMaxValue() >  (core.getMaximumWorkLoad() + core.getOptimalWorkLoad()) / 2.0) {
+//                    continue;
+//                } else {
+//                    requestedCores--;
+//                }
+//            }
+//
+//            if (requestedCores > 0) {
+//                return false;
+//            }
         }
         Collection<MEM> memories = this.getMemResources();
         for (MEM mem : memories) {
 
-            if (mem.getCurrentWorkLoad() + task.getMemRequiredMaxValue() > (mem.getMaximumWorkLoad()+mem.getOptimalWorkLoad())/2.0) {
+            if (mem.getCurrentWorkLoad() + task.getMemRequiredMaxValue() > (mem.getMaximumWorkLoad() + mem.getOptimalWorkLoad()) / 2.0) {
                 return false;
             }
         }
         Collection<HDD> hdds = this.getHddResources();
         for (HDD hdd : hdds) {
 
-            if (hdd.getCurrentWorkLoad() + task.getHddRequiredMaxValue() > (hdd.getMaximumWorkLoad()+hdd.getOptimalWorkLoad())/2.0) {
+            if (hdd.getCurrentWorkLoad() + task.getHddRequiredMaxValue() > (hdd.getMaximumWorkLoad() + hdd.getOptimalWorkLoad()) / 2.0) {
                 return false;
             }
         }

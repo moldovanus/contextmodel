@@ -181,15 +181,15 @@ public class DefaultCPU extends DefaultSimpleResource
 
     @Override
     public void removeRunningActivity(ApplicationActivity activity) {
-        List<Core> cores = this.getAssociatedCores();
-        int coreCount = cores.size();
-        for (int i = 0; i < coreCount; i++) {
-            Core core = cores.get(i);
-            if (core.getRunningActivities().contains(activity)) {
-                core.removeRunningActivity(activity);
-
-            }
-        }
+//        List<Core> cores = this.getAssociatedCores();
+//        int coreCount = cores.size();
+//        for (int i = 0; i < coreCount; i++) {
+//            Core core = cores.get(i);
+//            if (core.getRunningActivities().contains(activity)) {
+//                core.removeRunningActivity(activity);
+//
+//            }
+//        }
         this.setCurrentWorkLoad(this.getCurrentWorkLoad() - activity.getCpuAllocatedValue());
         super.removeRunningActivity(activity);    //To change body of overridden methods use File | Settings | File Templates.
     }

@@ -1,5 +1,6 @@
 package gui.energyConsumption;
 
+import gui.energyConsumption.energyConsumptionImpl.EnergyConsumptionLinuxEstimator;
 import gui.energyConsumption.energyConsumptionImpl.EnergyEstimator;
 import model.impl.util.ModelAccess;
 
@@ -11,10 +12,15 @@ import model.impl.util.ModelAccess;
  * To change this template use File | Settings | File Templates.
  */
 public class EnergyConsumptionFactory {
-    public EnergyConsumptionFactory(){
+    public EnergyConsumptionFactory() {
 
     }
-    public EnergyConsumption getEstimator(ModelAccess modelAccess){
-           return new EnergyEstimator(modelAccess); 
+
+    public EnergyConsumption getEstimator(ModelAccess modelAccess) {
+        return new EnergyEstimator(modelAccess);
+    }
+
+    public EnergyConsumption getEstimatorHandMade(ModelAccess modelAccess) {
+        return new EnergyConsumptionLinuxEstimator(modelAccess);
     }
 }

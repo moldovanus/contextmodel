@@ -15,8 +15,6 @@ import utils.worldInterface.dtos.ServerInfo;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -43,25 +41,25 @@ public class ServerMonitorXYPlotter extends ServerMonitor {
         monitorPanel = new JPanel();
         monitorPanel.setLayout(new GridLayout(1, 2));
 
-        Collection cores = server.getCpuResources().iterator().next().getAssociatedCores();
-        int coresCount = cores.size();
-        if (coresCount % 2 != 0) {
-            coresCount++;
-        }
-
-        coresMonitors = new ArrayList<ResourceMonitorPlotter>();
+//        Collection cores = server.getCpuResources().iterator().next().getAssociatedCores();
+//        int coresCount = cores.size();
+//        if (coresCount % 2 != 0) {
+//            coresCount++;
+//        }
+//
+//        coresMonitors = new ArrayList<ResourceMonitorPlotter>();
 
 //        monitorPanel.setLayout(new GridLayout(coresCount / 2 + 1, 2));
 
 //        for (Object o : cores) {
 //            Core core = (Core) o;
-        Core core = (Core) cores.iterator().next();
-        ResourceMonitorPlotter plotter = new ResourceMonitorXYChartPlotter("CPU usage", "Time", "Mhz", 0, core.getMaximumWorkLoad().intValue());
+//        Core core = (Core) cores.iterator().next();
+        ResourceMonitorPlotter plotter = new ResourceMonitorXYChartPlotter("CPU usage", "Time", "Mhz", 0, server.getCpuResources().iterator().next().getMaximumWorkLoad().intValue());
         plotter.setSnapshotIncrement(refreshRate / 1000);
         JPanel graphPanel = plotter.getGraphPanel();
         graphPanel.setSize(250, 150);
         monitorPanel.add(graphPanel);
-        coresMonitors.add(plotter);
+//        coresMonitors.add(plotter);
 //        }
 
         MEM memory = server.getMemResources().iterator().next();

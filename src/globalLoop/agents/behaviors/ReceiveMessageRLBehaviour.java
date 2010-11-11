@@ -23,6 +23,7 @@ import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInt
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
 import utils.worldInterface.dtos.ExtendedServerDto;
 import utils.worldInterface.dtos.ExtendedTaskDto;
+import utils.worldInterface.dtos.PhysicalHost;
 import utils.worldInterface.dtos.VirtualTaskInfo;
 
 import java.io.IOException;
@@ -120,6 +121,9 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             for (ExtendedServerDto dto : servers) {
                                 String serverName = dto.getServerName();
                                 ServiceCenterServer server = modelAccess.createServiceCenterServer(serverName);
+                                //TODO: de adaugat serverele la centru de servicii
+
+
                                 server.setIpAddress(dto.getIpAddress());
                                 server.setMacAddress(dto.getMacAddress());
                                 server.setIsActive(false);
@@ -127,14 +131,23 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 server.setEnergyStates(energyStates);
                                 server.setCurrentEnergyState(0);
                                 server.addResourceWorkloadProperty("Workload_Property");
+                                ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
+                                PhysicalHost host = new PhysicalHost();
+                                host.setHostname(dto.getIpAddress());
+                                host.setIm(PhysicalHost.IM_KVM);
+                                host.setTm(PhysicalHost.TM_SSH);
+                                host.setVmm(PhysicalHost.VMM_KVM); //TODO: Check daca ramane asa hypervisoru and so on
+                                host = proxy.addHost(host);
+
+                                server.setId(host.getId());   //TODO: Server.setId then server getid what what what? null!=26
                                 CPU cpu = modelAccess.createCPU(serverName + "_CPU_");
                                 cpu.setResourceID(cpu.getName());
                                 cpu.setCurrentEnergyState(0);
 
                                 server.setCPUWeight(0.5f);
 //                                int coreCount = dto.getCoreCount();
-//                                int maximumCPU = dto.getMaximumCPU();
-//                                int optimumCPU = dto.getOptimalCPU();
+                                int maximumCPU = dto.getMaximumCPU();
+                                int optimumCPU = dto.getOptimalCPU();
 //                                for (int i = 0; i < coreCount; i++) {
 //                                    Core core = modelAccess.createCore(serverName + "_Core_" + i);
 //                                    core.setMaximumWorkLoad((double) maximumCPU);
@@ -145,10 +158,10 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
 //                                    core.addPartOf(cpu);
 //                                    core.setCurrentEnergyState(0);
 //                                }
-//                                cpu.setEnergyStates(energyStates);
-//                                cpu.setMaximumWorkLoad((double) maximumCPU);
-//                                cpu.setOptimalWorkLoad((double) optimumCPU);
-//                                server.addCpuResource(cpu);
+                                cpu.setEnergyStates(energyStates);
+                                cpu.setMaximumWorkLoad((double) maximumCPU);
+                                cpu.setOptimalWorkLoad((double) optimumCPU);
+                                server.addCpuResource(cpu);
 
                                 MEM memory = modelAccess.createMEM(serverName + "_Memory");
                                 memory.setResourceID(memory.getName());
@@ -326,6 +339,10 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                         VirtualTaskInfo info = new VirtualTaskInfo(selectedTask.getLocalName());
                         info.setId(selectedTask.getId());
                         management.deleteVirtualMachine(info);
+                        Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+                        for (ServiceCenterServer server : servers) {
+                            server.resetInitialValues();
+                        }
                         agent.sendAllTasksToClient();
                     } else {
                         agent.sendRefuseMessage();

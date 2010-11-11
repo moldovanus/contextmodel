@@ -9,8 +9,12 @@ import model.interfaces.resources.ContextResource;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.exceptions.ServiceCenterAccessException;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
+import utils.worldInterface.dtos.PhysicalHost;
+import utils.worldInterface.dtos.VirtualDiskInfo;
+import utils.worldInterface.dtos.VirtualTaskInfo;
 
 import java.util.Collection;
 
@@ -143,9 +147,32 @@ public class DefaultMigrateActivityAction extends DefaultConsolidationAction
         ApplicationActivity task = getActivity();
         ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
         if (proxy != null) {
-            //TODO :DefaultDeployActivity deploy not yet implemente fully
-            System.err.println("DefaultDeployActivity deploy not yet implementef fully. Todo");
-            throw new UnsupportedOperationException("");
+
+//                VirtualNetworkInfo network = new VirtualNetworkInfo();
+//            network.setIp("192.168.1.102");     //TODO: de adaugat ip-u in ontologie
+//            network.setVncPassword("123456");
+//            network.setVncPort(5902);
+            VirtualDiskInfo diskInfo = new VirtualDiskInfo();
+            diskInfo.setFormat("ext3");
+            diskInfo.setSize(1024);
+            diskInfo.setSource("/home/oneadmin/Desktop/disk.0"); //TODO: de adaugat baseu in path
+            diskInfo.setType("disk");
+            VirtualTaskInfo taskInfo = new VirtualTaskInfo(task.getLocalName());
+            //taskInfo.setNetworkInfo(network);
+            taskInfo.addDiskDto(diskInfo);
+            taskInfo.setRequestedCPU((int) task.getCpuRequiredMaxValue());
+            taskInfo.setRequestedMemory((int) task.getMemRequiredMaxValue());
+            taskInfo.setId(task.getId());
+            PhysicalHost host = new PhysicalHost();
+            host.setHostname(newServer.getIpAddress());
+            host.setIm(PhysicalHost.IM_KVM);
+            host.setTm(PhysicalHost.TM_SSH);
+            host.setVmm(PhysicalHost.VMM_KVM);
+            try {
+                proxy.migrateVirtualMachine(taskInfo, host);
+            } catch (ServiceCenterAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
 //            String path = newServer.getHddResources().iterator().next().getPhysicalPath();
 //            int procTime = ((int) task.getCpuRequiredMaxValue() * 100) /
 //                          ((Core) newServer.getCpuResources().iterator().next().getAssociatedCores().iterator().next()).getMaximumWorkLoad().intValue();
