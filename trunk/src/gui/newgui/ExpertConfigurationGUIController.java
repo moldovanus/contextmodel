@@ -9,9 +9,12 @@ import gui.resourceMonitor.resourceMonitorPlotter.impl.ResourceMonitorXYChartPlo
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
+import model.interfaces.resources.applications.ApplicationActivity;
 import sun.management.ManagementFactory;
+import utils.exceptions.ApplicationException;
 import utils.fileIO.ConfigurationFileIO;
 import utils.misc.Pair;
+import utils.worldInterface.dtos.TaskDto;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -156,27 +159,27 @@ public class ExpertConfigurationGUIController implements Observer {
                 expertGui.setTimerProgress(scheduleCount);
 
                 List<Pair<String, Integer>> scheduledTasks = workloadSchedulerController.getScheduledTasksFor(scheduleCount);
-//                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
-////                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
+                List<TaskDto> availableTasks = new ArrayList<TaskDto>();
+//                Collection<ApplicationActivity> activities = modelAccess.getAllApplicationActivityInstances();
                 String taskNames = "";
                 for (Pair<String, Integer> entry : scheduledTasks) {
                     taskNames += entry.getFirst() + ", ";
-//                    ApplicationActivity activity = modelAccess.getApplicationActivity(name);
-//                    //TODO; remove if other solution for templates implemented
-//                    if (activity.getLocalName().toLowerCase().contains("template")) {
-//
-//                        TaskDto taskDto = new TaskDto();
-//                        taskDto.setTaskName(activity.getLocalName());
-//                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
-//                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
-//                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
-//                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
-//                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
-//                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
-//                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
-//
-//                        availableTasks.add(taskDto);
-//                    }
+                    ApplicationActivity activity = modelAccess.getApplicationActivity(entry.getFirst());
+                    //TODO; remove if other solution for templates implemented
+                    if (activity.getLocalName().toLowerCase().contains("template")) {
+
+                        TaskDto taskDto = new TaskDto();
+                        taskDto.setTaskName(activity.getLocalName());
+                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+
+                        availableTasks.add(taskDto);
+                    }
                 }
                 if (expertGui.generatePopupMessages()) {
 //                            WorkloadTreeDisplay workloadTreeDisplay = new WorkloadTreeDisplay(availableTasks);
@@ -441,9 +444,17 @@ public class ExpertConfigurationGUIController implements Observer {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
-        EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
-        energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm().intValue();
-        energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm().intValue();
+        EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimatorHandMade(modelAccess);
+        try {
+            energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm().intValue();
+        } catch (ApplicationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        try {
+            energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm().intValue();
+        } catch (ApplicationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         System.out.println("After refresh  " + energyEstimateWithoutAlg + " ___ " + energyEstimateWithAlg);
     }
 

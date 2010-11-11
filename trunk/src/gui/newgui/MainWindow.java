@@ -22,6 +22,7 @@ import jade.lang.acl.ACLMessage;
 import model.impl.util.ModelAccess;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
+import utils.exceptions.ApplicationException;
 import utils.fileIO.ConfigurationFileIO;
 import utils.misc.Pair;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
@@ -167,7 +168,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                     root.add(task);
                 }
                 workloadScheduleJTree = new JTree(root);
-                
+
 //                DefaultTreeModel model = (DefaultTreeModel) workloadScheduleJTree.getModel();
 //                model.setRoot(root);
                 workLoadScheduleScrollPane.setViewportView(workloadScheduleJTree);
@@ -212,14 +213,14 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                     DefaultMutableTreeNode serverNode = new DefaultMutableTreeNode(server.getLocalName());
                     {
                         DefaultMutableTreeNode serverCPU = new DefaultMutableTreeNode("CPU");
-                        DefaultMutableTreeNode coreCount =
-                                new DefaultMutableTreeNode("cores: "
-                                        + server.getCpuResources().iterator().next().getAssociatedCores().size());
+//                        DefaultMutableTreeNode coreCount =
+//                                new DefaultMutableTreeNode("cores: "
+//                                        + server.getCpuResources().iterator().next().getAssociatedCores().size());
                         DefaultMutableTreeNode totalServerCPU =
                                 new DefaultMutableTreeNode("frequency: "
-                                        + server.getCpuResources().iterator().next().getAssociatedCores().iterator().next().getMaximumWorkLoad());
+                                        + server.getCpuResources().iterator().next().getMaximumWorkLoad());
 
-                        serverCPU.add(coreCount);
+//                        serverCPU.add(coreCount);
                         serverCPU.add(totalServerCPU);
 
                         serverNode.add(serverCPU);
@@ -556,29 +557,38 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        if (! modelAccess.isSimulation()){
-        EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
-        EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimator(modelAccess);
+        //TODO: Reinstate this after finding a power estimator
+        if (!modelAccess.isSimulation()) {
+            EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
+            EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimatorHandMade(modelAccess);
 
-        energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm();
-        energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm();
+            try {
+                energyEstimateWithoutAlg = energyConsumption.getValueWithoutAlgorithm();
+            } catch (ApplicationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            try {
+                energyEstimateWithAlg = energyConsumption.getValueWithRunningAlgorithm();
+            } catch (ApplicationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
 
-        energyEstimatesWithoutAlg.add(energyEstimateWithoutAlg);
-        energyEstimatesWithAlg.add(energyEstimateWithAlg);
+            energyEstimatesWithoutAlg.add(energyEstimateWithoutAlg);
+            energyEstimatesWithAlg.add(energyEstimateWithAlg);
 
-        int count = energyEstimatesWithAlg.size();
+            int count = energyEstimatesWithAlg.size();
 
-        float averageWithAlg = 0;
-        float averageWithoutAlg = 0;
-        for (int i = 0; i < count; i++) {
-            averageWithoutAlg += energyEstimatesWithoutAlg.get(i).floatValue();
-            averageWithAlg += energyEstimatesWithAlg.get(i).floatValue();
-        }
-        if (count > 0 && averageWithoutAlg > 0) {
-            totalEnergyGain = (averageWithAlg / count * 100) / (averageWithoutAlg / count);
-        }
+            float averageWithAlg = 0;
+            float averageWithoutAlg = 0;
+            for (int i = 0; i < count; i++) {
+                averageWithoutAlg += energyEstimatesWithoutAlg.get(i).floatValue();
+                averageWithAlg += energyEstimatesWithAlg.get(i).floatValue();
+            }
+            if (count > 0 && averageWithoutAlg > 0) {
+                totalEnergyGain = (averageWithAlg / count * 100) / (averageWithoutAlg / count);
+            }
 
-        System.out.println("After refresh  " + energyEstimateWithoutAlg + " ___ " + energyEstimateWithAlg);
+            System.out.println("After refresh  " + energyEstimateWithoutAlg + " ___ " + energyEstimateWithAlg);
         }
     }
 

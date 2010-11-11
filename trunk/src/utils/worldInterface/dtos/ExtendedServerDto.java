@@ -1,5 +1,7 @@
 package utils.worldInterface.dtos;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -7,7 +9,7 @@ package utils.worldInterface.dtos;
  * Time: 11:00:47 AM
  * Adds IP, MAC fields to the standard ServerDto
  */
-public class ExtendedServerDto {
+public class ExtendedServerDto implements Serializable {
 
     private String ipAddress;
     private String macAddress;

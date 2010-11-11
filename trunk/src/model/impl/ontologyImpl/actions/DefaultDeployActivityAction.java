@@ -6,13 +6,16 @@ import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import globalLoop.utils.GlobalVars;
 import model.impl.util.ModelAccess;
 import model.interfaces.actions.DeployActivity;
+import model.interfaces.resources.CPU;
 import model.interfaces.resources.ContextResource;
-import model.interfaces.resources.Core;
 import model.interfaces.resources.ServiceCenterITComputingResource;
 import model.interfaces.resources.ServiceCenterServer;
 import model.interfaces.resources.applications.ApplicationActivity;
 import utils.worldInterface.datacenterInterface.proxies.ServerManagementProxyInterface;
 import utils.worldInterface.datacenterInterface.proxies.impl.ProxyFactory;
+import utils.worldInterface.dtos.PhysicalHost;
+import utils.worldInterface.dtos.VirtualDiskInfo;
+import utils.worldInterface.dtos.VirtualTaskInfo;
 
 
 /**
@@ -107,7 +110,7 @@ public class DefaultDeployActivityAction extends DefaultConsolidationAction
         ServerManagementProxyInterface proxy = ProxyFactory.createServerManagementProxy();
         if (proxy != null) {
             int procTime = ((int) task.getCpuRequiredMaxValue() * 100) /
-                    ((Core) server.getCpuResources().iterator().next().getAssociatedCores().iterator().next()).getMaximumWorkLoad().intValue();
+                    ((CPU) server.getCpuResources().iterator().next()).getMaximumWorkLoad().intValue();
             String path = server.getHddResources().iterator().next().getPhysicalPath();
             String base = "";
             if ((task.getCPUWeight() >= task.getMEMWeight()) && (task.getCPUWeight() >= task.getHDDWeight())) {
@@ -122,11 +125,38 @@ public class DefaultDeployActivityAction extends DefaultConsolidationAction
 
             System.out.println("Deploying ...");
             //TODO :DefaultDeployActivity deploy not yet implemented fully
+//             VirtualNetworkInfo network = new VirtualNetworkInfo();
+//            network.setIp("192.168.1.102");     //TODO: de adaugat ip-u in ontologie
+//            network.setVncPassword("123456");
+//            network.setVncPort(5902);
+            VirtualDiskInfo diskInfo = new VirtualDiskInfo();
+            diskInfo.setFormat("ext3");
+            diskInfo.setSize(1024);
+            diskInfo.setSource("/home/oneadmin/Desktop/disk.0"); //TODO: de adaugat baseu in path
+            diskInfo.setType("disk");
+            VirtualTaskInfo taskInfo = new VirtualTaskInfo(task.getLocalName());
+            //   taskInfo.setNetworkInfo(network);
+            taskInfo.addDiskDto(diskInfo);
+            taskInfo.setRequestedCPU((int) task.getCpuRequiredMaxValue());
+            taskInfo.setRequestedMemory((int) task.getMemRequiredMaxValue());
+            PhysicalHost host = new PhysicalHost();
+            host.setHostname(server.getIpAddress());
+            host.setIm(PhysicalHost.IM_KVM);
+            host.setTm(PhysicalHost.TM_SSH);
+            host.setVmm(PhysicalHost.VMM_KVM);
+            host.setId(server.getId());
             System.err.println("DefaultDeployActivity deploy not yet implementef fully. Todo");
 //            proxy.deployVirtualMachineWithCustomResources(GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH,
 //                    GlobalVars.VIRTUAL_MACHINES_NETWORK_PATH , server.getLocalName(),base,
 //                    task.getLocalName(), task.getLocalName(), (int) task.getMemRequiredMaxValue(),
 //                    procTime, (int) task.getNumberOfCoresAllocatedValue());
+
+            try {
+                VirtualTaskInfo info = proxy.deployVirtualMachine(taskInfo, host);
+                task.setId(info.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             System.err.println("Proxy is null");
         }

@@ -1,11 +1,8 @@
 package model.impl.ontologyImpl;
 
-import com.hp.hpl.jena.ontology.Individual;
 import edu.stanford.smi.protege.model.FrameID;
-import edu.stanford.smi.protege.model.Instance;
-import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
-import edu.stanford.smi.protegex.owl.model.RDFResource;
+import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import model.interfaces.ContextElement;
 
@@ -19,21 +16,36 @@ import model.interfaces.ContextElement;
 public class DefaultContextElement extends DefaultOWLIndividual
         implements ContextElement {
     private OWLModel owlModel;
-
+    int id = 0;
 
     public DefaultContextElement(OWLModel owlModel, FrameID id) {
         super(owlModel, id);
         this.owlModel = owlModel;
     }
 
+    // Property http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#optimumCPU
 
     public Integer getId() {
-        return null;
+        return (getPropertyValueLiteral(getIdProperty()).getInt());
     }
 
-    public void setId(Integer integer) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+    public RDFProperty getIdProperty() {
+        final String uri = "http://www.semanticweb.org/ontologies/2010/6/ContextModel.owl#id";
+        final String name = getOWLModel().getResourceNameForURI(uri);
+        return getOWLModel().getRDFProperty(name);
     }
+
+
+    public boolean hasOptimumCPU() {
+        return getPropertyValueCount(getIdProperty()) > 0;
+    }
+
+
+    public void setId(Integer newOptimumCPU) {
+        setPropertyValue(getIdProperty(), new Integer(newOptimumCPU));
+    }
+
 
     public DefaultContextElement() {
     }
