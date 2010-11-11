@@ -121,9 +121,6 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                             for (ExtendedServerDto dto : servers) {
                                 String serverName = dto.getServerName();
                                 ServiceCenterServer server = modelAccess.createServiceCenterServer(serverName);
-                                //TODO: de adaugat serverele la centru de servicii
-
-
                                 server.setIpAddress(dto.getIpAddress());
                                 server.setMacAddress(dto.getMacAddress());
                                 server.setIsActive(false);
@@ -136,10 +133,10 @@ public class ReceiveMessageRLBehaviour extends CyclicBehaviour {
                                 host.setHostname(dto.getIpAddress());
                                 host.setIm(PhysicalHost.IM_KVM);
                                 host.setTm(PhysicalHost.TM_SSH);
-                                host.setVmm(PhysicalHost.VMM_KVM); //TODO: Check daca ramane asa hypervisoru and so on
+                                host.setVmm(PhysicalHost.VMM_KVM);
                                 host = proxy.addHost(host);
 
-                                server.setId(host.getId());   //TODO: Server.setId then server getid what what what? null!=26
+                                server.setId(host.getId());
                                 CPU cpu = modelAccess.createCPU(serverName + "_CPU_");
                                 cpu.setResourceID(cpu.getName());
                                 cpu.setCurrentEnergyState(0);

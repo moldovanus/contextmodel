@@ -174,6 +174,10 @@ public class RLAgent extends Agent {
                 try {
                     proxy.stopVirtualMachine(virtualTaskInfo);
                     proxy.deleteVirtualMachine(virtualTaskInfo);
+                    Collection<ServiceCenterServer> servers = modelAccess.getAllServiceCenterServerInstances();
+                    for (ServiceCenterServer s : servers) {
+                        s.resetInitialValues();
+                    }
                 } catch (ServiceCenterAccessException e) {
                     throw new ApplicationException(e.getMessage(), e.getCause());
                 }

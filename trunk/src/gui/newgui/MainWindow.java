@@ -317,20 +317,20 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
                     taskNames += entry.getFirst() + ", ";
                     ApplicationActivity activity = modelAccess.getApplicationActivity(entry.getFirst());
                     //TODO; remove if other solution for templates implemented
-                    if (activity.getLocalName().toLowerCase().contains("template")) {
-
-                        TaskDto taskDto = new TaskDto();
-                        taskDto.setTaskName(activity.getLocalName());
-                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
-                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
-                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
-                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
-                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
-                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
-                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
-
-                        availableTasks.add(new Pair<TaskDto, Integer>(taskDto, entry.getSecond()));
-                    }
+//                    if (activity.getLocalName().toLowerCase().contains("template")) {
+//
+//                        TaskDto taskDto = new TaskDto();
+//                        taskDto.setTaskName(activity.getLocalName());
+//                        taskDto.setRequestedCores((int) activity.getNumberOfCoresRequiredValue());
+//                        taskDto.setRequestedCPUMax((int) activity.getCpuRequiredMaxValue());
+//                        taskDto.setRequestedCPUMin((int) activity.getCpuRequiredMinValue());
+//                        taskDto.setRequestedMemoryMax((int) activity.getMemRequiredMaxValue());
+//                        taskDto.setRequestedMemoryMin((int) activity.getMemRequiredMinValue());
+//                        taskDto.setRequestedStorageMax((int) activity.getHddRequiredMaxValue());
+//                        taskDto.setRequestedStorageMin((int) activity.getHddRequiredMinValue());
+//
+//                        availableTasks.add(new Pair<TaskDto, Integer>(taskDto, entry.getSecond()));
+//                    }
                 }
 
 //                if (scheduledTasks.size() > 0) {
@@ -557,7 +557,6 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        //TODO: Reinstate this after finding a power estimator
         if (!modelAccess.isSimulation()) {
             EnergyConsumptionFactory energyConsumptionFactory = new EnergyConsumptionFactory();
             EnergyConsumption energyConsumption = energyConsumptionFactory.getEstimatorHandMade(modelAccess);
@@ -971,7 +970,7 @@ public class MainWindow extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_simulateChoiceRadioActionPerformed
 
     private void showLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLogButtonActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_showLogButtonActionPerformed
 
 
